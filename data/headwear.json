@@ -1,0 +1,2034 @@
+{
+  "metadata": {
+    "module": "Pavora Product System",
+    "category_group": "Headwear",
+    "version": "1.0",
+    "language": "zh-en",
+    "prompt_style": "hybrid_balance",
+    "autosafe": true,
+    "total_items": 40,
+    "last_update": "2025-10-12"
+  },
+  "items": [
+    {
+      "id": "headwear_cap_baseball",
+      "display_name_zh": "棒球帽",
+      "display_name_en": "Baseball Cap",
+      "category": "headwear",
+      "description": "Baseball Cap with curved brim, adjustable strap; designed for 日常穿搭, 戶外活動. Safe, tasteful, versatile. ｜ 棒球帽，特色：curved brim、adjustable strap；適用於日常穿搭、戶外活動。風格安全、實穿多變。",
+      "structure_core": [
+        "curved brim",
+        "adjustable strap"
+      ],
+      "design_identity": [
+        "sport casual"
+      ],
+      "material_logic": [
+        "cotton twill"
+      ],
+      "usage_scenario": [
+        "日常穿搭",
+        "戶外活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "cap",
+        "baseball"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_cap_dad",
+      "display_name_zh": "老帽",
+      "display_name_en": "Dad Cap",
+      "category": "headwear",
+      "description": "Dad Cap with unstructured, curved brim; designed for 城市漫步, 週末出遊. Safe, tasteful, versatile. ｜ 老帽，特色：unstructured、curved brim；適用於城市漫步、週末出遊。風格安全、實穿多變。",
+      "structure_core": [
+        "unstructured",
+        "curved brim"
+      ],
+      "design_identity": [
+        "retro casual"
+      ],
+      "material_logic": [
+        "cotton twill"
+      ],
+      "usage_scenario": [
+        "城市漫步",
+        "週末出遊"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "dad cap",
+        "retro"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_cap_trucker",
+      "display_name_zh": "卡車帽",
+      "display_name_en": "Trucker Cap",
+      "category": "headwear",
+      "description": "Trucker Cap with mesh back, snapback; designed for 夏季穿搭, 街頭. Safe, tasteful, versatile. ｜ 卡車帽，特色：mesh back、snapback；適用於夏季穿搭、街頭。風格安全、實穿多變。",
+      "structure_core": [
+        "mesh back",
+        "snapback"
+      ],
+      "design_identity": [
+        "street casual"
+      ],
+      "material_logic": [
+        "poly mesh",
+        "cotton twill"
+      ],
+      "usage_scenario": [
+        "夏季穿搭",
+        "街頭"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "trucker",
+        "cap"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_bucket_hat",
+      "display_name_zh": "漁夫帽",
+      "display_name_en": "Bucket Hat",
+      "category": "headwear",
+      "description": "Bucket Hat with soft brim, crown; designed for 音樂祭, 海邊旅遊. Safe, tasteful, versatile. ｜ 漁夫帽，特色：soft brim、crown；適用於音樂祭、海邊旅遊。風格安全、實穿多變。",
+      "structure_core": [
+        "soft brim",
+        "crown"
+      ],
+      "design_identity": [
+        "summer casual"
+      ],
+      "material_logic": [
+        "cotton",
+        "nylon"
+      ],
+      "usage_scenario": [
+        "音樂祭",
+        "海邊旅遊"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "bucket hat",
+        "summer"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_beanie",
+      "display_name_zh": "毛帽",
+      "display_name_en": "Beanie",
+      "category": "headwear",
+      "description": "Beanie with rib knit, cuffed; designed for 冬季保暖, 通勤. Safe, tasteful, versatile. ｜ 毛帽，特色：rib knit、cuffed；適用於冬季保暖、通勤。風格安全、實穿多變。",
+      "structure_core": [
+        "rib knit",
+        "cuffed"
+      ],
+      "design_identity": [
+        "winter cozy"
+      ],
+      "material_logic": [
+        "acrylic",
+        "wool blend"
+      ],
+      "usage_scenario": [
+        "冬季保暖",
+        "通勤"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "beanie",
+        "knit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_beret",
+      "display_name_zh": "貝雷帽",
+      "display_name_en": "Beret",
+      "category": "headwear",
+      "description": "Beret with flat crown, soft body; designed for 藝術展覽, 城市漫步. Safe, tasteful, versatile. ｜ 貝雷帽，特色：flat crown、soft body；適用於藝術展覽、城市漫步。風格安全、實穿多變。",
+      "structure_core": [
+        "flat crown",
+        "soft body"
+      ],
+      "design_identity": [
+        "parisian chic"
+      ],
+      "material_logic": [
+        "wool felt"
+      ],
+      "usage_scenario": [
+        "藝術展覽",
+        "城市漫步"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "beret",
+        "parisian"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_fedora",
+      "display_name_zh": "軟呢紳士帽",
+      "display_name_en": "Fedora",
+      "category": "headwear",
+      "description": "Fedora with pinch crown, medium brim; designed for 正式場合, 城市穿搭. Safe, tasteful, versatile. ｜ 軟呢紳士帽，特色：pinch crown、medium brim；適用於正式場合、城市穿搭。風格安全、實穿多變。",
+      "structure_core": [
+        "pinch crown",
+        "medium brim"
+      ],
+      "design_identity": [
+        "classic tailored"
+      ],
+      "material_logic": [
+        "wool felt"
+      ],
+      "usage_scenario": [
+        "正式場合",
+        "城市穿搭"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "fedora",
+        "classic"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_panama_hat",
+      "display_name_zh": "巴拿馬草帽",
+      "display_name_en": "Panama Hat",
+      "category": "headwear",
+      "description": "Panama Hat with straw weave, wide brim; designed for 夏季度假, 海邊旅遊. Safe, tasteful, versatile. ｜ 巴拿馬草帽，特色：straw weave、wide brim；適用於夏季度假、海邊旅遊。風格安全、實穿多變。",
+      "structure_core": [
+        "straw weave",
+        "wide brim"
+      ],
+      "design_identity": [
+        "resort elegant"
+      ],
+      "material_logic": [
+        "toquilla straw"
+      ],
+      "usage_scenario": [
+        "夏季度假",
+        "海邊旅遊"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "panama",
+        "straw"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_boater",
+      "display_name_zh": "平頂草帽",
+      "display_name_en": "Boater Hat",
+      "category": "headwear",
+      "description": "Boater Hat with flat crown, flat brim; designed for 夏日拍照, 湖畔活動. Safe, tasteful, versatile. ｜ 平頂草帽，特色：flat crown、flat brim；適用於夏日拍照、湖畔活動。風格安全、實穿多變。",
+      "structure_core": [
+        "flat crown",
+        "flat brim"
+      ],
+      "design_identity": [
+        "retro elegant"
+      ],
+      "material_logic": [
+        "straw"
+      ],
+      "usage_scenario": [
+        "夏日拍照",
+        "湖畔活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "boater",
+        "straw"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_cloche",
+      "display_name_zh": "鐘形帽",
+      "display_name_en": "Cloche Hat",
+      "category": "headwear",
+      "description": "Cloche Hat with close fit, downward brim; designed for 復古派對, 城市漫步. Safe, tasteful, versatile. ｜ 鐘形帽，特色：close fit、downward brim；適用於復古派對、城市漫步。風格安全、實穿多變。",
+      "structure_core": [
+        "close fit",
+        "downward brim"
+      ],
+      "design_identity": [
+        "vintage 20s"
+      ],
+      "material_logic": [
+        "wool felt",
+        "straw"
+      ],
+      "usage_scenario": [
+        "復古派對",
+        "城市漫步"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "cloche",
+        "vintage"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_visor",
+      "display_name_zh": "遮陽帽",
+      "display_name_en": "Sun Visor",
+      "category": "headwear",
+      "description": "Sun Visor with open top, curved brim; designed for 高爾夫, 海邊休閒. Safe, tasteful, versatile. ｜ 遮陽帽，特色：open top、curved brim；適用於高爾夫、海邊休閒。風格安全、實穿多變。",
+      "structure_core": [
+        "open top",
+        "curved brim"
+      ],
+      "design_identity": [
+        "sport summer"
+      ],
+      "material_logic": [
+        "poly",
+        "straw"
+      ],
+      "usage_scenario": [
+        "高爾夫",
+        "海邊休閒"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "visor",
+        "sun"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_headband",
+      "display_name_zh": "頭箍",
+      "display_name_en": "Headband",
+      "category": "headwear",
+      "description": "Headband with flex band, padded; designed for 日常造型, 宴會. Safe, tasteful, versatile. ｜ 頭箍，特色：flex band、padded；適用於日常造型、宴會。風格安全、實穿多變。",
+      "structure_core": [
+        "flex band",
+        "padded"
+      ],
+      "design_identity": [
+        "feminine chic"
+      ],
+      "material_logic": [
+        "fabric",
+        "velvet"
+      ],
+      "usage_scenario": [
+        "日常造型",
+        "宴會"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "headband",
+        "hair"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_hair_clip",
+      "display_name_zh": "髮夾",
+      "display_name_en": "Hair Clip",
+      "category": "headwear",
+      "description": "Hair Clip with spring clip, decor; designed for 日常造型, 節慶搭配. Safe, tasteful, versatile. ｜ 髮夾，特色：spring clip、decor；適用於日常造型、節慶搭配。風格安全、實穿多變。",
+      "structure_core": [
+        "spring clip",
+        "decor"
+      ],
+      "design_identity": [
+        "cute chic"
+      ],
+      "material_logic": [
+        "acetate",
+        "metal"
+      ],
+      "usage_scenario": [
+        "日常造型",
+        "節慶搭配"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "hair clip",
+        "hair"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_scrunchie",
+      "display_name_zh": "髮圈",
+      "display_name_en": "Scrunchie",
+      "category": "headwear",
+      "description": "Scrunchie with elastic band, fabric wrap; designed for 居家休閒, 夏日造型. Safe, tasteful, versatile. ｜ 髮圈，特色：elastic band、fabric wrap；適用於居家休閒、夏日造型。風格安全、實穿多變。",
+      "structure_core": [
+        "elastic band",
+        "fabric wrap"
+      ],
+      "design_identity": [
+        "casual cute"
+      ],
+      "material_logic": [
+        "silk",
+        "cotton"
+      ],
+      "usage_scenario": [
+        "居家休閒",
+        "夏日造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "scrunchie",
+        "hair"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_cap_baseball_v15",
+      "display_name_zh": "棒球帽（v15）",
+      "display_name_en": "Baseball Cap (v15)",
+      "category": "headwear",
+      "description": "Baseball Cap with curved brim, adjustable strap; designed for 日常穿搭, 戶外活動. Safe, tasteful, versatile. ｜ 棒球帽，特色：curved brim、adjustable strap；適用於日常穿搭、戶外活動。風格安全、實穿多變。",
+      "structure_core": [
+        "curved brim",
+        "adjustable strap",
+        "variant-v15"
+      ],
+      "design_identity": [
+        "sport casual",
+        "variant-v15"
+      ],
+      "material_logic": [
+        "cotton twill"
+      ],
+      "usage_scenario": [
+        "日常穿搭",
+        "戶外活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "cap",
+        "baseball",
+        "v15"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_cap_dad_v16",
+      "display_name_zh": "老帽（v16）",
+      "display_name_en": "Dad Cap (v16)",
+      "category": "headwear",
+      "description": "Dad Cap with unstructured, curved brim; designed for 城市漫步, 週末出遊. Safe, tasteful, versatile. ｜ 老帽，特色：unstructured、curved brim；適用於城市漫步、週末出遊。風格安全、實穿多變。",
+      "structure_core": [
+        "unstructured",
+        "curved brim",
+        "variant-v16"
+      ],
+      "design_identity": [
+        "retro casual",
+        "variant-v16"
+      ],
+      "material_logic": [
+        "cotton twill"
+      ],
+      "usage_scenario": [
+        "城市漫步",
+        "週末出遊"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "dad cap",
+        "retro",
+        "v16"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_cap_trucker_v17",
+      "display_name_zh": "卡車帽（v17）",
+      "display_name_en": "Trucker Cap (v17)",
+      "category": "headwear",
+      "description": "Trucker Cap with mesh back, snapback; designed for 夏季穿搭, 街頭. Safe, tasteful, versatile. ｜ 卡車帽，特色：mesh back、snapback；適用於夏季穿搭、街頭。風格安全、實穿多變。",
+      "structure_core": [
+        "mesh back",
+        "snapback",
+        "variant-v17"
+      ],
+      "design_identity": [
+        "street casual",
+        "variant-v17"
+      ],
+      "material_logic": [
+        "poly mesh",
+        "cotton twill"
+      ],
+      "usage_scenario": [
+        "夏季穿搭",
+        "街頭"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "trucker",
+        "cap",
+        "v17"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_bucket_hat_v18",
+      "display_name_zh": "漁夫帽（v18）",
+      "display_name_en": "Bucket Hat (v18)",
+      "category": "headwear",
+      "description": "Bucket Hat with soft brim, crown; designed for 音樂祭, 海邊旅遊. Safe, tasteful, versatile. ｜ 漁夫帽，特色：soft brim、crown；適用於音樂祭、海邊旅遊。風格安全、實穿多變。",
+      "structure_core": [
+        "soft brim",
+        "crown",
+        "variant-v18"
+      ],
+      "design_identity": [
+        "summer casual",
+        "variant-v18"
+      ],
+      "material_logic": [
+        "cotton",
+        "nylon"
+      ],
+      "usage_scenario": [
+        "音樂祭",
+        "海邊旅遊"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "bucket hat",
+        "summer",
+        "v18"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_beanie_v19",
+      "display_name_zh": "毛帽（v19）",
+      "display_name_en": "Beanie (v19)",
+      "category": "headwear",
+      "description": "Beanie with rib knit, cuffed; designed for 冬季保暖, 通勤. Safe, tasteful, versatile. ｜ 毛帽，特色：rib knit、cuffed；適用於冬季保暖、通勤。風格安全、實穿多變。",
+      "structure_core": [
+        "rib knit",
+        "cuffed",
+        "variant-v19"
+      ],
+      "design_identity": [
+        "winter cozy",
+        "variant-v19"
+      ],
+      "material_logic": [
+        "acrylic",
+        "wool blend"
+      ],
+      "usage_scenario": [
+        "冬季保暖",
+        "通勤"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "beanie",
+        "knit",
+        "v19"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_beret_v20",
+      "display_name_zh": "貝雷帽（v20）",
+      "display_name_en": "Beret (v20)",
+      "category": "headwear",
+      "description": "Beret with flat crown, soft body; designed for 藝術展覽, 城市漫步. Safe, tasteful, versatile. ｜ 貝雷帽，特色：flat crown、soft body；適用於藝術展覽、城市漫步。風格安全、實穿多變。",
+      "structure_core": [
+        "flat crown",
+        "soft body",
+        "variant-v20"
+      ],
+      "design_identity": [
+        "parisian chic",
+        "variant-v20"
+      ],
+      "material_logic": [
+        "wool felt"
+      ],
+      "usage_scenario": [
+        "藝術展覽",
+        "城市漫步"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "beret",
+        "parisian",
+        "v20"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_fedora_v21",
+      "display_name_zh": "軟呢紳士帽（v21）",
+      "display_name_en": "Fedora (v21)",
+      "category": "headwear",
+      "description": "Fedora with pinch crown, medium brim; designed for 正式場合, 城市穿搭. Safe, tasteful, versatile. ｜ 軟呢紳士帽，特色：pinch crown、medium brim；適用於正式場合、城市穿搭。風格安全、實穿多變。",
+      "structure_core": [
+        "pinch crown",
+        "medium brim",
+        "variant-v21"
+      ],
+      "design_identity": [
+        "classic tailored",
+        "variant-v21"
+      ],
+      "material_logic": [
+        "wool felt"
+      ],
+      "usage_scenario": [
+        "正式場合",
+        "城市穿搭"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "fedora",
+        "classic",
+        "v21"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_panama_hat_v22",
+      "display_name_zh": "巴拿馬草帽（v22）",
+      "display_name_en": "Panama Hat (v22)",
+      "category": "headwear",
+      "description": "Panama Hat with straw weave, wide brim; designed for 夏季度假, 海邊旅遊. Safe, tasteful, versatile. ｜ 巴拿馬草帽，特色：straw weave、wide brim；適用於夏季度假、海邊旅遊。風格安全、實穿多變。",
+      "structure_core": [
+        "straw weave",
+        "wide brim",
+        "variant-v22"
+      ],
+      "design_identity": [
+        "resort elegant",
+        "variant-v22"
+      ],
+      "material_logic": [
+        "toquilla straw"
+      ],
+      "usage_scenario": [
+        "夏季度假",
+        "海邊旅遊"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "panama",
+        "straw",
+        "v22"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_boater_v23",
+      "display_name_zh": "平頂草帽（v23）",
+      "display_name_en": "Boater Hat (v23)",
+      "category": "headwear",
+      "description": "Boater Hat with flat crown, flat brim; designed for 夏日拍照, 湖畔活動. Safe, tasteful, versatile. ｜ 平頂草帽，特色：flat crown、flat brim；適用於夏日拍照、湖畔活動。風格安全、實穿多變。",
+      "structure_core": [
+        "flat crown",
+        "flat brim",
+        "variant-v23"
+      ],
+      "design_identity": [
+        "retro elegant",
+        "variant-v23"
+      ],
+      "material_logic": [
+        "straw"
+      ],
+      "usage_scenario": [
+        "夏日拍照",
+        "湖畔活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "boater",
+        "straw",
+        "v23"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_cloche_v24",
+      "display_name_zh": "鐘形帽（v24）",
+      "display_name_en": "Cloche Hat (v24)",
+      "category": "headwear",
+      "description": "Cloche Hat with close fit, downward brim; designed for 復古派對, 城市漫步. Safe, tasteful, versatile. ｜ 鐘形帽，特色：close fit、downward brim；適用於復古派對、城市漫步。風格安全、實穿多變。",
+      "structure_core": [
+        "close fit",
+        "downward brim",
+        "variant-v24"
+      ],
+      "design_identity": [
+        "vintage 20s",
+        "variant-v24"
+      ],
+      "material_logic": [
+        "wool felt",
+        "straw"
+      ],
+      "usage_scenario": [
+        "復古派對",
+        "城市漫步"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "cloche",
+        "vintage",
+        "v24"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_visor_v25",
+      "display_name_zh": "遮陽帽（v25）",
+      "display_name_en": "Sun Visor (v25)",
+      "category": "headwear",
+      "description": "Sun Visor with open top, curved brim; designed for 高爾夫, 海邊休閒. Safe, tasteful, versatile. ｜ 遮陽帽，特色：open top、curved brim；適用於高爾夫、海邊休閒。風格安全、實穿多變。",
+      "structure_core": [
+        "open top",
+        "curved brim",
+        "variant-v25"
+      ],
+      "design_identity": [
+        "sport summer",
+        "variant-v25"
+      ],
+      "material_logic": [
+        "poly",
+        "straw"
+      ],
+      "usage_scenario": [
+        "高爾夫",
+        "海邊休閒"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "visor",
+        "sun",
+        "v25"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_headband_v26",
+      "display_name_zh": "頭箍（v26）",
+      "display_name_en": "Headband (v26)",
+      "category": "headwear",
+      "description": "Headband with flex band, padded; designed for 日常造型, 宴會. Safe, tasteful, versatile. ｜ 頭箍，特色：flex band、padded；適用於日常造型、宴會。風格安全、實穿多變。",
+      "structure_core": [
+        "flex band",
+        "padded",
+        "variant-v26"
+      ],
+      "design_identity": [
+        "feminine chic",
+        "variant-v26"
+      ],
+      "material_logic": [
+        "fabric",
+        "velvet"
+      ],
+      "usage_scenario": [
+        "日常造型",
+        "宴會"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "headband",
+        "hair",
+        "v26"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_hair_clip_v27",
+      "display_name_zh": "髮夾（v27）",
+      "display_name_en": "Hair Clip (v27)",
+      "category": "headwear",
+      "description": "Hair Clip with spring clip, decor; designed for 日常造型, 節慶搭配. Safe, tasteful, versatile. ｜ 髮夾，特色：spring clip、decor；適用於日常造型、節慶搭配。風格安全、實穿多變。",
+      "structure_core": [
+        "spring clip",
+        "decor",
+        "variant-v27"
+      ],
+      "design_identity": [
+        "cute chic",
+        "variant-v27"
+      ],
+      "material_logic": [
+        "acetate",
+        "metal"
+      ],
+      "usage_scenario": [
+        "日常造型",
+        "節慶搭配"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "hair clip",
+        "hair",
+        "v27"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_scrunchie_v28",
+      "display_name_zh": "髮圈（v28）",
+      "display_name_en": "Scrunchie (v28)",
+      "category": "headwear",
+      "description": "Scrunchie with elastic band, fabric wrap; designed for 居家休閒, 夏日造型. Safe, tasteful, versatile. ｜ 髮圈，特色：elastic band、fabric wrap；適用於居家休閒、夏日造型。風格安全、實穿多變。",
+      "structure_core": [
+        "elastic band",
+        "fabric wrap",
+        "variant-v28"
+      ],
+      "design_identity": [
+        "casual cute",
+        "variant-v28"
+      ],
+      "material_logic": [
+        "silk",
+        "cotton"
+      ],
+      "usage_scenario": [
+        "居家休閒",
+        "夏日造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "scrunchie",
+        "hair",
+        "v28"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_cap_baseball_v29",
+      "display_name_zh": "棒球帽（v29）",
+      "display_name_en": "Baseball Cap (v29)",
+      "category": "headwear",
+      "description": "Baseball Cap with curved brim, adjustable strap; designed for 日常穿搭, 戶外活動. Safe, tasteful, versatile. ｜ 棒球帽，特色：curved brim、adjustable strap；適用於日常穿搭、戶外活動。風格安全、實穿多變。",
+      "structure_core": [
+        "curved brim",
+        "adjustable strap",
+        "variant-v29"
+      ],
+      "design_identity": [
+        "sport casual",
+        "variant-v29"
+      ],
+      "material_logic": [
+        "cotton twill"
+      ],
+      "usage_scenario": [
+        "日常穿搭",
+        "戶外活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "cap",
+        "baseball",
+        "v29"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_cap_dad_v30",
+      "display_name_zh": "老帽（v30）",
+      "display_name_en": "Dad Cap (v30)",
+      "category": "headwear",
+      "description": "Dad Cap with unstructured, curved brim; designed for 城市漫步, 週末出遊. Safe, tasteful, versatile. ｜ 老帽，特色：unstructured、curved brim；適用於城市漫步、週末出遊。風格安全、實穿多變。",
+      "structure_core": [
+        "unstructured",
+        "curved brim",
+        "variant-v30"
+      ],
+      "design_identity": [
+        "retro casual",
+        "variant-v30"
+      ],
+      "material_logic": [
+        "cotton twill"
+      ],
+      "usage_scenario": [
+        "城市漫步",
+        "週末出遊"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "dad cap",
+        "retro",
+        "v30"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_cap_trucker_v31",
+      "display_name_zh": "卡車帽（v31）",
+      "display_name_en": "Trucker Cap (v31)",
+      "category": "headwear",
+      "description": "Trucker Cap with mesh back, snapback; designed for 夏季穿搭, 街頭. Safe, tasteful, versatile. ｜ 卡車帽，特色：mesh back、snapback；適用於夏季穿搭、街頭。風格安全、實穿多變。",
+      "structure_core": [
+        "mesh back",
+        "snapback",
+        "variant-v31"
+      ],
+      "design_identity": [
+        "street casual",
+        "variant-v31"
+      ],
+      "material_logic": [
+        "poly mesh",
+        "cotton twill"
+      ],
+      "usage_scenario": [
+        "夏季穿搭",
+        "街頭"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "trucker",
+        "cap",
+        "v31"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_bucket_hat_v32",
+      "display_name_zh": "漁夫帽（v32）",
+      "display_name_en": "Bucket Hat (v32)",
+      "category": "headwear",
+      "description": "Bucket Hat with soft brim, crown; designed for 音樂祭, 海邊旅遊. Safe, tasteful, versatile. ｜ 漁夫帽，特色：soft brim、crown；適用於音樂祭、海邊旅遊。風格安全、實穿多變。",
+      "structure_core": [
+        "soft brim",
+        "crown",
+        "variant-v32"
+      ],
+      "design_identity": [
+        "summer casual",
+        "variant-v32"
+      ],
+      "material_logic": [
+        "cotton",
+        "nylon"
+      ],
+      "usage_scenario": [
+        "音樂祭",
+        "海邊旅遊"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "bucket hat",
+        "summer",
+        "v32"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_beanie_v33",
+      "display_name_zh": "毛帽（v33）",
+      "display_name_en": "Beanie (v33)",
+      "category": "headwear",
+      "description": "Beanie with rib knit, cuffed; designed for 冬季保暖, 通勤. Safe, tasteful, versatile. ｜ 毛帽，特色：rib knit、cuffed；適用於冬季保暖、通勤。風格安全、實穿多變。",
+      "structure_core": [
+        "rib knit",
+        "cuffed",
+        "variant-v33"
+      ],
+      "design_identity": [
+        "winter cozy",
+        "variant-v33"
+      ],
+      "material_logic": [
+        "acrylic",
+        "wool blend"
+      ],
+      "usage_scenario": [
+        "冬季保暖",
+        "通勤"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "beanie",
+        "knit",
+        "v33"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_beret_v34",
+      "display_name_zh": "貝雷帽（v34）",
+      "display_name_en": "Beret (v34)",
+      "category": "headwear",
+      "description": "Beret with flat crown, soft body; designed for 藝術展覽, 城市漫步. Safe, tasteful, versatile. ｜ 貝雷帽，特色：flat crown、soft body；適用於藝術展覽、城市漫步。風格安全、實穿多變。",
+      "structure_core": [
+        "flat crown",
+        "soft body",
+        "variant-v34"
+      ],
+      "design_identity": [
+        "parisian chic",
+        "variant-v34"
+      ],
+      "material_logic": [
+        "wool felt"
+      ],
+      "usage_scenario": [
+        "藝術展覽",
+        "城市漫步"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "beret",
+        "parisian",
+        "v34"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_fedora_v35",
+      "display_name_zh": "軟呢紳士帽（v35）",
+      "display_name_en": "Fedora (v35)",
+      "category": "headwear",
+      "description": "Fedora with pinch crown, medium brim; designed for 正式場合, 城市穿搭. Safe, tasteful, versatile. ｜ 軟呢紳士帽，特色：pinch crown、medium brim；適用於正式場合、城市穿搭。風格安全、實穿多變。",
+      "structure_core": [
+        "pinch crown",
+        "medium brim",
+        "variant-v35"
+      ],
+      "design_identity": [
+        "classic tailored",
+        "variant-v35"
+      ],
+      "material_logic": [
+        "wool felt"
+      ],
+      "usage_scenario": [
+        "正式場合",
+        "城市穿搭"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "fedora",
+        "classic",
+        "v35"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_panama_hat_v36",
+      "display_name_zh": "巴拿馬草帽（v36）",
+      "display_name_en": "Panama Hat (v36)",
+      "category": "headwear",
+      "description": "Panama Hat with straw weave, wide brim; designed for 夏季度假, 海邊旅遊. Safe, tasteful, versatile. ｜ 巴拿馬草帽，特色：straw weave、wide brim；適用於夏季度假、海邊旅遊。風格安全、實穿多變。",
+      "structure_core": [
+        "straw weave",
+        "wide brim",
+        "variant-v36"
+      ],
+      "design_identity": [
+        "resort elegant",
+        "variant-v36"
+      ],
+      "material_logic": [
+        "toquilla straw"
+      ],
+      "usage_scenario": [
+        "夏季度假",
+        "海邊旅遊"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "panama",
+        "straw",
+        "v36"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_boater_v37",
+      "display_name_zh": "平頂草帽（v37）",
+      "display_name_en": "Boater Hat (v37)",
+      "category": "headwear",
+      "description": "Boater Hat with flat crown, flat brim; designed for 夏日拍照, 湖畔活動. Safe, tasteful, versatile. ｜ 平頂草帽，特色：flat crown、flat brim；適用於夏日拍照、湖畔活動。風格安全、實穿多變。",
+      "structure_core": [
+        "flat crown",
+        "flat brim",
+        "variant-v37"
+      ],
+      "design_identity": [
+        "retro elegant",
+        "variant-v37"
+      ],
+      "material_logic": [
+        "straw"
+      ],
+      "usage_scenario": [
+        "夏日拍照",
+        "湖畔活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "boater",
+        "straw",
+        "v37"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_cloche_v38",
+      "display_name_zh": "鐘形帽（v38）",
+      "display_name_en": "Cloche Hat (v38)",
+      "category": "headwear",
+      "description": "Cloche Hat with close fit, downward brim; designed for 復古派對, 城市漫步. Safe, tasteful, versatile. ｜ 鐘形帽，特色：close fit、downward brim；適用於復古派對、城市漫步。風格安全、實穿多變。",
+      "structure_core": [
+        "close fit",
+        "downward brim",
+        "variant-v38"
+      ],
+      "design_identity": [
+        "vintage 20s",
+        "variant-v38"
+      ],
+      "material_logic": [
+        "wool felt",
+        "straw"
+      ],
+      "usage_scenario": [
+        "復古派對",
+        "城市漫步"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "cloche",
+        "vintage",
+        "v38"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_visor_v39",
+      "display_name_zh": "遮陽帽（v39）",
+      "display_name_en": "Sun Visor (v39)",
+      "category": "headwear",
+      "description": "Sun Visor with open top, curved brim; designed for 高爾夫, 海邊休閒. Safe, tasteful, versatile. ｜ 遮陽帽，特色：open top、curved brim；適用於高爾夫、海邊休閒。風格安全、實穿多變。",
+      "structure_core": [
+        "open top",
+        "curved brim",
+        "variant-v39"
+      ],
+      "design_identity": [
+        "sport summer",
+        "variant-v39"
+      ],
+      "material_logic": [
+        "poly",
+        "straw"
+      ],
+      "usage_scenario": [
+        "高爾夫",
+        "海邊休閒"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "visor",
+        "sun",
+        "v39"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "headwear_headband_v40",
+      "display_name_zh": "頭箍（v40）",
+      "display_name_en": "Headband (v40)",
+      "category": "headwear",
+      "description": "Headband with flex band, padded; designed for 日常造型, 宴會. Safe, tasteful, versatile. ｜ 頭箍，特色：flex band、padded；適用於日常造型、宴會。風格安全、實穿多變。",
+      "structure_core": [
+        "flex band",
+        "padded",
+        "variant-v40"
+      ],
+      "design_identity": [
+        "feminine chic",
+        "variant-v40"
+      ],
+      "material_logic": [
+        "fabric",
+        "velvet"
+      ],
+      "usage_scenario": [
+        "日常造型",
+        "宴會"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "headband",
+        "hair",
+        "v40"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    }
+  ]
+}

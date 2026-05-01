@@ -1,0 +1,32 @@
+{
+  "moduleName": "Virtual Fitting Room",
+  "entryComponent": "VirtualWardrobe.tsx",
+  "description": "Allows users to photorealistically apply apparel items onto a base model image. Supports items from a pre-defined taxonomy or a personal wardrobe. Also allows for fine-tuning via natural language.",
+  "dependencies": {
+    "dataSources": [
+      "ModelLounge (for selecting base model)",
+      "PersonalWardrobe (for selecting apparel)",
+      "services/taxonomyService.ts (apparelStructure, masterTaxonomy)"
+    ],
+    "services": [
+      "geminiService.applyApparel",
+      "geminiService.getStylingPlan",
+      "geminiService.transformImage"
+    ],
+    "sharedTypes": [
+      "types.ts#Model",
+      "types.ts#StoredApparelItem",
+      "types.ts#TaxonomyEntry"
+    ]
+  },
+  "outputs": {
+    "description": "Outputs a new image URL with the apparel applied. This new image becomes the base for subsequent try-ons or can be passed to other editing modules.",
+    "schema": "string (Image URL)",
+    "consumers": [
+      "PortfolioGallery",
+      "SceneGeneration",
+      "HairSalon",
+      "CompositeCard"
+    ]
+  }
+}

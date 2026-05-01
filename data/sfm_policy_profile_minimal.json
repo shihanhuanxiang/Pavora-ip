@@ -1,0 +1,27 @@
+{
+  "policy_profile_id": "pavora-minimal-v1",
+  "version": "1.0",
+  "description": "Minimal safety policy for Pavora system, focusing on core content restrictions.",
+  "rules": [
+    {
+      "scope": "global",
+      "category": "HateSpeech",
+      "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+    },
+    {
+      "scope": "global",
+      "category": "Harassment",
+      "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+    },
+    {
+      "scope": "global",
+      "category": "SexuallyExplicit",
+      "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+    },
+    {
+      "scope": "global",
+      "category": "DangerousContent",
+      "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+    }
+  ]
+}

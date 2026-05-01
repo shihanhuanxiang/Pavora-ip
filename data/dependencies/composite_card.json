@@ -1,0 +1,28 @@
+{
+  "moduleName": "Composite Card Studio",
+  "entryComponent": "CompositeCardStudio.tsx",
+  "description": "Generates professional model composite cards by arranging images and data into templates. Includes a 'Burst Mode' for creating pose and expression variations.",
+  "dependencies": {
+    "dataSources": [
+      "ModelLounge (for selecting assets)"
+    ],
+    "services": [
+      "geminiService.generateBurstImages",
+      "geminiService.getAISmartLayout",
+      "storageService.savePortfolioItem"
+    ],
+    "sharedTypes": [
+      "types.ts#ModelData",
+      "types.ts#BurstImage",
+      "types.ts#CardAsset"
+    ]
+  },
+  "outputs": {
+    "description": "Outputs final composite card images in JPG format or multi-page PDFs. The generated image is also saved to the Portfolio Gallery.",
+    "schema": "JPG Image or PDF File",
+    "consumers": [
+      "PortfolioGallery",
+      "User Download"
+    ]
+  }
+}

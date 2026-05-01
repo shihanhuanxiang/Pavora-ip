@@ -1,0 +1,2180 @@
+{
+  "metadata": {
+    "module": "Pavora Product System",
+    "category_group": "Cosplay (Safe)",
+    "version": "1.0",
+    "language": "zh-en",
+    "prompt_style": "hybrid_balance",
+    "autosafe": true,
+    "total_items": 40,
+    "last_update": "2025-10-12"
+  },
+  "items": [
+    {
+      "id": "cosplay_hero_cape_set_safe",
+      "display_name_zh": "英雄斗篷套裝（安全）",
+      "display_name_en": "Hero Cape Set (Safe)",
+      "category": "cosplay",
+      "description": "Hero Cape Set (Safe) with cape overlay, structured bodice, tailored trousers/skirt; designed for 主題派對, 舞台表演. Safe, respectful, versatile. ｜ 英雄斗篷套裝（安全），特色：cape overlay、structured bodice、tailored trousers/skirt；適用於主題派對、舞台表演。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "cape overlay",
+        "structured bodice",
+        "tailored trousers/skirt"
+      ],
+      "design_identity": [
+        "heroic modern",
+        "stage costume"
+      ],
+      "material_logic": [
+        "gabardine",
+        "matte satin trim"
+      ],
+      "usage_scenario": [
+        "主題派對",
+        "舞台表演"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "hero",
+        "cape",
+        "stage",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_mecha_pilot_suit_safe",
+      "display_name_zh": "機甲駕駛服（安全）",
+      "display_name_en": "Mecha Pilot Suit (Safe)",
+      "category": "cosplay",
+      "description": "Mecha Pilot Suit (Safe) with padded panels, tech seams, zip front; designed for 展覽造型, 舞台表演. Safe, respectful, versatile. ｜ 機甲駕駛服（安全），特色：padded panels、tech seams、zip front；適用於展覽造型、舞台表演。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "padded panels",
+        "tech seams",
+        "zip front"
+      ],
+      "design_identity": [
+        "sci-fi pilot",
+        "utilitarian"
+      ],
+      "material_logic": [
+        "nylon shell",
+        "foam padding"
+      ],
+      "usage_scenario": [
+        "展覽造型",
+        "舞台表演"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "mecha",
+        "pilot",
+        "sci-fi",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_mage_academia_robe_safe",
+      "display_name_zh": "魔法學院長袍（安全）",
+      "display_name_en": "Mage Academia Robe (Safe)",
+      "category": "cosplay",
+      "description": "Mage Academia Robe (Safe) with long robe, contrast trims, fastening; designed for 同人活動, 主題派對. Safe, respectful, versatile. ｜ 魔法學院長袍（安全），特色：long robe、contrast trims、fastening；適用於同人活動、主題派對。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "long robe",
+        "contrast trims",
+        "fastening"
+      ],
+      "design_identity": [
+        "fantasy academia",
+        "scholarly"
+      ],
+      "material_logic": [
+        "wool blend",
+        "matte satin lining"
+      ],
+      "usage_scenario": [
+        "同人活動",
+        "主題派對"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "mage",
+        "robe",
+        "academia",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_alchemist_lab_coat",
+      "display_name_zh": "煉金術士實驗外套",
+      "display_name_en": "Alchemist Lab Coat",
+      "category": "cosplay",
+      "description": "Alchemist Lab Coat with long coat, utility pockets; designed for 角色活動, 攝影造型. Safe, respectful, versatile. ｜ 煉金術士實驗外套，特色：long coat、utility pockets；適用於角色活動、攝影造型。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "long coat",
+        "utility pockets"
+      ],
+      "design_identity": [
+        "fantasy lab",
+        "artisan"
+      ],
+      "material_logic": [
+        "cotton twill",
+        "brass-tone trims"
+      ],
+      "usage_scenario": [
+        "角色活動",
+        "攝影造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "alchemist",
+        "lab coat",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_steampunk_tinkerer",
+      "display_name_zh": "蒸汽龐克工匠",
+      "display_name_en": "Steampunk Tinkerer",
+      "category": "cosplay",
+      "description": "Steampunk Tinkerer with layered vest, decor straps; designed for 主題派對, 舞台表演. Safe, respectful, versatile. ｜ 蒸汽龐克工匠，特色：layered vest、decor straps；適用於主題派對、舞台表演。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "layered vest",
+        "decor straps"
+      ],
+      "design_identity": [
+        "vintage sci-fi"
+      ],
+      "material_logic": [
+        "canvas",
+        "faux leather"
+      ],
+      "usage_scenario": [
+        "主題派對",
+        "舞台表演"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "steampunk",
+        "tinkerer",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_cyber_hacker_set",
+      "display_name_zh": "賽博駭客套裝",
+      "display_name_en": "Cyber Hacker Set",
+      "category": "cosplay",
+      "description": "Cyber Hacker Set with neon piping, asymmetric panels; designed for 展演活動, 主題派對. Safe, respectful, versatile. ｜ 賽博駭客套裝，特色：neon piping、asymmetric panels；適用於展演活動、主題派對。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "neon piping",
+        "asymmetric panels"
+      ],
+      "design_identity": [
+        "cyberpunk street"
+      ],
+      "material_logic": [
+        "tech knit",
+        "coated twill"
+      ],
+      "usage_scenario": [
+        "展演活動",
+        "主題派對"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "cyberpunk",
+        "hacker",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_idol_stage_outfit_safe",
+      "display_name_zh": "偶像舞台服（安全）",
+      "display_name_en": "Idol Stage Outfit (Safe)",
+      "category": "cosplay",
+      "description": "Idol Stage Outfit (Safe) with structured jacket, pleated skirt/pants; designed for 舞台表演, 粉絲見面會. Safe, respectful, versatile. ｜ 偶像舞台服（安全），特色：structured jacket、pleated skirt/pants；適用於舞台表演、粉絲見面會。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "structured jacket",
+        "pleated skirt/pants"
+      ],
+      "design_identity": [
+        "stage pop",
+        "high-energy"
+      ],
+      "material_logic": [
+        "satin matte",
+        "twill"
+      ],
+      "usage_scenario": [
+        "舞台表演",
+        "粉絲見面會"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "idol",
+        "stage",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_ninja_inspired_safe",
+      "display_name_zh": "忍者靈感套裝（安全）",
+      "display_name_en": "Ninja-Inspired Set (Safe)",
+      "category": "cosplay",
+      "description": "Ninja-Inspired Set (Safe) with wrap top, tapered pants, hood; designed for 主題派對, 攝影. Safe, respectful, versatile. ｜ 忍者靈感套裝（安全），特色：wrap top、tapered pants、hood；適用於主題派對、攝影。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "wrap top",
+        "tapered pants",
+        "hood"
+      ],
+      "design_identity": [
+        "stealth modern"
+      ],
+      "material_logic": [
+        "cotton twill",
+        "stretch knit"
+      ],
+      "usage_scenario": [
+        "主題派對",
+        "攝影"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "ninja inspired",
+        "wrap",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_samurai_inspired_safe",
+      "display_name_zh": "武士靈感套裝（安全）",
+      "display_name_en": "Samurai-Inspired Set (Safe)",
+      "category": "cosplay",
+      "description": "Samurai-Inspired Set (Safe) with kimono-style top, wide trousers; designed for 展演活動, 文化主題. Safe, respectful, versatile. ｜ 武士靈感套裝（安全），特色：kimono-style top、wide trousers；適用於展演活動、文化主題。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "kimono-style top",
+        "wide trousers"
+      ],
+      "design_identity": [
+        "heritage modern"
+      ],
+      "material_logic": [
+        "cotton",
+        "linen blend"
+      ],
+      "usage_scenario": [
+        "展演活動",
+        "文化主題"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "samurai inspired",
+        "kimono-style",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_ranger_inspired_cloak",
+      "display_name_zh": "遊俠斗篷造型",
+      "display_name_en": "Ranger-Inspired Cloak",
+      "category": "cosplay",
+      "description": "Ranger-Inspired Cloak with hooded cloak, utility belt (decor); designed for 戶外拍攝, 主題活動. Safe, respectful, versatile. ｜ 遊俠斗篷造型，特色：hooded cloak、utility belt (decor)；適用於戶外拍攝、主題活動。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "hooded cloak",
+        "utility belt (decor)"
+      ],
+      "design_identity": [
+        "fantasy ranger"
+      ],
+      "material_logic": [
+        "felted wool",
+        "canvas"
+      ],
+      "usage_scenario": [
+        "戶外拍攝",
+        "主題活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "ranger",
+        "cloak",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_healer_priestess_modern_safe",
+      "display_name_zh": "治癒系祭司風（安全）",
+      "display_name_en": "Healer-Inspired Attire (Safe)",
+      "category": "cosplay",
+      "description": "Healer-Inspired Attire (Safe) with long tunic, sash belt; designed for 展演活動, 攝影造型. Safe, respectful, versatile. ｜ 治癒系祭司風（安全），特色：long tunic、sash belt；適用於展演活動、攝影造型。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "long tunic",
+        "sash belt"
+      ],
+      "design_identity": [
+        "fantasy healer"
+      ],
+      "material_logic": [
+        "linen blend",
+        "matte satin"
+      ],
+      "usage_scenario": [
+        "展演活動",
+        "攝影造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "healer",
+        "tunic",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_royal_court_dress_safe",
+      "display_name_zh": "皇室宮廷風（安全）",
+      "display_name_en": "Royal Court Dress (Safe)",
+      "category": "cosplay",
+      "description": "Royal Court Dress (Safe) with structured bodice, layered skirt; designed for 舞台表演, 主題晚宴. Safe, respectful, versatile. ｜ 皇室宮廷風（安全），特色：structured bodice、layered skirt；適用於舞台表演、主題晚宴。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "structured bodice",
+        "layered skirt"
+      ],
+      "design_identity": [
+        "baroque modern"
+      ],
+      "material_logic": [
+        "taffeta",
+        "brocade (lined)"
+      ],
+      "usage_scenario": [
+        "舞台表演",
+        "主題晚宴"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "royal",
+        "court",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_victorian_frill_dress_safe",
+      "display_name_zh": "維多利亞褶飾洋裝（安全）",
+      "display_name_en": "Victorian Frill Dress (Safe)",
+      "category": "cosplay",
+      "description": "Victorian Frill Dress (Safe) with high neck, ruffle trim; designed for 攝影造型, 主題派對. Safe, respectful, versatile. ｜ 維多利亞褶飾洋裝（安全），特色：high neck、ruffle trim；適用於攝影造型、主題派對。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "high neck",
+        "ruffle trim"
+      ],
+      "design_identity": [
+        "vintage romantic"
+      ],
+      "material_logic": [
+        "lace (lined)",
+        "cotton sateen"
+      ],
+      "usage_scenario": [
+        "攝影造型",
+        "主題派對"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "victorian",
+        "frill",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_shrine_festival_style_modern",
+      "display_name_zh": "神社祭典靈感（現代）",
+      "display_name_en": "Shrine-Festival Inspired (Modern)",
+      "category": "cosplay",
+      "description": "Shrine-Festival Inspired (Modern) with wrap top, wide sash; designed for 文化活動, 攝影造型. Safe, respectful, versatile. ｜ 神社祭典靈感（現代），特色：wrap top、wide sash；適用於文化活動、攝影造型。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "wrap top",
+        "wide sash"
+      ],
+      "design_identity": [
+        "heritage respectful"
+      ],
+      "material_logic": [
+        "cotton",
+        "silk blend"
+      ],
+      "usage_scenario": [
+        "文化活動",
+        "攝影造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "festival inspired",
+        "heritage",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_pirate_inspired_safe",
+      "display_name_zh": "海盜靈感套裝（安全）",
+      "display_name_en": "Pirate-Inspired Set (Safe)",
+      "category": "cosplay",
+      "description": "Pirate-Inspired Set (Safe) with ruffled shirt, waistcoat, wide belt; designed for 主題派對, 舞台表演. Safe, respectful, versatile. ｜ 海盜靈感套裝（安全），特色：ruffled shirt、waistcoat、wide belt；適用於主題派對、舞台表演。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "ruffled shirt",
+        "waistcoat",
+        "wide belt"
+      ],
+      "design_identity": [
+        "adventure classic"
+      ],
+      "material_logic": [
+        "linen blend",
+        "faux leather"
+      ],
+      "usage_scenario": [
+        "主題派對",
+        "舞台表演"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "pirate inspired",
+        "adventure",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_space_researcher_cos",
+      "display_name_zh": "太空研究員造型",
+      "display_name_en": "Space Researcher Cos",
+      "category": "cosplay",
+      "description": "Space Researcher Cos with lab coat, tech trims; designed for 展演活動, 教育主題. Safe, respectful, versatile. ｜ 太空研究員造型，特色：lab coat、tech trims；適用於展演活動、教育主題。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "lab coat",
+        "tech trims"
+      ],
+      "design_identity": [
+        "sci-lab theme"
+      ],
+      "material_logic": [
+        "poly-cotton",
+        "ripstop"
+      ],
+      "usage_scenario": [
+        "展演活動",
+        "教育主題"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "space",
+        "researcher",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_detective_noir_set",
+      "display_name_zh": "偵探黑色風套裝",
+      "display_name_en": "Detective Noir Set",
+      "category": "cosplay",
+      "description": "Detective Noir Set with trench coat, belt; designed for 主題派對, 舞台劇. Safe, respectful, versatile. ｜ 偵探黑色風套裝，特色：trench coat、belt；適用於主題派對、舞台劇。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "trench coat",
+        "belt"
+      ],
+      "design_identity": [
+        "noir classic"
+      ],
+      "material_logic": [
+        "gabardine",
+        "matte buttons"
+      ],
+      "usage_scenario": [
+        "主題派對",
+        "舞台劇"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "detective",
+        "noir",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_beastfolk_hoodie_safe",
+      "display_name_zh": "獸族風連帽上衣（安全）",
+      "display_name_en": "Beastfolk Hoodie (Safe)",
+      "category": "cosplay",
+      "description": "Beastfolk Hoodie (Safe) with hood with ears, tailored hoodie; designed for 同人活動, 日常變裝節. Safe, respectful, versatile. ｜ 獸族風連帽上衣（安全），特色：hood with ears、tailored hoodie；適用於同人活動、日常變裝節。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "hood with ears",
+        "tailored hoodie"
+      ],
+      "design_identity": [
+        "fantasy cute"
+      ],
+      "material_logic": [
+        "fleece",
+        "knit"
+      ],
+      "usage_scenario": [
+        "同人活動",
+        "日常變裝節"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "beastfolk",
+        "hoodie",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_angelic_guard_safe",
+      "display_name_zh": "天使守護者（安全）",
+      "display_name_en": "Angelic Guardian (Safe)",
+      "category": "cosplay",
+      "description": "Angelic Guardian (Safe) with soft wing accents, layered robe; designed for 舞台表演, 攝影造型. Safe, respectful, versatile. ｜ 天使守護者（安全），特色：soft wing accents、layered robe；適用於舞台表演、攝影造型。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "soft wing accents",
+        "layered robe"
+      ],
+      "design_identity": [
+        "holy fantasy (respectful)"
+      ],
+      "material_logic": [
+        "organza (lined)",
+        "matte satin"
+      ],
+      "usage_scenario": [
+        "舞台表演",
+        "攝影造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "angelic",
+        "guardian",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_demon_noble_safe",
+      "display_name_zh": "惡魔貴族（安全）",
+      "display_name_en": "Demon Noble (Safe)",
+      "category": "cosplay",
+      "description": "Demon Noble (Safe) with tailcoat, contrasting collar; designed for 主題派對, 舞台表演. Safe, respectful, versatile. ｜ 惡魔貴族（安全），特色：tailcoat、contrasting collar；適用於主題派對、舞台表演。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "tailcoat",
+        "contrasting collar"
+      ],
+      "design_identity": [
+        "dark fantasy fashion"
+      ],
+      "material_logic": [
+        "velvet",
+        "satin trim"
+      ],
+      "usage_scenario": [
+        "主題派對",
+        "舞台表演"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "demon noble",
+        "fantasy",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_clockwork_guard_safe",
+      "display_name_zh": "發條守衛（安全）",
+      "display_name_en": "Clockwork Guard (Safe)",
+      "category": "cosplay",
+      "description": "Clockwork Guard (Safe) with panel armor look, strapped vest; designed for 展演活動, 主題派對. Safe, respectful, versatile. ｜ 發條守衛（安全），特色：panel armor look、strapped vest；適用於展演活動、主題派對。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "panel armor look",
+        "strapped vest"
+      ],
+      "design_identity": [
+        "mechanical fantasy"
+      ],
+      "material_logic": [
+        "foam armor-look",
+        "canvas"
+      ],
+      "usage_scenario": [
+        "展演活動",
+        "主題派對"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "clockwork",
+        "guard",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_forest_druid_safe",
+      "display_name_zh": "森林德魯伊（安全）",
+      "display_name_en": "Forest Druid (Safe)",
+      "category": "cosplay",
+      "description": "Forest Druid (Safe) with leaf trims, draped cloak; designed for 戶外拍攝, 主題派對. Safe, respectful, versatile. ｜ 森林德魯伊（安全），特色：leaf trims、draped cloak；適用於戶外拍攝、主題派對。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "leaf trims",
+        "draped cloak"
+      ],
+      "design_identity": [
+        "nature fantasy"
+      ],
+      "material_logic": [
+        "linen",
+        "felt"
+      ],
+      "usage_scenario": [
+        "戶外拍攝",
+        "主題派對"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "druid",
+        "forest",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_desert_nomad_safe",
+      "display_name_zh": "沙漠遊牧風（安全）",
+      "display_name_en": "Desert Nomad (Safe)",
+      "category": "cosplay",
+      "description": "Desert Nomad (Safe) with wrap scarf, layered tunic; designed for 戶外拍攝, 展演活動. Safe, respectful, versatile. ｜ 沙漠遊牧風（安全），特色：wrap scarf、layered tunic；適用於戶外拍攝、展演活動。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "wrap scarf",
+        "layered tunic"
+      ],
+      "design_identity": [
+        "nomad adventure"
+      ],
+      "material_logic": [
+        "cotton gauze",
+        "canvas"
+      ],
+      "usage_scenario": [
+        "戶外拍攝",
+        "展演活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "desert",
+        "nomad",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_arcane_scholar",
+      "display_name_zh": "奧術學者",
+      "display_name_en": "Arcane Scholar",
+      "category": "cosplay",
+      "description": "Arcane Scholar with long vest, scroll pockets; designed for 同人活動, 攝影造型. Safe, respectful, versatile. ｜ 奧術學者，特色：long vest、scroll pockets；適用於同人活動、攝影造型。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "long vest",
+        "scroll pockets"
+      ],
+      "design_identity": [
+        "arcane academia"
+      ],
+      "material_logic": [
+        "wool blend",
+        "twill"
+      ],
+      "usage_scenario": [
+        "同人活動",
+        "攝影造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "arcane",
+        "scholar",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_harbor_captain_safe",
+      "display_name_zh": "港口船長（安全）",
+      "display_name_en": "Harbor Captain (Safe)",
+      "category": "cosplay",
+      "description": "Harbor Captain (Safe) with double-breasted coat, epaulette (decor); designed for 舞台表演, 主題派對. Safe, respectful, versatile. ｜ 港口船長（安全），特色：double-breasted coat、epaulette (decor)；適用於舞台表演、主題派對。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "double-breasted coat",
+        "epaulette (decor)"
+      ],
+      "design_identity": [
+        "nautical classic"
+      ],
+      "material_logic": [
+        "wool",
+        "brass-tone buttons"
+      ],
+      "usage_scenario": [
+        "舞台表演",
+        "主題派對"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "captain",
+        "nautical",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_airship_navigator",
+      "display_name_zh": "飛船領航員",
+      "display_name_en": "Airship Navigator",
+      "category": "cosplay",
+      "description": "Airship Navigator with goggles-ready headband, utility vest; designed for 主題派對, 展覽. Safe, respectful, versatile. ｜ 飛船領航員，特色：goggles-ready headband、utility vest；適用於主題派對、展覽。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "goggles-ready headband",
+        "utility vest"
+      ],
+      "design_identity": [
+        "sky adventure"
+      ],
+      "material_logic": [
+        "canvas",
+        "leather trim"
+      ],
+      "usage_scenario": [
+        "主題派對",
+        "展覽"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "airship",
+        "navigator",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_urban_exorcist_modern_safe",
+      "display_name_zh": "都市祓者（安全）",
+      "display_name_en": "Urban Exorcist (Safe)",
+      "category": "cosplay",
+      "description": "Urban Exorcist (Safe) with long coat, contrast sash; designed for 攝影造型, 主題派對. Safe, respectful, versatile. ｜ 都市祓者（安全），特色：long coat、contrast sash；適用於攝影造型、主題派對。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "long coat",
+        "contrast sash"
+      ],
+      "design_identity": [
+        "urban fantasy"
+      ],
+      "material_logic": [
+        "gabardine",
+        "matte satin"
+      ],
+      "usage_scenario": [
+        "攝影造型",
+        "主題派對"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "urban fantasy",
+        "exorcist inspired",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_mechanic_garage_cos",
+      "display_name_zh": "機庫機械師造型",
+      "display_name_en": "Hangar Mechanic Cos",
+      "category": "cosplay",
+      "description": "Hangar Mechanic Cos with coveralls, utility pockets; designed for 展演活動, 角色互動. Safe, respectful, versatile. ｜ 機庫機械師造型，特色：coveralls、utility pockets；適用於展演活動、角色互動。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "coveralls",
+        "utility pockets"
+      ],
+      "design_identity": [
+        "workwear theme"
+      ],
+      "material_logic": [
+        "cotton twill"
+      ],
+      "usage_scenario": [
+        "展演活動",
+        "角色互動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "mechanic",
+        "coveralls",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_royal_knight_inspired_safe",
+      "display_name_zh": "王國騎士靈感（安全）",
+      "display_name_en": "Royal Knight-Inspired (Safe)",
+      "category": "cosplay",
+      "description": "Royal Knight-Inspired (Safe) with foam armor-look, tabard; designed for 舞台表演, 主題派對. Safe, respectful, versatile. ｜ 王國騎士靈感（安全），特色：foam armor-look、tabard；適用於舞台表演、主題派對。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "foam armor-look",
+        "tabard"
+      ],
+      "design_identity": [
+        "heroic medieval"
+      ],
+      "material_logic": [
+        "foam craft",
+        "gabardine"
+      ],
+      "usage_scenario": [
+        "舞台表演",
+        "主題派對"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "knight inspired",
+        "tabard",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_witchcraft_modern_safe",
+      "display_name_zh": "現代巫術風（安全）",
+      "display_name_en": "Modern Witchcraft (Safe)",
+      "category": "cosplay",
+      "description": "Modern Witchcraft (Safe) with wide brim hat, layered dress; designed for 主題派對, 攝影造型. Safe, respectful, versatile. ｜ 現代巫術風（安全），特色：wide brim hat、layered dress；適用於主題派對、攝影造型。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "wide brim hat",
+        "layered dress"
+      ],
+      "design_identity": [
+        "modern occult fashion"
+      ],
+      "material_logic": [
+        "wool felt",
+        "chiffon (lined)"
+      ],
+      "usage_scenario": [
+        "主題派對",
+        "攝影造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "witchcraft fashion",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_golem_scholar",
+      "display_name_zh": "魔像學者",
+      "display_name_en": "Golem Scholar",
+      "category": "cosplay",
+      "description": "Golem Scholar with structured vest, panel skirt/trousers; designed for 展演活動, 同人聚會. Safe, respectful, versatile. ｜ 魔像學者，特色：structured vest、panel skirt/trousers；適用於展演活動、同人聚會。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "structured vest",
+        "panel skirt/trousers"
+      ],
+      "design_identity": [
+        "arcane engineer"
+      ],
+      "material_logic": [
+        "canvas",
+        "felt"
+      ],
+      "usage_scenario": [
+        "展演活動",
+        "同人聚會"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "golem",
+        "engineer",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_bard_troubadour",
+      "display_name_zh": "吟遊詩人",
+      "display_name_en": "Bard Troubadour",
+      "category": "cosplay",
+      "description": "Bard Troubadour with ruffled shirt, tailored vest; designed for 舞台表演, 節慶活動. Safe, respectful, versatile. ｜ 吟遊詩人，特色：ruffled shirt、tailored vest；適用於舞台表演、節慶活動。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "ruffled shirt",
+        "tailored vest"
+      ],
+      "design_identity": [
+        "stage folk"
+      ],
+      "material_logic": [
+        "linen",
+        "velvet"
+      ],
+      "usage_scenario": [
+        "舞台表演",
+        "節慶活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "bard",
+        "troubadour",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_royal_attendant",
+      "display_name_zh": "宮廷侍從",
+      "display_name_en": "Royal Attendant",
+      "category": "cosplay",
+      "description": "Royal Attendant with short tailcoat, sash; designed for 主題派對, 舞台表演. Safe, respectful, versatile. ｜ 宮廷侍從，特色：short tailcoat、sash；適用於主題派對、舞台表演。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "short tailcoat",
+        "sash"
+      ],
+      "design_identity": [
+        "court fashion"
+      ],
+      "material_logic": [
+        "satin",
+        "twill"
+      ],
+      "usage_scenario": [
+        "主題派對",
+        "舞台表演"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "royal",
+        "attendant",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_beast_tamer_safe",
+      "display_name_zh": "馴獸師（安全）",
+      "display_name_en": "Beast Tamer (Safe)",
+      "category": "cosplay",
+      "description": "Beast Tamer (Safe) with utility belt (decor), long coat; designed for 展演活動, 舞台表演. Safe, respectful, versatile. ｜ 馴獸師（安全），特色：utility belt (decor)、long coat；適用於展演活動、舞台表演。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "utility belt (decor)",
+        "long coat"
+      ],
+      "design_identity": [
+        "circus classic"
+      ],
+      "material_logic": [
+        "canvas",
+        "leather trim"
+      ],
+      "usage_scenario": [
+        "展演活動",
+        "舞台表演"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "beast tamer",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_time_traveler",
+      "display_name_zh": "時間旅者",
+      "display_name_en": "Time Traveler",
+      "category": "cosplay",
+      "description": "Time Traveler with layered coat, contrast piping; designed for 展演活動, 主題派對. Safe, respectful, versatile. ｜ 時間旅者，特色：layered coat、contrast piping；適用於展演活動、主題派對。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "layered coat",
+        "contrast piping"
+      ],
+      "design_identity": [
+        "retro future"
+      ],
+      "material_logic": [
+        "coated fabric",
+        "twill"
+      ],
+      "usage_scenario": [
+        "展演活動",
+        "主題派對"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "time traveler",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_guild_captain",
+      "display_name_zh": "公會隊長",
+      "display_name_en": "Guild Captain",
+      "category": "cosplay",
+      "description": "Guild Captain with decor badge (fictional), tabard; designed for 同人活動, 舞台表演. Safe, respectful, versatile. ｜ 公會隊長，特色：decor badge (fictional)、tabard；適用於同人活動、舞台表演。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "decor badge (fictional)",
+        "tabard"
+      ],
+      "design_identity": [
+        "fantasy guild"
+      ],
+      "material_logic": [
+        "canvas",
+        "felt"
+      ],
+      "usage_scenario": [
+        "同人活動",
+        "舞台表演"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "guild",
+        "captain",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_forest_scout",
+      "display_name_zh": "森林斥候",
+      "display_name_en": "Forest Scout",
+      "category": "cosplay",
+      "description": "Forest Scout with capelet, tapered trousers; designed for 戶外拍攝, 展演活動. Safe, respectful, versatile. ｜ 森林斥候，特色：capelet、tapered trousers；適用於戶外拍攝、展演活動。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "capelet",
+        "tapered trousers"
+      ],
+      "design_identity": [
+        "ranger scout"
+      ],
+      "material_logic": [
+        "canvas",
+        "wool"
+      ],
+      "usage_scenario": [
+        "戶外拍攝",
+        "展演活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "forest scout",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_light_priest_modern_safe",
+      "display_name_zh": "光之祭司（安全）",
+      "display_name_en": "Priest of Light (Safe)",
+      "category": "cosplay",
+      "description": "Priest of Light (Safe) with long tunic, cape; designed for 舞台表演, 攝影造型. Safe, respectful, versatile. ｜ 光之祭司（安全），特色：long tunic、cape；適用於舞台表演、攝影造型。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "long tunic",
+        "cape"
+      ],
+      "design_identity": [
+        "holy fantasy (respectful)"
+      ],
+      "material_logic": [
+        "matte satin",
+        "linen blend"
+      ],
+      "usage_scenario": [
+        "舞台表演",
+        "攝影造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "priest light",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_shadow_rogue_safe",
+      "display_name_zh": "影行者（安全）",
+      "display_name_en": "Shadow Rogue (Safe)",
+      "category": "cosplay",
+      "description": "Shadow Rogue (Safe) with hooded jacket, panel pants; designed for 主題派對, 攝影造型. Safe, respectful, versatile. ｜ 影行者（安全），特色：hooded jacket、panel pants；適用於主題派對、攝影造型。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "hooded jacket",
+        "panel pants"
+      ],
+      "design_identity": [
+        "stealth urban"
+      ],
+      "material_logic": [
+        "tech knit",
+        "coated twill"
+      ],
+      "usage_scenario": [
+        "主題派對",
+        "攝影造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "rogue inspired",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "cosplay_storm_elementalist",
+      "display_name_zh": "風暴元素師",
+      "display_name_en": "Storm Elementalist",
+      "category": "cosplay",
+      "description": "Storm Elementalist with layered robe, trim highlights; designed for 展演活動, 舞台表演. Safe, respectful, versatile. ｜ 風暴元素師，特色：layered robe、trim highlights；適用於展演活動、舞台表演。保留角色感，同時符合平台安全。",
+      "structure_core": [
+        "layered robe",
+        "trim highlights"
+      ],
+      "design_identity": [
+        "elemental fantasy"
+      ],
+      "material_logic": [
+        "organza (lined)",
+        "taffeta"
+      ],
+      "usage_scenario": [
+        "展演活動",
+        "舞台表演"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation",
+        "character-coded accents",
+        "cosplay-safe styling"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "real-world military insignia",
+        "extremist symbolism"
+      ],
+      "search_tags": [
+        "elementalist",
+        "storm",
+        "cosplay"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    }
+  ]
+}

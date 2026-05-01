@@ -1,0 +1,223 @@
+{
+  "metadata": {
+    "module": "Pavora Product System",
+    "category_group": "Costumes",
+    "version": "2.0",
+    "language": "zh-en",
+    "prompt_style": "hybrid_balance",
+    "autosafe": true,
+    "total_items": 3
+  },
+  "items": [
+    {
+      "id": "costumes_cosplay_outfit_01",
+      "display_name_zh": "Cosplay",
+      "display_name_en": "Cosplay Outfit",
+      "category": "costumes",
+      "group": "Cosplay",
+      "prompt_base": "cosplay outfit, character-inspired styling, tasteful adaptation, clean studio, retail-safe composition",
+      "structure_core": [
+        "themed silhouette",
+        "layered pieces",
+        "accessory set"
+      ],
+      "design_identity": [
+        "character-inspired",
+        "fantasy-lite"
+      ],
+      "material_logic": [
+        "polyester blend"
+      ],
+      "usage_scenario": [
+        "拍攝造型",
+        "活動出展"
+      ],
+      "search_tags": [
+        "cosplay",
+        "costume",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "角色鎧甲",
+        "學園制服",
+        "幻想法師",
+        "科幻套裝"
+      ],
+      "variants_en": [
+        "Character Armor",
+        "School Uniform",
+        "Fantasy Mage",
+        "Sci-fi Suit"
+      ],
+      "prompt_variant": [
+        "Character armor cosplay with tasteful adaptation and detail.",
+        "School uniform cosplay with clean lines and styling clarity.",
+        "Fantasy mage cosplay, layered textiles and safe fantasy cues.",
+        "Sci-fi suit cosplay with modern panels and retail-safe design."
+      ]
+    },
+    {
+      "id": "costumes_editorial_costume_01",
+      "display_name_zh": "攝影造型服",
+      "display_name_en": "Editorial Costume",
+      "category": "costumes",
+      "group": "攝影造型服",
+      "prompt_base": "editorial costume, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "editorial costume",
+        "costumes",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "造型披掛",
+        "結構剪裁",
+        "高訂靈感",
+        "單色肌理"
+      ],
+      "variants_en": [
+        "Draped Editorial",
+        "Sculptural Cut",
+        "Couture-inspired",
+        "Monochrome Texture"
+      ],
+      "prompt_variant": [
+        "Draped editorial look with dramatic fabric flow.",
+        "Sculptural editorial silhouette with sharp geometry.",
+        "Couture-inspired editorial styling with refined detail.",
+        "Monochrome texture editorial with tonal depth and polish."
+      ]
+    },
+    {
+      "id": "costumes_stage_costume_01",
+      "display_name_zh": "舞台造型",
+      "display_name_en": "Stage Costume",
+      "category": "costumes",
+      "group": "舞台造型",
+      "prompt_base": "stage costume, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "stage costume",
+        "costumes",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "爵士舞套裝",
+        "芭蕾裙裝",
+        "現代舞服",
+        "戲劇年代服"
+      ],
+      "variants_en": [
+        "Jazz Set",
+        "Ballet Dress",
+        "Modern Dancewear",
+        "Theatre Period Wear"
+      ],
+      "prompt_variant": [
+        "Jazz set costume with dynamic lines and stage clarity.",
+        "Ballet dress with light layers and performance grace.",
+        "Modern dancewear with stretch comfort and movement.",
+        "Theatre period wear with historical cues and texture."
+      ]
+    }
+  ]
+}

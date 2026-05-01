@@ -1,0 +1,364 @@
+{
+  "metadata": {
+    "module": "Pavora Product System",
+    "category_group": "Footwear",
+    "version": "2.0",
+    "language": "zh-en",
+    "prompt_style": "hybrid_balance",
+    "autosafe": true,
+    "total_items": 5
+  },
+  "items": [
+    {
+      "id": "footwear_sneakers_01",
+      "display_name_zh": "球鞋",
+      "display_name_en": "Sneakers",
+      "category": "footwear",
+      "group": "球鞋",
+      "prompt_base": "sneakers, clean upper, cushioned midsole, modern silhouette, reflective floor setup",
+      "structure_core": [
+        "lace-up",
+        "rubber outsole",
+        "mesh upper"
+      ],
+      "design_identity": [
+        "sporty",
+        "modern"
+      ],
+      "material_logic": [
+        "mesh knit",
+        "EVA sole"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "運動通勤"
+      ],
+      "search_tags": [
+        "sneakers",
+        "lace-up",
+        "modern"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "低筒",
+        "高筒",
+        "跑鞋",
+        "老爹鞋"
+      ],
+      "variants_en": [
+        "Low-top Sneakers",
+        "High-top Sneakers",
+        "Running Sneakers",
+        "Chunky Sneakers"
+      ],
+      "prompt_variant": [
+        "Low-top sneakers with clean panels and cushioned sole.",
+        "High-top sneakers with ankle support and style.",
+        "Running sneakers with breathable mesh and energy midsole.",
+        "Chunky sneakers with bold volume and urban edge."
+      ]
+    },
+    {
+      "id": "footwear_heels_01",
+      "display_name_zh": "高跟鞋",
+      "display_name_en": "Heels",
+      "category": "footwear",
+      "group": "高跟鞋",
+      "prompt_base": "heels, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "heels",
+        "footwear",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "細跟高跟鞋",
+        "粗跟高跟鞋",
+        "後空高跟鞋",
+        "瑪莉珍高跟"
+      ],
+      "variants_en": [
+        "Stiletto Heels",
+        "Block Heels",
+        "Slingback Heels",
+        "Mary Jane Heels"
+      ],
+      "prompt_variant": [
+        "Stiletto heels with sleek line and polished upper.",
+        "Block heels for stable comfort and modern shape.",
+        "Slingback heels, refined strap and chic profile.",
+        "Mary Jane heels with strap and vintage charm."
+      ]
+    },
+    {
+      "id": "footwear_boots_01",
+      "display_name_zh": "靴子",
+      "display_name_en": "Boots",
+      "category": "footwear",
+      "group": "靴子",
+      "prompt_base": "boots, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "boots",
+        "footwear",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "短靴",
+        "切爾西靴",
+        "過膝靴",
+        "戰鬥靴"
+      ],
+      "variants_en": [
+        "Ankle Boots",
+        "Chelsea Boots",
+        "Knee-high Boots",
+        "Combat Boots"
+      ],
+      "prompt_variant": [
+        "Ankle boots with clean shaft and rubber outsole.",
+        "Chelsea boots, elastic gore and timeless design.",
+        "Knee-high boots for elongated line and statement.",
+        "Combat boots with sturdy build and utility style."
+      ]
+    },
+    {
+      "id": "footwear_sandals_01",
+      "display_name_zh": "涼鞋",
+      "display_name_en": "Sandals",
+      "category": "footwear",
+      "group": "涼鞋",
+      "prompt_base": "sandals, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "sandals",
+        "footwear",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "拖鞋",
+        "細帶涼鞋",
+        "厚底涼鞋",
+        "運動涼鞋"
+      ],
+      "variants_en": [
+        "Slides",
+        "Strappy Sandals",
+        "Platform Sandals",
+        "Sport Sandals"
+      ],
+      "prompt_variant": [
+        "Slides with single strap and cushioned footbed.",
+        "Strappy sandals with elegant lines and light feel.",
+        "Platform sandals for lift and modern silhouette.",
+        "Sport sandals with secure straps and grip sole."
+      ]
+    },
+    {
+      "id": "footwear_slides_01",
+      "display_name_zh": "拖鞋",
+      "display_name_en": "Slides",
+      "category": "footwear",
+      "group": "拖鞋",
+      "prompt_base": "slides, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "slides",
+        "footwear",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "標準款",
+        "升級款",
+        "簡約款",
+        "細節款"
+      ],
+      "variants_en": [
+        "Standard",
+        "Enhanced",
+        "Minimal",
+        "Detailed"
+      ],
+      "prompt_variant": [
+        "拖鞋 in standard design with balanced proportion and clean lines.",
+        "拖鞋 enhanced detailing for elevated look and commercial appeal.",
+        "拖鞋 minimal silhouette for versatile styling and clarity.",
+        "拖鞋 refined details with studio-ready presentation."
+      ]
+    }
+  ]
+}

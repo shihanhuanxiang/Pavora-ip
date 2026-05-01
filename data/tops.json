@@ -1,0 +1,366 @@
+{
+  "metadata": {
+    "module": "Pavora Product System",
+    "category_group": "Tops",
+    "version": "2.0",
+    "language": "zh-en",
+    "prompt_style": "hybrid_balance",
+    "autosafe": true,
+    "total_items": 5
+  },
+  "items": [
+    {
+      "id": "tops_tee_01",
+      "display_name_zh": "T恤",
+      "display_name_en": "Tee",
+      "category": "tops",
+      "group": "T恤",
+      "prompt_base": "basic crewneck tee, cotton jersey texture, casual fit, clean white studio background, soft even lighting, commercial fashion photo",
+      "structure_core": [
+        "crew neck",
+        "short sleeve",
+        "straight hem"
+      ],
+      "design_identity": [
+        "casual essential",
+        "minimal"
+      ],
+      "material_logic": [
+        "cotton jersey"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "層次穿搭"
+      ],
+      "search_tags": [
+        "tee",
+        "crewneck",
+        "casual",
+        "top",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "圓領T恤",
+        "V領T恤",
+        "短版T恤",
+        "寬鬆T恤"
+      ],
+      "variants_en": [
+        "Crewneck Tee",
+        "V-neck Tee",
+        "Cropped Tee",
+        "Oversized Tee"
+      ],
+      "prompt_variant": [
+        "Crewneck tee, cotton jersey texture with crisp neckline.",
+        "V-neck tee with clean depth and everyday casual appeal.",
+        "Cropped tee, balanced proportion for modern layering.",
+        "Oversized tee with relaxed drape and effortless styling."
+      ]
+    },
+    {
+      "id": "tops_shirt_01",
+      "display_name_zh": "襯衫",
+      "display_name_en": "Shirt",
+      "category": "tops",
+      "group": "襯衫",
+      "prompt_base": "button-down shirt, crisp cotton, neat placket, clean studio backdrop, soft key light, e-commerce presentation",
+      "structure_core": [
+        "button-down collar",
+        "long sleeve",
+        "curved hem"
+      ],
+      "design_identity": [
+        "smart casual",
+        "office chic"
+      ],
+      "material_logic": [
+        "oxford cotton"
+      ],
+      "usage_scenario": [
+        "商務休閒",
+        "辦公室穿搭"
+      ],
+      "search_tags": [
+        "shirt",
+        "button-down",
+        "oxford",
+        "top"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "牛津襯衫",
+        "立領襯衫",
+        "短袖襯衫",
+        "Oversized襯衫"
+      ],
+      "variants_en": [
+        "Oxford Shirt",
+        "Mandarin Collar Shirt",
+        "Short-sleeve Shirt",
+        "Oversized Shirt"
+      ],
+      "prompt_variant": [
+        "Oxford shirt with button-down collar and crisp handfeel.",
+        "Mandarin collar shirt, minimal neckline with smart presence.",
+        "Short-sleeve shirt, clean placket and airy wearability.",
+        "Oversized shirt with extended volume and modern ease."
+      ]
+    },
+    {
+      "id": "tops_knit_top_01",
+      "display_name_zh": "針織衫",
+      "display_name_en": "Knit Top",
+      "category": "tops",
+      "group": "針織衫",
+      "prompt_base": "knit top, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "knit top",
+        "tops",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "羅紋針織",
+        "高領針織",
+        "V領針織",
+        "短版針織"
+      ],
+      "variants_en": [
+        "Ribbed Knit",
+        "Turtleneck Knit",
+        "V-neck Knit",
+        "Cropped Knit"
+      ],
+      "prompt_variant": [
+        "Ribbed knit with subtle texture and close fit.",
+        "Turtleneck knit for cozy warmth and refined silhouette.",
+        "V-neck knit, feminine balance and soft drape.",
+        "Cropped knit with modern proportion and neat hem."
+      ]
+    },
+    {
+      "id": "tops_tank_top_01",
+      "display_name_zh": "背心",
+      "display_name_en": "Tank Top",
+      "category": "tops",
+      "group": "背心",
+      "prompt_base": "tank top, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "tank top",
+        "tops",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "基本背心",
+        "羅紋背心",
+        "運動型背心",
+        "短版背心"
+      ],
+      "variants_en": [
+        "Basic Tank",
+        "Ribbed Tank",
+        "Racerback Tank",
+        "Cropped Tank"
+      ],
+      "prompt_variant": [
+        "Basic tank with clean straps and smooth neckline.",
+        "Ribbed tank highlighting texture and sleek line.",
+        "Racerback tank for athleisure energy and support.",
+        "Cropped tank with crisp edge and modern styling."
+      ]
+    },
+    {
+      "id": "tops_blouse_01",
+      "display_name_zh": "罩衫",
+      "display_name_en": "Blouse",
+      "category": "tops",
+      "group": "罩衫",
+      "prompt_base": "blouse, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "blouse",
+        "tops",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "綁帶襯衫",
+        "泡袖罩衫",
+        "綁結罩衫",
+        "透紗罩衫"
+      ],
+      "variants_en": [
+        "Tie-neck Blouse",
+        "Puff-sleeve Blouse",
+        "Wrap Blouse",
+        "Sheer Blouse"
+      ],
+      "prompt_variant": [
+        "Tie-neck blouse with elegant bow and graceful flow.",
+        "Puff-sleeve blouse, soft volume and romantic tone.",
+        "Wrap blouse for flattering waist emphasis and ease.",
+        "Sheer blouse with delicate transparency and refined edge."
+      ]
+    }
+  ]
+}

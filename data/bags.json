@@ -1,0 +1,363 @@
+{
+  "metadata": {
+    "module": "Pavora Product System",
+    "category_group": "Bags",
+    "version": "2.0",
+    "language": "zh-en",
+    "prompt_style": "hybrid_balance",
+    "autosafe": true,
+    "total_items": 5
+  },
+  "items": [
+    {
+      "id": "bags_handbag_01",
+      "display_name_zh": "手提包",
+      "display_name_en": "Handbag",
+      "category": "bags",
+      "group": "手提包",
+      "prompt_base": "handbag, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "handbag",
+        "bags",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "迷你",
+        "中型",
+        "翻蓋",
+        "拉鍊款"
+      ],
+      "variants_en": [
+        "Mini",
+        "Medium",
+        "Flap",
+        "Zip"
+      ],
+      "prompt_variant": [
+        "Mini handbag with chic profile and compact body.",
+        "Medium handbag for balanced capacity and polish.",
+        "Flap handbag with refined hardware and elegance.",
+        "Zip handbag with secure closure and clean lines."
+      ]
+    },
+    {
+      "id": "bags_shoulder_bag_01",
+      "display_name_zh": "肩背包",
+      "display_name_en": "Shoulder Bag",
+      "category": "bags",
+      "group": "肩背包",
+      "prompt_base": "shoulder bag, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "shoulder bag",
+        "bags",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "鏈帶款",
+        "皮帶款",
+        "半月包",
+        "法棍包"
+      ],
+      "variants_en": [
+        "Chain Strap",
+        "Leather Strap",
+        "Half-moon",
+        "Baguette"
+      ],
+      "prompt_variant": [
+        "Chain strap shoulder bag with luxe touch and shine.",
+        "Leather strap shoulder bag with refined simplicity.",
+        "Half-moon shoulder bag with smooth curve silhouette.",
+        "Baguette shoulder bag, compact and fashion-forward."
+      ]
+    },
+    {
+      "id": "bags_crossbody_bag_01",
+      "display_name_zh": "斜背包",
+      "display_name_en": "Crossbody Bag",
+      "category": "bags",
+      "group": "斜背包",
+      "prompt_base": "crossbody bag, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "crossbody bag",
+        "bags",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "小型斜背",
+        "多夾層",
+        "相機包",
+        "尼龍斜背"
+      ],
+      "variants_en": [
+        "Small Crossbody",
+        "Multi-pocket",
+        "Camera Bag",
+        "Nylon Crossbody"
+      ],
+      "prompt_variant": [
+        "Small crossbody bag, hands-free and lightweight.",
+        "Multi-pocket crossbody for organized daily carry.",
+        "Camera crossbody with structured body and ease.",
+        "Nylon crossbody with sporty utility and durability."
+      ]
+    },
+    {
+      "id": "bags_背包_01",
+      "display_name_zh": "背包",
+      "display_name_en": "背包",
+      "category": "bags",
+      "group": "背包",
+      "prompt_base": "背包, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "背包",
+        "bags",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "標準款",
+        "升級款",
+        "簡約款",
+        "細節款"
+      ],
+      "variants_en": [
+        "Standard",
+        "Enhanced",
+        "Minimal",
+        "Detailed"
+      ],
+      "prompt_variant": [
+        "背包 in standard design with balanced proportion and clean lines.",
+        "背包 enhanced detailing for elevated look and commercial appeal.",
+        "背包 minimal silhouette for versatile styling and clarity.",
+        "背包 refined details with studio-ready presentation."
+      ]
+    },
+    {
+      "id": "bags_clutch_01",
+      "display_name_zh": "手拿包",
+      "display_name_en": "Clutch",
+      "category": "bags",
+      "group": "手拿包",
+      "prompt_base": "clutch, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "clutch",
+        "bags",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "晚宴手拿",
+        "信封手拿",
+        "金屬扣",
+        "柔軟款"
+      ],
+      "variants_en": [
+        "Evening Clutch",
+        "Envelope Clutch",
+        "Metal Clasp",
+        "Soft Clutch"
+      ],
+      "prompt_variant": [
+        "Evening clutch with sleek form and elegant hardware.",
+        "Envelope clutch, clean flap and slim profile.",
+        "Metal clasp clutch with polished detail and shine.",
+        "Soft clutch with supple hand-feel and relaxed line."
+      ]
+    }
+  ]
+}

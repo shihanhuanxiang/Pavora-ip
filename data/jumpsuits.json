@@ -1,0 +1,1508 @@
+{
+  "metadata": {
+    "module": "Pavora Product System",
+    "category_group": "Jumpsuits",
+    "version": "1.0",
+    "language": "zh-en",
+    "prompt_style": "hybrid_balance",
+    "autosafe": true,
+    "total_items": 30,
+    "last_update": "2025-10-12"
+  },
+  "items": [
+    {
+      "id": "jumpsuits_tailored_full",
+      "display_name_zh": "修身連身褲",
+      "display_name_en": "Tailored Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Tailored Jumpsuit with tailored bodice, straight/wide leg; designed for 商務活動, 晚宴派對. Safe, tasteful, versatile. ｜ 修身連身褲，特色：tailored bodice、straight/wide leg；適用於商務活動、晚宴派對。風格安全、實穿多變。",
+      "structure_core": [
+        "tailored bodice",
+        "straight/wide leg"
+      ],
+      "design_identity": [
+        "evening modern",
+        "office chic"
+      ],
+      "material_logic": [
+        "crepe",
+        "poly-viscose"
+      ],
+      "usage_scenario": [
+        "商務活動",
+        "晚宴派對"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "tailored",
+        "jumpsuit",
+        "evening"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_utility_boilersuit",
+      "display_name_zh": "工裝連身褲",
+      "display_name_en": "Utility Boilersuit",
+      "category": "jumpsuits",
+      "description": "Utility Boilersuit with front zip, patch pockets; designed for 街頭造型, 戶外活動. Safe, tasteful, versatile. ｜ 工裝連身褲，特色：front zip、patch pockets；適用於街頭造型、戶外活動。風格安全、實穿多變。",
+      "structure_core": [
+        "front zip",
+        "patch pockets"
+      ],
+      "design_identity": [
+        "workwear modern"
+      ],
+      "material_logic": [
+        "cotton twill",
+        "ripstop"
+      ],
+      "usage_scenario": [
+        "街頭造型",
+        "戶外活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "boilersuit",
+        "utility",
+        "workwear"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_wide_leg",
+      "display_name_zh": "寬版連身褲",
+      "display_name_en": "Wide-Leg Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Wide-Leg Jumpsuit with wide leg, high waist; designed for 時尚活動, 城市晚餐. Safe, tasteful, versatile. ｜ 寬版連身褲，特色：wide leg、high waist；適用於時尚活動、城市晚餐。風格安全、實穿多變。",
+      "structure_core": [
+        "wide leg",
+        "high waist"
+      ],
+      "design_identity": [
+        "editorial chic"
+      ],
+      "material_logic": [
+        "crepe",
+        "viscose"
+      ],
+      "usage_scenario": [
+        "時尚活動",
+        "城市晚餐"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "wide leg",
+        "jumpsuit",
+        "editorial"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_culotte",
+      "display_name_zh": "七分寬管連身褲",
+      "display_name_en": "Culotte Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Culotte Jumpsuit with cropped wide leg, defined waist; designed for 城市約會, 通勤穿搭. Safe, tasteful, versatile. ｜ 七分寬管連身褲，特色：cropped wide leg、defined waist；適用於城市約會、通勤穿搭。風格安全、實穿多變。",
+      "structure_core": [
+        "cropped wide leg",
+        "defined waist"
+      ],
+      "design_identity": [
+        "smart casual"
+      ],
+      "material_logic": [
+        "crepe",
+        "linen blend"
+      ],
+      "usage_scenario": [
+        "城市約會",
+        "通勤穿搭"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "culotte",
+        "smart",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_sleeveless",
+      "display_name_zh": "無袖連身褲",
+      "display_name_en": "Sleeveless Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Sleeveless Jumpsuit with sleeveless, straight leg; designed for 夏日活動, 晚宴派對. Safe, tasteful, versatile. ｜ 無袖連身褲，特色：sleeveless、straight leg；適用於夏日活動、晚宴派對。風格安全、實穿多變。",
+      "structure_core": [
+        "sleeveless",
+        "straight leg"
+      ],
+      "design_identity": [
+        "minimal modern"
+      ],
+      "material_logic": [
+        "crepe",
+        "stretch jersey"
+      ],
+      "usage_scenario": [
+        "夏日活動",
+        "晚宴派對"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "sleeveless",
+        "minimal",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_short_sleeve",
+      "display_name_zh": "短袖連身褲",
+      "display_name_en": "Short-Sleeve Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Short-Sleeve Jumpsuit with short sleeve, button front; designed for 日常通勤, 週末出遊. Safe, tasteful, versatile. ｜ 短袖連身褲，特色：short sleeve、button front；適用於日常通勤、週末出遊。風格安全、實穿多變。",
+      "structure_core": [
+        "short sleeve",
+        "button front"
+      ],
+      "design_identity": [
+        "utility casual"
+      ],
+      "material_logic": [
+        "cotton twill",
+        "denim"
+      ],
+      "usage_scenario": [
+        "日常通勤",
+        "週末出遊"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "short sleeve",
+        "utility",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_one_shoulder_safe",
+      "display_name_zh": "單肩連身褲（安全）",
+      "display_name_en": "One-Shoulder Jumpsuit (Safe)",
+      "category": "jumpsuits",
+      "description": "One-Shoulder Jumpsuit (Safe) with one-shoulder, clean lines; designed for 晚宴派對, 正式場合. Safe, tasteful, versatile. ｜ 單肩連身褲（安全），特色：one-shoulder、clean lines；適用於晚宴派對、正式場合。風格安全、實穿多變。",
+      "structure_core": [
+        "one-shoulder",
+        "clean lines"
+      ],
+      "design_identity": [
+        "evening chic"
+      ],
+      "material_logic": [
+        "crepe",
+        "satin (matte)"
+      ],
+      "usage_scenario": [
+        "晚宴派對",
+        "正式場合"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "one-shoulder",
+        "evening",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_halter_safe",
+      "display_name_zh": "頸繫帶連身褲（安全）",
+      "display_name_en": "Halter Jumpsuit (Safe)",
+      "category": "jumpsuits",
+      "description": "Halter Jumpsuit (Safe) with halter neck, secured back; designed for 婚禮賓客, 派對晚宴. Safe, tasteful, versatile. ｜ 頸繫帶連身褲（安全），特色：halter neck、secured back；適用於婚禮賓客、派對晚宴。風格安全、實穿多變。",
+      "structure_core": [
+        "halter neck",
+        "secured back"
+      ],
+      "design_identity": [
+        "evening elegant"
+      ],
+      "material_logic": [
+        "crepe",
+        "silk blend"
+      ],
+      "usage_scenario": [
+        "婚禮賓客",
+        "派對晚宴"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "halter",
+        "evening",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_off_shoulder_safe",
+      "display_name_zh": "露肩連身褲（安全）",
+      "display_name_en": "Off-Shoulder Jumpsuit (Safe)",
+      "category": "jumpsuits",
+      "description": "Off-Shoulder Jumpsuit (Safe) with off-shoulder band, fitted bodice; designed for 約會晚餐, 時尚活動. Safe, tasteful, versatile. ｜ 露肩連身褲（安全），特色：off-shoulder band、fitted bodice；適用於約會晚餐、時尚活動。風格安全、實穿多變。",
+      "structure_core": [
+        "off-shoulder band",
+        "fitted bodice"
+      ],
+      "design_identity": [
+        "romantic modern"
+      ],
+      "material_logic": [
+        "crepe",
+        "cotton sateen"
+      ],
+      "usage_scenario": [
+        "約會晚餐",
+        "時尚活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "off-shoulder",
+        "romantic",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_wrap_front",
+      "display_name_zh": "交疊前襟連身褲",
+      "display_name_en": "Wrap-Front Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Wrap-Front Jumpsuit with wrap front, waist tie; designed for 城市約會, 商務宴會. Safe, tasteful, versatile. ｜ 交疊前襟連身褲，特色：wrap front、waist tie；適用於城市約會、商務宴會。風格安全、實穿多變。",
+      "structure_core": [
+        "wrap front",
+        "waist tie"
+      ],
+      "design_identity": [
+        "feminine modern"
+      ],
+      "material_logic": [
+        "viscose",
+        "crepe"
+      ],
+      "usage_scenario": [
+        "城市約會",
+        "商務宴會"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "wrap",
+        "modern",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_blazer_jumpsuit",
+      "display_name_zh": "西裝連身褲",
+      "display_name_en": "Blazer Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Blazer Jumpsuit with lapel collar, tailored bodice; designed for 頒獎典禮, 品牌活動. Safe, tasteful, versatile. ｜ 西裝連身褲，特色：lapel collar、tailored bodice；適用於頒獎典禮、品牌活動。風格安全、實穿多變。",
+      "structure_core": [
+        "lapel collar",
+        "tailored bodice"
+      ],
+      "design_identity": [
+        "power chic"
+      ],
+      "material_logic": [
+        "suiting"
+      ],
+      "usage_scenario": [
+        "頒獎典禮",
+        "品牌活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "blazer",
+        "power",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_denim_jumpsuit",
+      "display_name_zh": "丹寧連身褲",
+      "display_name_en": "Denim Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Denim Jumpsuit with button front, utility pockets; designed for 街頭造型, 旅行穿搭. Safe, tasteful, versatile. ｜ 丹寧連身褲，特色：button front、utility pockets；適用於街頭造型、旅行穿搭。風格安全、實穿多變。",
+      "structure_core": [
+        "button front",
+        "utility pockets"
+      ],
+      "design_identity": [
+        "heritage casual"
+      ],
+      "material_logic": [
+        "denim"
+      ],
+      "usage_scenario": [
+        "街頭造型",
+        "旅行穿搭"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "denim",
+        "utility",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_knit_jumpsuit",
+      "display_name_zh": "針織連身褲",
+      "display_name_en": "Knit Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Knit Jumpsuit with knit body, straight leg; designed for 秋冬外出, 長途旅行. Safe, tasteful, versatile. ｜ 針織連身褲，特色：knit body、straight leg；適用於秋冬外出、長途旅行。風格安全、實穿多變。",
+      "structure_core": [
+        "knit body",
+        "straight leg"
+      ],
+      "design_identity": [
+        "cozy minimal"
+      ],
+      "material_logic": [
+        "viscose knit"
+      ],
+      "usage_scenario": [
+        "秋冬外出",
+        "長途旅行"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "knit",
+        "cozy",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_athleisure_jumpsuit",
+      "display_name_zh": "機能運動連身褲",
+      "display_name_en": "Athleisure Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Athleisure Jumpsuit with stretch body, zip front; designed for 健身房往返, 城市通勤. Safe, tasteful, versatile. ｜ 機能運動連身褲，特色：stretch body、zip front；適用於健身房往返、城市通勤。風格安全、實穿多變。",
+      "structure_core": [
+        "stretch body",
+        "zip front"
+      ],
+      "design_identity": [
+        "performance chic"
+      ],
+      "material_logic": [
+        "nylon spandex"
+      ],
+      "usage_scenario": [
+        "健身房往返",
+        "城市通勤"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "athleisure",
+        "performance",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_romper",
+      "display_name_zh": "短版連身褲",
+      "display_name_en": "Romper",
+      "category": "jumpsuits",
+      "description": "Romper with shorts length, button/zip front; designed for 夏季出遊, 週末市集. Safe, tasteful, versatile. ｜ 短版連身褲，特色：shorts length、button/zip front；適用於夏季出遊、週末市集。風格安全、實穿多變。",
+      "structure_core": [
+        "shorts length",
+        "button/zip front"
+      ],
+      "design_identity": [
+        "summer casual"
+      ],
+      "material_logic": [
+        "cotton twill",
+        "linen blend"
+      ],
+      "usage_scenario": [
+        "夏季出遊",
+        "週末市集"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "romper",
+        "summer",
+        "casual"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_playsuit",
+      "display_name_zh": "玩樂連身短褲",
+      "display_name_en": "Playsuit",
+      "category": "jumpsuits",
+      "description": "Playsuit with shorts length, defined waist; designed for 海邊旅遊, 城市散步. Safe, tasteful, versatile. ｜ 玩樂連身短褲，特色：shorts length、defined waist；適用於海邊旅遊、城市散步。風格安全、實穿多變。",
+      "structure_core": [
+        "shorts length",
+        "defined waist"
+      ],
+      "design_identity": [
+        "youthful chic"
+      ],
+      "material_logic": [
+        "rayon",
+        "cotton"
+      ],
+      "usage_scenario": [
+        "海邊旅遊",
+        "城市散步"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "playsuit",
+        "youthful",
+        "summer"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_formal_satin_safe",
+      "display_name_zh": "緞面連身褲（安全）",
+      "display_name_en": "Formal Satin Jumpsuit (Safe)",
+      "category": "jumpsuits",
+      "description": "Formal Satin Jumpsuit (Safe) with matte satin, wide leg; designed for 酒會晚宴, 婚禮賓客. Safe, tasteful, versatile. ｜ 緞面連身褲（安全），特色：matte satin、wide leg；適用於酒會晚宴、婚禮賓客。風格安全、實穿多變。",
+      "structure_core": [
+        "matte satin",
+        "wide leg"
+      ],
+      "design_identity": [
+        "evening formal"
+      ],
+      "material_logic": [
+        "acetate satin",
+        "crepe"
+      ],
+      "usage_scenario": [
+        "酒會晚宴",
+        "婚禮賓客"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "satin",
+        "evening",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_pleated_jumpsuit",
+      "display_name_zh": "百摺連身褲",
+      "display_name_en": "Pleated Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Pleated Jumpsuit with micro pleats, flowy leg; designed for 品牌活動, 時尚派對. Safe, tasteful, versatile. ｜ 百摺連身褲，特色：micro pleats、flowy leg；適用於品牌活動、時尚派對。風格安全、實穿多變。",
+      "structure_core": [
+        "micro pleats",
+        "flowy leg"
+      ],
+      "design_identity": [
+        "editorial movement"
+      ],
+      "material_logic": [
+        "chiffon",
+        "georgette"
+      ],
+      "usage_scenario": [
+        "品牌活動",
+        "時尚派對"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "pleated",
+        "editorial",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_cargo_jumpsuit",
+      "display_name_zh": "工裝口袋連身褲",
+      "display_name_en": "Cargo Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Cargo Jumpsuit with cargo pockets, straight leg; designed for 戶外活動, 城市通勤. Safe, tasteful, versatile. ｜ 工裝口袋連身褲，特色：cargo pockets、straight leg；適用於戶外活動、城市通勤。風格安全、實穿多變。",
+      "structure_core": [
+        "cargo pockets",
+        "straight leg"
+      ],
+      "design_identity": [
+        "utility modern"
+      ],
+      "material_logic": [
+        "ripstop",
+        "cotton twill"
+      ],
+      "usage_scenario": [
+        "戶外活動",
+        "城市通勤"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "cargo",
+        "utility",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_belted_jumpsuit",
+      "display_name_zh": "綁帶連身褲",
+      "display_name_en": "Belted Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Belted Jumpsuit with self belt, defined waist; designed for 通勤穿搭, 城市約會. Safe, tasteful, versatile. ｜ 綁帶連身褲，特色：self belt、defined waist；適用於通勤穿搭、城市約會。風格安全、實穿多變。",
+      "structure_core": [
+        "self belt",
+        "defined waist"
+      ],
+      "design_identity": [
+        "smart chic"
+      ],
+      "material_logic": [
+        "crepe",
+        "linen blend"
+      ],
+      "usage_scenario": [
+        "通勤穿搭",
+        "城市約會"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "belted",
+        "smart",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_paperbag_jumpsuit",
+      "display_name_zh": "紙袋腰連身褲",
+      "display_name_en": "Paperbag-Waist Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Paperbag-Waist Jumpsuit with paperbag waist, wide leg; designed for 街拍風格, 咖啡約會. Safe, tasteful, versatile. ｜ 紙袋腰連身褲，特色：paperbag waist、wide leg；適用於街拍風格、咖啡約會。風格安全、實穿多變。",
+      "structure_core": [
+        "paperbag waist",
+        "wide leg"
+      ],
+      "design_identity": [
+        "fashion casual"
+      ],
+      "material_logic": [
+        "viscose",
+        "tencel"
+      ],
+      "usage_scenario": [
+        "街拍風格",
+        "咖啡約會"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "paperbag",
+        "wide leg",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_wrap_culotte",
+      "display_name_zh": "交疊七分連身褲",
+      "display_name_en": "Wrap Culotte Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Wrap Culotte Jumpsuit with wrap top, culotte leg; designed for 夏季通勤, 藝術展覽. Safe, tasteful, versatile. ｜ 交疊七分連身褲，特色：wrap top、culotte leg；適用於夏季通勤、藝術展覽。風格安全、實穿多變。",
+      "structure_core": [
+        "wrap top",
+        "culotte leg"
+      ],
+      "design_identity": [
+        "feminine modern"
+      ],
+      "material_logic": [
+        "crepe",
+        "linen blend"
+      ],
+      "usage_scenario": [
+        "夏季通勤",
+        "藝術展覽"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "wrap",
+        "culotte",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_draped_jumpsuit",
+      "display_name_zh": "垂墜造型連身褲",
+      "display_name_en": "Draped Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Draped Jumpsuit with soft drape, asymmetric front; designed for 形象大片, 品牌活動. Safe, tasteful, versatile. ｜ 垂墜造型連身褲，特色：soft drape、asymmetric front；適用於形象大片、品牌活動。風格安全、實穿多變。",
+      "structure_core": [
+        "soft drape",
+        "asymmetric front"
+      ],
+      "design_identity": [
+        "editorial elegant"
+      ],
+      "material_logic": [
+        "silk crepe",
+        "viscose"
+      ],
+      "usage_scenario": [
+        "形象大片",
+        "品牌活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "drape",
+        "editorial",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_tuxedo_jumpsuit",
+      "display_name_zh": "禮服連身褲",
+      "display_name_en": "Tuxedo Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Tuxedo Jumpsuit with tuxedo details, satin lapel; designed for 正式晚宴, 頒獎典禮. Safe, tasteful, versatile. ｜ 禮服連身褲，特色：tuxedo details、satin lapel；適用於正式晚宴、頒獎典禮。風格安全、實穿多變。",
+      "structure_core": [
+        "tuxedo details",
+        "satin lapel"
+      ],
+      "design_identity": [
+        "evening classic"
+      ],
+      "material_logic": [
+        "suiting",
+        "satin trim"
+      ],
+      "usage_scenario": [
+        "正式晚宴",
+        "頒獎典禮"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "tuxedo",
+        "evening",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_palazzo_jumpsuit",
+      "display_name_zh": "寬褲連身褲",
+      "display_name_en": "Palazzo Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Palazzo Jumpsuit with extra wide leg, flowy drape; designed for 海島度假, 夏夜派對. Safe, tasteful, versatile. ｜ 寬褲連身褲，特色：extra wide leg、flowy drape；適用於海島度假、夏夜派對。風格安全、實穿多變。",
+      "structure_core": [
+        "extra wide leg",
+        "flowy drape"
+      ],
+      "design_identity": [
+        "resort elegant"
+      ],
+      "material_logic": [
+        "viscose",
+        "crepe"
+      ],
+      "usage_scenario": [
+        "海島度假",
+        "夏夜派對"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "palazzo",
+        "resort",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_print_safe_jumpsuit",
+      "display_name_zh": "安全印花連身褲",
+      "display_name_en": "Safe Print Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Safe Print Jumpsuit with tasteful print, defined waist; designed for 城市散步, 日常通勤. Safe, tasteful, versatile. ｜ 安全印花連身褲，特色：tasteful print、defined waist；適用於城市散步、日常通勤。風格安全、實穿多變。",
+      "structure_core": [
+        "tasteful print",
+        "defined waist"
+      ],
+      "design_identity": [
+        "artful casual"
+      ],
+      "material_logic": [
+        "viscose",
+        "cotton"
+      ],
+      "usage_scenario": [
+        "城市散步",
+        "日常通勤"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "print",
+        "casual",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_linen_jumpsuit",
+      "display_name_zh": "亞麻連身褲",
+      "display_name_en": "Linen Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Linen Jumpsuit with linen blend, relaxed cut; designed for 海邊旅遊, 夏季穿搭. Safe, tasteful, versatile. ｜ 亞麻連身褲，特色：linen blend、relaxed cut；適用於海邊旅遊、夏季穿搭。風格安全、實穿多變。",
+      "structure_core": [
+        "linen blend",
+        "relaxed cut"
+      ],
+      "design_identity": [
+        "resort minimal"
+      ],
+      "material_logic": [
+        "linen blend"
+      ],
+      "usage_scenario": [
+        "海邊旅遊",
+        "夏季穿搭"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "linen",
+        "resort",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_sweat_jumpsuit",
+      "display_name_zh": "運動連身褲",
+      "display_name_en": "Sweat Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Sweat Jumpsuit with fleece, zip front; designed for 旅行搭配, 居家休閒. Safe, tasteful, versatile. ｜ 運動連身褲，特色：fleece、zip front；適用於旅行搭配、居家休閒。風格安全、實穿多變。",
+      "structure_core": [
+        "fleece",
+        "zip front"
+      ],
+      "design_identity": [
+        "athleisure comfort"
+      ],
+      "material_logic": [
+        "cotton fleece"
+      ],
+      "usage_scenario": [
+        "旅行搭配",
+        "居家休閒"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "sweat",
+        "athleisure",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_denim_overall",
+      "display_name_zh": "丹寧吊帶連身褲",
+      "display_name_en": "Denim Overalls",
+      "category": "jumpsuits",
+      "description": "Denim Overalls with adjustable straps, utility pockets; designed for 街頭造型, 市集穿搭. Safe, tasteful, versatile. ｜ 丹寧吊帶連身褲，特色：adjustable straps、utility pockets；適用於街頭造型、市集穿搭。風格安全、實穿多變。",
+      "structure_core": [
+        "adjustable straps",
+        "utility pockets"
+      ],
+      "design_identity": [
+        "heritage casual"
+      ],
+      "material_logic": [
+        "denim"
+      ],
+      "usage_scenario": [
+        "街頭造型",
+        "市集穿搭"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "overalls",
+        "denim",
+        "casual"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jumpsuits_cape_jumpsuit",
+      "display_name_zh": "披肩式連身褲",
+      "display_name_en": "Cape Jumpsuit",
+      "category": "jumpsuits",
+      "description": "Cape Jumpsuit with cape overlay, tailored bodice; designed for 晚宴紅毯, 品牌活動. Safe, tasteful, versatile. ｜ 披肩式連身褲，特色：cape overlay、tailored bodice；適用於晚宴紅毯、品牌活動。風格安全、實穿多變。",
+      "structure_core": [
+        "cape overlay",
+        "tailored bodice"
+      ],
+      "design_identity": [
+        "red-carpet modern"
+      ],
+      "material_logic": [
+        "crepe",
+        "satin trim"
+      ],
+      "usage_scenario": [
+        "晚宴紅毯",
+        "品牌活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "cape",
+        "evening",
+        "jumpsuit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    }
+  ]
+}

@@ -1,0 +1,294 @@
+{
+  "metadata": {
+    "module": "Pavora Product System",
+    "category_group": "Dresses",
+    "version": "2.0",
+    "language": "zh-en",
+    "prompt_style": "hybrid_balance",
+    "autosafe": true,
+    "total_items": 4
+  },
+  "items": [
+    {
+      "id": "dresses_dress_01",
+      "display_name_zh": "日常洋裝",
+      "display_name_en": "Dress",
+      "category": "dresses",
+      "group": "日常洋裝",
+      "prompt_base": "dress, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "dress",
+        "dresses",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "A字洋裝",
+        "襯衫洋裝",
+        "包裹洋裝",
+        "層次洋裝"
+      ],
+      "variants_en": [
+        "A-line Dress",
+        "Shirt Dress",
+        "Wrap Dress",
+        "Tiered Dress"
+      ],
+      "prompt_variant": [
+        "A-line dress with clean waist and soft movement.",
+        "Shirt dress with button-front and belted definition.",
+        "Wrap dress, flattering V-neck and adjustable tie.",
+        "Tiered dress with airy layers and feminine swing."
+      ]
+    },
+    {
+      "id": "dresses_evening_gown_01",
+      "display_name_zh": "晚宴禮服",
+      "display_name_en": "Evening Gown",
+      "category": "dresses",
+      "group": "晚宴禮服",
+      "prompt_base": "evening gown, elegant drape, refined neckline, floor length, delicate sheen, cinematic soft lighting",
+      "structure_core": [
+        "floor length",
+        "defined waist",
+        "elegant neckline"
+      ],
+      "design_identity": [
+        "formal elegance",
+        "couture-inspired"
+      ],
+      "material_logic": [
+        "silk satin"
+      ],
+      "usage_scenario": [
+        "晚宴場合",
+        "正式典禮"
+      ],
+      "search_tags": [
+        "evening",
+        "gown",
+        "formal",
+        "couture"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "魚尾",
+        "A字",
+        "直筒",
+        "蓬裙"
+      ],
+      "variants_en": [
+        "Mermaid",
+        "A-line",
+        "Sheath",
+        "Ball Gown"
+      ],
+      "prompt_variant": [
+        "Mermaid gown with sculpted curve and elegant train.",
+        "A-line gown with balanced waist and classic grace.",
+        "Sheath gown, minimal column silhouette with sheen.",
+        "Ball gown with dramatic volume and couture flair."
+      ]
+    },
+    {
+      "id": "dresses_slip_dress_01",
+      "display_name_zh": "吊帶裙",
+      "display_name_en": "Slip Dress",
+      "category": "dresses",
+      "group": "吊帶裙",
+      "prompt_base": "slip dress, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "slip dress",
+        "dresses",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "中長",
+        "長版",
+        "垂領",
+        "蕾絲拼接"
+      ],
+      "variants_en": [
+        "Midi",
+        "Maxi",
+        "Cowl Neck",
+        "Lace Trim"
+      ],
+      "prompt_variant": [
+        "Midi slip dress with bias cut and fluid drape.",
+        "Maxi slip dress with elongated line and elegance.",
+        "Cowl neck slip for soft highlights and modern allure.",
+        "Lace trim slip, delicate edge and refined texture."
+      ]
+    },
+    {
+      "id": "dresses_knit_dress_01",
+      "display_name_zh": "針織洋裝",
+      "display_name_en": "Knit Dress",
+      "category": "dresses",
+      "group": "針織洋裝",
+      "prompt_base": "knit dress, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "knit dress",
+        "dresses",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "羅紋針織",
+        "高領針織",
+        "合身針織",
+        "中長針織"
+      ],
+      "variants_en": [
+        "Ribbed Knit Dress",
+        "Turtleneck Knit Dress",
+        "Bodycon Knit Dress",
+        "Midi Knit Dress"
+      ],
+      "prompt_variant": [
+        "Ribbed knit dress with texture and stretch comfort.",
+        "Turtleneck knit dress for warmth and sleek line.",
+        "Bodycon knit dress, close fit and modern polish.",
+        "Midi knit dress with balanced length and ease."
+      ]
+    }
+  ]
+}

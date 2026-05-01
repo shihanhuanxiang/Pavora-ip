@@ -1,0 +1,364 @@
+{
+  "metadata": {
+    "module": "Pavora Product System",
+    "category_group": "Outerwear",
+    "version": "2.0",
+    "language": "zh-en",
+    "prompt_style": "hybrid_balance",
+    "autosafe": true,
+    "total_items": 5
+  },
+  "items": [
+    {
+      "id": "outerwear_trench_coat_01",
+      "display_name_zh": "風衣",
+      "display_name_en": "Trench Coat",
+      "category": "outerwear",
+      "group": "風衣",
+      "prompt_base": "trench coat, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "trench coat",
+        "outerwear",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "經典雙排",
+        "風暴蓋片",
+        "連帽",
+        "短版風衣"
+      ],
+      "variants_en": [
+        "Classic Double-breasted",
+        "Storm Flap",
+        "Hooded",
+        "Short Trench"
+      ],
+      "prompt_variant": [
+        "Classic double-breasted trench with belt and structure.",
+        "Storm flap trench for heritage detail and function.",
+        "Hooded trench, weather-ready and urban minimal.",
+        "Short trench, compact cut with crisp tailoring."
+      ]
+    },
+    {
+      "id": "outerwear_overcoat_01",
+      "display_name_zh": "大衣",
+      "display_name_en": "Overcoat",
+      "category": "outerwear",
+      "group": "大衣",
+      "prompt_base": "overcoat, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "overcoat",
+        "outerwear",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "切斯特大衣",
+        "綁帶大衣",
+        "雙排扣大衣",
+        "長版大衣"
+      ],
+      "variants_en": [
+        "Chesterfield Coat",
+        "Wrap Coat",
+        "Double-breasted Coat",
+        "Long Overcoat"
+      ],
+      "prompt_variant": [
+        "Chesterfield coat with notch lapel and refined line.",
+        "Wrap coat with belt closure and soft drape.",
+        "Double-breasted coat, structured warmth and polish.",
+        "Long overcoat for elongated silhouette and depth."
+      ]
+    },
+    {
+      "id": "outerwear_jacket_01",
+      "display_name_zh": "夾克",
+      "display_name_en": "Jacket",
+      "category": "outerwear",
+      "group": "夾克",
+      "prompt_base": "jacket, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "jacket",
+        "outerwear",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "飛行夾克",
+        "機能夾克",
+        "牛仔夾克",
+        "皮夾克"
+      ],
+      "variants_en": [
+        "Bomber Jacket",
+        "Utility Jacket",
+        "Denim Jacket",
+        "Leather Jacket"
+      ],
+      "prompt_variant": [
+        "Bomber jacket with rib trims and clean silhouette.",
+        "Utility jacket with pockets and durable shell.",
+        "Denim jacket, classic seams and sturdy twill.",
+        "Leather jacket with sleek finish and sharp edge."
+      ]
+    },
+    {
+      "id": "outerwear_blazer_01",
+      "display_name_zh": "西裝外套",
+      "display_name_en": "Blazer",
+      "category": "outerwear",
+      "group": "西裝外套",
+      "prompt_base": "tailored blazer, sharp lapels, structured shoulder, single-breasted, editorial studio light",
+      "structure_core": [
+        "notch lapel",
+        "single-breasted",
+        "shoulder pad"
+      ],
+      "design_identity": [
+        "power tailoring",
+        "modern minimal"
+      ],
+      "material_logic": [
+        "wool blend suiting"
+      ],
+      "usage_scenario": [
+        "商務正式",
+        "都會穿搭"
+      ],
+      "search_tags": [
+        "blazer",
+        "tailored",
+        "power",
+        "outerwear"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "單排扣",
+        "雙排扣",
+        "寬鬆版",
+        "短版"
+      ],
+      "variants_en": [
+        "Single-breasted",
+        "Double-breasted",
+        "Oversized",
+        "Cropped"
+      ],
+      "prompt_variant": [
+        "Single-breasted blazer with sharp lapels and structure.",
+        "Double-breasted blazer for power tailoring presence.",
+        "Oversized blazer, modern volume and easy layering.",
+        "Cropped blazer with clean proportion and polish."
+      ]
+    },
+    {
+      "id": "outerwear_down_jacket_01",
+      "display_name_zh": "羽絨外套",
+      "display_name_en": "Down Jacket",
+      "category": "outerwear",
+      "group": "羽絨外套",
+      "prompt_base": "down jacket, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "down jacket",
+        "outerwear",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "輕量羽絨",
+        "連帽羽絨",
+        "長版羽絨",
+        "可收納羽絨"
+      ],
+      "variants_en": [
+        "Lightweight Down",
+        "Hooded Down",
+        "Long Down",
+        "Packable Down"
+      ],
+      "prompt_variant": [
+        "Lightweight down with clean baffle and mobility.",
+        "Hooded down for warmth and practical coverage.",
+        "Long down jacket with extended insulation and comfort.",
+        "Packable down, compressible and travel-ready."
+      ]
+    }
+  ]
+}

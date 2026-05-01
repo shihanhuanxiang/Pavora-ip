@@ -1,0 +1,294 @@
+{
+  "metadata": {
+    "module": "Pavora Product System",
+    "category_group": "Intimates",
+    "version": "2.0",
+    "language": "zh-en",
+    "prompt_style": "hybrid_balance",
+    "autosafe": true,
+    "total_items": 4
+  },
+  "items": [
+    {
+      "id": "intimates_bra_01",
+      "display_name_zh": "內衣",
+      "display_name_en": "Bra",
+      "category": "intimates",
+      "group": "內衣",
+      "prompt_base": "bra, smooth cup, supportive band, tasteful coverage, e-commerce clean lighting",
+      "structure_core": [
+        "adjustable strap",
+        "hook-and-eye",
+        "soft cup"
+      ],
+      "design_identity": [
+        "supportive",
+        "everyday"
+      ],
+      "material_logic": [
+        "nylon spandex"
+      ],
+      "usage_scenario": [
+        "日常內著",
+        "輕運動"
+      ],
+      "search_tags": [
+        "bra",
+        "support",
+        "intimates",
+        "everyday"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "無鋼圈內衣",
+        "前扣式內衣",
+        "全罩杯內衣",
+        "T恤內衣"
+      ],
+      "variants_en": [
+        "Wireless Bra",
+        "Front-closure Bra",
+        "Full-coverage Bra",
+        "T-shirt Bra"
+      ],
+      "prompt_variant": [
+        "Wireless bra with smooth support and soft lining.",
+        "Front-closure bra for easy wear and secure hold.",
+        "Full-coverage bra, comfort shaping and everyday use.",
+        "T-shirt bra with seamless cup for invisible finish."
+      ]
+    },
+    {
+      "id": "intimates_panties_01",
+      "display_name_zh": "內褲",
+      "display_name_en": "Panties",
+      "category": "intimates",
+      "group": "內褲",
+      "prompt_base": "panties, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "panties",
+        "intimates",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "比基尼褲",
+        "低腰平口",
+        "高腰內褲",
+        "無痕內褲"
+      ],
+      "variants_en": [
+        "Bikini Brief",
+        "Hipster",
+        "High-waist Brief",
+        "Seamless Brief"
+      ],
+      "prompt_variant": [
+        "Bikini brief with soft elastic and breathable fabric.",
+        "Hipster brief, low rise with smooth edges.",
+        "High-waist brief for gentle shaping and comfort.",
+        "Seamless brief, invisible under clothes and soft touch."
+      ]
+    },
+    {
+      "id": "intimates_sports_bra_01",
+      "display_name_zh": "運動內衣",
+      "display_name_en": "Sports Bra",
+      "category": "intimates",
+      "group": "運動內衣",
+      "prompt_base": "sports bra, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "sports bra",
+        "intimates",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "低強度",
+        "中強度",
+        "高強度",
+        "前拉鍊"
+      ],
+      "variants_en": [
+        "Low-impact",
+        "Medium-impact",
+        "High-impact",
+        "Front-zip"
+      ],
+      "prompt_variant": [
+        "Low-impact sports bra for light training and yoga.",
+        "Medium-impact sports bra with balanced support.",
+        "High-impact sports bra for running and cardio.",
+        "Front-zip sports bra for quick access and secure feel."
+      ]
+    },
+    {
+      "id": "intimates_shapewear_01",
+      "display_name_zh": "塑身衣",
+      "display_name_en": "Shapewear",
+      "category": "intimates",
+      "group": "塑身衣",
+      "prompt_base": "shapewear, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "shapewear",
+        "intimates",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "高腰塑褲",
+        "連身塑身衣",
+        "腰夾",
+        "大腿雕塑褲"
+      ],
+      "variants_en": [
+        "High-waist Shaper Shorts",
+        "Shaper Bodysuit",
+        "Waist Cincher",
+        "Thigh Slimmer"
+      ],
+      "prompt_variant": [
+        "High-waist shaper shorts with targeted control zones.",
+        "Shaper bodysuit with smooth edges and all-over support.",
+        "Waist cincher for defined midsection and sleek line.",
+        "Thigh slimmer with seamless knit and comfort."
+      ]
+    }
+  ]
+}

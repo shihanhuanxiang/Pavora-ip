@@ -1,0 +1,1511 @@
+{
+  "metadata": {
+    "module": "Pavora Product System",
+    "category_group": "Sets",
+    "version": "1.0",
+    "language": "zh-en",
+    "prompt_style": "hybrid_balance",
+    "autosafe": true,
+    "total_items": 30,
+    "last_update": "2025-10-12"
+  },
+  "items": [
+    {
+      "id": "sets_tailored_suit_set",
+      "display_name_zh": "套裝西服（上衣+長褲）",
+      "display_name_en": "Tailored Suit Set (Blazer+Trousers)",
+      "category": "sets",
+      "description": "Tailored Suit Set (Blazer+Trousers) with blazer, tailored trousers; designed for 商務場合, 正裝通勤. Safe, tasteful, versatile. ｜ 套裝西服（上衣+長褲），特色：blazer、tailored trousers；適用於商務場合、正裝通勤。風格安全、實穿多變。",
+      "structure_core": [
+        "blazer",
+        "tailored trousers"
+      ],
+      "design_identity": [
+        "office chic",
+        "clean tailoring"
+      ],
+      "material_logic": [
+        "wool blend",
+        "poly-viscose"
+      ],
+      "usage_scenario": [
+        "商務場合",
+        "正裝通勤"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "suit set",
+        "blazer",
+        "trousers"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_skirt_suit_set",
+      "display_name_zh": "裙裝套裝（上衣+窄裙）",
+      "display_name_en": "Skirt Suit Set (Blazer+Pencil Skirt)",
+      "category": "sets",
+      "description": "Skirt Suit Set (Blazer+Pencil Skirt) with blazer, pencil skirt; designed for 商務簡報, 正式會議. Safe, tasteful, versatile. ｜ 裙裝套裝（上衣+窄裙），特色：blazer、pencil skirt；適用於商務簡報、正式會議。風格安全、實穿多變。",
+      "structure_core": [
+        "blazer",
+        "pencil skirt"
+      ],
+      "design_identity": [
+        "office classic"
+      ],
+      "material_logic": [
+        "wool blend"
+      ],
+      "usage_scenario": [
+        "商務簡報",
+        "正式會議"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "skirt suit",
+        "office"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_knit_twinset",
+      "display_name_zh": "針織Twinset（開襟+背心）",
+      "display_name_en": "Knit Twinset (Cardigan+Tank)",
+      "category": "sets",
+      "description": "Knit Twinset (Cardigan+Tank) with cardigan, knit tank; designed for 通勤層次, 冷氣房保暖. Safe, tasteful, versatile. ｜ 針織Twinset（開襟+背心），特色：cardigan、knit tank；適用於通勤層次、冷氣房保暖。風格安全、實穿多變。",
+      "structure_core": [
+        "cardigan",
+        "knit tank"
+      ],
+      "design_identity": [
+        "cozy classic"
+      ],
+      "material_logic": [
+        "viscose knit",
+        "cotton knit"
+      ],
+      "usage_scenario": [
+        "通勤層次",
+        "冷氣房保暖"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "twinset",
+        "knit",
+        "cardigan"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_tracksuit_set",
+      "display_name_zh": "運動套裝（外套+長褲）",
+      "display_name_en": "Tracksuit Set (Jacket+Pants)",
+      "category": "sets",
+      "description": "Tracksuit Set (Jacket+Pants) with zip jacket, track pants; designed for 運動通勤, 旅行搭配. Safe, tasteful, versatile. ｜ 運動套裝（外套+長褲），特色：zip jacket、track pants；適用於運動通勤、旅行搭配。風格安全、實穿多變。",
+      "structure_core": [
+        "zip jacket",
+        "track pants"
+      ],
+      "design_identity": [
+        "athleisure"
+      ],
+      "material_logic": [
+        "poly knit",
+        "cotton fleece"
+      ],
+      "usage_scenario": [
+        "運動通勤",
+        "旅行搭配"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "tracksuit",
+        "athleisure"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_lounge_set",
+      "display_name_zh": "家居套裝（上衣+長褲）",
+      "display_name_en": "Lounge Set (Top+Pants)",
+      "category": "sets",
+      "description": "Lounge Set (Top+Pants) with soft top, relaxed pants; designed for 居家休閒, 長途旅行. Safe, tasteful, versatile. ｜ 家居套裝（上衣+長褲），特色：soft top、relaxed pants；適用於居家休閒、長途旅行。風格安全、實穿多變。",
+      "structure_core": [
+        "soft top",
+        "relaxed pants"
+      ],
+      "design_identity": [
+        "comfort home"
+      ],
+      "material_logic": [
+        "cotton modal",
+        "french terry"
+      ],
+      "usage_scenario": [
+        "居家休閒",
+        "長途旅行"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "lounge",
+        "home"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_pajama_set",
+      "display_name_zh": "睡衣套裝（襯衫+長褲）",
+      "display_name_en": "Pajama Set (Shirt+Pants)",
+      "category": "sets",
+      "description": "Pajama Set (Shirt+Pants) with button shirt, relaxed pants; designed for 居家睡眠, 放鬆時光. Safe, tasteful, versatile. ｜ 睡衣套裝（襯衫+長褲），特色：button shirt、relaxed pants；適用於居家睡眠、放鬆時光。風格安全、實穿多變。",
+      "structure_core": [
+        "button shirt",
+        "relaxed pants"
+      ],
+      "design_identity": [
+        "sleepwear classic"
+      ],
+      "material_logic": [
+        "cotton sateen",
+        "rayon"
+      ],
+      "usage_scenario": [
+        "居家睡眠",
+        "放鬆時光"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "pajama",
+        "sleepwear"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_gym_set",
+      "display_name_zh": "健身套裝（上衣+緊身褲）",
+      "display_name_en": "Gym Set (Top+Leggings)",
+      "category": "sets",
+      "description": "Gym Set (Top+Leggings) with performance top, leggings; designed for 健身房, 訓練課程. Safe, tasteful, versatile. ｜ 健身套裝（上衣+緊身褲），特色：performance top、leggings；適用於健身房、訓練課程。風格安全、實穿多變。",
+      "structure_core": [
+        "performance top",
+        "leggings"
+      ],
+      "design_identity": [
+        "training essential"
+      ],
+      "material_logic": [
+        "nylon spandex"
+      ],
+      "usage_scenario": [
+        "健身房",
+        "訓練課程"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "gym set",
+        "training"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_yoga_set",
+      "display_name_zh": "瑜伽套裝（短上衣+高腰褲）",
+      "display_name_en": "Yoga Set (Crop+High-Waist)",
+      "category": "sets",
+      "description": "Yoga Set (Crop+High-Waist) with crop top, high-waist leggings; designed for 瑜伽教室, 普拉提. Safe, tasteful, versatile. ｜ 瑜伽套裝（短上衣+高腰褲），特色：crop top、high-waist leggings；適用於瑜伽教室、普拉提。風格安全、實穿多變。",
+      "structure_core": [
+        "crop top",
+        "high-waist leggings"
+      ],
+      "design_identity": [
+        "studio chic"
+      ],
+      "material_logic": [
+        "recycled polyamide",
+        "spandex"
+      ],
+      "usage_scenario": [
+        "瑜伽教室",
+        "普拉提"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "yoga set",
+        "studio"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_resort_short_set",
+      "display_name_zh": "度假短裝套組",
+      "display_name_en": "Resort Short Set",
+      "category": "sets",
+      "description": "Resort Short Set with camp shirt, tailored shorts; designed for 海邊旅遊, 夏日逛街. Safe, tasteful, versatile. ｜ 度假短裝套組，特色：camp shirt、tailored shorts；適用於海邊旅遊、夏日逛街。風格安全、實穿多變。",
+      "structure_core": [
+        "camp shirt",
+        "tailored shorts"
+      ],
+      "design_identity": [
+        "resort casual"
+      ],
+      "material_logic": [
+        "rayon",
+        "linen blend"
+      ],
+      "usage_scenario": [
+        "海邊旅遊",
+        "夏日逛街"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "resort",
+        "short set"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_denim_coord",
+      "display_name_zh": "丹寧成套（外套+裙/褲）",
+      "display_name_en": "Denim Co-ord (Jacket+Skirt/Pants)",
+      "category": "sets",
+      "description": "Denim Co-ord (Jacket+Skirt/Pants) with denim jacket, bottom set; designed for 街拍造型, 城市休閒. Safe, tasteful, versatile. ｜ 丹寧成套（外套+裙/褲），特色：denim jacket、bottom set；適用於街拍造型、城市休閒。風格安全、實穿多變。",
+      "structure_core": [
+        "denim jacket",
+        "bottom set"
+      ],
+      "design_identity": [
+        "heritage casual"
+      ],
+      "material_logic": [
+        "denim"
+      ],
+      "usage_scenario": [
+        "街拍造型",
+        "城市休閒"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "denim",
+        "co-ord"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_print_coord",
+      "display_name_zh": "印花套裝",
+      "display_name_en": "Printed Co-ord Set",
+      "category": "sets",
+      "description": "Printed Co-ord Set with matching top, matching bottom; designed for 城市漫步, 音樂祭. Safe, tasteful, versatile. ｜ 印花套裝，特色：matching top、matching bottom；適用於城市漫步、音樂祭。風格安全、實穿多變。",
+      "structure_core": [
+        "matching top",
+        "matching bottom"
+      ],
+      "design_identity": [
+        "artful casual"
+      ],
+      "material_logic": [
+        "viscose",
+        "cotton"
+      ],
+      "usage_scenario": [
+        "城市漫步",
+        "音樂祭"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "print",
+        "co-ord"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_monochrome_set",
+      "display_name_zh": "單色成套",
+      "display_name_en": "Monochrome Set",
+      "category": "sets",
+      "description": "Monochrome Set with single color, consistent texture; designed for 通勤穿搭, 時尚活動. Safe, tasteful, versatile. ｜ 單色成套，特色：single color、consistent texture；適用於通勤穿搭、時尚活動。風格安全、實穿多變。",
+      "structure_core": [
+        "single color",
+        "consistent texture"
+      ],
+      "design_identity": [
+        "minimal chic"
+      ],
+      "material_logic": [
+        "knit",
+        "crepe"
+      ],
+      "usage_scenario": [
+        "通勤穿搭",
+        "時尚活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "monochrome",
+        "set"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_pleated_set",
+      "display_name_zh": "百摺套裝",
+      "display_name_en": "Pleated Set",
+      "category": "sets",
+      "description": "Pleated Set with pleated top, pleated bottom; designed for 藝文活動, 午茶聚會. Safe, tasteful, versatile. ｜ 百摺套裝，特色：pleated top、pleated bottom；適用於藝文活動、午茶聚會。風格安全、實穿多變。",
+      "structure_core": [
+        "pleated top",
+        "pleated bottom"
+      ],
+      "design_identity": [
+        "romantic movement"
+      ],
+      "material_logic": [
+        "chiffon",
+        "georgette"
+      ],
+      "usage_scenario": [
+        "藝文活動",
+        "午茶聚會"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "pleated",
+        "set"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_satin_set_safe",
+      "display_name_zh": "緞面套裝（安全版）",
+      "display_name_en": "Satin Set (Safe)",
+      "category": "sets",
+      "description": "Satin Set (Safe) with satin top, satin skirt/pants; designed for 晚宴派對, 婚禮前派對. Safe, tasteful, versatile. ｜ 緞面套裝（安全版），特色：satin top、satin skirt/pants；適用於晚宴派對、婚禮前派對。風格安全、實穿多變。",
+      "structure_core": [
+        "satin top",
+        "satin skirt/pants"
+      ],
+      "design_identity": [
+        "evening minimal"
+      ],
+      "material_logic": [
+        "acetate satin",
+        "silk blend"
+      ],
+      "usage_scenario": [
+        "晚宴派對",
+        "婚禮前派對"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "satin",
+        "set"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_linen_set",
+      "display_name_zh": "亞麻套裝",
+      "display_name_en": "Linen Set",
+      "category": "sets",
+      "description": "Linen Set with linen top, linen bottom; designed for 海島度假, 夏日活動. Safe, tasteful, versatile. ｜ 亞麻套裝，特色：linen top、linen bottom；適用於海島度假、夏日活動。風格安全、實穿多變。",
+      "structure_core": [
+        "linen top",
+        "linen bottom"
+      ],
+      "design_identity": [
+        "resort minimal"
+      ],
+      "material_logic": [
+        "linen blend"
+      ],
+      "usage_scenario": [
+        "海島度假",
+        "夏日活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "linen",
+        "set"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_tweed_set",
+      "display_name_zh": "粗花呢套裝",
+      "display_name_en": "Tweed Set",
+      "category": "sets",
+      "description": "Tweed Set with tweed jacket, mini skirt; designed for 時尚活動, 城市約會. Safe, tasteful, versatile. ｜ 粗花呢套裝，特色：tweed jacket、mini skirt；適用於時尚活動、城市約會。風格安全、實穿多變。",
+      "structure_core": [
+        "tweed jacket",
+        "mini skirt"
+      ],
+      "design_identity": [
+        "parisian chic"
+      ],
+      "material_logic": [
+        "tweed",
+        "cotton blend"
+      ],
+      "usage_scenario": [
+        "時尚活動",
+        "城市約會"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "tweed",
+        "set"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_rib_knit_set",
+      "display_name_zh": "羅紋針織套裝",
+      "display_name_en": "Rib Knit Set",
+      "category": "sets",
+      "description": "Rib Knit Set with rib top, rib skirt; designed for 秋冬穿搭, 咖啡聚會. Safe, tasteful, versatile. ｜ 羅紋針織套裝，特色：rib top、rib skirt；適用於秋冬穿搭、咖啡聚會。風格安全、實穿多變。",
+      "structure_core": [
+        "rib top",
+        "rib skirt"
+      ],
+      "design_identity": [
+        "cozy minimal"
+      ],
+      "material_logic": [
+        "viscose rib knit"
+      ],
+      "usage_scenario": [
+        "秋冬穿搭",
+        "咖啡聚會"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "rib knit",
+        "set"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_cable_knit_set",
+      "display_name_zh": "麻花針織套裝",
+      "display_name_en": "Cable Knit Set",
+      "category": "sets",
+      "description": "Cable Knit Set with cable sweater, knit skirt; designed for 冬季造型, 渡假小屋. Safe, tasteful, versatile. ｜ 麻花針織套裝，特色：cable sweater、knit skirt；適用於冬季造型、渡假小屋。風格安全、實穿多變。",
+      "structure_core": [
+        "cable sweater",
+        "knit skirt"
+      ],
+      "design_identity": [
+        "cozy heritage"
+      ],
+      "material_logic": [
+        "wool",
+        "wool blend"
+      ],
+      "usage_scenario": [
+        "冬季造型",
+        "渡假小屋"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "cable knit",
+        "set"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_faux_leather_set",
+      "display_name_zh": "仿皮套裝",
+      "display_name_en": "Faux-Leather Set",
+      "category": "sets",
+      "description": "Faux-Leather Set with faux leather jacket, skirt/pants; designed for 夜晚出遊, 演出造型. Safe, tasteful, versatile. ｜ 仿皮套裝，特色：faux leather jacket、skirt/pants；適用於夜晚出遊、演出造型。風格安全、實穿多變。",
+      "structure_core": [
+        "faux leather jacket",
+        "skirt/pants"
+      ],
+      "design_identity": [
+        "fashion edge"
+      ],
+      "material_logic": [
+        "faux leather"
+      ],
+      "usage_scenario": [
+        "夜晚出遊",
+        "演出造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "faux leather",
+        "set"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_workwear_coord",
+      "display_name_zh": "工裝成套",
+      "display_name_en": "Utility Co-ord",
+      "category": "sets",
+      "description": "Utility Co-ord with utility shirt, cargo bottom; designed for 戶外活動, 街頭穿搭. Safe, tasteful, versatile. ｜ 工裝成套，特色：utility shirt、cargo bottom；適用於戶外活動、街頭穿搭。風格安全、實穿多變。",
+      "structure_core": [
+        "utility shirt",
+        "cargo bottom"
+      ],
+      "design_identity": [
+        "utility modern"
+      ],
+      "material_logic": [
+        "cotton twill",
+        "ripstop"
+      ],
+      "usage_scenario": [
+        "戶外活動",
+        "街頭穿搭"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "utility",
+        "co-ord"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_tailored_suit_set_v21",
+      "display_name_zh": "套裝西服（上衣+長褲）（v21）",
+      "display_name_en": "Tailored Suit Set (Blazer+Trousers) (v21)",
+      "category": "sets",
+      "description": "Tailored Suit Set (Blazer+Trousers) with blazer, tailored trousers; designed for 商務場合, 正裝通勤. Safe, tasteful, versatile. ｜ 套裝西服（上衣+長褲），特色：blazer、tailored trousers；適用於商務場合、正裝通勤。風格安全、實穿多變。",
+      "structure_core": [
+        "blazer",
+        "tailored trousers",
+        "variant-v21"
+      ],
+      "design_identity": [
+        "office chic",
+        "clean tailoring",
+        "variant-v21"
+      ],
+      "material_logic": [
+        "wool blend",
+        "poly-viscose"
+      ],
+      "usage_scenario": [
+        "商務場合",
+        "正裝通勤"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "suit set",
+        "blazer",
+        "trousers",
+        "v21"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_skirt_suit_set_v22",
+      "display_name_zh": "裙裝套裝（上衣+窄裙）（v22）",
+      "display_name_en": "Skirt Suit Set (Blazer+Pencil Skirt) (v22)",
+      "category": "sets",
+      "description": "Skirt Suit Set (Blazer+Pencil Skirt) with blazer, pencil skirt; designed for 商務簡報, 正式會議. Safe, tasteful, versatile. ｜ 裙裝套裝（上衣+窄裙），特色：blazer、pencil skirt；適用於商務簡報、正式會議。風格安全、實穿多變。",
+      "structure_core": [
+        "blazer",
+        "pencil skirt",
+        "variant-v22"
+      ],
+      "design_identity": [
+        "office classic",
+        "variant-v22"
+      ],
+      "material_logic": [
+        "wool blend"
+      ],
+      "usage_scenario": [
+        "商務簡報",
+        "正式會議"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "skirt suit",
+        "office",
+        "v22"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_knit_twinset_v23",
+      "display_name_zh": "針織Twinset（開襟+背心）（v23）",
+      "display_name_en": "Knit Twinset (Cardigan+Tank) (v23)",
+      "category": "sets",
+      "description": "Knit Twinset (Cardigan+Tank) with cardigan, knit tank; designed for 通勤層次, 冷氣房保暖. Safe, tasteful, versatile. ｜ 針織Twinset（開襟+背心），特色：cardigan、knit tank；適用於通勤層次、冷氣房保暖。風格安全、實穿多變。",
+      "structure_core": [
+        "cardigan",
+        "knit tank",
+        "variant-v23"
+      ],
+      "design_identity": [
+        "cozy classic",
+        "variant-v23"
+      ],
+      "material_logic": [
+        "viscose knit",
+        "cotton knit"
+      ],
+      "usage_scenario": [
+        "通勤層次",
+        "冷氣房保暖"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "twinset",
+        "knit",
+        "cardigan",
+        "v23"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_tracksuit_set_v24",
+      "display_name_zh": "運動套裝（外套+長褲）（v24）",
+      "display_name_en": "Tracksuit Set (Jacket+Pants) (v24)",
+      "category": "sets",
+      "description": "Tracksuit Set (Jacket+Pants) with zip jacket, track pants; designed for 運動通勤, 旅行搭配. Safe, tasteful, versatile. ｜ 運動套裝（外套+長褲），特色：zip jacket、track pants；適用於運動通勤、旅行搭配。風格安全、實穿多變。",
+      "structure_core": [
+        "zip jacket",
+        "track pants",
+        "variant-v24"
+      ],
+      "design_identity": [
+        "athleisure",
+        "variant-v24"
+      ],
+      "material_logic": [
+        "poly knit",
+        "cotton fleece"
+      ],
+      "usage_scenario": [
+        "運動通勤",
+        "旅行搭配"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "tracksuit",
+        "athleisure",
+        "v24"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_lounge_set_v25",
+      "display_name_zh": "家居套裝（上衣+長褲）（v25）",
+      "display_name_en": "Lounge Set (Top+Pants) (v25)",
+      "category": "sets",
+      "description": "Lounge Set (Top+Pants) with soft top, relaxed pants; designed for 居家休閒, 長途旅行. Safe, tasteful, versatile. ｜ 家居套裝（上衣+長褲），特色：soft top、relaxed pants；適用於居家休閒、長途旅行。風格安全、實穿多變。",
+      "structure_core": [
+        "soft top",
+        "relaxed pants",
+        "variant-v25"
+      ],
+      "design_identity": [
+        "comfort home",
+        "variant-v25"
+      ],
+      "material_logic": [
+        "cotton modal",
+        "french terry"
+      ],
+      "usage_scenario": [
+        "居家休閒",
+        "長途旅行"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "lounge",
+        "home",
+        "v25"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_pajama_set_v26",
+      "display_name_zh": "睡衣套裝（襯衫+長褲）（v26）",
+      "display_name_en": "Pajama Set (Shirt+Pants) (v26)",
+      "category": "sets",
+      "description": "Pajama Set (Shirt+Pants) with button shirt, relaxed pants; designed for 居家睡眠, 放鬆時光. Safe, tasteful, versatile. ｜ 睡衣套裝（襯衫+長褲），特色：button shirt、relaxed pants；適用於居家睡眠、放鬆時光。風格安全、實穿多變。",
+      "structure_core": [
+        "button shirt",
+        "relaxed pants",
+        "variant-v26"
+      ],
+      "design_identity": [
+        "sleepwear classic",
+        "variant-v26"
+      ],
+      "material_logic": [
+        "cotton sateen",
+        "rayon"
+      ],
+      "usage_scenario": [
+        "居家睡眠",
+        "放鬆時光"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "pajama",
+        "sleepwear",
+        "v26"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_gym_set_v27",
+      "display_name_zh": "健身套裝（上衣+緊身褲）（v27）",
+      "display_name_en": "Gym Set (Top+Leggings) (v27)",
+      "category": "sets",
+      "description": "Gym Set (Top+Leggings) with performance top, leggings; designed for 健身房, 訓練課程. Safe, tasteful, versatile. ｜ 健身套裝（上衣+緊身褲），特色：performance top、leggings；適用於健身房、訓練課程。風格安全、實穿多變。",
+      "structure_core": [
+        "performance top",
+        "leggings",
+        "variant-v27"
+      ],
+      "design_identity": [
+        "training essential",
+        "variant-v27"
+      ],
+      "material_logic": [
+        "nylon spandex"
+      ],
+      "usage_scenario": [
+        "健身房",
+        "訓練課程"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "gym set",
+        "training",
+        "v27"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_yoga_set_v28",
+      "display_name_zh": "瑜伽套裝（短上衣+高腰褲）（v28）",
+      "display_name_en": "Yoga Set (Crop+High-Waist) (v28)",
+      "category": "sets",
+      "description": "Yoga Set (Crop+High-Waist) with crop top, high-waist leggings; designed for 瑜伽教室, 普拉提. Safe, tasteful, versatile. ｜ 瑜伽套裝（短上衣+高腰褲），特色：crop top、high-waist leggings；適用於瑜伽教室、普拉提。風格安全、實穿多變。",
+      "structure_core": [
+        "crop top",
+        "high-waist leggings",
+        "variant-v28"
+      ],
+      "design_identity": [
+        "studio chic",
+        "variant-v28"
+      ],
+      "material_logic": [
+        "recycled polyamide",
+        "spandex"
+      ],
+      "usage_scenario": [
+        "瑜伽教室",
+        "普拉提"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "yoga set",
+        "studio",
+        "v28"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_resort_short_set_v29",
+      "display_name_zh": "度假短裝套組（v29）",
+      "display_name_en": "Resort Short Set (v29)",
+      "category": "sets",
+      "description": "Resort Short Set with camp shirt, tailored shorts; designed for 海邊旅遊, 夏日逛街. Safe, tasteful, versatile. ｜ 度假短裝套組，特色：camp shirt、tailored shorts；適用於海邊旅遊、夏日逛街。風格安全、實穿多變。",
+      "structure_core": [
+        "camp shirt",
+        "tailored shorts",
+        "variant-v29"
+      ],
+      "design_identity": [
+        "resort casual",
+        "variant-v29"
+      ],
+      "material_logic": [
+        "rayon",
+        "linen blend"
+      ],
+      "usage_scenario": [
+        "海邊旅遊",
+        "夏日逛街"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "resort",
+        "short set",
+        "v29"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "sets_denim_coord_v30",
+      "display_name_zh": "丹寧成套（外套+裙/褲）（v30）",
+      "display_name_en": "Denim Co-ord (Jacket+Skirt/Pants) (v30)",
+      "category": "sets",
+      "description": "Denim Co-ord (Jacket+Skirt/Pants) with denim jacket, bottom set; designed for 街拍造型, 城市休閒. Safe, tasteful, versatile. ｜ 丹寧成套（外套+裙/褲），特色：denim jacket、bottom set；適用於街拍造型、城市休閒。風格安全、實穿多變。",
+      "structure_core": [
+        "denim jacket",
+        "bottom set",
+        "variant-v30"
+      ],
+      "design_identity": [
+        "heritage casual",
+        "variant-v30"
+      ],
+      "material_logic": [
+        "denim"
+      ],
+      "usage_scenario": [
+        "街拍造型",
+        "城市休閒"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "denim",
+        "co-ord",
+        "v30"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    }
+  ]
+}

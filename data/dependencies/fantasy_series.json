@@ -1,0 +1,28 @@
+{
+  "moduleName": "Fantasy Morph Studio",
+  "entryComponent": "FantasySeries.tsx",
+  "description": "Transforms a model's portrait into a fantasy character by applying race and job presets while preserving facial identity.",
+  "dependencies": {
+    "dataSources": [
+      "constants.ts (FANTASY_RACES, FANTASY_JOBS, etc.)",
+      "ModelLounge (for selecting initial image)"
+    ],
+    "services": [
+      "geminiService.transformImage",
+      "storageService.savePortfolioItem"
+    ],
+    "sharedTypes": [
+      "types.ts#Model",
+      "constants.ts#FantasyPreset"
+    ]
+  },
+  "outputs": {
+    "description": "Outputs a single transformed image URL, which can be saved to the portfolio or used as a base for other editing modules.",
+    "schema": "string (Image URL)",
+    "consumers": [
+      "PortfolioGallery",
+      "SceneGeneration",
+      "CompositeCard"
+    ]
+  }
+}

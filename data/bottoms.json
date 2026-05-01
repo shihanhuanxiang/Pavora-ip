@@ -1,0 +1,294 @@
+{
+  "metadata": {
+    "module": "Pavora Product System",
+    "category_group": "Bottoms",
+    "version": "2.0",
+    "language": "zh-en",
+    "prompt_style": "hybrid_balance",
+    "autosafe": true,
+    "total_items": 4
+  },
+  "items": [
+    {
+      "id": "bottoms_pants_01",
+      "display_name_zh": "長褲",
+      "display_name_en": "Pants",
+      "category": "bottoms",
+      "group": "長褲",
+      "prompt_base": "pants, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "pants",
+        "bottoms",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "西裝褲",
+        "休閒褲",
+        "運動褲",
+        "工裝褲"
+      ],
+      "variants_en": [
+        "Tailored Trousers",
+        "Chinos",
+        "Joggers",
+        "Cargo Pants"
+      ],
+      "prompt_variant": [
+        "Tailored trousers with clean crease and sleek leg line.",
+        "Chinos, versatile cotton twill with smart casual tone.",
+        "Joggers with elastic comfort and modern taper.",
+        "Cargo pants with utility pockets and balanced volume."
+      ]
+    },
+    {
+      "id": "bottoms_shorts_01",
+      "display_name_zh": "短褲",
+      "display_name_en": "Shorts",
+      "category": "bottoms",
+      "group": "短褲",
+      "prompt_base": "shorts, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "shorts",
+        "bottoms",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "牛仔短褲",
+        "斜紋短褲",
+        "百慕達",
+        "運動短褲"
+      ],
+      "variants_en": [
+        "Denim Shorts",
+        "Chino Shorts",
+        "Bermuda Shorts",
+        "Sport Shorts"
+      ],
+      "prompt_variant": [
+        "Denim shorts with clean hem and classic 5-pocket.",
+        "Chino shorts, tidy waistband and crisp look.",
+        "Bermuda shorts with longer length and relaxed polish.",
+        "Sport shorts with breathable comfort and mobility."
+      ]
+    },
+    {
+      "id": "bottoms_skirt_01",
+      "display_name_zh": "裙子",
+      "display_name_en": "Skirt",
+      "category": "bottoms",
+      "group": "裙子",
+      "prompt_base": "skirt, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "skirt",
+        "bottoms",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "A字裙",
+        "百褶裙",
+        "鉛筆裙",
+        "包裹裙"
+      ],
+      "variants_en": [
+        "A-line Skirt",
+        "Pleated Skirt",
+        "Pencil Skirt",
+        "Wrap Skirt"
+      ],
+      "prompt_variant": [
+        "A-line skirt with gentle flare and clean waistband.",
+        "Pleated skirt with rhythmic folds and graceful motion.",
+        "Pencil skirt, sharp line and office-ready polish.",
+        "Wrap skirt with adjustable tie and effortless drape."
+      ]
+    },
+    {
+      "id": "bottoms_jeans_01",
+      "display_name_zh": "牛仔褲",
+      "display_name_en": "Jeans",
+      "category": "bottoms",
+      "group": "牛仔褲",
+      "prompt_base": "classic denim jeans, sturdy twill, clean wash, straight or slim leg, subtle whiskers, studio light",
+      "structure_core": [
+        "5-pocket",
+        "straight leg",
+        "mid-rise"
+      ],
+      "design_identity": [
+        "classic denim",
+        "everyday"
+      ],
+      "material_logic": [
+        "cotton denim"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "街頭穿搭"
+      ],
+      "search_tags": [
+        "jeans",
+        "denim",
+        "5-pocket",
+        "bottoms"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "直筒",
+        "修身",
+        "寬褲",
+        "高腰"
+      ],
+      "variants_en": [
+        "Straight",
+        "Slim",
+        "Wide-leg",
+        "High-waist"
+      ],
+      "prompt_variant": [
+        "Straight denim with balanced leg and timeless wash.",
+        "Slim denim with refined taper and modern cut.",
+        "Wide-leg denim, long line silhouette and ease.",
+        "High-waist denim for defined waist and vintage vibe."
+      ]
+    }
+  ]
+}

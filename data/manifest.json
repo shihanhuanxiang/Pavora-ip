@@ -1,0 +1,26 @@
+{
+  "name": "Pavora Data Manifest",
+  "version": "1.0",
+  "files": [
+    "accessories.json",
+    "bags.json",
+    "bottoms.json",
+    "cosplay.json",
+    "costumes.json",
+    "cultural_wear.json",
+    "dresses.json",
+    "footwear.json",
+    "functional_wear.json",
+    "headwear.json",
+    "intimates.json",
+    "jewelry.json",
+    "jumpsuits.json",
+    "outerwear.json",
+    "sets.json",
+    "special_costume.json",
+    "swimwear.json",
+    "tops.json",
+    "traditional.json",
+    "wedding.json"
+  ]
+}

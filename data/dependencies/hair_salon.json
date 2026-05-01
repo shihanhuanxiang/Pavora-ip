@@ -1,0 +1,28 @@
+{
+  "moduleName": "Hair & Makeup Studio",
+  "entryComponent": "HairSalon.tsx",
+  "description": "Applies detailed hair and makeup transformations to a model's portrait using presets and fine-tuned parameters, while locking facial identity.",
+  "dependencies": {
+    "dataSources": [
+      "constants.ts (HAIRSTYLE_PRESETS, MAKEUP_PRESETS, etc.)",
+      "ModelLounge (for selecting initial image)"
+    ],
+    "services": [
+      "geminiService.transformHairAndMakeup",
+      "storageService.savePortfolioItem"
+    ],
+    "sharedTypes": [
+      "types.ts#Model",
+      "constants.ts#HairstyleParams"
+    ]
+  },
+  "outputs": {
+    "description": "Outputs a transformed image URL, which can be saved to the portfolio or used as a new base for further edits.",
+    "schema": "string (Image URL)",
+    "consumers": [
+      "PortfolioGallery",
+      "VirtualFittingRoom",
+      "SceneGeneration"
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+// This module has been deprecated and replaced by Fashion Architect.

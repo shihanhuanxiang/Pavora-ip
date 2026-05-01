@@ -1,0 +1,28 @@
+{
+  "moduleName": "Director Mode",
+  "entryComponent": "DirectorMode.tsx",
+  "description": "Generates short video clips from a starting image using a combination of director-style presets and custom prompts. Supports scene extensions and multi-image references.",
+  "dependencies": {
+    "dataSources": [
+      "constants.ts (DIRECTOR_STYLES, LENS_LANGUAGES, etc.)",
+      "ModelLounge (for selecting initial image)"
+    ],
+    "services": [
+      "geminiService.generateVideo (Veo)",
+      "geminiService.extractVideoFrames"
+    ],
+    "sharedTypes": [
+      "types.ts#DirectorScene",
+      "types.ts#ExtractedFrame",
+      "types.ts#Model"
+    ]
+  },
+  "outputs": {
+    "description": "Outputs a video URL and extracted first/last frames. The frames can be used as starting points for subsequent scenes or saved.",
+    "schema": "{ videoUrl: string, firstFrame: string, lastFrame: string }",
+    "consumers": [
+      "PortfolioGallery",
+      "DirectorMode (for scene extensions)"
+    ]
+  }
+}

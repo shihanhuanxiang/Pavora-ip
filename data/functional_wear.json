@@ -1,0 +1,2002 @@
+{
+  "metadata": {
+    "module": "Pavora Product System",
+    "category_group": "Functional Wear",
+    "version": "1.0",
+    "language": "zh-en",
+    "prompt_style": "hybrid_balance",
+    "autosafe": true,
+    "total_items": 40,
+    "last_update": "2025-10-12"
+  },
+  "items": [
+    {
+      "id": "functional_wear_rain_jacket",
+      "display_name_zh": "防水雨衣外套",
+      "display_name_en": "Waterproof Rain Jacket",
+      "category": "functional_wear",
+      "description": "Waterproof Rain Jacket with taped seams, hood; designed for 通勤雨天, 戶外徒步. Safe, tasteful, versatile. ｜ 防水雨衣外套，特色：taped seams、hood；適用於通勤雨天、戶外徒步。風格安全、實穿多變。",
+      "structure_core": [
+        "taped seams",
+        "hood"
+      ],
+      "design_identity": [
+        "weatherproof"
+      ],
+      "material_logic": [
+        "3L shell",
+        "DWR"
+      ],
+      "usage_scenario": [
+        "通勤雨天",
+        "戶外徒步"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "rain jacket",
+        "waterproof"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_windbreaker",
+      "display_name_zh": "抗風外套",
+      "display_name_en": "Windbreaker",
+      "category": "functional_wear",
+      "description": "Windbreaker with light shell, elastic hem; designed for 騎行通勤, 晨跑. Safe, tasteful, versatile. ｜ 抗風外套，特色：light shell、elastic hem；適用於騎行通勤、晨跑。風格安全、實穿多變。",
+      "structure_core": [
+        "light shell",
+        "elastic hem"
+      ],
+      "design_identity": [
+        "wind resistant"
+      ],
+      "material_logic": [
+        "nylon ripstop"
+      ],
+      "usage_scenario": [
+        "騎行通勤",
+        "晨跑"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "windbreaker",
+        "light shell"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_down_jacket",
+      "display_name_zh": "羽絨外套",
+      "display_name_en": "Down Jacket",
+      "category": "functional_wear",
+      "description": "Down Jacket with baffled quilting, packable; designed for 冬季保暖, 旅行. Safe, tasteful, versatile. ｜ 羽絨外套，特色：baffled quilting、packable；適用於冬季保暖、旅行。風格安全、實穿多變。",
+      "structure_core": [
+        "baffled quilting",
+        "packable"
+      ],
+      "design_identity": [
+        "winter warmth"
+      ],
+      "material_logic": [
+        "700-fill down",
+        "recycled nylon"
+      ],
+      "usage_scenario": [
+        "冬季保暖",
+        "旅行"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "down jacket",
+        "warmth"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_insulated_vest",
+      "display_name_zh": "保暖背心",
+      "display_name_en": "Insulated Vest",
+      "category": "functional_wear",
+      "description": "Insulated Vest with synthetic fill, zip front; designed for 秋冬層次, 戶外活動. Safe, tasteful, versatile. ｜ 保暖背心，特色：synthetic fill、zip front；適用於秋冬層次、戶外活動。風格安全、實穿多變。",
+      "structure_core": [
+        "synthetic fill",
+        "zip front"
+      ],
+      "design_identity": [
+        "layering core"
+      ],
+      "material_logic": [
+        "synthetic insulation"
+      ],
+      "usage_scenario": [
+        "秋冬層次",
+        "戶外活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "insulated vest",
+        "layering"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_softshell",
+      "display_name_zh": "軟殼外套",
+      "display_name_en": "Softshell Jacket",
+      "category": "functional_wear",
+      "description": "Softshell Jacket with stretch shell, fleece back; designed for 登山健行, 城市通勤. Safe, tasteful, versatile. ｜ 軟殼外套，特色：stretch shell、fleece back；適用於登山健行、城市通勤。風格安全、實穿多變。",
+      "structure_core": [
+        "stretch shell",
+        "fleece back"
+      ],
+      "design_identity": [
+        "active outdoor"
+      ],
+      "material_logic": [
+        "softshell laminate"
+      ],
+      "usage_scenario": [
+        "登山健行",
+        "城市通勤"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "softshell",
+        "outdoor"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_hardshell",
+      "display_name_zh": "硬殼外套",
+      "display_name_en": "Hardshell Jacket",
+      "category": "functional_wear",
+      "description": "Hardshell Jacket with waterproof membrane, helmet hood; designed for 高山登山, 暴雨環境. Safe, tasteful, versatile. ｜ 硬殼外套，特色：waterproof membrane、helmet hood；適用於高山登山、暴雨環境。風格安全、實穿多變。",
+      "structure_core": [
+        "waterproof membrane",
+        "helmet hood"
+      ],
+      "design_identity": [
+        "alpine protection"
+      ],
+      "material_logic": [
+        "3L hardshell"
+      ],
+      "usage_scenario": [
+        "高山登山",
+        "暴雨環境"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "hardshell",
+        "alpine"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_fleece_jacket",
+      "display_name_zh": "刷毛外套",
+      "display_name_en": "Fleece Jacket",
+      "category": "functional_wear",
+      "description": "Fleece Jacket with microfleece, zip front; designed for 露營, 通勤保暖. Safe, tasteful, versatile. ｜ 刷毛外套，特色：microfleece、zip front；適用於露營、通勤保暖。風格安全、實穿多變。",
+      "structure_core": [
+        "microfleece",
+        "zip front"
+      ],
+      "design_identity": [
+        "cozy layer"
+      ],
+      "material_logic": [
+        "recycled fleece"
+      ],
+      "usage_scenario": [
+        "露營",
+        "通勤保暖"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "fleece",
+        "midlayer"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_thermal_base",
+      "display_name_zh": "保暖內層上衣",
+      "display_name_en": "Thermal Base Layer Top",
+      "category": "functional_wear",
+      "description": "Thermal Base Layer Top with thermal knit, crew neck; designed for 雪地旅行, 冬季健行. Safe, tasteful, versatile. ｜ 保暖內層上衣，特色：thermal knit、crew neck；適用於雪地旅行、冬季健行。風格安全、實穿多變。",
+      "structure_core": [
+        "thermal knit",
+        "crew neck"
+      ],
+      "design_identity": [
+        "base layer"
+      ],
+      "material_logic": [
+        "merino wool",
+        "poly blend"
+      ],
+      "usage_scenario": [
+        "雪地旅行",
+        "冬季健行"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "thermal",
+        "base layer"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_uv_tee",
+      "display_name_zh": "抗UV機能T恤",
+      "display_name_en": "UV Protection Tee",
+      "category": "functional_wear",
+      "description": "UV Protection Tee with UPF fabric, quick dry; designed for 海邊活動, 路跑. Safe, tasteful, versatile. ｜ 抗UV機能T恤，特色：UPF fabric、quick dry；適用於海邊活動、路跑。風格安全、實穿多變。",
+      "structure_core": [
+        "UPF fabric",
+        "quick dry"
+      ],
+      "design_identity": [
+        "summer active"
+      ],
+      "material_logic": [
+        "poly knit"
+      ],
+      "usage_scenario": [
+        "海邊活動",
+        "路跑"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "uv tee",
+        "quick dry"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_quickdry_shorts",
+      "display_name_zh": "快乾短褲",
+      "display_name_en": "Quick-Dry Shorts",
+      "category": "functional_wear",
+      "description": "Quick-Dry Shorts with mesh inseam, zip pocket; designed for 溯溪, 跑步. Safe, tasteful, versatile. ｜ 快乾短褲，特色：mesh inseam、zip pocket；適用於溯溪、跑步。風格安全、實穿多變。",
+      "structure_core": [
+        "mesh inseam",
+        "zip pocket"
+      ],
+      "design_identity": [
+        "active summer"
+      ],
+      "material_logic": [
+        "nylon ripstop"
+      ],
+      "usage_scenario": [
+        "溯溪",
+        "跑步"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "quick dry",
+        "shorts"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_trail_pants",
+      "display_name_zh": "越野長褲",
+      "display_name_en": "Trail Pants",
+      "category": "functional_wear",
+      "description": "Trail Pants with gusseted crotch, stretch; designed for 健行, 露營. Safe, tasteful, versatile. ｜ 越野長褲，特色：gusseted crotch、stretch；適用於健行、露營。風格安全、實穿多變。",
+      "structure_core": [
+        "gusseted crotch",
+        "stretch"
+      ],
+      "design_identity": [
+        "trail utility"
+      ],
+      "material_logic": [
+        "nylon-spandex"
+      ],
+      "usage_scenario": [
+        "健行",
+        "露營"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "trail pants",
+        "stretch"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_cycling_jersey",
+      "display_name_zh": "自行車車衣",
+      "display_name_en": "Cycling Jersey",
+      "category": "functional_wear",
+      "description": "Cycling Jersey with rear pockets, zip front; designed for 公路騎行, 訓練. Safe, tasteful, versatile. ｜ 自行車車衣，特色：rear pockets、zip front；適用於公路騎行、訓練。風格安全、實穿多變。",
+      "structure_core": [
+        "rear pockets",
+        "zip front"
+      ],
+      "design_identity": [
+        "cycling fit"
+      ],
+      "material_logic": [
+        "poly knit"
+      ],
+      "usage_scenario": [
+        "公路騎行",
+        "訓練"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "cycling jersey",
+        "bike"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_running_singlet_safe",
+      "display_name_zh": "跑步背心（安全）",
+      "display_name_en": "Running Singlet (Safe)",
+      "category": "functional_wear",
+      "description": "Running Singlet (Safe) with high coverage, mesh panels; designed for 路跑, 訓練. Safe, tasteful, versatile. ｜ 跑步背心（安全），特色：high coverage、mesh panels；適用於路跑、訓練。風格安全、實穿多變。",
+      "structure_core": [
+        "high coverage",
+        "mesh panels"
+      ],
+      "design_identity": [
+        "performance run"
+      ],
+      "material_logic": [
+        "poly knit"
+      ],
+      "usage_scenario": [
+        "路跑",
+        "訓練"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "running",
+        "singlet"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_compression_tights_safe",
+      "display_name_zh": "壓縮緊身褲（安全）",
+      "display_name_en": "Compression Tights (Safe)",
+      "category": "functional_wear",
+      "description": "Compression Tights (Safe) with opaque knit, support zones; designed for 訓練, 恢復. Safe, tasteful, versatile. ｜ 壓縮緊身褲（安全），特色：opaque knit、support zones；適用於訓練、恢復。風格安全、實穿多變。",
+      "structure_core": [
+        "opaque knit",
+        "support zones"
+      ],
+      "design_identity": [
+        "recovery performance"
+      ],
+      "material_logic": [
+        "nylon spandex"
+      ],
+      "usage_scenario": [
+        "訓練",
+        "恢復"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "compression",
+        "tights",
+        "safe"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_ski_pants",
+      "display_name_zh": "滑雪長褲",
+      "display_name_en": "Ski Pants",
+      "category": "functional_wear",
+      "description": "Ski Pants with waterproof, insulated; designed for 滑雪旅遊, 雪地運動. Safe, tasteful, versatile. ｜ 滑雪長褲，特色：waterproof、insulated；適用於滑雪旅遊、雪地運動。風格安全、實穿多變。",
+      "structure_core": [
+        "waterproof",
+        "insulated"
+      ],
+      "design_identity": [
+        "snow sport"
+      ],
+      "material_logic": [
+        "synthetic insulation"
+      ],
+      "usage_scenario": [
+        "滑雪旅遊",
+        "雪地運動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "ski pants",
+        "snow"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_snowboard_jacket",
+      "display_name_zh": "單板滑雪外套",
+      "display_name_en": "Snowboard Jacket",
+      "category": "functional_wear",
+      "description": "Snowboard Jacket with powder skirt, taped seams; designed for 滑雪旅遊, 雪地公園. Safe, tasteful, versatile. ｜ 單板滑雪外套，特色：powder skirt、taped seams；適用於滑雪旅遊、雪地公園。風格安全、實穿多變。",
+      "structure_core": [
+        "powder skirt",
+        "taped seams"
+      ],
+      "design_identity": [
+        "snow sport"
+      ],
+      "material_logic": [
+        "2L/3L shell"
+      ],
+      "usage_scenario": [
+        "滑雪旅遊",
+        "雪地公園"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "snowboard",
+        "jacket"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_wetsuit_safe",
+      "display_name_zh": "防寒潛水衣（安全）",
+      "display_name_en": "Wetsuit (Safe)",
+      "category": "functional_wear",
+      "description": "Wetsuit (Safe) with full suit, thermal neoprene; designed for 潛水訓練, 衝浪. Safe, tasteful, versatile. ｜ 防寒潛水衣（安全），特色：full suit、thermal neoprene；適用於潛水訓練、衝浪。風格安全、實穿多變。",
+      "structure_core": [
+        "full suit",
+        "thermal neoprene"
+      ],
+      "design_identity": [
+        "water sport"
+      ],
+      "material_logic": [
+        "neoprene"
+      ],
+      "usage_scenario": [
+        "潛水訓練",
+        "衝浪"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "wetsuit",
+        "thermal"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_rashguard_top",
+      "display_name_zh": "防磨衣上衣",
+      "display_name_en": "Rash Guard Top",
+      "category": "functional_wear",
+      "description": "Rash Guard Top with long sleeve, UPF; designed for 海邊活動, 泳訓. Safe, tasteful, versatile. ｜ 防磨衣上衣，特色：long sleeve、UPF；適用於海邊活動、泳訓。風格安全、實穿多變。",
+      "structure_core": [
+        "long sleeve",
+        "UPF"
+      ],
+      "design_identity": [
+        "surf/swim training"
+      ],
+      "material_logic": [
+        "nylon spandex"
+      ],
+      "usage_scenario": [
+        "海邊活動",
+        "泳訓"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "rash guard",
+        "upf"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_hiking_shirt",
+      "display_name_zh": "機能登山襯衫",
+      "display_name_en": "Hiking Tech Shirt",
+      "category": "functional_wear",
+      "description": "Hiking Tech Shirt with roll-up sleeve, vented back; designed for 健行, 旅行. Safe, tasteful, versatile. ｜ 機能登山襯衫，特色：roll-up sleeve、vented back；適用於健行、旅行。風格安全、實穿多變。",
+      "structure_core": [
+        "roll-up sleeve",
+        "vented back"
+      ],
+      "design_identity": [
+        "trail utility"
+      ],
+      "material_logic": [
+        "nylon blend"
+      ],
+      "usage_scenario": [
+        "健行",
+        "旅行"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "hiking shirt",
+        "trail"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_sun_hoodie",
+      "display_name_zh": "防曬連帽上衣",
+      "display_name_en": "Sun Hoodie",
+      "category": "functional_wear",
+      "description": "Sun Hoodie with UPF hood, quick dry; designed for 沙地旅遊, 長途徒步. Safe, tasteful, versatile. ｜ 防曬連帽上衣，特色：UPF hood、quick dry；適用於沙地旅遊、長途徒步。風格安全、實穿多變。",
+      "structure_core": [
+        "UPF hood",
+        "quick dry"
+      ],
+      "design_identity": [
+        "desert travel"
+      ],
+      "material_logic": [
+        "poly knit"
+      ],
+      "usage_scenario": [
+        "沙地旅遊",
+        "長途徒步"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "sun hoodie",
+        "upf"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_rain_jacket_v21",
+      "display_name_zh": "防水雨衣外套（v21）",
+      "display_name_en": "Waterproof Rain Jacket (v21)",
+      "category": "functional_wear",
+      "description": "Waterproof Rain Jacket with taped seams, hood; designed for 通勤雨天, 戶外徒步. Safe, tasteful, versatile. ｜ 防水雨衣外套，特色：taped seams、hood；適用於通勤雨天、戶外徒步。風格安全、實穿多變。",
+      "structure_core": [
+        "taped seams",
+        "hood",
+        "variant-v21"
+      ],
+      "design_identity": [
+        "weatherproof",
+        "variant-v21"
+      ],
+      "material_logic": [
+        "3L shell",
+        "DWR"
+      ],
+      "usage_scenario": [
+        "通勤雨天",
+        "戶外徒步"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "rain jacket",
+        "waterproof",
+        "v21"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_windbreaker_v22",
+      "display_name_zh": "抗風外套（v22）",
+      "display_name_en": "Windbreaker (v22)",
+      "category": "functional_wear",
+      "description": "Windbreaker with light shell, elastic hem; designed for 騎行通勤, 晨跑. Safe, tasteful, versatile. ｜ 抗風外套，特色：light shell、elastic hem；適用於騎行通勤、晨跑。風格安全、實穿多變。",
+      "structure_core": [
+        "light shell",
+        "elastic hem",
+        "variant-v22"
+      ],
+      "design_identity": [
+        "wind resistant",
+        "variant-v22"
+      ],
+      "material_logic": [
+        "nylon ripstop"
+      ],
+      "usage_scenario": [
+        "騎行通勤",
+        "晨跑"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "windbreaker",
+        "light shell",
+        "v22"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_down_jacket_v23",
+      "display_name_zh": "羽絨外套（v23）",
+      "display_name_en": "Down Jacket (v23)",
+      "category": "functional_wear",
+      "description": "Down Jacket with baffled quilting, packable; designed for 冬季保暖, 旅行. Safe, tasteful, versatile. ｜ 羽絨外套，特色：baffled quilting、packable；適用於冬季保暖、旅行。風格安全、實穿多變。",
+      "structure_core": [
+        "baffled quilting",
+        "packable",
+        "variant-v23"
+      ],
+      "design_identity": [
+        "winter warmth",
+        "variant-v23"
+      ],
+      "material_logic": [
+        "700-fill down",
+        "recycled nylon"
+      ],
+      "usage_scenario": [
+        "冬季保暖",
+        "旅行"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "down jacket",
+        "warmth",
+        "v23"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_insulated_vest_v24",
+      "display_name_zh": "保暖背心（v24）",
+      "display_name_en": "Insulated Vest (v24)",
+      "category": "functional_wear",
+      "description": "Insulated Vest with synthetic fill, zip front; designed for 秋冬層次, 戶外活動. Safe, tasteful, versatile. ｜ 保暖背心，特色：synthetic fill、zip front；適用於秋冬層次、戶外活動。風格安全、實穿多變。",
+      "structure_core": [
+        "synthetic fill",
+        "zip front",
+        "variant-v24"
+      ],
+      "design_identity": [
+        "layering core",
+        "variant-v24"
+      ],
+      "material_logic": [
+        "synthetic insulation"
+      ],
+      "usage_scenario": [
+        "秋冬層次",
+        "戶外活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "insulated vest",
+        "layering",
+        "v24"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_softshell_v25",
+      "display_name_zh": "軟殼外套（v25）",
+      "display_name_en": "Softshell Jacket (v25)",
+      "category": "functional_wear",
+      "description": "Softshell Jacket with stretch shell, fleece back; designed for 登山健行, 城市通勤. Safe, tasteful, versatile. ｜ 軟殼外套，特色：stretch shell、fleece back；適用於登山健行、城市通勤。風格安全、實穿多變。",
+      "structure_core": [
+        "stretch shell",
+        "fleece back",
+        "variant-v25"
+      ],
+      "design_identity": [
+        "active outdoor",
+        "variant-v25"
+      ],
+      "material_logic": [
+        "softshell laminate"
+      ],
+      "usage_scenario": [
+        "登山健行",
+        "城市通勤"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "softshell",
+        "outdoor",
+        "v25"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_hardshell_v26",
+      "display_name_zh": "硬殼外套（v26）",
+      "display_name_en": "Hardshell Jacket (v26)",
+      "category": "functional_wear",
+      "description": "Hardshell Jacket with waterproof membrane, helmet hood; designed for 高山登山, 暴雨環境. Safe, tasteful, versatile. ｜ 硬殼外套，特色：waterproof membrane、helmet hood；適用於高山登山、暴雨環境。風格安全、實穿多變。",
+      "structure_core": [
+        "waterproof membrane",
+        "helmet hood",
+        "variant-v26"
+      ],
+      "design_identity": [
+        "alpine protection",
+        "variant-v26"
+      ],
+      "material_logic": [
+        "3L hardshell"
+      ],
+      "usage_scenario": [
+        "高山登山",
+        "暴雨環境"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "hardshell",
+        "alpine",
+        "v26"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_fleece_jacket_v27",
+      "display_name_zh": "刷毛外套（v27）",
+      "display_name_en": "Fleece Jacket (v27)",
+      "category": "functional_wear",
+      "description": "Fleece Jacket with microfleece, zip front; designed for 露營, 通勤保暖. Safe, tasteful, versatile. ｜ 刷毛外套，特色：microfleece、zip front；適用於露營、通勤保暖。風格安全、實穿多變。",
+      "structure_core": [
+        "microfleece",
+        "zip front",
+        "variant-v27"
+      ],
+      "design_identity": [
+        "cozy layer",
+        "variant-v27"
+      ],
+      "material_logic": [
+        "recycled fleece"
+      ],
+      "usage_scenario": [
+        "露營",
+        "通勤保暖"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "fleece",
+        "midlayer",
+        "v27"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_thermal_base_v28",
+      "display_name_zh": "保暖內層上衣（v28）",
+      "display_name_en": "Thermal Base Layer Top (v28)",
+      "category": "functional_wear",
+      "description": "Thermal Base Layer Top with thermal knit, crew neck; designed for 雪地旅行, 冬季健行. Safe, tasteful, versatile. ｜ 保暖內層上衣，特色：thermal knit、crew neck；適用於雪地旅行、冬季健行。風格安全、實穿多變。",
+      "structure_core": [
+        "thermal knit",
+        "crew neck",
+        "variant-v28"
+      ],
+      "design_identity": [
+        "base layer",
+        "variant-v28"
+      ],
+      "material_logic": [
+        "merino wool",
+        "poly blend"
+      ],
+      "usage_scenario": [
+        "雪地旅行",
+        "冬季健行"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "thermal",
+        "base layer",
+        "v28"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_uv_tee_v29",
+      "display_name_zh": "抗UV機能T恤（v29）",
+      "display_name_en": "UV Protection Tee (v29)",
+      "category": "functional_wear",
+      "description": "UV Protection Tee with UPF fabric, quick dry; designed for 海邊活動, 路跑. Safe, tasteful, versatile. ｜ 抗UV機能T恤，特色：UPF fabric、quick dry；適用於海邊活動、路跑。風格安全、實穿多變。",
+      "structure_core": [
+        "UPF fabric",
+        "quick dry",
+        "variant-v29"
+      ],
+      "design_identity": [
+        "summer active",
+        "variant-v29"
+      ],
+      "material_logic": [
+        "poly knit"
+      ],
+      "usage_scenario": [
+        "海邊活動",
+        "路跑"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "uv tee",
+        "quick dry",
+        "v29"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_quickdry_shorts_v30",
+      "display_name_zh": "快乾短褲（v30）",
+      "display_name_en": "Quick-Dry Shorts (v30)",
+      "category": "functional_wear",
+      "description": "Quick-Dry Shorts with mesh inseam, zip pocket; designed for 溯溪, 跑步. Safe, tasteful, versatile. ｜ 快乾短褲，特色：mesh inseam、zip pocket；適用於溯溪、跑步。風格安全、實穿多變。",
+      "structure_core": [
+        "mesh inseam",
+        "zip pocket",
+        "variant-v30"
+      ],
+      "design_identity": [
+        "active summer",
+        "variant-v30"
+      ],
+      "material_logic": [
+        "nylon ripstop"
+      ],
+      "usage_scenario": [
+        "溯溪",
+        "跑步"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "quick dry",
+        "shorts",
+        "v30"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_trail_pants_v31",
+      "display_name_zh": "越野長褲（v31）",
+      "display_name_en": "Trail Pants (v31)",
+      "category": "functional_wear",
+      "description": "Trail Pants with gusseted crotch, stretch; designed for 健行, 露營. Safe, tasteful, versatile. ｜ 越野長褲，特色：gusseted crotch、stretch；適用於健行、露營。風格安全、實穿多變。",
+      "structure_core": [
+        "gusseted crotch",
+        "stretch",
+        "variant-v31"
+      ],
+      "design_identity": [
+        "trail utility",
+        "variant-v31"
+      ],
+      "material_logic": [
+        "nylon-spandex"
+      ],
+      "usage_scenario": [
+        "健行",
+        "露營"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "trail pants",
+        "stretch",
+        "v31"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_cycling_jersey_v32",
+      "display_name_zh": "自行車車衣（v32）",
+      "display_name_en": "Cycling Jersey (v32)",
+      "category": "functional_wear",
+      "description": "Cycling Jersey with rear pockets, zip front; designed for 公路騎行, 訓練. Safe, tasteful, versatile. ｜ 自行車車衣，特色：rear pockets、zip front；適用於公路騎行、訓練。風格安全、實穿多變。",
+      "structure_core": [
+        "rear pockets",
+        "zip front",
+        "variant-v32"
+      ],
+      "design_identity": [
+        "cycling fit",
+        "variant-v32"
+      ],
+      "material_logic": [
+        "poly knit"
+      ],
+      "usage_scenario": [
+        "公路騎行",
+        "訓練"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "cycling jersey",
+        "bike",
+        "v32"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_running_singlet_safe_v33",
+      "display_name_zh": "跑步背心（安全）（v33）",
+      "display_name_en": "Running Singlet (Safe) (v33)",
+      "category": "functional_wear",
+      "description": "Running Singlet (Safe) with high coverage, mesh panels; designed for 路跑, 訓練. Safe, tasteful, versatile. ｜ 跑步背心（安全），特色：high coverage、mesh panels；適用於路跑、訓練。風格安全、實穿多變。",
+      "structure_core": [
+        "high coverage",
+        "mesh panels",
+        "variant-v33"
+      ],
+      "design_identity": [
+        "performance run",
+        "variant-v33"
+      ],
+      "material_logic": [
+        "poly knit"
+      ],
+      "usage_scenario": [
+        "路跑",
+        "訓練"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "running",
+        "singlet",
+        "v33"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_compression_tights_safe_v34",
+      "display_name_zh": "壓縮緊身褲（安全）（v34）",
+      "display_name_en": "Compression Tights (Safe) (v34)",
+      "category": "functional_wear",
+      "description": "Compression Tights (Safe) with opaque knit, support zones; designed for 訓練, 恢復. Safe, tasteful, versatile. ｜ 壓縮緊身褲（安全），特色：opaque knit、support zones；適用於訓練、恢復。風格安全、實穿多變。",
+      "structure_core": [
+        "opaque knit",
+        "support zones",
+        "variant-v34"
+      ],
+      "design_identity": [
+        "recovery performance",
+        "variant-v34"
+      ],
+      "material_logic": [
+        "nylon spandex"
+      ],
+      "usage_scenario": [
+        "訓練",
+        "恢復"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "compression",
+        "tights",
+        "safe",
+        "v34"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_ski_pants_v35",
+      "display_name_zh": "滑雪長褲（v35）",
+      "display_name_en": "Ski Pants (v35)",
+      "category": "functional_wear",
+      "description": "Ski Pants with waterproof, insulated; designed for 滑雪旅遊, 雪地運動. Safe, tasteful, versatile. ｜ 滑雪長褲，特色：waterproof、insulated；適用於滑雪旅遊、雪地運動。風格安全、實穿多變。",
+      "structure_core": [
+        "waterproof",
+        "insulated",
+        "variant-v35"
+      ],
+      "design_identity": [
+        "snow sport",
+        "variant-v35"
+      ],
+      "material_logic": [
+        "synthetic insulation"
+      ],
+      "usage_scenario": [
+        "滑雪旅遊",
+        "雪地運動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "ski pants",
+        "snow",
+        "v35"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_snowboard_jacket_v36",
+      "display_name_zh": "單板滑雪外套（v36）",
+      "display_name_en": "Snowboard Jacket (v36)",
+      "category": "functional_wear",
+      "description": "Snowboard Jacket with powder skirt, taped seams; designed for 滑雪旅遊, 雪地公園. Safe, tasteful, versatile. ｜ 單板滑雪外套，特色：powder skirt、taped seams；適用於滑雪旅遊、雪地公園。風格安全、實穿多變。",
+      "structure_core": [
+        "powder skirt",
+        "taped seams",
+        "variant-v36"
+      ],
+      "design_identity": [
+        "snow sport",
+        "variant-v36"
+      ],
+      "material_logic": [
+        "2L/3L shell"
+      ],
+      "usage_scenario": [
+        "滑雪旅遊",
+        "雪地公園"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "snowboard",
+        "jacket",
+        "v36"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_wetsuit_safe_v37",
+      "display_name_zh": "防寒潛水衣（安全）（v37）",
+      "display_name_en": "Wetsuit (Safe) (v37)",
+      "category": "functional_wear",
+      "description": "Wetsuit (Safe) with full suit, thermal neoprene; designed for 潛水訓練, 衝浪. Safe, tasteful, versatile. ｜ 防寒潛水衣（安全），特色：full suit、thermal neoprene；適用於潛水訓練、衝浪。風格安全、實穿多變。",
+      "structure_core": [
+        "full suit",
+        "thermal neoprene",
+        "variant-v37"
+      ],
+      "design_identity": [
+        "water sport",
+        "variant-v37"
+      ],
+      "material_logic": [
+        "neoprene"
+      ],
+      "usage_scenario": [
+        "潛水訓練",
+        "衝浪"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "wetsuit",
+        "thermal",
+        "v37"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_rashguard_top_v38",
+      "display_name_zh": "防磨衣上衣（v38）",
+      "display_name_en": "Rash Guard Top (v38)",
+      "category": "functional_wear",
+      "description": "Rash Guard Top with long sleeve, UPF; designed for 海邊活動, 泳訓. Safe, tasteful, versatile. ｜ 防磨衣上衣，特色：long sleeve、UPF；適用於海邊活動、泳訓。風格安全、實穿多變。",
+      "structure_core": [
+        "long sleeve",
+        "UPF",
+        "variant-v38"
+      ],
+      "design_identity": [
+        "surf/swim training",
+        "variant-v38"
+      ],
+      "material_logic": [
+        "nylon spandex"
+      ],
+      "usage_scenario": [
+        "海邊活動",
+        "泳訓"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "rash guard",
+        "upf",
+        "v38"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_hiking_shirt_v39",
+      "display_name_zh": "機能登山襯衫（v39）",
+      "display_name_en": "Hiking Tech Shirt (v39)",
+      "category": "functional_wear",
+      "description": "Hiking Tech Shirt with roll-up sleeve, vented back; designed for 健行, 旅行. Safe, tasteful, versatile. ｜ 機能登山襯衫，特色：roll-up sleeve、vented back；適用於健行、旅行。風格安全、實穿多變。",
+      "structure_core": [
+        "roll-up sleeve",
+        "vented back",
+        "variant-v39"
+      ],
+      "design_identity": [
+        "trail utility",
+        "variant-v39"
+      ],
+      "material_logic": [
+        "nylon blend"
+      ],
+      "usage_scenario": [
+        "健行",
+        "旅行"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "hiking shirt",
+        "trail",
+        "v39"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "functional_wear_sun_hoodie_v40",
+      "display_name_zh": "防曬連帽上衣（v40）",
+      "display_name_en": "Sun Hoodie (v40)",
+      "category": "functional_wear",
+      "description": "Sun Hoodie with UPF hood, quick dry; designed for 沙地旅遊, 長途徒步. Safe, tasteful, versatile. ｜ 防曬連帽上衣，特色：UPF hood、quick dry；適用於沙地旅遊、長途徒步。風格安全、實穿多變。",
+      "structure_core": [
+        "UPF hood",
+        "quick dry",
+        "variant-v40"
+      ],
+      "design_identity": [
+        "desert travel",
+        "variant-v40"
+      ],
+      "material_logic": [
+        "poly knit"
+      ],
+      "usage_scenario": [
+        "沙地旅遊",
+        "長途徒步"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "sun hoodie",
+        "upf",
+        "v40"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    }
+  ]
+}

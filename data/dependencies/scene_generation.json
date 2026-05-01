@@ -1,0 +1,30 @@
+{
+  "moduleName": "Scene Generation",
+  "entryComponent": "SceneGeneration.tsx",
+  "description": "Recomposes a model's photo by changing the background, pose, and expression based on presets, custom prompts, and reference images, while maintaining the model's identity.",
+  "dependencies": {
+    "dataSources": [
+      "constants.ts (BACKGROUND_PRESETS, POSE_PRESETS, etc.)",
+      "ModelLounge (for selecting initial or reference images)",
+      "PortfolioGallery (for selecting reference images)"
+    ],
+    "services": [
+      "geminiService.transformImage",
+      "geminiService.processTasksInParallel",
+      "storageService.savePortfolioItem"
+    ],
+    "sharedTypes": [
+      "types.ts#Model",
+      "types.ts#PortfolioItem",
+      "constants.ts#ScenePreset"
+    ]
+  },
+  "outputs": {
+    "description": "Outputs one or more recomposed image URLs. These can be saved to the portfolio or used as a new base image.",
+    "schema": "string[] (Image URLs)",
+    "consumers": [
+      "PortfolioGallery",
+      "SceneGeneration (as a new base image)"
+    ]
+  }
+}

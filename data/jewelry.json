@@ -1,0 +1,2039 @@
+{
+  "metadata": {
+    "module": "Pavora Product System",
+    "category_group": "Jewelry",
+    "version": "1.0",
+    "language": "zh-en",
+    "prompt_style": "hybrid_balance",
+    "autosafe": true,
+    "total_items": 40,
+    "last_update": "2025-10-12"
+  },
+  "items": [
+    {
+      "id": "jewelry_necklace_pendant",
+      "display_name_zh": "吊墜項鍊",
+      "display_name_en": "Pendant Necklace",
+      "category": "jewelry",
+      "description": "Pendant Necklace with adjustable chain, pendant; designed for 日常佩戴, 禮物送禮. Safe, tasteful, versatile. ｜ 吊墜項鍊，特色：adjustable chain、pendant；適用於日常佩戴、禮物送禮。風格安全、實穿多變。",
+      "structure_core": [
+        "adjustable chain",
+        "pendant"
+      ],
+      "design_identity": [
+        "minimal elegant"
+      ],
+      "material_logic": [
+        "925 silver",
+        "14k gp"
+      ],
+      "usage_scenario": [
+        "日常佩戴",
+        "禮物送禮"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "necklace",
+        "pendant"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_necklace_pearl",
+      "display_name_zh": "珍珠項鍊",
+      "display_name_en": "Pearl Necklace",
+      "category": "jewelry",
+      "description": "Pearl Necklace with stringed pearls, clasp; designed for 正式場合, 婚禮賓客. Safe, tasteful, versatile. ｜ 珍珠項鍊，特色：stringed pearls、clasp；適用於正式場合、婚禮賓客。風格安全、實穿多變。",
+      "structure_core": [
+        "stringed pearls",
+        "clasp"
+      ],
+      "design_identity": [
+        "classic elegant"
+      ],
+      "material_logic": [
+        "freshwater pearl",
+        "925 silver"
+      ],
+      "usage_scenario": [
+        "正式場合",
+        "婚禮賓客"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "pearl",
+        "necklace"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_necklace_chain",
+      "display_name_zh": "鏈條項鍊",
+      "display_name_en": "Chain Necklace",
+      "category": "jewelry",
+      "description": "Chain Necklace with curb/rope chain, lobster clasp; designed for 城市穿搭, 日常佩戴. Safe, tasteful, versatile. ｜ 鏈條項鍊，特色：curb/rope chain、lobster clasp；適用於城市穿搭、日常佩戴。風格安全、實穿多變。",
+      "structure_core": [
+        "curb/rope chain",
+        "lobster clasp"
+      ],
+      "design_identity": [
+        "modern minimal"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "925 silver"
+      ],
+      "usage_scenario": [
+        "城市穿搭",
+        "日常佩戴"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "chain",
+        "necklace"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_choker_safe",
+      "display_name_zh": "頸鍊（安全）",
+      "display_name_en": "Choker (Safe)",
+      "category": "jewelry",
+      "description": "Choker (Safe) with short length, soft band; designed for 晚宴派對, 時尚活動. Safe, tasteful, versatile. ｜ 頸鍊（安全），特色：short length、soft band；適用於晚宴派對、時尚活動。風格安全、實穿多變。",
+      "structure_core": [
+        "short length",
+        "soft band"
+      ],
+      "design_identity": [
+        "fashion chic"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "velvet band"
+      ],
+      "usage_scenario": [
+        "晚宴派對",
+        "時尚活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "choker",
+        "safe"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_earring_stud",
+      "display_name_zh": "耳釘",
+      "display_name_en": "Stud Earrings",
+      "category": "jewelry",
+      "description": "Stud Earrings with post back, small setting; designed for 日常佩戴, 商務通勤. Safe, tasteful, versatile. ｜ 耳釘，特色：post back、small setting；適用於日常佩戴、商務通勤。風格安全、實穿多變。",
+      "structure_core": [
+        "post back",
+        "small setting"
+      ],
+      "design_identity": [
+        "minimal classic"
+      ],
+      "material_logic": [
+        "925 silver",
+        "stainless steel"
+      ],
+      "usage_scenario": [
+        "日常佩戴",
+        "商務通勤"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "stud",
+        "earring"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_earring_hoop",
+      "display_name_zh": "圈式耳環",
+      "display_name_en": "Hoop Earrings",
+      "category": "jewelry",
+      "description": "Hoop Earrings with hoop ring, latch back; designed for 城市穿搭, 晚宴. Safe, tasteful, versatile. ｜ 圈式耳環，特色：hoop ring、latch back；適用於城市穿搭、晚宴。風格安全、實穿多變。",
+      "structure_core": [
+        "hoop ring",
+        "latch back"
+      ],
+      "design_identity": [
+        "modern classic"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "gold-plated"
+      ],
+      "usage_scenario": [
+        "城市穿搭",
+        "晚宴"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "hoop",
+        "earring"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_earring_drop",
+      "display_name_zh": "垂墜耳環",
+      "display_name_en": "Drop Earrings",
+      "category": "jewelry",
+      "description": "Drop Earrings with drop chain, hook; designed for 宴會, 約會. Safe, tasteful, versatile. ｜ 垂墜耳環，特色：drop chain、hook；適用於宴會、約會。風格安全、實穿多變。",
+      "structure_core": [
+        "drop chain",
+        "hook"
+      ],
+      "design_identity": [
+        "elegant"
+      ],
+      "material_logic": [
+        "14k gp",
+        "925 silver"
+      ],
+      "usage_scenario": [
+        "宴會",
+        "約會"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "drop",
+        "earring"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_earring_huggie",
+      "display_name_zh": "貼耳圈耳環",
+      "display_name_en": "Huggie Earrings",
+      "category": "jewelry",
+      "description": "Huggie Earrings with hinged hoop, small diameter; designed for 日常佩戴, 商務. Safe, tasteful, versatile. ｜ 貼耳圈耳環，特色：hinged hoop、small diameter；適用於日常佩戴、商務。風格安全、實穿多變。",
+      "structure_core": [
+        "hinged hoop",
+        "small diameter"
+      ],
+      "design_identity": [
+        "subtle modern"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "gold-plated"
+      ],
+      "usage_scenario": [
+        "日常佩戴",
+        "商務"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "huggie",
+        "earring"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_bracelet_chain",
+      "display_name_zh": "鏈條手鍊",
+      "display_name_en": "Chain Bracelet",
+      "category": "jewelry",
+      "description": "Chain Bracelet with lobster clasp, adjustable; designed for 日常佩戴, 疊戴造型. Safe, tasteful, versatile. ｜ 鏈條手鍊，特色：lobster clasp、adjustable；適用於日常佩戴、疊戴造型。風格安全、實穿多變。",
+      "structure_core": [
+        "lobster clasp",
+        "adjustable"
+      ],
+      "design_identity": [
+        "minimal"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "925 silver"
+      ],
+      "usage_scenario": [
+        "日常佩戴",
+        "疊戴造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "bracelet",
+        "chain"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_bracelet_bangle",
+      "display_name_zh": "開口手鐲",
+      "display_name_en": "Open Bangle",
+      "category": "jewelry",
+      "description": "Open Bangle with open cuff, smooth finish; designed for 城市穿搭, 禮物. Safe, tasteful, versatile. ｜ 開口手鐲，特色：open cuff、smooth finish；適用於城市穿搭、禮物。風格安全、實穿多變。",
+      "structure_core": [
+        "open cuff",
+        "smooth finish"
+      ],
+      "design_identity": [
+        "modern minimal"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "brass"
+      ],
+      "usage_scenario": [
+        "城市穿搭",
+        "禮物"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "bangle",
+        "bracelet"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_bracelet_cuff",
+      "display_name_zh": "寬版手環",
+      "display_name_en": "Cuff Bracelet",
+      "category": "jewelry",
+      "description": "Cuff Bracelet with wide band, open design; designed for 派對, 時尚活動. Safe, tasteful, versatile. ｜ 寬版手環，特色：wide band、open design；適用於派對、時尚活動。風格安全、實穿多變。",
+      "structure_core": [
+        "wide band",
+        "open design"
+      ],
+      "design_identity": [
+        "statement"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "brass"
+      ],
+      "usage_scenario": [
+        "派對",
+        "時尚活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "cuff",
+        "bracelet"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_ring_band",
+      "display_name_zh": "素圈戒指",
+      "display_name_en": "Band Ring",
+      "category": "jewelry",
+      "description": "Band Ring with smooth band; designed for 日常佩戴, 對戒. Safe, tasteful, versatile. ｜ 素圈戒指，特色：smooth band；適用於日常佩戴、對戒。風格安全、實穿多變。",
+      "structure_core": [
+        "smooth band"
+      ],
+      "design_identity": [
+        "minimal classic"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "925 silver"
+      ],
+      "usage_scenario": [
+        "日常佩戴",
+        "對戒"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "band",
+        "ring"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_ring_stacking",
+      "display_name_zh": "疊戴戒指",
+      "display_name_en": "Stacking Rings",
+      "category": "jewelry",
+      "description": "Stacking Rings with thin bands, multi-pack; designed for 疊戴風格, 日常佩戴. Safe, tasteful, versatile. ｜ 疊戴戒指，特色：thin bands、multi-pack；適用於疊戴風格、日常佩戴。風格安全、實穿多變。",
+      "structure_core": [
+        "thin bands",
+        "multi-pack"
+      ],
+      "design_identity": [
+        "layering minimal"
+      ],
+      "material_logic": [
+        "925 silver",
+        "stainless steel"
+      ],
+      "usage_scenario": [
+        "疊戴風格",
+        "日常佩戴"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "stacking",
+        "ring"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_ring_signet",
+      "display_name_zh": "圖章戒",
+      "display_name_en": "Signet Ring",
+      "category": "jewelry",
+      "description": "Signet Ring with flat top, engrave-ready; designed for 城市穿搭, 個性造型. Safe, tasteful, versatile. ｜ 圖章戒，特色：flat top、engrave-ready；適用於城市穿搭、個性造型。風格安全、實穿多變。",
+      "structure_core": [
+        "flat top",
+        "engrave-ready"
+      ],
+      "design_identity": [
+        "retro modern"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "brass"
+      ],
+      "usage_scenario": [
+        "城市穿搭",
+        "個性造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "signet",
+        "ring"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_ring_cocktail",
+      "display_name_zh": "造型戒指",
+      "display_name_en": "Cocktail Ring",
+      "category": "jewelry",
+      "description": "Cocktail Ring with large head, statement; designed for 晚宴派對, 舞台造型. Safe, tasteful, versatile. ｜ 造型戒指，特色：large head、statement；適用於晚宴派對、舞台造型。風格安全、實穿多變。",
+      "structure_core": [
+        "large head",
+        "statement"
+      ],
+      "design_identity": [
+        "evening statement"
+      ],
+      "material_logic": [
+        "brass",
+        "resin"
+      ],
+      "usage_scenario": [
+        "晚宴派對",
+        "舞台造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "cocktail",
+        "ring"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_brooch_classic",
+      "display_name_zh": "胸針",
+      "display_name_en": "Classic Brooch",
+      "category": "jewelry",
+      "description": "Classic Brooch with pin back, decor face; designed for 禮服配飾, 典禮. Safe, tasteful, versatile. ｜ 胸針，特色：pin back、decor face；適用於禮服配飾、典禮。風格安全、實穿多變。",
+      "structure_core": [
+        "pin back",
+        "decor face"
+      ],
+      "design_identity": [
+        "vintage elegant"
+      ],
+      "material_logic": [
+        "brass",
+        "rhinestone"
+      ],
+      "usage_scenario": [
+        "禮服配飾",
+        "典禮"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "brooch",
+        "classic"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_anklet_safe",
+      "display_name_zh": "腳鍊（安全）",
+      "display_name_en": "Anklet (Safe)",
+      "category": "jewelry",
+      "description": "Anklet (Safe) with adjustable chain, delicate; designed for 海邊度假, 夏季穿搭. Safe, tasteful, versatile. ｜ 腳鍊（安全），特色：adjustable chain、delicate；適用於海邊度假、夏季穿搭。風格安全、實穿多變。",
+      "structure_core": [
+        "adjustable chain",
+        "delicate"
+      ],
+      "design_identity": [
+        "summer chic"
+      ],
+      "material_logic": [
+        "stainless steel"
+      ],
+      "usage_scenario": [
+        "海邊度假",
+        "夏季穿搭"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "anklet",
+        "safe"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_necklace_pendant_v18",
+      "display_name_zh": "吊墜項鍊（v18）",
+      "display_name_en": "Pendant Necklace (v18)",
+      "category": "jewelry",
+      "description": "Pendant Necklace with adjustable chain, pendant; designed for 日常佩戴, 禮物送禮. Safe, tasteful, versatile. ｜ 吊墜項鍊，特色：adjustable chain、pendant；適用於日常佩戴、禮物送禮。風格安全、實穿多變。",
+      "structure_core": [
+        "adjustable chain",
+        "pendant",
+        "variant-v18"
+      ],
+      "design_identity": [
+        "minimal elegant",
+        "variant-v18"
+      ],
+      "material_logic": [
+        "925 silver",
+        "14k gp"
+      ],
+      "usage_scenario": [
+        "日常佩戴",
+        "禮物送禮"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "necklace",
+        "pendant",
+        "v18"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_necklace_pearl_v19",
+      "display_name_zh": "珍珠項鍊（v19）",
+      "display_name_en": "Pearl Necklace (v19)",
+      "category": "jewelry",
+      "description": "Pearl Necklace with stringed pearls, clasp; designed for 正式場合, 婚禮賓客. Safe, tasteful, versatile. ｜ 珍珠項鍊，特色：stringed pearls、clasp；適用於正式場合、婚禮賓客。風格安全、實穿多變。",
+      "structure_core": [
+        "stringed pearls",
+        "clasp",
+        "variant-v19"
+      ],
+      "design_identity": [
+        "classic elegant",
+        "variant-v19"
+      ],
+      "material_logic": [
+        "freshwater pearl",
+        "925 silver"
+      ],
+      "usage_scenario": [
+        "正式場合",
+        "婚禮賓客"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "pearl",
+        "necklace",
+        "v19"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_necklace_chain_v20",
+      "display_name_zh": "鏈條項鍊（v20）",
+      "display_name_en": "Chain Necklace (v20)",
+      "category": "jewelry",
+      "description": "Chain Necklace with curb/rope chain, lobster clasp; designed for 城市穿搭, 日常佩戴. Safe, tasteful, versatile. ｜ 鏈條項鍊，特色：curb/rope chain、lobster clasp；適用於城市穿搭、日常佩戴。風格安全、實穿多變。",
+      "structure_core": [
+        "curb/rope chain",
+        "lobster clasp",
+        "variant-v20"
+      ],
+      "design_identity": [
+        "modern minimal",
+        "variant-v20"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "925 silver"
+      ],
+      "usage_scenario": [
+        "城市穿搭",
+        "日常佩戴"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "chain",
+        "necklace",
+        "v20"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_choker_safe_v21",
+      "display_name_zh": "頸鍊（安全）（v21）",
+      "display_name_en": "Choker (Safe) (v21)",
+      "category": "jewelry",
+      "description": "Choker (Safe) with short length, soft band; designed for 晚宴派對, 時尚活動. Safe, tasteful, versatile. ｜ 頸鍊（安全），特色：short length、soft band；適用於晚宴派對、時尚活動。風格安全、實穿多變。",
+      "structure_core": [
+        "short length",
+        "soft band",
+        "variant-v21"
+      ],
+      "design_identity": [
+        "fashion chic",
+        "variant-v21"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "velvet band"
+      ],
+      "usage_scenario": [
+        "晚宴派對",
+        "時尚活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "choker",
+        "safe",
+        "v21"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_earring_stud_v22",
+      "display_name_zh": "耳釘（v22）",
+      "display_name_en": "Stud Earrings (v22)",
+      "category": "jewelry",
+      "description": "Stud Earrings with post back, small setting; designed for 日常佩戴, 商務通勤. Safe, tasteful, versatile. ｜ 耳釘，特色：post back、small setting；適用於日常佩戴、商務通勤。風格安全、實穿多變。",
+      "structure_core": [
+        "post back",
+        "small setting",
+        "variant-v22"
+      ],
+      "design_identity": [
+        "minimal classic",
+        "variant-v22"
+      ],
+      "material_logic": [
+        "925 silver",
+        "stainless steel"
+      ],
+      "usage_scenario": [
+        "日常佩戴",
+        "商務通勤"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "stud",
+        "earring",
+        "v22"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_earring_hoop_v23",
+      "display_name_zh": "圈式耳環（v23）",
+      "display_name_en": "Hoop Earrings (v23)",
+      "category": "jewelry",
+      "description": "Hoop Earrings with hoop ring, latch back; designed for 城市穿搭, 晚宴. Safe, tasteful, versatile. ｜ 圈式耳環，特色：hoop ring、latch back；適用於城市穿搭、晚宴。風格安全、實穿多變。",
+      "structure_core": [
+        "hoop ring",
+        "latch back",
+        "variant-v23"
+      ],
+      "design_identity": [
+        "modern classic",
+        "variant-v23"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "gold-plated"
+      ],
+      "usage_scenario": [
+        "城市穿搭",
+        "晚宴"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "hoop",
+        "earring",
+        "v23"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_earring_drop_v24",
+      "display_name_zh": "垂墜耳環（v24）",
+      "display_name_en": "Drop Earrings (v24)",
+      "category": "jewelry",
+      "description": "Drop Earrings with drop chain, hook; designed for 宴會, 約會. Safe, tasteful, versatile. ｜ 垂墜耳環，特色：drop chain、hook；適用於宴會、約會。風格安全、實穿多變。",
+      "structure_core": [
+        "drop chain",
+        "hook",
+        "variant-v24"
+      ],
+      "design_identity": [
+        "elegant",
+        "variant-v24"
+      ],
+      "material_logic": [
+        "14k gp",
+        "925 silver"
+      ],
+      "usage_scenario": [
+        "宴會",
+        "約會"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "drop",
+        "earring",
+        "v24"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_earring_huggie_v25",
+      "display_name_zh": "貼耳圈耳環（v25）",
+      "display_name_en": "Huggie Earrings (v25)",
+      "category": "jewelry",
+      "description": "Huggie Earrings with hinged hoop, small diameter; designed for 日常佩戴, 商務. Safe, tasteful, versatile. ｜ 貼耳圈耳環，特色：hinged hoop、small diameter；適用於日常佩戴、商務。風格安全、實穿多變。",
+      "structure_core": [
+        "hinged hoop",
+        "small diameter",
+        "variant-v25"
+      ],
+      "design_identity": [
+        "subtle modern",
+        "variant-v25"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "gold-plated"
+      ],
+      "usage_scenario": [
+        "日常佩戴",
+        "商務"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "huggie",
+        "earring",
+        "v25"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_bracelet_chain_v26",
+      "display_name_zh": "鏈條手鍊（v26）",
+      "display_name_en": "Chain Bracelet (v26)",
+      "category": "jewelry",
+      "description": "Chain Bracelet with lobster clasp, adjustable; designed for 日常佩戴, 疊戴造型. Safe, tasteful, versatile. ｜ 鏈條手鍊，特色：lobster clasp、adjustable；適用於日常佩戴、疊戴造型。風格安全、實穿多變。",
+      "structure_core": [
+        "lobster clasp",
+        "adjustable",
+        "variant-v26"
+      ],
+      "design_identity": [
+        "minimal",
+        "variant-v26"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "925 silver"
+      ],
+      "usage_scenario": [
+        "日常佩戴",
+        "疊戴造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "bracelet",
+        "chain",
+        "v26"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_bracelet_bangle_v27",
+      "display_name_zh": "開口手鐲（v27）",
+      "display_name_en": "Open Bangle (v27)",
+      "category": "jewelry",
+      "description": "Open Bangle with open cuff, smooth finish; designed for 城市穿搭, 禮物. Safe, tasteful, versatile. ｜ 開口手鐲，特色：open cuff、smooth finish；適用於城市穿搭、禮物。風格安全、實穿多變。",
+      "structure_core": [
+        "open cuff",
+        "smooth finish",
+        "variant-v27"
+      ],
+      "design_identity": [
+        "modern minimal",
+        "variant-v27"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "brass"
+      ],
+      "usage_scenario": [
+        "城市穿搭",
+        "禮物"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "bangle",
+        "bracelet",
+        "v27"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_bracelet_cuff_v28",
+      "display_name_zh": "寬版手環（v28）",
+      "display_name_en": "Cuff Bracelet (v28)",
+      "category": "jewelry",
+      "description": "Cuff Bracelet with wide band, open design; designed for 派對, 時尚活動. Safe, tasteful, versatile. ｜ 寬版手環，特色：wide band、open design；適用於派對、時尚活動。風格安全、實穿多變。",
+      "structure_core": [
+        "wide band",
+        "open design",
+        "variant-v28"
+      ],
+      "design_identity": [
+        "statement",
+        "variant-v28"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "brass"
+      ],
+      "usage_scenario": [
+        "派對",
+        "時尚活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "cuff",
+        "bracelet",
+        "v28"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_ring_band_v29",
+      "display_name_zh": "素圈戒指（v29）",
+      "display_name_en": "Band Ring (v29)",
+      "category": "jewelry",
+      "description": "Band Ring with smooth band; designed for 日常佩戴, 對戒. Safe, tasteful, versatile. ｜ 素圈戒指，特色：smooth band；適用於日常佩戴、對戒。風格安全、實穿多變。",
+      "structure_core": [
+        "smooth band",
+        "variant-v29"
+      ],
+      "design_identity": [
+        "minimal classic",
+        "variant-v29"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "925 silver"
+      ],
+      "usage_scenario": [
+        "日常佩戴",
+        "對戒"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "band",
+        "ring",
+        "v29"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_ring_stacking_v30",
+      "display_name_zh": "疊戴戒指（v30）",
+      "display_name_en": "Stacking Rings (v30)",
+      "category": "jewelry",
+      "description": "Stacking Rings with thin bands, multi-pack; designed for 疊戴風格, 日常佩戴. Safe, tasteful, versatile. ｜ 疊戴戒指，特色：thin bands、multi-pack；適用於疊戴風格、日常佩戴。風格安全、實穿多變。",
+      "structure_core": [
+        "thin bands",
+        "multi-pack",
+        "variant-v30"
+      ],
+      "design_identity": [
+        "layering minimal",
+        "variant-v30"
+      ],
+      "material_logic": [
+        "925 silver",
+        "stainless steel"
+      ],
+      "usage_scenario": [
+        "疊戴風格",
+        "日常佩戴"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "stacking",
+        "ring",
+        "v30"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_ring_signet_v31",
+      "display_name_zh": "圖章戒（v31）",
+      "display_name_en": "Signet Ring (v31)",
+      "category": "jewelry",
+      "description": "Signet Ring with flat top, engrave-ready; designed for 城市穿搭, 個性造型. Safe, tasteful, versatile. ｜ 圖章戒，特色：flat top、engrave-ready；適用於城市穿搭、個性造型。風格安全、實穿多變。",
+      "structure_core": [
+        "flat top",
+        "engrave-ready",
+        "variant-v31"
+      ],
+      "design_identity": [
+        "retro modern",
+        "variant-v31"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "brass"
+      ],
+      "usage_scenario": [
+        "城市穿搭",
+        "個性造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "signet",
+        "ring",
+        "v31"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_ring_cocktail_v32",
+      "display_name_zh": "造型戒指（v32）",
+      "display_name_en": "Cocktail Ring (v32)",
+      "category": "jewelry",
+      "description": "Cocktail Ring with large head, statement; designed for 晚宴派對, 舞台造型. Safe, tasteful, versatile. ｜ 造型戒指，特色：large head、statement；適用於晚宴派對、舞台造型。風格安全、實穿多變。",
+      "structure_core": [
+        "large head",
+        "statement",
+        "variant-v32"
+      ],
+      "design_identity": [
+        "evening statement",
+        "variant-v32"
+      ],
+      "material_logic": [
+        "brass",
+        "resin"
+      ],
+      "usage_scenario": [
+        "晚宴派對",
+        "舞台造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "cocktail",
+        "ring",
+        "v32"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_brooch_classic_v33",
+      "display_name_zh": "胸針（v33）",
+      "display_name_en": "Classic Brooch (v33)",
+      "category": "jewelry",
+      "description": "Classic Brooch with pin back, decor face; designed for 禮服配飾, 典禮. Safe, tasteful, versatile. ｜ 胸針，特色：pin back、decor face；適用於禮服配飾、典禮。風格安全、實穿多變。",
+      "structure_core": [
+        "pin back",
+        "decor face",
+        "variant-v33"
+      ],
+      "design_identity": [
+        "vintage elegant",
+        "variant-v33"
+      ],
+      "material_logic": [
+        "brass",
+        "rhinestone"
+      ],
+      "usage_scenario": [
+        "禮服配飾",
+        "典禮"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "brooch",
+        "classic",
+        "v33"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_anklet_safe_v34",
+      "display_name_zh": "腳鍊（安全）（v34）",
+      "display_name_en": "Anklet (Safe) (v34)",
+      "category": "jewelry",
+      "description": "Anklet (Safe) with adjustable chain, delicate; designed for 海邊度假, 夏季穿搭. Safe, tasteful, versatile. ｜ 腳鍊（安全），特色：adjustable chain、delicate；適用於海邊度假、夏季穿搭。風格安全、實穿多變。",
+      "structure_core": [
+        "adjustable chain",
+        "delicate",
+        "variant-v34"
+      ],
+      "design_identity": [
+        "summer chic",
+        "variant-v34"
+      ],
+      "material_logic": [
+        "stainless steel"
+      ],
+      "usage_scenario": [
+        "海邊度假",
+        "夏季穿搭"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "anklet",
+        "safe",
+        "v34"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_necklace_pendant_v35",
+      "display_name_zh": "吊墜項鍊（v35）",
+      "display_name_en": "Pendant Necklace (v35)",
+      "category": "jewelry",
+      "description": "Pendant Necklace with adjustable chain, pendant; designed for 日常佩戴, 禮物送禮. Safe, tasteful, versatile. ｜ 吊墜項鍊，特色：adjustable chain、pendant；適用於日常佩戴、禮物送禮。風格安全、實穿多變。",
+      "structure_core": [
+        "adjustable chain",
+        "pendant",
+        "variant-v35"
+      ],
+      "design_identity": [
+        "minimal elegant",
+        "variant-v35"
+      ],
+      "material_logic": [
+        "925 silver",
+        "14k gp"
+      ],
+      "usage_scenario": [
+        "日常佩戴",
+        "禮物送禮"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "necklace",
+        "pendant",
+        "v35"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_necklace_pearl_v36",
+      "display_name_zh": "珍珠項鍊（v36）",
+      "display_name_en": "Pearl Necklace (v36)",
+      "category": "jewelry",
+      "description": "Pearl Necklace with stringed pearls, clasp; designed for 正式場合, 婚禮賓客. Safe, tasteful, versatile. ｜ 珍珠項鍊，特色：stringed pearls、clasp；適用於正式場合、婚禮賓客。風格安全、實穿多變。",
+      "structure_core": [
+        "stringed pearls",
+        "clasp",
+        "variant-v36"
+      ],
+      "design_identity": [
+        "classic elegant",
+        "variant-v36"
+      ],
+      "material_logic": [
+        "freshwater pearl",
+        "925 silver"
+      ],
+      "usage_scenario": [
+        "正式場合",
+        "婚禮賓客"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "pearl",
+        "necklace",
+        "v36"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_necklace_chain_v37",
+      "display_name_zh": "鏈條項鍊（v37）",
+      "display_name_en": "Chain Necklace (v37)",
+      "category": "jewelry",
+      "description": "Chain Necklace with curb/rope chain, lobster clasp; designed for 城市穿搭, 日常佩戴. Safe, tasteful, versatile. ｜ 鏈條項鍊，特色：curb/rope chain、lobster clasp；適用於城市穿搭、日常佩戴。風格安全、實穿多變。",
+      "structure_core": [
+        "curb/rope chain",
+        "lobster clasp",
+        "variant-v37"
+      ],
+      "design_identity": [
+        "modern minimal",
+        "variant-v37"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "925 silver"
+      ],
+      "usage_scenario": [
+        "城市穿搭",
+        "日常佩戴"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "chain",
+        "necklace",
+        "v37"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_choker_safe_v38",
+      "display_name_zh": "頸鍊（安全）（v38）",
+      "display_name_en": "Choker (Safe) (v38)",
+      "category": "jewelry",
+      "description": "Choker (Safe) with short length, soft band; designed for 晚宴派對, 時尚活動. Safe, tasteful, versatile. ｜ 頸鍊（安全），特色：short length、soft band；適用於晚宴派對、時尚活動。風格安全、實穿多變。",
+      "structure_core": [
+        "short length",
+        "soft band",
+        "variant-v38"
+      ],
+      "design_identity": [
+        "fashion chic",
+        "variant-v38"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "velvet band"
+      ],
+      "usage_scenario": [
+        "晚宴派對",
+        "時尚活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "choker",
+        "safe",
+        "v38"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_earring_stud_v39",
+      "display_name_zh": "耳釘（v39）",
+      "display_name_en": "Stud Earrings (v39)",
+      "category": "jewelry",
+      "description": "Stud Earrings with post back, small setting; designed for 日常佩戴, 商務通勤. Safe, tasteful, versatile. ｜ 耳釘，特色：post back、small setting；適用於日常佩戴、商務通勤。風格安全、實穿多變。",
+      "structure_core": [
+        "post back",
+        "small setting",
+        "variant-v39"
+      ],
+      "design_identity": [
+        "minimal classic",
+        "variant-v39"
+      ],
+      "material_logic": [
+        "925 silver",
+        "stainless steel"
+      ],
+      "usage_scenario": [
+        "日常佩戴",
+        "商務通勤"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "stud",
+        "earring",
+        "v39"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "jewelry_earring_hoop_v40",
+      "display_name_zh": "圈式耳環（v40）",
+      "display_name_en": "Hoop Earrings (v40)",
+      "category": "jewelry",
+      "description": "Hoop Earrings with hoop ring, latch back; designed for 城市穿搭, 晚宴. Safe, tasteful, versatile. ｜ 圈式耳環，特色：hoop ring、latch back；適用於城市穿搭、晚宴。風格安全、實穿多變。",
+      "structure_core": [
+        "hoop ring",
+        "latch back",
+        "variant-v40"
+      ],
+      "design_identity": [
+        "modern classic",
+        "variant-v40"
+      ],
+      "material_logic": [
+        "stainless steel",
+        "gold-plated"
+      ],
+      "usage_scenario": [
+        "城市穿搭",
+        "晚宴"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "search_tags": [
+        "hoop",
+        "earring",
+        "v40"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    }
+  ]
+}

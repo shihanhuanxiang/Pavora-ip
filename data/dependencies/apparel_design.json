@@ -1,0 +1,27 @@
+{
+  "moduleName": "Apparel Design Studio",
+  "entryComponent": "ApparelDesign.tsx",
+  "description": "Designs new apparel items by combining taxonomy, brand styles, and user inputs, generating a consistent set of product and model images.",
+  "dependencies": {
+    "dataSources": [
+      "services/taxonomyService.ts (masterTaxonomy, apparelStructure)",
+      "constants.ts (PAVORA_DESIGN_BRANDS, BRAND_OPTIONS)"
+    ],
+    "services": [
+      "geminiService.generateApparelDesignSequence",
+      "storageService.saveApparel"
+    ],
+    "sharedTypes": [
+      "types.ts#TaxonomyEntry",
+      "types.ts#BrandDefinition",
+      "types.ts#ApparelMainCategory"
+    ]
+  },
+  "outputs": {
+    "description": "Outputs a set of three consistent image URLs (product, model front, model back) which can be saved to the Personal Wardrobe.",
+    "schema": "string[] (Image URLs)",
+    "consumers": [
+      "PersonalWardrobe"
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "moduleName": "Image Deconstruction Studio",
+  "entryComponent": "ImageDeconstructionStudio.tsx",
+  "description": "Analyzes an image to reverse-engineer its generative prompt ('詠唱分析') or extracts specific objects/assets from it as transparent PNGs ('素材提取').",
+  "dependencies": {
+    "dataSources": [],
+    "services": [
+      "geminiService.analyzeImageForPrompt",
+      "geminiService.extractAssetsFromImage",
+      "storageService.saveApparel"
+    ],
+    "sharedTypes": [
+      "types.ts#DeconstructedPrompt",
+      "types.ts#ExtractedAsset"
+    ]
+  },
+  "outputs": {
+    "description": "Outputs either a structured prompt object for analysis, or a set of extracted asset images for extraction. Assets can be saved to the Personal Wardrobe.",
+    "schema": "DeconstructedPrompt | ExtractedAsset[]",
+    "consumers": [
+      "PersonalWardrobe",
+      "User Clipboard/Download"
+    ]
+  }
+}

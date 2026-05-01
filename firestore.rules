@@ -1,0 +1,39 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidModel(data) {
+      return data.keys().hasAll(['id', 'name', 'imageUrl', 'createdBy', 'createdAt']) &&
+             data.id is string &&
+             data.name is string && data.name.size() <= 100 &&
+             data.imageUrl is string &&
+             data.createdBy == request.auth.uid &&
+             data.createdAt is timestamp;
+    }
+
+    // Models collection
+    match /models/{modelId} {
+      allow read: if isSignedIn() && resource.data.createdBy == request.auth.uid;
+      allow create: if isSignedIn() && isValidModel(request.resource.data) && request.resource.data.createdAt == request.time;
+      allow update: if isSignedIn() && resource.data.createdBy == request.auth.uid && 
+                       isValidModel(request.resource.data) &&
+                       request.resource.data.createdAt == resource.data.createdAt &&
+                       request.resource.data.createdBy == resource.data.createdBy;
+      allow delete: if isSignedIn() && resource.data.createdBy == request.auth.uid;
+    }
+  }
+}

@@ -1,0 +1,435 @@
+{
+  "metadata": {
+    "module": "Pavora Product System",
+    "category_group": "Accessories",
+    "version": "2.0",
+    "language": "zh-en",
+    "prompt_style": "hybrid_balance",
+    "autosafe": true,
+    "total_items": 6
+  },
+  "items": [
+    {
+      "id": "accessories_hat_01",
+      "display_name_zh": "帽子",
+      "display_name_en": "Hat",
+      "category": "accessories",
+      "group": "帽子",
+      "prompt_base": "hat, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "hat",
+        "accessories",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "費多拉",
+        "漁夫帽",
+        "棒球帽",
+        "毛帽"
+      ],
+      "variants_en": [
+        "Fedora",
+        "Bucket Hat",
+        "Baseball Cap",
+        "Beanie"
+      ],
+      "prompt_variant": [
+        "Fedora hat with structured crown and sharp brim.",
+        "Bucket hat, soft brim and casual street feel.",
+        "Baseball cap with curved brim and sporty tone.",
+        "Beanie with snug knit and cozy warmth."
+      ]
+    },
+    {
+      "id": "accessories_scarf_01",
+      "display_name_zh": "圍巾",
+      "display_name_en": "Scarf",
+      "category": "accessories",
+      "group": "圍巾",
+      "prompt_base": "scarf, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "scarf",
+        "accessories",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "絲巾",
+        "羊毛圍巾",
+        "大披肩",
+        "細長圍巾"
+      ],
+      "variants_en": [
+        "Silk Scarf",
+        "Wool Scarf",
+        "Oversized Wrap",
+        "Skinny Scarf"
+      ],
+      "prompt_variant": [
+        "Silk scarf with smooth sheen and rolled hem.",
+        "Wool scarf for warmth and soft texture.",
+        "Oversized wrap with generous drape and comfort.",
+        "Skinny scarf with sleek line and styling accent."
+      ]
+    },
+    {
+      "id": "accessories_belt_01",
+      "display_name_zh": "皮帶",
+      "display_name_en": "Belt",
+      "category": "accessories",
+      "group": "皮帶",
+      "prompt_base": "belt, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "belt",
+        "accessories",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "經典皮帶",
+        "寬版腰帶",
+        "鏈條腰帶",
+        "編織腰帶"
+      ],
+      "variants_en": [
+        "Classic Leather Belt",
+        "Wide Waist Belt",
+        "Chain Belt",
+        "Braided Belt"
+      ],
+      "prompt_variant": [
+        "Classic leather belt with polished buckle and edge stitch.",
+        "Wide waist belt for silhouette definition and style.",
+        "Chain belt with metallic shine and statement.",
+        "Braided belt with artisanal texture and casual ease."
+      ]
+    },
+    {
+      "id": "accessories_gloves_01",
+      "display_name_zh": "手套",
+      "display_name_en": "Gloves",
+      "category": "accessories",
+      "group": "手套",
+      "prompt_base": "gloves, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "gloves",
+        "accessories",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "皮手套",
+        "針織手套",
+        "露指手套",
+        "觸控手套"
+      ],
+      "variants_en": [
+        "Leather Gloves",
+        "Knit Gloves",
+        "Fingerless Gloves",
+        "Touchscreen Gloves"
+      ],
+      "prompt_variant": [
+        "Leather gloves with polished finish and lining.",
+        "Knit gloves with soft yarn and flexibility.",
+        "Fingerless gloves for edgy styling and dexterity.",
+        "Touchscreen gloves with tech fingertips and warmth."
+      ]
+    },
+    {
+      "id": "accessories_jewelry_01",
+      "display_name_zh": "飾品",
+      "display_name_en": "Jewelry",
+      "category": "accessories",
+      "group": "飾品",
+      "prompt_base": "jewelry, polished finish, subtle sparkle, close-up macro clarity, reflection-controlled studio",
+      "structure_core": [
+        "pendant/hoop",
+        "lobster clasp",
+        "polished"
+      ],
+      "design_identity": [
+        "elegant",
+        "minimal"
+      ],
+      "material_logic": [
+        "gold-plated or sterling silver"
+      ],
+      "usage_scenario": [
+        "日常點綴",
+        "正式場合"
+      ],
+      "search_tags": [
+        "jewelry",
+        "minimal",
+        "polished"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "項鍊",
+        "耳環",
+        "手鍊",
+        "戒指"
+      ],
+      "variants_en": [
+        "Necklace",
+        "Earrings",
+        "Bracelet",
+        "Ring"
+      ],
+      "prompt_variant": [
+        "Necklace with refined pendant and subtle sparkle.",
+        "Earrings with polished finish and clean geometry.",
+        "Bracelet with delicate chain and modern shine.",
+        "Ring with sleek profile and minimal elegance."
+      ]
+    },
+    {
+      "id": "accessories_sunglasses_01",
+      "display_name_zh": "太陽眼鏡",
+      "display_name_en": "Sunglasses",
+      "category": "accessories",
+      "group": "太陽眼鏡",
+      "prompt_base": "sunglasses, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "fashionable",
+        "commercial"
+      ],
+      "material_logic": [
+        "acetate frame",
+        "UV protection lenses"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "戶外活動"
+      ],
+      "search_tags": [
+        "sunglasses",
+        "eyewear",
+        "accessories",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "飛行員款",
+        "旅行者款",
+        "貓眼款",
+        "圓框款"
+      ],
+      "variants_en": [
+        "Aviator",
+        "Wayfarer",
+        "Cat Eye",
+        "Round"
+      ],
+      "prompt_variant": [
+        "Aviator sunglasses with thin metal frame and teardrop lenses.",
+        "Wayfarer sunglasses with classic trapezoidal acetate frame.",
+        "Cat eye sunglasses with upswept styling and vintage flair.",
+        "Round sunglasses with circular lenses for a retro look."
+      ]
+    }
+  ]
+}

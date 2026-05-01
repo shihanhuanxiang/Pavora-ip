@@ -1,0 +1,28 @@
+{
+  "moduleName": "Model Creation Studio",
+  "entryComponent": "ModelSetup.tsx",
+  "description": "Generates virtual models based on detailed aesthetic parameters.",
+  "dependencies": {
+    "dataSources": [
+      "constants.ts (GENDER_PRESETS, AESTHETIC_STYLES, etc.)"
+    ],
+    "services": [
+      "geminiService.generateModels",
+      "storageService.saveModel"
+    ],
+    "sharedTypes": [
+      "types.ts#Model"
+    ]
+  },
+  "outputs": {
+    "description": "Outputs a 'Model' object that is used by other modules or saved to the Model Lounge.",
+    "schema": "types.ts#Model",
+    "consumers": [
+      "ModelLounge",
+      "VirtualFittingRoom",
+      "SceneGeneration",
+      "HairSalon",
+      "CompositeCard"
+    ]
+  }
+}

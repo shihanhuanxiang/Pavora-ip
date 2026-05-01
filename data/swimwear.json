@@ -1,0 +1,224 @@
+{
+  "metadata": {
+    "module": "Pavora Product System",
+    "category_group": "Swimwear",
+    "version": "2.0",
+    "language": "zh-en",
+    "prompt_style": "hybrid_balance",
+    "autosafe": true,
+    "total_items": 3
+  },
+  "items": [
+    {
+      "id": "swimwear_bikini_01",
+      "display_name_zh": "比基尼",
+      "display_name_en": "Bikini",
+      "category": "swimwear",
+      "group": "比基尼",
+      "prompt_base": "bikini set, elastic swim fabric, tasteful coverage, beachwear vibe, controlled studio lighting",
+      "structure_core": [
+        "triangle top",
+        "tie closure",
+        "lined"
+      ],
+      "design_identity": [
+        "resort",
+        "sporty"
+      ],
+      "material_logic": [
+        "polyamide elastane"
+      ],
+      "usage_scenario": [
+        "海邊戲水",
+        "度假穿搭"
+      ],
+      "search_tags": [
+        "bikini",
+        "swim",
+        "beach",
+        "resort"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "三角",
+        "繞頸",
+        "平口",
+        "裙比基尼"
+      ],
+      "variants_en": [
+        "Triangle",
+        "Halter",
+        "Bandeau",
+        "Skirt Bikini"
+      ],
+      "prompt_variant": [
+        "Triangle bikini with delicate straps, flattering balance, summer-ready look.",
+        "Halter bikini with supportive neckline and confident beach styling.",
+        "Bandeau bikini, strapless clean silhouette for elegant sunwear.",
+        "Skirt bikini, playful layered design with feminine movement."
+      ]
+    },
+    {
+      "id": "swimwear_one_piece_swimsuit_01",
+      "display_name_zh": "連身泳衣",
+      "display_name_en": "One-Piece Swimsuit",
+      "category": "swimwear",
+      "group": "連身泳衣",
+      "prompt_base": "one-piece swimsuit, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "one-piece swimsuit",
+        "swimwear",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "挖背",
+        "方領",
+        "運動型",
+        "高開衩"
+      ],
+      "variants_en": [
+        "Racerback",
+        "Square Neck",
+        "Sporty",
+        "High-cut"
+      ],
+      "prompt_variant": [
+        "Racerback one-piece with athletic contour and dynamic lines.",
+        "Square neck one-piece, modern balance with refined shape.",
+        "Sporty one-piece, secure fit designed for active motion.",
+        "High-cut one-piece for elongated leg line and sleek profile."
+      ]
+    },
+    {
+      "id": "swimwear_swim_trunks_01",
+      "display_name_zh": "泳褲",
+      "display_name_en": "Swim Trunks",
+      "category": "swimwear",
+      "group": "泳褲",
+      "prompt_base": "swim trunks, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "swim trunks",
+        "swimwear",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "標準款",
+        "升級款",
+        "簡約款",
+        "細節款"
+      ],
+      "variants_en": [
+        "Standard",
+        "Enhanced",
+        "Minimal",
+        "Detailed"
+      ],
+      "prompt_variant": [
+        "泳褲 in standard design with balanced proportion and clean lines.",
+        "泳褲 enhanced detailing for elevated look and commercial appeal.",
+        "泳褲 minimal silhouette for versatile styling and clarity.",
+        "泳褲 refined details with studio-ready presentation."
+      ]
+    }
+  ]
+}

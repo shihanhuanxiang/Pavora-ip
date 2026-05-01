@@ -1,0 +1,66 @@
+{
+  "metadata": {
+    "module": "Pavora Product System",
+    "category_group": "Lingerie",
+    "version": "1.0",
+    "language": "zh-en",
+    "prompt_style": "hybrid_balance",
+    "autosafe": true,
+    "total_items": 4,
+    "last_update": "2025-10-12"
+  },
+  "items": [
+    {
+      "id": "lingerie_bra_classic_safe",
+      "display_name_zh": "內衣（安全）",
+      "category": "lingerie",
+      "description": "經典內衣款式，提供良好支撐與覆蓋。風格安全、適合日常穿搭。",
+      "structure_core": ["full coverage cup", "adjustable straps"],
+      "design_identity": ["everyday comfort", "functional"],
+      "material_logic": ["cotton", "lace trim"],
+      "usage_scenario": ["daily wear"],
+      "prompt_lock": ["classic full coverage bra", "safe for work", "non-provocative"],
+      "negative_lock": ["nudity", "transparent", "sexualization"],
+      "autosafe": true, "status": "complete", "search_tags": ["bra", "underwear", "safe"]
+    },
+    {
+      "id": "lingerie_swimwear_one_piece_safe",
+      "display_name_zh": "連身泳裝（安全）",
+      "category": "lingerie",
+      "description": "連身泳裝，提供完整覆蓋，適合各種水上活動。風格安全、適合家庭與公開場合。",
+      "structure_core": ["one-piece", "full seat coverage"],
+      "design_identity": ["sporty", "classic swimwear"],
+      "material_logic": ["nylon spandex blend", "chlorine resistant"],
+      "usage_scenario": ["beach", "pool", "family vacation"],
+      "prompt_lock": ["modest one-piece swimsuit", "full coverage swimwear", "safe for work"],
+      "negative_lock": ["see-through", "micro bikini", "extreme cutouts"],
+      "autosafe": true, "status": "complete", "search_tags": ["swimsuit", "one-piece", "safe"]
+    },
+    {
+      "id": "lingerie_sports_bra_safe",
+      "display_name_zh": "運動內衣（安全）",
+      "category": "lingerie",
+      "description": "高支撐運動內衣，提供運動時的穩定性。風格安全，可單穿或內搭。",
+      "structure_core": ["high support", "racerback", "wide band"],
+      "design_identity": ["athleisure", "performance"],
+      "material_logic": ["moisture-wicking fabric", "stretch knit"],
+      "usage_scenario": ["gym", "running", "training"],
+      "prompt_lock": ["high-support sports bra", "full coverage athletic top", "non-provocative activewear"],
+      "negative_lock": ["cleavage", "deep plunge", "see-through mesh"],
+      "autosafe": true, "status": "complete", "search_tags": ["sports bra", "activewear", "safe"]
+    },
+    {
+      "id": "lingerie_swimwear_bikini_safe",
+      "display_name_zh": "兩件式泳衣（安全）",
+      "category": "lingerie",
+      "description": "兩件式比基尼，提供較保守的覆蓋範圍。風格安全，適合公開場合。",
+      "structure_core": ["high-waist bottom", "full coverage top"],
+      "design_identity": ["retro swimwear", "modest bikini"],
+      "material_logic": ["nylon spandex blend"],
+      "usage_scenario": ["beach", "pool"],
+      "prompt_lock": ["modest bikini set", "high-waisted full coverage swimwear", "retro style bikini"],
+      "negative_lock": ["thong", "micro bikini", "string bikini"],
+      "autosafe": true, "status": "complete", "search_tags": ["bikini", "swimwear", "safe"]
+    }
+  ]
+}

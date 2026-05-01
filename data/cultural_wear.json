@@ -1,0 +1,574 @@
+{
+  "metadata": {
+    "module": "Pavora Product System",
+    "category_group": "Cultural Wear",
+    "version": "2.0",
+    "language": "zh-en",
+    "prompt_style": "hybrid_balance",
+    "autosafe": true,
+    "total_items": 8
+  },
+  "items": [
+    {
+      "id": "cultural_wear_kimono_01",
+      "display_name_zh": "和服",
+      "display_name_en": "Kimono",
+      "category": "cultural_wear",
+      "group": "和服",
+      "prompt_base": "kimono, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "kimono",
+        "cultural_wear",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "振袖",
+        "小紋",
+        "浴衣",
+        "訪問着"
+      ],
+      "variants_en": [
+        "Furisode",
+        "Komon",
+        "Yukata",
+        "Hōmongi"
+      ],
+      "prompt_variant": [
+        "Furisode kimono with long sleeves and festive motifs.",
+        "Komon kimono with repeating patterns and casual elegance.",
+        "Yukata lightweight cotton for summer simplicity.",
+        "Hōmongi kimono for formal visits with subtle artistry."
+      ]
+    },
+    {
+      "id": "cultural_wear_hanfu_01",
+      "display_name_zh": "漢服",
+      "display_name_en": "Hanfu",
+      "category": "cultural_wear",
+      "group": "漢服",
+      "prompt_base": "hanfu, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "hanfu",
+        "cultural_wear",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "齊胸襦裙",
+        "曲裾",
+        "襦裙",
+        "直裾"
+      ],
+      "variants_en": [
+        "Qi Xiong Ruqun",
+        "Quju",
+        "Ruqun",
+        "Zhiju"
+      ],
+      "prompt_variant": [
+        "Qi Xiong Ruqun with flowing layers and classical grace.",
+        "Quju with wrapped silhouette and historical charm.",
+        "Ruqun ensemble with layered skirt and soft drape.",
+        "Zhiju straight-cut style with simple refinement."
+      ]
+    },
+    {
+      "id": "cultural_wear_韓服_01",
+      "display_name_zh": "韓服",
+      "display_name_en": "韓服",
+      "category": "cultural_wear",
+      "group": "韓服",
+      "prompt_base": "韓服, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "韓服",
+        "cultural_wear",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "標準款",
+        "升級款",
+        "簡約款",
+        "細節款"
+      ],
+      "variants_en": [
+        "Standard",
+        "Enhanced",
+        "Minimal",
+        "Detailed"
+      ],
+      "prompt_variant": [
+        "韓服 in standard design with balanced proportion and clean lines.",
+        "韓服 enhanced detailing for elevated look and commercial appeal.",
+        "韓服 minimal silhouette for versatile styling and clarity.",
+        "韓服 refined details with studio-ready presentation."
+      ]
+    },
+    {
+      "id": "cultural_wear_qipao_01",
+      "display_name_zh": "旗袍",
+      "display_name_en": "Qipao",
+      "category": "cultural_wear",
+      "group": "旗袍",
+      "prompt_base": "qipao (cheongsam), high mandarin collar, elegant side slit, fitted silhouette, silk sheen, respectful styling",
+      "structure_core": [
+        "mandarin collar",
+        "side slit",
+        "fitted body"
+      ],
+      "design_identity": [
+        "traditional elegance",
+        "feminine"
+      ],
+      "material_logic": [
+        "silk satin"
+      ],
+      "usage_scenario": [
+        "正式場合",
+        "文化場合"
+      ],
+      "search_tags": [
+        "qipao",
+        "cheongsam",
+        "silk",
+        "cultural"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "長旗袍",
+        "改良式旗袍",
+        "短旗袍",
+        "無袖旗袍"
+      ],
+      "variants_en": [
+        "Long Qipao",
+        "Modern Qipao",
+        "Short Qipao",
+        "Sleeveless Qipao"
+      ],
+      "prompt_variant": [
+        "Long Qipao with elegant silk sheen and high collar.",
+        "Modern Qipao with minimal cut and updated silhouette.",
+        "Short Qipao, playful proportion with cultural grace.",
+        "Sleeveless Qipao for light summer elegance."
+      ]
+    },
+    {
+      "id": "cultural_wear_saree_01",
+      "display_name_zh": "印度紗麗",
+      "display_name_en": "Saree",
+      "category": "cultural_wear",
+      "group": "印度紗麗",
+      "prompt_base": "saree, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "saree",
+        "cultural_wear",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "傳統紗麗",
+        "半透明紗麗",
+        "珠繡紗麗",
+        "絲質紗麗"
+      ],
+      "variants_en": [
+        "Traditional Sari",
+        "Sheer Sari",
+        "Beaded Sari",
+        "Silk Sari"
+      ],
+      "prompt_variant": [
+        "Traditional sari with pleated drape and ornate borders.",
+        "Sheer sari with lightweight fabric and elegant flow.",
+        "Beaded sari with decorative embroidery for festive wear.",
+        "Silk sari with luxurious sheen and refined texture."
+      ]
+    },
+    {
+      "id": "cultural_wear_ao_dai_01",
+      "display_name_zh": "奧黛",
+      "display_name_en": "Ao Dai",
+      "category": "cultural_wear",
+      "group": "奧黛",
+      "prompt_base": "ao dai, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "ao dai",
+        "cultural_wear",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "傳統長版",
+        "改良短版",
+        "高領無袖",
+        "蕾絲款"
+      ],
+      "variants_en": [
+        "Traditional Long",
+        "Modern Short",
+        "High-neck Sleeveless",
+        "Lace Design"
+      ],
+      "prompt_variant": [
+        "Traditional long Ao Dai with graceful flow and silk shine.",
+        "Modern short Ao Dai blending elegance and ease.",
+        "High-neck sleeveless Ao Dai for poised summer style.",
+        "Lace design Ao Dai with intricate texture and grace."
+      ]
+    },
+    {
+      "id": "cultural_wear_thai_traditional_dress_01",
+      "display_name_zh": "泰式傳統服",
+      "display_name_en": "Thai Traditional Dress",
+      "category": "cultural_wear",
+      "group": "泰式傳統服",
+      "prompt_base": "thai traditional dress, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "thai traditional dress",
+        "cultural_wear",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "傳統禮服款",
+        "肩披絲巾款",
+        "上衣裙裝套組",
+        "珠繡禮服款"
+      ],
+      "variants_en": [
+        "Traditional Formal",
+        "Shoulder Drape",
+        "Blouse & Skirt Set",
+        "Beaded Formal"
+      ],
+      "prompt_variant": [
+        "Thai traditional formal set with refined silk texture.",
+        "Shoulder drape style with elegant wrap and grace.",
+        "Blouse and skirt set with cultural proportion.",
+        "Beaded formal design with festive embellishment."
+      ]
+    },
+    {
+      "id": "cultural_wear_歐洲民俗服_01",
+      "display_name_zh": "歐洲民俗服",
+      "display_name_en": "歐洲民俗服",
+      "category": "cultural_wear",
+      "group": "歐洲民俗服",
+      "prompt_base": "歐洲民俗服, e-commerce fashion photo, clean white studio background, soft even lighting",
+      "structure_core": [
+        "clean silhouette",
+        "balanced proportion"
+      ],
+      "design_identity": [
+        "minimal",
+        "commercial"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "日常休閒",
+        "基礎搭配"
+      ],
+      "search_tags": [
+        "歐洲民俗服",
+        "cultural_wear",
+        "fashion",
+        "studio"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes"
+      ],
+      "autosafe": true,
+      "status": "complete",
+      "variants": [
+        "標準款",
+        "升級款",
+        "簡約款",
+        "細節款"
+      ],
+      "variants_en": [
+        "Standard",
+        "Enhanced",
+        "Minimal",
+        "Detailed"
+      ],
+      "prompt_variant": [
+        "歐洲民俗服 in standard design with balanced proportion and clean lines.",
+        "歐洲民俗服 enhanced detailing for elevated look and commercial appeal.",
+        "歐洲民俗服 minimal silhouette for versatile styling and clarity.",
+        "歐洲民俗服 refined details with studio-ready presentation."
+      ]
+    }
+  ]
+}

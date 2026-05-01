@@ -1,0 +1,2080 @@
+{
+  "metadata": {
+    "module": "Pavora Product System",
+    "category_group": "Wedding",
+    "version": "1.0",
+    "language": "zh-en",
+    "prompt_style": "hybrid_balance",
+    "autosafe": true,
+    "total_items": 40,
+    "last_update": "2025-10-12"
+  },
+  "items": [
+    {
+      "id": "wedding_gown_a_line",
+      "display_name_zh": "A字婚紗",
+      "display_name_en": "A-line Wedding Gown",
+      "category": "wedding",
+      "description": "A-line Wedding Gown with a-line, floor length; designed for 婚禮正儀, 迎賓儀式. Safe, tasteful, versatile. ｜ A字婚紗，特色：a-line、floor length；適用於婚禮正儀、迎賓儀式。風格安全、實穿多變。",
+      "structure_core": [
+        "a-line",
+        "floor length"
+      ],
+      "design_identity": [
+        "bridal classic"
+      ],
+      "material_logic": [
+        "silk mikado",
+        "tulle (lined)"
+      ],
+      "usage_scenario": [
+        "婚禮正儀",
+        "迎賓儀式"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "wedding",
+        "gown",
+        "a-line"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_gown_ball",
+      "display_name_zh": "蓬裙婚紗",
+      "display_name_en": "Ball Gown Wedding Dress",
+      "category": "wedding",
+      "description": "Ball Gown Wedding Dress with ball gown, structured bodice; designed for 進場儀式, 拍攝. Safe, tasteful, versatile. ｜ 蓬裙婚紗，特色：ball gown、structured bodice；適用於進場儀式、拍攝。風格安全、實穿多變。",
+      "structure_core": [
+        "ball gown",
+        "structured bodice"
+      ],
+      "design_identity": [
+        "princess classic"
+      ],
+      "material_logic": [
+        "silk satin",
+        "tulle (lined)"
+      ],
+      "usage_scenario": [
+        "進場儀式",
+        "拍攝"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "wedding",
+        "ball gown"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_gown_mermaid",
+      "display_name_zh": "魚尾婚紗",
+      "display_name_en": "Mermaid Wedding Dress",
+      "category": "wedding",
+      "description": "Mermaid Wedding Dress with mermaid silhouette, train; designed for 宴客, 晚宴派對. Safe, tasteful, versatile. ｜ 魚尾婚紗，特色：mermaid silhouette、train；適用於宴客、晚宴派對。風格安全、實穿多變。",
+      "structure_core": [
+        "mermaid silhouette",
+        "train"
+      ],
+      "design_identity": [
+        "evening elegant"
+      ],
+      "material_logic": [
+        "duchess satin",
+        "crepe"
+      ],
+      "usage_scenario": [
+        "宴客",
+        "晚宴派對"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "mermaid",
+        "wedding"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_gown_trumpet",
+      "display_name_zh": "喇叭婚紗",
+      "display_name_en": "Trumpet Wedding Dress",
+      "category": "wedding",
+      "description": "Trumpet Wedding Dress with trumpet flare, floor length; designed for 證婚, 宴客. Safe, tasteful, versatile. ｜ 喇叭婚紗，特色：trumpet flare、floor length；適用於證婚、宴客。風格安全、實穿多變。",
+      "structure_core": [
+        "trumpet flare",
+        "floor length"
+      ],
+      "design_identity": [
+        "elegant modern"
+      ],
+      "material_logic": [
+        "crepe",
+        "satin"
+      ],
+      "usage_scenario": [
+        "證婚",
+        "宴客"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "trumpet",
+        "wedding"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_gown_sheath",
+      "display_name_zh": "直筒婚紗",
+      "display_name_en": "Sheath Wedding Dress",
+      "category": "wedding",
+      "description": "Sheath Wedding Dress with column shape, train optional; designed for 戶外婚禮, 海邊儀式. Safe, tasteful, versatile. ｜ 直筒婚紗，特色：column shape、train optional；適用於戶外婚禮、海邊儀式。風格安全、實穿多變。",
+      "structure_core": [
+        "column shape",
+        "train optional"
+      ],
+      "design_identity": [
+        "minimal chic"
+      ],
+      "material_logic": [
+        "crepe",
+        "silk blend"
+      ],
+      "usage_scenario": [
+        "戶外婚禮",
+        "海邊儀式"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "sheath",
+        "minimal",
+        "wedding"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_gown_empire",
+      "display_name_zh": "高腰帝國婚紗",
+      "display_name_en": "Empire-Waist Wedding Dress",
+      "category": "wedding",
+      "description": "Empire-Waist Wedding Dress with empire waist, soft drape; designed for 證婚, 宴會. Safe, tasteful, versatile. ｜ 高腰帝國婚紗，特色：empire waist、soft drape；適用於證婚、宴會。風格安全、實穿多變。",
+      "structure_core": [
+        "empire waist",
+        "soft drape"
+      ],
+      "design_identity": [
+        "romantic classic"
+      ],
+      "material_logic": [
+        "silk chiffon",
+        "georgette"
+      ],
+      "usage_scenario": [
+        "證婚",
+        "宴會"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "empire waist",
+        "wedding"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_tea_length",
+      "display_name_zh": "茶會長度婚紗",
+      "display_name_en": "Tea-Length Bridal Dress",
+      "category": "wedding",
+      "description": "Tea-Length Bridal Dress with tea length, a-line; designed for 午宴, 戶外儀式. Safe, tasteful, versatile. ｜ 茶會長度婚紗，特色：tea length、a-line；適用於午宴、戶外儀式。風格安全、實穿多變。",
+      "structure_core": [
+        "tea length",
+        "a-line"
+      ],
+      "design_identity": [
+        "retro elegant"
+      ],
+      "material_logic": [
+        "silk organza (lined)",
+        "satin"
+      ],
+      "usage_scenario": [
+        "午宴",
+        "戶外儀式"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "tea length",
+        "bridal"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_bridal_jumpsuit",
+      "display_name_zh": "新娘連身褲",
+      "display_name_en": "Bridal Jumpsuit",
+      "category": "wedding",
+      "description": "Bridal Jumpsuit with tailored bodice, wide leg; designed for 證婚, 婚宴二進. Safe, tasteful, versatile. ｜ 新娘連身褲，特色：tailored bodice、wide leg；適用於證婚、婚宴二進。風格安全、實穿多變。",
+      "structure_core": [
+        "tailored bodice",
+        "wide leg"
+      ],
+      "design_identity": [
+        "modern bridal"
+      ],
+      "material_logic": [
+        "crepe",
+        "satin trim"
+      ],
+      "usage_scenario": [
+        "證婚",
+        "婚宴二進"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "bridal jumpsuit",
+        "modern"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_bridal_separates",
+      "display_name_zh": "婚紗分件套",
+      "display_name_en": "Bridal Separates",
+      "category": "wedding",
+      "description": "Bridal Separates with bridal top, bridal skirt; designed for 戶外婚禮, 拍攝花絮. Safe, tasteful, versatile. ｜ 婚紗分件套，特色：bridal top、bridal skirt；適用於戶外婚禮、拍攝花絮。風格安全、實穿多變。",
+      "structure_core": [
+        "bridal top",
+        "bridal skirt"
+      ],
+      "design_identity": [
+        "modular bridal"
+      ],
+      "material_logic": [
+        "silk",
+        "tulle (lined)"
+      ],
+      "usage_scenario": [
+        "戶外婚禮",
+        "拍攝花絮"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "bridal separates"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_veil_cathedral",
+      "display_name_zh": "教堂頭紗",
+      "display_name_en": "Cathedral Veil",
+      "category": "wedding",
+      "description": "Cathedral Veil with cathedral length, sheer lined; designed for 教堂儀式, 迎賓拍照. Safe, tasteful, versatile. ｜ 教堂頭紗，特色：cathedral length、sheer lined；適用於教堂儀式、迎賓拍照。風格安全、實穿多變。",
+      "structure_core": [
+        "cathedral length",
+        "sheer lined"
+      ],
+      "design_identity": [
+        "classic accessory"
+      ],
+      "material_logic": [
+        "tulle (hem finished)"
+      ],
+      "usage_scenario": [
+        "教堂儀式",
+        "迎賓拍照"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "veil",
+        "cathedral"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_veil_fingertip",
+      "display_name_zh": "指尖頭紗",
+      "display_name_en": "Fingertip Veil",
+      "category": "wedding",
+      "description": "Fingertip Veil with fingertip length, edged; designed for 室內儀式, 宴客拍攝. Safe, tasteful, versatile. ｜ 指尖頭紗，特色：fingertip length、edged；適用於室內儀式、宴客拍攝。風格安全、實穿多變。",
+      "structure_core": [
+        "fingertip length",
+        "edged"
+      ],
+      "design_identity": [
+        "versatile accessory"
+      ],
+      "material_logic": [
+        "tulle (hem finished)"
+      ],
+      "usage_scenario": [
+        "室內儀式",
+        "宴客拍攝"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "veil",
+        "fingertip"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_bridesmaid_chiffon_midi",
+      "display_name_zh": "伴娘雪紡中長洋裝",
+      "display_name_en": "Bridesmaid Chiffon Midi",
+      "category": "wedding",
+      "description": "Bridesmaid Chiffon Midi with midi, flowy skirt; designed for 伴娘服, 婚宴. Safe, tasteful, versatile. ｜ 伴娘雪紡中長洋裝，特色：midi、flowy skirt；適用於伴娘服、婚宴。風格安全、實穿多變。",
+      "structure_core": [
+        "midi",
+        "flowy skirt"
+      ],
+      "design_identity": [
+        "soft romantic"
+      ],
+      "material_logic": [
+        "chiffon",
+        "georgette"
+      ],
+      "usage_scenario": [
+        "伴娘服",
+        "婚宴"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "bridesmaid",
+        "chiffon"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_bridesmaid_satin_cowl",
+      "display_name_zh": "伴娘緞面垂領",
+      "display_name_en": "Bridesmaid Satin Cowl",
+      "category": "wedding",
+      "description": "Bridesmaid Satin Cowl with cowl neck, midi; designed for 伴娘服, 證婚儀式. Safe, tasteful, versatile. ｜ 伴娘緞面垂領，特色：cowl neck、midi；適用於伴娘服、證婚儀式。風格安全、實穿多變。",
+      "structure_core": [
+        "cowl neck",
+        "midi"
+      ],
+      "design_identity": [
+        "minimal elegant"
+      ],
+      "material_logic": [
+        "acetate satin",
+        "silk blend"
+      ],
+      "usage_scenario": [
+        "伴娘服",
+        "證婚儀式"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "bridesmaid",
+        "satin",
+        "cowl"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_bridesmaid_wrap",
+      "display_name_zh": "伴娘交疊洋裝",
+      "display_name_en": "Bridesmaid Wrap Dress",
+      "category": "wedding",
+      "description": "Bridesmaid Wrap Dress with wrap front, waist tie; designed for 伴娘服, 婚宴. Safe, tasteful, versatile. ｜ 伴娘交疊洋裝，特色：wrap front、waist tie；適用於伴娘服、婚宴。風格安全、實穿多變。",
+      "structure_core": [
+        "wrap front",
+        "waist tie"
+      ],
+      "design_identity": [
+        "feminine modern"
+      ],
+      "material_logic": [
+        "viscose",
+        "crepe"
+      ],
+      "usage_scenario": [
+        "伴娘服",
+        "婚宴"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "bridesmaid",
+        "wrap"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_mother_of_bride",
+      "display_name_zh": "新娘母親禮服",
+      "display_name_en": "Mother of the Bride Dress",
+      "category": "wedding",
+      "description": "Mother of the Bride Dress with midi/maxi, elegant cut; designed for 正席宴會, 迎賓. Safe, tasteful, versatile. ｜ 新娘母親禮服，特色：midi/maxi、elegant cut；適用於正席宴會、迎賓。風格安全、實穿多變。",
+      "structure_core": [
+        "midi/maxi",
+        "elegant cut"
+      ],
+      "design_identity": [
+        "formal elegant"
+      ],
+      "material_logic": [
+        "crepe",
+        "lace lined"
+      ],
+      "usage_scenario": [
+        "正席宴會",
+        "迎賓"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "mother of bride",
+        "formal"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_groom_tuxedo",
+      "display_name_zh": "新郎晚禮服",
+      "display_name_en": "Groom Tuxedo",
+      "category": "wedding",
+      "description": "Groom Tuxedo with satin lapel, tuxedo details; designed for 證婚, 宴客. Safe, tasteful, versatile. ｜ 新郎晚禮服，特色：satin lapel、tuxedo details；適用於證婚、宴客。風格安全、實穿多變。",
+      "structure_core": [
+        "satin lapel",
+        "tuxedo details"
+      ],
+      "design_identity": [
+        "evening classic"
+      ],
+      "material_logic": [
+        "wool suiting",
+        "satin trim"
+      ],
+      "usage_scenario": [
+        "證婚",
+        "宴客"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "groom",
+        "tuxedo"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_groomsmen_suit",
+      "display_name_zh": "伴郎西裝",
+      "display_name_en": "Groomsmen Suit",
+      "category": "wedding",
+      "description": "Groomsmen Suit with two-piece suit, notch lapel; designed for 證婚, 宴客. Safe, tasteful, versatile. ｜ 伴郎西裝，特色：two-piece suit、notch lapel；適用於證婚、宴客。風格安全、實穿多變。",
+      "structure_core": [
+        "two-piece suit",
+        "notch lapel"
+      ],
+      "design_identity": [
+        "coordinated tailoring"
+      ],
+      "material_logic": [
+        "wool blend"
+      ],
+      "usage_scenario": [
+        "證婚",
+        "宴客"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "groomsmen",
+        "suit"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_bridal_cape",
+      "display_name_zh": "新娘肩披",
+      "display_name_en": "Bridal Cape",
+      "category": "wedding",
+      "description": "Bridal Cape with cape overlay, closure; designed for 進場儀式, 拍攝. Safe, tasteful, versatile. ｜ 新娘肩披，特色：cape overlay、closure；適用於進場儀式、拍攝。風格安全、實穿多變。",
+      "structure_core": [
+        "cape overlay",
+        "closure"
+      ],
+      "design_identity": [
+        "modern accessory"
+      ],
+      "material_logic": [
+        "tulle (lined edges)",
+        "organza"
+      ],
+      "usage_scenario": [
+        "進場儀式",
+        "拍攝"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "bridal cape",
+        "accessory"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_bridal_bolero",
+      "display_name_zh": "新娘小外套",
+      "display_name_en": "Bridal Bolero",
+      "category": "wedding",
+      "description": "Bridal Bolero with bolero cut, hook closure; designed for 教堂儀式, 戶外風大時. Safe, tasteful, versatile. ｜ 新娘小外套，特色：bolero cut、hook closure；適用於教堂儀式、戶外風大時。風格安全、實穿多變。",
+      "structure_core": [
+        "bolero cut",
+        "hook closure"
+      ],
+      "design_identity": [
+        "modest layer"
+      ],
+      "material_logic": [
+        "lace lined",
+        "crepe"
+      ],
+      "usage_scenario": [
+        "教堂儀式",
+        "戶外風大時"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "bolero",
+        "bridal"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_bridal_gloves",
+      "display_name_zh": "新娘手套",
+      "display_name_en": "Bridal Gloves",
+      "category": "wedding",
+      "description": "Bridal Gloves with wrist length, matte finish; designed for 正席禮儀, 拍攝. Safe, tasteful, versatile. ｜ 新娘手套，特色：wrist length、matte finish；適用於正席禮儀、拍攝。風格安全、實穿多變。",
+      "structure_core": [
+        "wrist length",
+        "matte finish"
+      ],
+      "design_identity": [
+        "formal accessory"
+      ],
+      "material_logic": [
+        "silk",
+        "satin matte"
+      ],
+      "usage_scenario": [
+        "正席禮儀",
+        "拍攝"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "bridal gloves",
+        "accessory"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_guest_crepe_midi",
+      "display_name_zh": "賓客服裝中長裙",
+      "display_name_en": "Wedding Guest Crepe Midi",
+      "category": "wedding",
+      "description": "Wedding Guest Crepe Midi with midi, clean lines; designed for 婚禮賓客, 宴客. Safe, tasteful, versatile. ｜ 賓客服裝中長裙，特色：midi、clean lines；適用於婚禮賓客、宴客。風格安全、實穿多變。",
+      "structure_core": [
+        "midi",
+        "clean lines"
+      ],
+      "design_identity": [
+        "guest elegant"
+      ],
+      "material_logic": [
+        "crepe",
+        "silk blend"
+      ],
+      "usage_scenario": [
+        "婚禮賓客",
+        "宴客"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "wedding guest",
+        "midi"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_guest_wrap_flower",
+      "display_name_zh": "賓客碎花洋裝",
+      "display_name_en": "Floral Wrap Guest Dress",
+      "category": "wedding",
+      "description": "Floral Wrap Guest Dress with wrap, floral print; designed for 戶外婚禮, 庭園儀式. Safe, tasteful, versatile. ｜ 賓客碎花洋裝，特色：wrap、floral print；適用於戶外婚禮、庭園儀式。風格安全、實穿多變。",
+      "structure_core": [
+        "wrap",
+        "floral print"
+      ],
+      "design_identity": [
+        "soft romantic"
+      ],
+      "material_logic": [
+        "viscose",
+        "rayon"
+      ],
+      "usage_scenario": [
+        "戶外婚禮",
+        "庭園儀式"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "guest",
+        "floral",
+        "wrap"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_guest_satin_bias",
+      "display_name_zh": "賓客斜裁緞面裙",
+      "display_name_en": "Guest Bias Satin Skirt",
+      "category": "wedding",
+      "description": "Guest Bias Satin Skirt with bias cut, midi; designed for 晚宴, 雞尾酒會. Safe, tasteful, versatile. ｜ 賓客斜裁緞面裙，特色：bias cut、midi；適用於晚宴、雞尾酒會。風格安全、實穿多變。",
+      "structure_core": [
+        "bias cut",
+        "midi"
+      ],
+      "design_identity": [
+        "evening minimal"
+      ],
+      "material_logic": [
+        "acetate satin"
+      ],
+      "usage_scenario": [
+        "晚宴",
+        "雞尾酒會"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "guest",
+        "satin",
+        "bias"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_bridal_minimal_crepe",
+      "display_name_zh": "極簡婚紗（無過度裝飾）",
+      "display_name_en": "Minimal Crepe Bridal Gown",
+      "category": "wedding",
+      "description": "Minimal Crepe Bridal Gown with column, train; designed for 室內證婚, 小型婚禮. Safe, tasteful, versatile. ｜ 極簡婚紗（無過度裝飾），特色：column、train；適用於室內證婚、小型婚禮。風格安全、實穿多變。",
+      "structure_core": [
+        "column",
+        "train"
+      ],
+      "design_identity": [
+        "minimal bridal"
+      ],
+      "material_logic": [
+        "crepe",
+        "silk blend"
+      ],
+      "usage_scenario": [
+        "室內證婚",
+        "小型婚禮"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "minimal",
+        "bridal"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_bridal_lace_lined",
+      "display_name_zh": "蕾絲襯裡婚紗（安全）",
+      "display_name_en": "Lace-Lined Bridal Dress (Safe)",
+      "category": "wedding",
+      "description": "Lace-Lined Bridal Dress (Safe) with lined lace, a-line; designed for 證婚, 宴客. Safe, tasteful, versatile. ｜ 蕾絲襯裡婚紗（安全），特色：lined lace、a-line；適用於證婚、宴客。風格安全、實穿多變。",
+      "structure_core": [
+        "lined lace",
+        "a-line"
+      ],
+      "design_identity": [
+        "romantic classic"
+      ],
+      "material_logic": [
+        "lace with lining",
+        "tulle (lined)"
+      ],
+      "usage_scenario": [
+        "證婚",
+        "宴客"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "lace",
+        "bridal",
+        "safe"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_bridal_mikado_bow",
+      "display_name_zh": "Mikado 大蝴蝶結款",
+      "display_name_en": "Mikado Bow Bridal Gown",
+      "category": "wedding",
+      "description": "Mikado Bow Bridal Gown with structured bow, a-line; designed for 進場儀式, 拍攝. Safe, tasteful, versatile. ｜ Mikado 大蝴蝶結款，特色：structured bow、a-line；適用於進場儀式、拍攝。風格安全、實穿多變。",
+      "structure_core": [
+        "structured bow",
+        "a-line"
+      ],
+      "design_identity": [
+        "couture modern"
+      ],
+      "material_logic": [
+        "silk mikado"
+      ],
+      "usage_scenario": [
+        "進場儀式",
+        "拍攝"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "mikado",
+        "bow",
+        "bridal"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_bridal_square_neck",
+      "display_name_zh": "方領婚紗",
+      "display_name_en": "Square-Neck Bridal Dress",
+      "category": "wedding",
+      "description": "Square-Neck Bridal Dress with square neck, clean bodice; designed for 證婚, 晚宴. Safe, tasteful, versatile. ｜ 方領婚紗，特色：square neck、clean bodice；適用於證婚、晚宴。風格安全、實穿多變。",
+      "structure_core": [
+        "square neck",
+        "clean bodice"
+      ],
+      "design_identity": [
+        "modern classic"
+      ],
+      "material_logic": [
+        "satin",
+        "crepe"
+      ],
+      "usage_scenario": [
+        "證婚",
+        "晚宴"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "square neck",
+        "bridal"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_bridal_bateau",
+      "display_name_zh": "船型領婚紗",
+      "display_name_en": "Bateau-Neck Bridal Dress",
+      "category": "wedding",
+      "description": "Bateau-Neck Bridal Dress with bateau neck, structured bodice; designed for 教堂儀式, 宴客. Safe, tasteful, versatile. ｜ 船型領婚紗，特色：bateau neck、structured bodice；適用於教堂儀式、宴客。風格安全、實穿多變。",
+      "structure_core": [
+        "bateau neck",
+        "structured bodice"
+      ],
+      "design_identity": [
+        "timeless elegant"
+      ],
+      "material_logic": [
+        "satin",
+        "lace lined"
+      ],
+      "usage_scenario": [
+        "教堂儀式",
+        "宴客"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "bateau",
+        "bridal"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_bridal_cowl",
+      "display_name_zh": "垂領婚紗",
+      "display_name_en": "Cowl-Neck Bridal Dress",
+      "category": "wedding",
+      "description": "Cowl-Neck Bridal Dress with cowl neck, bias cut; designed for 室內儀式, 宴客. Safe, tasteful, versatile. ｜ 垂領婚紗，特色：cowl neck、bias cut；適用於室內儀式、宴客。風格安全、實穿多變。",
+      "structure_core": [
+        "cowl neck",
+        "bias cut"
+      ],
+      "design_identity": [
+        "minimal elegant"
+      ],
+      "material_logic": [
+        "acetate satin",
+        "silk"
+      ],
+      "usage_scenario": [
+        "室內儀式",
+        "宴客"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "cowl",
+        "bridal"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_bridal_sleeves_poet",
+      "display_name_zh": "詩人袖婚紗",
+      "display_name_en": "Poet-Sleeve Bridal Gown",
+      "category": "wedding",
+      "description": "Poet-Sleeve Bridal Gown with poet sleeve, a-line; designed for 證婚, 拍攝. Safe, tasteful, versatile. ｜ 詩人袖婚紗，特色：poet sleeve、a-line；適用於證婚、拍攝。風格安全、實穿多變。",
+      "structure_core": [
+        "poet sleeve",
+        "a-line"
+      ],
+      "design_identity": [
+        "romantic"
+      ],
+      "material_logic": [
+        "silk chiffon"
+      ],
+      "usage_scenario": [
+        "證婚",
+        "拍攝"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "poet sleeve",
+        "bridal"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_bridal_highneck_modest",
+      "display_name_zh": "高領端莊婚紗",
+      "display_name_en": "High-Neck Modest Bridal",
+      "category": "wedding",
+      "description": "High-Neck Modest Bridal with high neck, long sleeve; designed for 宗教儀式, 教堂. Safe, tasteful, versatile. ｜ 高領端莊婚紗，特色：high neck、long sleeve；適用於宗教儀式、教堂。風格安全、實穿多變。",
+      "structure_core": [
+        "high neck",
+        "long sleeve"
+      ],
+      "design_identity": [
+        "modest elegant"
+      ],
+      "material_logic": [
+        "crepe",
+        "satin"
+      ],
+      "usage_scenario": [
+        "宗教儀式",
+        "教堂"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "modest",
+        "bridal"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_bridal_pearl_embellish_safe",
+      "display_name_zh": "珍珠點綴（安全）",
+      "display_name_en": "Pearl-Embellished Bridal (Safe)",
+      "category": "wedding",
+      "description": "Pearl-Embellished Bridal (Safe) with pearl detail, lined; designed for 宴會, 迎賓. Safe, tasteful, versatile. ｜ 珍珠點綴（安全），特色：pearl detail、lined；適用於宴會、迎賓。風格安全、實穿多變。",
+      "structure_core": [
+        "pearl detail",
+        "lined"
+      ],
+      "design_identity": [
+        "classic detail"
+      ],
+      "material_logic": [
+        "satin",
+        "tulle (lined)"
+      ],
+      "usage_scenario": [
+        "宴會",
+        "迎賓"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "pearl",
+        "bridal"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_gown_a_line_v33",
+      "display_name_zh": "A字婚紗（v33）",
+      "display_name_en": "A-line Wedding Gown (v33)",
+      "category": "wedding",
+      "description": "A-line Wedding Gown with a-line, floor length; designed for 婚禮正儀, 迎賓儀式. Safe, tasteful, versatile. ｜ A字婚紗，特色：a-line、floor length；適用於婚禮正儀、迎賓儀式。風格安全、實穿多變。",
+      "structure_core": [
+        "a-line",
+        "floor length",
+        "variant-v33"
+      ],
+      "design_identity": [
+        "bridal classic",
+        "variant-v33"
+      ],
+      "material_logic": [
+        "silk mikado",
+        "tulle (lined)"
+      ],
+      "usage_scenario": [
+        "婚禮正儀",
+        "迎賓儀式"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "wedding",
+        "gown",
+        "a-line",
+        "v33"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_gown_ball_v34",
+      "display_name_zh": "蓬裙婚紗（v34）",
+      "display_name_en": "Ball Gown Wedding Dress (v34)",
+      "category": "wedding",
+      "description": "Ball Gown Wedding Dress with ball gown, structured bodice; designed for 進場儀式, 拍攝. Safe, tasteful, versatile. ｜ 蓬裙婚紗，特色：ball gown、structured bodice；適用於進場儀式、拍攝。風格安全、實穿多變。",
+      "structure_core": [
+        "ball gown",
+        "structured bodice",
+        "variant-v34"
+      ],
+      "design_identity": [
+        "princess classic",
+        "variant-v34"
+      ],
+      "material_logic": [
+        "silk satin",
+        "tulle (lined)"
+      ],
+      "usage_scenario": [
+        "進場儀式",
+        "拍攝"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "wedding",
+        "ball gown",
+        "v34"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_gown_mermaid_v35",
+      "display_name_zh": "魚尾婚紗（v35）",
+      "display_name_en": "Mermaid Wedding Dress (v35)",
+      "category": "wedding",
+      "description": "Mermaid Wedding Dress with mermaid silhouette, train; designed for 宴客, 晚宴派對. Safe, tasteful, versatile. ｜ 魚尾婚紗，特色：mermaid silhouette、train；適用於宴客、晚宴派對。風格安全、實穿多變。",
+      "structure_core": [
+        "mermaid silhouette",
+        "train",
+        "variant-v35"
+      ],
+      "design_identity": [
+        "evening elegant",
+        "variant-v35"
+      ],
+      "material_logic": [
+        "duchess satin",
+        "crepe"
+      ],
+      "usage_scenario": [
+        "宴客",
+        "晚宴派對"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "mermaid",
+        "wedding",
+        "v35"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_gown_trumpet_v36",
+      "display_name_zh": "喇叭婚紗（v36）",
+      "display_name_en": "Trumpet Wedding Dress (v36)",
+      "category": "wedding",
+      "description": "Trumpet Wedding Dress with trumpet flare, floor length; designed for 證婚, 宴客. Safe, tasteful, versatile. ｜ 喇叭婚紗，特色：trumpet flare、floor length；適用於證婚、宴客。風格安全、實穿多變。",
+      "structure_core": [
+        "trumpet flare",
+        "floor length",
+        "variant-v36"
+      ],
+      "design_identity": [
+        "elegant modern",
+        "variant-v36"
+      ],
+      "material_logic": [
+        "crepe",
+        "satin"
+      ],
+      "usage_scenario": [
+        "證婚",
+        "宴客"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "trumpet",
+        "wedding",
+        "v36"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_gown_sheath_v37",
+      "display_name_zh": "直筒婚紗（v37）",
+      "display_name_en": "Sheath Wedding Dress (v37)",
+      "category": "wedding",
+      "description": "Sheath Wedding Dress with column shape, train optional; designed for 戶外婚禮, 海邊儀式. Safe, tasteful, versatile. ｜ 直筒婚紗，特色：column shape、train optional；適用於戶外婚禮、海邊儀式。風格安全、實穿多變。",
+      "structure_core": [
+        "column shape",
+        "train optional",
+        "variant-v37"
+      ],
+      "design_identity": [
+        "minimal chic",
+        "variant-v37"
+      ],
+      "material_logic": [
+        "crepe",
+        "silk blend"
+      ],
+      "usage_scenario": [
+        "戶外婚禮",
+        "海邊儀式"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "sheath",
+        "minimal",
+        "wedding",
+        "v37"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_gown_empire_v38",
+      "display_name_zh": "高腰帝國婚紗（v38）",
+      "display_name_en": "Empire-Waist Wedding Dress (v38)",
+      "category": "wedding",
+      "description": "Empire-Waist Wedding Dress with empire waist, soft drape; designed for 證婚, 宴會. Safe, tasteful, versatile. ｜ 高腰帝國婚紗，特色：empire waist、soft drape；適用於證婚、宴會。風格安全、實穿多變。",
+      "structure_core": [
+        "empire waist",
+        "soft drape",
+        "variant-v38"
+      ],
+      "design_identity": [
+        "romantic classic",
+        "variant-v38"
+      ],
+      "material_logic": [
+        "silk chiffon",
+        "georgette"
+      ],
+      "usage_scenario": [
+        "證婚",
+        "宴會"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "empire waist",
+        "wedding",
+        "v38"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_tea_length_v39",
+      "display_name_zh": "茶會長度婚紗（v39）",
+      "display_name_en": "Tea-Length Bridal Dress (v39)",
+      "category": "wedding",
+      "description": "Tea-Length Bridal Dress with tea length, a-line; designed for 午宴, 戶外儀式. Safe, tasteful, versatile. ｜ 茶會長度婚紗，特色：tea length、a-line；適用於午宴、戶外儀式。風格安全、實穿多變。",
+      "structure_core": [
+        "tea length",
+        "a-line",
+        "variant-v39"
+      ],
+      "design_identity": [
+        "retro elegant",
+        "variant-v39"
+      ],
+      "material_logic": [
+        "silk organza (lined)",
+        "satin"
+      ],
+      "usage_scenario": [
+        "午宴",
+        "戶外儀式"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "tea length",
+        "bridal",
+        "v39"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "wedding_bridal_jumpsuit_v40",
+      "display_name_zh": "新娘連身褲（v40）",
+      "display_name_en": "Bridal Jumpsuit (v40)",
+      "category": "wedding",
+      "description": "Bridal Jumpsuit with tailored bodice, wide leg; designed for 證婚, 婚宴二進. Safe, tasteful, versatile. ｜ 新娘連身褲，特色：tailored bodice、wide leg；適用於證婚、婚宴二進。風格安全、實穿多變。",
+      "structure_core": [
+        "tailored bodice",
+        "wide leg",
+        "variant-v40"
+      ],
+      "design_identity": [
+        "modern bridal",
+        "variant-v40"
+      ],
+      "material_logic": [
+        "crepe",
+        "satin trim"
+      ],
+      "usage_scenario": [
+        "證婚",
+        "婚宴二進"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "excessive transparency",
+        "lingerie styling"
+      ],
+      "search_tags": [
+        "bridal jumpsuit",
+        "modern",
+        "v40"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    }
+  ]
+}

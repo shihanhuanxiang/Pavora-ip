@@ -1,0 +1,2121 @@
+{
+  "metadata": {
+    "module": "Pavora Product System",
+    "category_group": "Traditional",
+    "version": "1.0",
+    "language": "zh-en",
+    "prompt_style": "hybrid_balance",
+    "autosafe": true,
+    "total_items": 40,
+    "last_update": "2025-10-12"
+  },
+  "items": [
+    {
+      "id": "traditional_qipao_cheongsam",
+      "display_name_zh": "旗袍（改良版）",
+      "display_name_en": "Qipao / Cheongsam (Modern)",
+      "category": "traditional",
+      "description": "Qipao / Cheongsam (Modern) with stand collar, princess seams; designed for 節慶宴會, 正式場合. Safe, tasteful, versatile. ｜ 旗袍（改良版），特色：stand collar、princess seams；適用於節慶宴會、正式場合。風格安全、實穿多變。",
+      "structure_core": [
+        "stand collar",
+        "princess seams"
+      ],
+      "design_identity": [
+        "eastern elegant",
+        "modern tailoring"
+      ],
+      "material_logic": [
+        "silk brocade (lined)",
+        "crepe"
+      ],
+      "usage_scenario": [
+        "節慶宴會",
+        "正式場合"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "qipao",
+        "cheongsam",
+        "modern"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_hanfu_ruqun_modern",
+      "display_name_zh": "漢服襦裙（現代）",
+      "display_name_en": "Hanfu Ruqun (Modern)",
+      "category": "traditional",
+      "description": "Hanfu Ruqun (Modern) with cross-collar, flowy skirt; designed for 攝影造型, 文化活動. Safe, tasteful, versatile. ｜ 漢服襦裙（現代），特色：cross-collar、flowy skirt；適用於攝影造型、文化活動。風格安全、實穿多變。",
+      "structure_core": [
+        "cross-collar",
+        "flowy skirt"
+      ],
+      "design_identity": [
+        "heritage graceful"
+      ],
+      "material_logic": [
+        "silk blend",
+        "cotton voile"
+      ],
+      "usage_scenario": [
+        "攝影造型",
+        "文化活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "hanfu",
+        "ruqun",
+        "modern"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_kimono_yukata_modern",
+      "display_name_zh": "和風浴衣（現代）",
+      "display_name_en": "Yukata (Modern)",
+      "category": "traditional",
+      "description": "Yukata (Modern) with wrap front, obi-inspired belt; designed for 夏季祭典, 旅遊穿搭. Safe, tasteful, versatile. ｜ 和風浴衣（現代），特色：wrap front、obi-inspired belt；適用於夏季祭典、旅遊穿搭。風格安全、實穿多變。",
+      "structure_core": [
+        "wrap front",
+        "obi-inspired belt"
+      ],
+      "design_identity": [
+        "summer festival"
+      ],
+      "material_logic": [
+        "cotton lawn"
+      ],
+      "usage_scenario": [
+        "夏季祭典",
+        "旅遊穿搭"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "yukata",
+        "kimono modern"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_hanbok_modern",
+      "display_name_zh": "韓服（現代改良）",
+      "display_name_en": "Hanbok (Modern)",
+      "category": "traditional",
+      "description": "Hanbok (Modern) with jeogori-inspired top, full skirt; designed for 節慶活動, 攝影. Safe, tasteful, versatile. ｜ 韓服（現代改良），特色：jeogori-inspired top、full skirt；適用於節慶活動、攝影。風格安全、實穿多變。",
+      "structure_core": [
+        "jeogori-inspired top",
+        "full skirt"
+      ],
+      "design_identity": [
+        "heritage modern"
+      ],
+      "material_logic": [
+        "silk blend",
+        "organza (lined)"
+      ],
+      "usage_scenario": [
+        "節慶活動",
+        "攝影"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "hanbok",
+        "modern"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_sari_modern_drape",
+      "display_name_zh": "紗麗（現代穿法）",
+      "display_name_en": "Sari (Modern Drape)",
+      "category": "traditional",
+      "description": "Sari (Modern Drape) with drape wrap, blouse (lined); designed for 婚禮賓客, 文化節慶. Safe, tasteful, versatile. ｜ 紗麗（現代穿法），特色：drape wrap、blouse (lined)；適用於婚禮賓客、文化節慶。風格安全、實穿多變。",
+      "structure_core": [
+        "drape wrap",
+        "blouse (lined)"
+      ],
+      "design_identity": [
+        "heritage elegant"
+      ],
+      "material_logic": [
+        "silk",
+        "cotton"
+      ],
+      "usage_scenario": [
+        "婚禮賓客",
+        "文化節慶"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "sari",
+        "modern"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_lehenga_modern",
+      "display_name_zh": "印度長裙套裝（現代）",
+      "display_name_en": "Lehenga Set (Modern)",
+      "category": "traditional",
+      "description": "Lehenga Set (Modern) with crop blouse (lined), lehenga skirt; designed for 婚禮慶典, 節慶. Safe, tasteful, versatile. ｜ 印度長裙套裝（現代），特色：crop blouse (lined)、lehenga skirt；適用於婚禮慶典、節慶。風格安全、實穿多變。",
+      "structure_core": [
+        "crop blouse (lined)",
+        "lehenga skirt"
+      ],
+      "design_identity": [
+        "festive elegant"
+      ],
+      "material_logic": [
+        "silk brocade (lined)",
+        "chiffon"
+      ],
+      "usage_scenario": [
+        "婚禮慶典",
+        "節慶"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "lehenga",
+        "set"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_ao_dai_modern",
+      "display_name_zh": "奧黛（現代）",
+      "display_name_en": "Áo Dài (Modern)",
+      "category": "traditional",
+      "description": "Áo Dài (Modern) with long tunic, side slits; designed for 正式場合, 文化活動. Safe, tasteful, versatile. ｜ 奧黛（現代），特色：long tunic、side slits；適用於正式場合、文化活動。風格安全、實穿多變。",
+      "structure_core": [
+        "long tunic",
+        "side slits"
+      ],
+      "design_identity": [
+        "slim elegant"
+      ],
+      "material_logic": [
+        "silk blend"
+      ],
+      "usage_scenario": [
+        "正式場合",
+        "文化活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "ao dai",
+        "modern"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_kebaya_modern",
+      "display_name_zh": "克巴雅（現代）",
+      "display_name_en": "Kebaya (Modern)",
+      "category": "traditional",
+      "description": "Kebaya (Modern) with lace blouse (lined), sarong-style skirt; designed for 典禮, 節慶. Safe, tasteful, versatile. ｜ 克巴雅（現代），特色：lace blouse (lined)、sarong-style skirt；適用於典禮、節慶。風格安全、實穿多變。",
+      "structure_core": [
+        "lace blouse (lined)",
+        "sarong-style skirt"
+      ],
+      "design_identity": [
+        "heritage elegant"
+      ],
+      "material_logic": [
+        "lace (lined)",
+        "batik"
+      ],
+      "usage_scenario": [
+        "典禮",
+        "節慶"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "kebaya",
+        "modern"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_dirndl_modern",
+      "display_name_zh": "迪爾ndl（現代）",
+      "display_name_en": "Dirndl (Modern)",
+      "category": "traditional",
+      "description": "Dirndl (Modern) with bodice, full skirt, apron; designed for 啤酒節, 文化活動. Safe, tasteful, versatile. ｜ 迪爾ndl（現代），特色：bodice、full skirt、apron；適用於啤酒節、文化活動。風格安全、實穿多變。",
+      "structure_core": [
+        "bodice",
+        "full skirt",
+        "apron"
+      ],
+      "design_identity": [
+        "alpine heritage"
+      ],
+      "material_logic": [
+        "cotton",
+        "linen"
+      ],
+      "usage_scenario": [
+        "啤酒節",
+        "文化活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "dirndl",
+        "alpine"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_kilt_modern",
+      "display_name_zh": "蘇格蘭裙（現代）",
+      "display_name_en": "Kilt (Modern)",
+      "category": "traditional",
+      "description": "Kilt (Modern) with pleated wrap, belt; designed for 文化節慶, 表演造型. Safe, tasteful, versatile. ｜ 蘇格蘭裙（現代），特色：pleated wrap、belt；適用於文化節慶、表演造型。風格安全、實穿多變。",
+      "structure_core": [
+        "pleated wrap",
+        "belt"
+      ],
+      "design_identity": [
+        "heritage classic"
+      ],
+      "material_logic": [
+        "wool tartan"
+      ],
+      "usage_scenario": [
+        "文化節慶",
+        "表演造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "kilt",
+        "tartan"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_dashiki_modern",
+      "display_name_zh": "達西基（現代）",
+      "display_name_en": "Dashiki (Modern)",
+      "category": "traditional",
+      "description": "Dashiki (Modern) with tunic, embroidered neckline; designed for 文化節慶, 城市穿搭. Safe, tasteful, versatile. ｜ 達西基（現代），特色：tunic、embroidered neckline；適用於文化節慶、城市穿搭。風格安全、實穿多變。",
+      "structure_core": [
+        "tunic",
+        "embroidered neckline"
+      ],
+      "design_identity": [
+        "heritage bold"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "文化節慶",
+        "城市穿搭"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "dashiki",
+        "tunic"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_baju_kurung_modern",
+      "display_name_zh": "峇峇裙（現代）",
+      "display_name_en": "Baju Kurung (Modern)",
+      "category": "traditional",
+      "description": "Baju Kurung (Modern) with long blouse, long skirt; designed for 節慶活動, 正式場合. Safe, tasteful, versatile. ｜ 峇峇裙（現代），特色：long blouse、long skirt；適用於節慶活動、正式場合。風格安全、實穿多變。",
+      "structure_core": [
+        "long blouse",
+        "long skirt"
+      ],
+      "design_identity": [
+        "modest elegant"
+      ],
+      "material_logic": [
+        "silk blend"
+      ],
+      "usage_scenario": [
+        "節慶活動",
+        "正式場合"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "baju kurung",
+        "modest"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_baju_melayu_modern",
+      "display_name_zh": "馬來傳統裝（現代）",
+      "display_name_en": "Baju Melayu (Modern)",
+      "category": "traditional",
+      "description": "Baju Melayu (Modern) with stand collar, long tunic; designed for 節慶活動, 宗教場合（尊重）. Safe, tasteful, versatile. ｜ 馬來傳統裝（現代），特色：stand collar、long tunic；適用於節慶活動、宗教場合（尊重）。風格安全、實穿多變。",
+      "structure_core": [
+        "stand collar",
+        "long tunic"
+      ],
+      "design_identity": [
+        "modest classic"
+      ],
+      "material_logic": [
+        "cotton blend"
+      ],
+      "usage_scenario": [
+        "節慶活動",
+        "宗教場合（尊重）"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "baju melayu",
+        "modest"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_han_jacket_modern",
+      "display_name_zh": "中式立領外套",
+      "display_name_en": "Chinese Mandarin Jacket (Modern)",
+      "category": "traditional",
+      "description": "Chinese Mandarin Jacket (Modern) with mandarin collar, frog buttons; designed for 新年造型, 文化活動. Safe, tasteful, versatile. ｜ 中式立領外套，特色：mandarin collar、frog buttons；適用於新年造型、文化活動。風格安全、實穿多變。",
+      "structure_core": [
+        "mandarin collar",
+        "frog buttons"
+      ],
+      "design_identity": [
+        "heritage modern"
+      ],
+      "material_logic": [
+        "silk blend",
+        "cotton twill"
+      ],
+      "usage_scenario": [
+        "新年造型",
+        "文化活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "mandarin jacket",
+        "heritage"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_poncho_andes_modern",
+      "display_name_zh": "安地斯斗篷（現代）",
+      "display_name_en": "Andean Poncho (Modern)",
+      "category": "traditional",
+      "description": "Andean Poncho (Modern) with woven poncho, geometric motif; designed for 冬季活動, 文化節慶. Safe, tasteful, versatile. ｜ 安地斯斗篷（現代），特色：woven poncho、geometric motif；適用於冬季活動、文化節慶。風格安全、實穿多變。",
+      "structure_core": [
+        "woven poncho",
+        "geometric motif"
+      ],
+      "design_identity": [
+        "folk heritage"
+      ],
+      "material_logic": [
+        "wool",
+        "alpaca"
+      ],
+      "usage_scenario": [
+        "冬季活動",
+        "文化節慶"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "poncho",
+        "andean"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_sambo_ilkwa_modern",
+      "display_name_zh": "非洲印花套裝（現代）",
+      "display_name_en": "African Print Set (Modern)",
+      "category": "traditional",
+      "description": "African Print Set (Modern) with print top, matching skirt; designed for 文化節慶, 舞台造型. Safe, tasteful, versatile. ｜ 非洲印花套裝（現代），特色：print top、matching skirt；適用於文化節慶、舞台造型。風格安全、實穿多變。",
+      "structure_core": [
+        "print top",
+        "matching skirt"
+      ],
+      "design_identity": [
+        "vibrant modern"
+      ],
+      "material_logic": [
+        "wax print cotton"
+      ],
+      "usage_scenario": [
+        "文化節慶",
+        "舞台造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "african print",
+        "set"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_qipao_cheongsam_v17",
+      "display_name_zh": "旗袍（改良版）（v17）",
+      "display_name_en": "Qipao / Cheongsam (Modern) (v17)",
+      "category": "traditional",
+      "description": "Qipao / Cheongsam (Modern) with stand collar, princess seams; designed for 節慶宴會, 正式場合. Safe, tasteful, versatile. ｜ 旗袍（改良版），特色：stand collar、princess seams；適用於節慶宴會、正式場合。風格安全、實穿多變。",
+      "structure_core": [
+        "stand collar",
+        "princess seams",
+        "variant-v17"
+      ],
+      "design_identity": [
+        "eastern elegant",
+        "modern tailoring",
+        "variant-v17"
+      ],
+      "material_logic": [
+        "silk brocade (lined)",
+        "crepe"
+      ],
+      "usage_scenario": [
+        "節慶宴會",
+        "正式場合"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "qipao",
+        "cheongsam",
+        "modern",
+        "v17"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_hanfu_ruqun_modern_v18",
+      "display_name_zh": "漢服襦裙（現代）（v18）",
+      "display_name_en": "Hanfu Ruqun (Modern) (v18)",
+      "category": "traditional",
+      "description": "Hanfu Ruqun (Modern) with cross-collar, flowy skirt; designed for 攝影造型, 文化活動. Safe, tasteful, versatile. ｜ 漢服襦裙（現代），特色：cross-collar、flowy skirt；適用於攝影造型、文化活動。風格安全、實穿多變。",
+      "structure_core": [
+        "cross-collar",
+        "flowy skirt",
+        "variant-v18"
+      ],
+      "design_identity": [
+        "heritage graceful",
+        "variant-v18"
+      ],
+      "material_logic": [
+        "silk blend",
+        "cotton voile"
+      ],
+      "usage_scenario": [
+        "攝影造型",
+        "文化活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "hanfu",
+        "ruqun",
+        "modern",
+        "v18"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_kimono_yukata_modern_v19",
+      "display_name_zh": "和風浴衣（現代）（v19）",
+      "display_name_en": "Yukata (Modern) (v19)",
+      "category": "traditional",
+      "description": "Yukata (Modern) with wrap front, obi-inspired belt; designed for 夏季祭典, 旅遊穿搭. Safe, tasteful, versatile. ｜ 和風浴衣（現代），特色：wrap front、obi-inspired belt；適用於夏季祭典、旅遊穿搭。風格安全、實穿多變。",
+      "structure_core": [
+        "wrap front",
+        "obi-inspired belt",
+        "variant-v19"
+      ],
+      "design_identity": [
+        "summer festival",
+        "variant-v19"
+      ],
+      "material_logic": [
+        "cotton lawn"
+      ],
+      "usage_scenario": [
+        "夏季祭典",
+        "旅遊穿搭"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "yukata",
+        "kimono modern",
+        "v19"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_hanbok_modern_v20",
+      "display_name_zh": "韓服（現代改良）（v20）",
+      "display_name_en": "Hanbok (Modern) (v20)",
+      "category": "traditional",
+      "description": "Hanbok (Modern) with jeogori-inspired top, full skirt; designed for 節慶活動, 攝影. Safe, tasteful, versatile. ｜ 韓服（現代改良），特色：jeogori-inspired top、full skirt；適用於節慶活動、攝影。風格安全、實穿多變。",
+      "structure_core": [
+        "jeogori-inspired top",
+        "full skirt",
+        "variant-v20"
+      ],
+      "design_identity": [
+        "heritage modern",
+        "variant-v20"
+      ],
+      "material_logic": [
+        "silk blend",
+        "organza (lined)"
+      ],
+      "usage_scenario": [
+        "節慶活動",
+        "攝影"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "hanbok",
+        "modern",
+        "v20"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_sari_modern_drape_v21",
+      "display_name_zh": "紗麗（現代穿法）（v21）",
+      "display_name_en": "Sari (Modern Drape) (v21)",
+      "category": "traditional",
+      "description": "Sari (Modern Drape) with drape wrap, blouse (lined); designed for 婚禮賓客, 文化節慶. Safe, tasteful, versatile. ｜ 紗麗（現代穿法），特色：drape wrap、blouse (lined)；適用於婚禮賓客、文化節慶。風格安全、實穿多變。",
+      "structure_core": [
+        "drape wrap",
+        "blouse (lined)",
+        "variant-v21"
+      ],
+      "design_identity": [
+        "heritage elegant",
+        "variant-v21"
+      ],
+      "material_logic": [
+        "silk",
+        "cotton"
+      ],
+      "usage_scenario": [
+        "婚禮賓客",
+        "文化節慶"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "sari",
+        "modern",
+        "v21"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_lehenga_modern_v22",
+      "display_name_zh": "印度長裙套裝（現代）（v22）",
+      "display_name_en": "Lehenga Set (Modern) (v22)",
+      "category": "traditional",
+      "description": "Lehenga Set (Modern) with crop blouse (lined), lehenga skirt; designed for 婚禮慶典, 節慶. Safe, tasteful, versatile. ｜ 印度長裙套裝（現代），特色：crop blouse (lined)、lehenga skirt；適用於婚禮慶典、節慶。風格安全、實穿多變。",
+      "structure_core": [
+        "crop blouse (lined)",
+        "lehenga skirt",
+        "variant-v22"
+      ],
+      "design_identity": [
+        "festive elegant",
+        "variant-v22"
+      ],
+      "material_logic": [
+        "silk brocade (lined)",
+        "chiffon"
+      ],
+      "usage_scenario": [
+        "婚禮慶典",
+        "節慶"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "lehenga",
+        "set",
+        "v22"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_ao_dai_modern_v23",
+      "display_name_zh": "奧黛（現代）（v23）",
+      "display_name_en": "Áo Dài (Modern) (v23)",
+      "category": "traditional",
+      "description": "Áo Dài (Modern) with long tunic, side slits; designed for 正式場合, 文化活動. Safe, tasteful, versatile. ｜ 奧黛（現代），特色：long tunic、side slits；適用於正式場合、文化活動。風格安全、實穿多變。",
+      "structure_core": [
+        "long tunic",
+        "side slits",
+        "variant-v23"
+      ],
+      "design_identity": [
+        "slim elegant",
+        "variant-v23"
+      ],
+      "material_logic": [
+        "silk blend"
+      ],
+      "usage_scenario": [
+        "正式場合",
+        "文化活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "ao dai",
+        "modern",
+        "v23"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_kebaya_modern_v24",
+      "display_name_zh": "克巴雅（現代）（v24）",
+      "display_name_en": "Kebaya (Modern) (v24)",
+      "category": "traditional",
+      "description": "Kebaya (Modern) with lace blouse (lined), sarong-style skirt; designed for 典禮, 節慶. Safe, tasteful, versatile. ｜ 克巴雅（現代），特色：lace blouse (lined)、sarong-style skirt；適用於典禮、節慶。風格安全、實穿多變。",
+      "structure_core": [
+        "lace blouse (lined)",
+        "sarong-style skirt",
+        "variant-v24"
+      ],
+      "design_identity": [
+        "heritage elegant",
+        "variant-v24"
+      ],
+      "material_logic": [
+        "lace (lined)",
+        "batik"
+      ],
+      "usage_scenario": [
+        "典禮",
+        "節慶"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "kebaya",
+        "modern",
+        "v24"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_dirndl_modern_v25",
+      "display_name_zh": "迪爾ndl（現代）（v25）",
+      "display_name_en": "Dirndl (Modern) (v25)",
+      "category": "traditional",
+      "description": "Dirndl (Modern) with bodice, full skirt, apron; designed for 啤酒節, 文化活動. Safe, tasteful, versatile. ｜ 迪爾ndl（現代），特色：bodice、full skirt、apron；適用於啤酒節、文化活動。風格安全、實穿多變。",
+      "structure_core": [
+        "bodice",
+        "full skirt",
+        "apron",
+        "variant-v25"
+      ],
+      "design_identity": [
+        "alpine heritage",
+        "variant-v25"
+      ],
+      "material_logic": [
+        "cotton",
+        "linen"
+      ],
+      "usage_scenario": [
+        "啤酒節",
+        "文化活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "dirndl",
+        "alpine",
+        "v25"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_kilt_modern_v26",
+      "display_name_zh": "蘇格蘭裙（現代）（v26）",
+      "display_name_en": "Kilt (Modern) (v26)",
+      "category": "traditional",
+      "description": "Kilt (Modern) with pleated wrap, belt; designed for 文化節慶, 表演造型. Safe, tasteful, versatile. ｜ 蘇格蘭裙（現代），特色：pleated wrap、belt；適用於文化節慶、表演造型。風格安全、實穿多變。",
+      "structure_core": [
+        "pleated wrap",
+        "belt",
+        "variant-v26"
+      ],
+      "design_identity": [
+        "heritage classic",
+        "variant-v26"
+      ],
+      "material_logic": [
+        "wool tartan"
+      ],
+      "usage_scenario": [
+        "文化節慶",
+        "表演造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "kilt",
+        "tartan",
+        "v26"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_dashiki_modern_v27",
+      "display_name_zh": "達西基（現代）（v27）",
+      "display_name_en": "Dashiki (Modern) (v27)",
+      "category": "traditional",
+      "description": "Dashiki (Modern) with tunic, embroidered neckline; designed for 文化節慶, 城市穿搭. Safe, tasteful, versatile. ｜ 達西基（現代），特色：tunic、embroidered neckline；適用於文化節慶、城市穿搭。風格安全、實穿多變。",
+      "structure_core": [
+        "tunic",
+        "embroidered neckline",
+        "variant-v27"
+      ],
+      "design_identity": [
+        "heritage bold",
+        "variant-v27"
+      ],
+      "material_logic": [
+        "cotton"
+      ],
+      "usage_scenario": [
+        "文化節慶",
+        "城市穿搭"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "dashiki",
+        "tunic",
+        "v27"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_baju_kurung_modern_v28",
+      "display_name_zh": "峇峇裙（現代）（v28）",
+      "display_name_en": "Baju Kurung (Modern) (v28)",
+      "category": "traditional",
+      "description": "Baju Kurung (Modern) with long blouse, long skirt; designed for 節慶活動, 正式場合. Safe, tasteful, versatile. ｜ 峇峇裙（現代），特色：long blouse、long skirt；適用於節慶活動、正式場合。風格安全、實穿多變。",
+      "structure_core": [
+        "long blouse",
+        "long skirt",
+        "variant-v28"
+      ],
+      "design_identity": [
+        "modest elegant",
+        "variant-v28"
+      ],
+      "material_logic": [
+        "silk blend"
+      ],
+      "usage_scenario": [
+        "節慶活動",
+        "正式場合"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "baju kurung",
+        "modest",
+        "v28"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_baju_melayu_modern_v29",
+      "display_name_zh": "馬來傳統裝（現代）（v29）",
+      "display_name_en": "Baju Melayu (Modern) (v29)",
+      "category": "traditional",
+      "description": "Baju Melayu (Modern) with stand collar, long tunic; designed for 節慶活動, 宗教場合（尊重）. Safe, tasteful, versatile. ｜ 馬來傳統裝（現代），特色：stand collar、long tunic；適用於節慶活動、宗教場合（尊重）。風格安全、實穿多變。",
+      "structure_core": [
+        "stand collar",
+        "long tunic",
+        "variant-v29"
+      ],
+      "design_identity": [
+        "modest classic",
+        "variant-v29"
+      ],
+      "material_logic": [
+        "cotton blend"
+      ],
+      "usage_scenario": [
+        "節慶活動",
+        "宗教場合（尊重）"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "baju melayu",
+        "modest",
+        "v29"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_han_jacket_modern_v30",
+      "display_name_zh": "中式立領外套（v30）",
+      "display_name_en": "Chinese Mandarin Jacket (Modern) (v30)",
+      "category": "traditional",
+      "description": "Chinese Mandarin Jacket (Modern) with mandarin collar, frog buttons; designed for 新年造型, 文化活動. Safe, tasteful, versatile. ｜ 中式立領外套，特色：mandarin collar、frog buttons；適用於新年造型、文化活動。風格安全、實穿多變。",
+      "structure_core": [
+        "mandarin collar",
+        "frog buttons",
+        "variant-v30"
+      ],
+      "design_identity": [
+        "heritage modern",
+        "variant-v30"
+      ],
+      "material_logic": [
+        "silk blend",
+        "cotton twill"
+      ],
+      "usage_scenario": [
+        "新年造型",
+        "文化活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "mandarin jacket",
+        "heritage",
+        "v30"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_poncho_andes_modern_v31",
+      "display_name_zh": "安地斯斗篷（現代）（v31）",
+      "display_name_en": "Andean Poncho (Modern) (v31)",
+      "category": "traditional",
+      "description": "Andean Poncho (Modern) with woven poncho, geometric motif; designed for 冬季活動, 文化節慶. Safe, tasteful, versatile. ｜ 安地斯斗篷（現代），特色：woven poncho、geometric motif；適用於冬季活動、文化節慶。風格安全、實穿多變。",
+      "structure_core": [
+        "woven poncho",
+        "geometric motif",
+        "variant-v31"
+      ],
+      "design_identity": [
+        "folk heritage",
+        "variant-v31"
+      ],
+      "material_logic": [
+        "wool",
+        "alpaca"
+      ],
+      "usage_scenario": [
+        "冬季活動",
+        "文化節慶"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "poncho",
+        "andean",
+        "v31"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_sambo_ilkwa_modern_v32",
+      "display_name_zh": "非洲印花套裝（現代）（v32）",
+      "display_name_en": "African Print Set (Modern) (v32)",
+      "category": "traditional",
+      "description": "African Print Set (Modern) with print top, matching skirt; designed for 文化節慶, 舞台造型. Safe, tasteful, versatile. ｜ 非洲印花套裝（現代），特色：print top、matching skirt；適用於文化節慶、舞台造型。風格安全、實穿多變。",
+      "structure_core": [
+        "print top",
+        "matching skirt",
+        "variant-v32"
+      ],
+      "design_identity": [
+        "vibrant modern",
+        "variant-v32"
+      ],
+      "material_logic": [
+        "wax print cotton"
+      ],
+      "usage_scenario": [
+        "文化節慶",
+        "舞台造型"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "african print",
+        "set",
+        "v32"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_qipao_cheongsam_v33",
+      "display_name_zh": "旗袍（改良版）（v33）",
+      "display_name_en": "Qipao / Cheongsam (Modern) (v33)",
+      "category": "traditional",
+      "description": "Qipao / Cheongsam (Modern) with stand collar, princess seams; designed for 節慶宴會, 正式場合. Safe, tasteful, versatile. ｜ 旗袍（改良版），特色：stand collar、princess seams；適用於節慶宴會、正式場合。風格安全、實穿多變。",
+      "structure_core": [
+        "stand collar",
+        "princess seams",
+        "variant-v33"
+      ],
+      "design_identity": [
+        "eastern elegant",
+        "modern tailoring",
+        "variant-v33"
+      ],
+      "material_logic": [
+        "silk brocade (lined)",
+        "crepe"
+      ],
+      "usage_scenario": [
+        "節慶宴會",
+        "正式場合"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "qipao",
+        "cheongsam",
+        "modern",
+        "v33"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_hanfu_ruqun_modern_v34",
+      "display_name_zh": "漢服襦裙（現代）（v34）",
+      "display_name_en": "Hanfu Ruqun (Modern) (v34)",
+      "category": "traditional",
+      "description": "Hanfu Ruqun (Modern) with cross-collar, flowy skirt; designed for 攝影造型, 文化活動. Safe, tasteful, versatile. ｜ 漢服襦裙（現代），特色：cross-collar、flowy skirt；適用於攝影造型、文化活動。風格安全、實穿多變。",
+      "structure_core": [
+        "cross-collar",
+        "flowy skirt",
+        "variant-v34"
+      ],
+      "design_identity": [
+        "heritage graceful",
+        "variant-v34"
+      ],
+      "material_logic": [
+        "silk blend",
+        "cotton voile"
+      ],
+      "usage_scenario": [
+        "攝影造型",
+        "文化活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "hanfu",
+        "ruqun",
+        "modern",
+        "v34"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_kimono_yukata_modern_v35",
+      "display_name_zh": "和風浴衣（現代）（v35）",
+      "display_name_en": "Yukata (Modern) (v35)",
+      "category": "traditional",
+      "description": "Yukata (Modern) with wrap front, obi-inspired belt; designed for 夏季祭典, 旅遊穿搭. Safe, tasteful, versatile. ｜ 和風浴衣（現代），特色：wrap front、obi-inspired belt；適用於夏季祭典、旅遊穿搭。風格安全、實穿多變。",
+      "structure_core": [
+        "wrap front",
+        "obi-inspired belt",
+        "variant-v35"
+      ],
+      "design_identity": [
+        "summer festival",
+        "variant-v35"
+      ],
+      "material_logic": [
+        "cotton lawn"
+      ],
+      "usage_scenario": [
+        "夏季祭典",
+        "旅遊穿搭"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "yukata",
+        "kimono modern",
+        "v35"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_hanbok_modern_v36",
+      "display_name_zh": "韓服（現代改良）（v36）",
+      "display_name_en": "Hanbok (Modern) (v36)",
+      "category": "traditional",
+      "description": "Hanbok (Modern) with jeogori-inspired top, full skirt; designed for 節慶活動, 攝影. Safe, tasteful, versatile. ｜ 韓服（現代改良），特色：jeogori-inspired top、full skirt；適用於節慶活動、攝影。風格安全、實穿多變。",
+      "structure_core": [
+        "jeogori-inspired top",
+        "full skirt",
+        "variant-v36"
+      ],
+      "design_identity": [
+        "heritage modern",
+        "variant-v36"
+      ],
+      "material_logic": [
+        "silk blend",
+        "organza (lined)"
+      ],
+      "usage_scenario": [
+        "節慶活動",
+        "攝影"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "hanbok",
+        "modern",
+        "v36"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_sari_modern_drape_v37",
+      "display_name_zh": "紗麗（現代穿法）（v37）",
+      "display_name_en": "Sari (Modern Drape) (v37)",
+      "category": "traditional",
+      "description": "Sari (Modern Drape) with drape wrap, blouse (lined); designed for 婚禮賓客, 文化節慶. Safe, tasteful, versatile. ｜ 紗麗（現代穿法），特色：drape wrap、blouse (lined)；適用於婚禮賓客、文化節慶。風格安全、實穿多變。",
+      "structure_core": [
+        "drape wrap",
+        "blouse (lined)",
+        "variant-v37"
+      ],
+      "design_identity": [
+        "heritage elegant",
+        "variant-v37"
+      ],
+      "material_logic": [
+        "silk",
+        "cotton"
+      ],
+      "usage_scenario": [
+        "婚禮賓客",
+        "文化節慶"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "sari",
+        "modern",
+        "v37"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_lehenga_modern_v38",
+      "display_name_zh": "印度長裙套裝（現代）（v38）",
+      "display_name_en": "Lehenga Set (Modern) (v38)",
+      "category": "traditional",
+      "description": "Lehenga Set (Modern) with crop blouse (lined), lehenga skirt; designed for 婚禮慶典, 節慶. Safe, tasteful, versatile. ｜ 印度長裙套裝（現代），特色：crop blouse (lined)、lehenga skirt；適用於婚禮慶典、節慶。風格安全、實穿多變。",
+      "structure_core": [
+        "crop blouse (lined)",
+        "lehenga skirt",
+        "variant-v38"
+      ],
+      "design_identity": [
+        "festive elegant",
+        "variant-v38"
+      ],
+      "material_logic": [
+        "silk brocade (lined)",
+        "chiffon"
+      ],
+      "usage_scenario": [
+        "婚禮慶典",
+        "節慶"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "lehenga",
+        "set",
+        "v38"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_ao_dai_modern_v39",
+      "display_name_zh": "奧黛（現代）（v39）",
+      "display_name_en": "Áo Dài (Modern) (v39)",
+      "category": "traditional",
+      "description": "Áo Dài (Modern) with long tunic, side slits; designed for 正式場合, 文化活動. Safe, tasteful, versatile. ｜ 奧黛（現代），特色：long tunic、side slits；適用於正式場合、文化活動。風格安全、實穿多變。",
+      "structure_core": [
+        "long tunic",
+        "side slits",
+        "variant-v39"
+      ],
+      "design_identity": [
+        "slim elegant",
+        "variant-v39"
+      ],
+      "material_logic": [
+        "silk blend"
+      ],
+      "usage_scenario": [
+        "正式場合",
+        "文化活動"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "ao dai",
+        "modern",
+        "v39"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    },
+    {
+      "id": "traditional_kebaya_modern_v40",
+      "display_name_zh": "克巴雅（現代）（v40）",
+      "display_name_en": "Kebaya (Modern) (v40)",
+      "category": "traditional",
+      "description": "Kebaya (Modern) with lace blouse (lined), sarong-style skirt; designed for 典禮, 節慶. Safe, tasteful, versatile. ｜ 克巴雅（現代），特色：lace blouse (lined)、sarong-style skirt；適用於典禮、節慶。風格安全、實穿多變。",
+      "structure_core": [
+        "lace blouse (lined)",
+        "sarong-style skirt",
+        "variant-v40"
+      ],
+      "design_identity": [
+        "heritage elegant",
+        "variant-v40"
+      ],
+      "material_logic": [
+        "lace (lined)",
+        "batik"
+      ],
+      "usage_scenario": [
+        "典禮",
+        "節慶"
+      ],
+      "prompt_lock": [
+        "clean silhouette",
+        "balanced proportion",
+        "studio-ready detail",
+        "color-safe palette",
+        "hybrid_balance styling",
+        "retail-ready presentation"
+      ],
+      "negative_lock": [
+        "nudity",
+        "explicit sexualization",
+        "fetish themes",
+        "see-through without lining",
+        "offensive/violent symbols",
+        "hate propaganda",
+        "weapons",
+        "blood/gore",
+        "drug imagery",
+        "religious disrespect",
+        "child/underage themes",
+        "cultural caricature",
+        "sacred symbols misuse"
+      ],
+      "search_tags": [
+        "kebaya",
+        "modern",
+        "v40"
+      ],
+      "autosafe": true,
+      "status": "complete"
+    }
+  ]
+}

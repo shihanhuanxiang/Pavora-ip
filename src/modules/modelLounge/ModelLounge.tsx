@@ -1,0 +1,709 @@
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import type { Model, PortfolioItem, DiaryEntry } from '../../shared/types/types';
+import Button from '../../shared/components/common/Button';
+import Card from '../../shared/components/common/Card';
+import ImagePreviewModal from '../../shared/components/common/ImagePreviewModal';
+import { useModelStore } from '../../shared/stores/useModelStore';
+import { useBrandStore } from '../../shared/stores/useBrandStore';
+import AsyncImage from '../../shared/components/common/AsyncImage';
+import PortfolioSelectModal from '../../components/PortfolioSelectModal';
+import NarrativeWorkflow from '../narrative/NarrativeWorkflow';
+import { auth } from '../../shared/services/firebase/firebaseConfig';
+import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, User } from 'firebase/auth';
+import { extractMetadataFromFile, hasPavoraMetadata, embedMetadata } from '../../shared/utils/metadataUtils';
+import { downloadImage } from '../../shared/utils/imageUtils';
+import { useNotification } from '../../shared/context/NotificationContext';
+import Loader from '../../shared/components/common/Loader';
+
+import ModelIdentityEditor from './ModelIdentityEditor';
+import ModelActionMenu from './components/ModelActionMenu';
+
+interface ModelLoungeProps {
+  onGoHome: () => void;
+  onModelSelect: (model: Model, destination: string) => void;
+  isHubMode?: boolean;
+}
+
+export const handleDownload = (model: Model) => {
+    const { id, name, gender, age, persona, lifeCircuit, type, stats } = model;
+    const metadata = { id, name, gender, age, persona, lifeCircuit, type, stats, exportedAt: new Date().toISOString() };
+    
+    const imageUrl = model.imageUrl;
+    if (imageUrl.startsWith('data:')) {
+        const enriched = embedMetadata(imageUrl, metadata);
+        downloadImage(enriched, `${name || 'model'}.jpg`, 'ModelLounge');
+    } else {
+        downloadImage(imageUrl, `${name || 'model'}.jpg`, 'ModelLounge');
+    }
+};
+
+const DESTINATIONS = [
+    { key: 'fitting_room', label: '虛擬試衣間 (Fitting)' },
+    { key: 'scene', label: '場景轉移 (Scene)' },
+    { key: 'narrative', label: '靈魂敘事 (Narrative) ✨' },
+    { key: 'salon', label: '髮型沙龍 (Salon)' },
+];
+
+const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHubMode }) => {
+  const { models, removeModels, addModel, syncWithCloud } = useModelStore();
+  const { addAmbassador, ambassadors } = useBrandStore();
+  const { addNotification } = useNotification();
+  const [selectedModels, setSelectedModels] = useState<Set<string>>(new Set());
+  const [previewingImage, setPreviewingImage] = useState<{images: string[], startIndex: number} | null>(null);
+  const [showPortfolioImport, setShowPortfolioImport] = useState(false);
+  const [selectedModelForNarrative, setSelectedModelForNarrative] = useState<Model | null>(null);
+  const [editingModel, setEditingModel] = useState<Model | null>(null);
+  const [viewingPortfolioModelId, setViewingPortfolioModelId] = useState<string | null>(null);
+  
+  const [currentUser, setCurrentUser] = useState<User | null>(auth.currentUser);
+  const [isUploading, setIsUploading] = useState(false);
+  const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
+  const [activePortfolioItemId, setActivePortfolioItemId] = useState<string | null>(null);
+  const [readingDiary, setReadingDiary] = useState<{
+    name: string, 
+    content: string, 
+    visualPrompt?: string, 
+    visualPromptZH?: string 
+  } | null>(null);
+  const [selectedGalleryItems, setSelectedGalleryItems] = useState<Set<string>>(new Set());
+  const [isPortfolioDeleteMode, setIsPortfolioDeleteMode] = useState(false);
+
+  const { removeFromModelGallery } = useModelStore();
+
+  const portfolioModel = viewingPortfolioModelId ? models.find(m => m.id === viewingPortfolioModelId) : null;
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+        setCurrentUser(user);
+        if (user) {
+            syncWithCloud();
+        }
+    });
+    return () => unsubscribe();
+  }, [syncWithCloud]);
+
+  const handleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+        await signInWithPopup(auth, provider);
+        addNotification({ type: 'success', message: '已成功連接雲端' });
+    } catch (e) {
+        console.error("Login failed", e);
+        addNotification({ type: 'error', message: '雲端連接失敗' });
+    }
+  };
+
+  const handleManualUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files?.length) return;
+    const file = event.target.files[0];
+    setIsUploading(true);
+
+    try {
+        const metadata = await extractMetadataFromFile(file);
+        if (metadata) {
+            // It has our specific metadata!
+            const reader = new FileReader();
+            reader.onload = async () => {
+                const base64 = reader.result as string;
+                await addModel({
+                    ...metadata,
+                    imageUrl: base64, // We use the uploaded file's base64, addModel will handle storage
+                }, true); // Do NOT sync back to cloud immediately, it might be a duplicate or just local reference
+                addNotification({ type: 'success', message: `✨ 成功識別並載入模特兒: ${metadata.name}` });
+            };
+            reader.readAsDataURL(file);
+        } else {
+            // Regular image, just import as basic model
+            const reader = new FileReader();
+            reader.onload = async () => {
+                const base64 = reader.result as string;
+                await addModel({
+                    id: `manual-${Date.now()}`,
+                    name: `手動上傳 ${file.name.split('.')[0]}`,
+                    imageUrl: base64,
+                    type: 'custom'
+                });
+                addNotification({ type: 'info', message: '已載入影像，但未發現 Pavora 身份 Metadata。' });
+            };
+            reader.readAsDataURL(file);
+        }
+    } catch (e) {
+        addNotification({ type: 'error', message: '讀取檔案失敗' });
+    } finally {
+        setIsUploading(false);
+        event.target.value = ''; // clear input
+    }
+  };
+
+  const toggleSelection = (modelId: string) => {
+    setSelectedModels(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(modelId)) newSet.delete(modelId);
+      else newSet.add(modelId);
+      return newSet;
+    });
+  };
+  
+  const handleSelectAll = () => {
+    if (selectedModels.size === models.length) setSelectedModels(new Set());
+    else setSelectedModels(new Set(models.map(m => m.id)));
+  };
+
+  const handleDelete = () => {
+    if (selectedModels.size > 0) {
+      if (confirm(`確定要刪除選中的 ${selectedModels.size} 個模特兒人物嗎？此操作不可撤銷。`)) {
+        removeModels(Array.from(selectedModels));
+        setSelectedModels(new Set());
+        addNotification({ type: 'success', message: '模特兒人物已成功刪除' });
+      }
+    }
+  };
+
+  const handleNarrativeConfirm = (diary: Partial<DiaryEntry>, generatedImageUrl?: string) => {
+      if (!selectedModelForNarrative) return;
+      
+      // Just refresh the data locally via the store (NarrativeWorkflow already calls updateModelGallery)
+      setSelectedModelForNarrative(null);
+      addNotification({ type: 'success', message: '靈魂敘事已同步至模特兒作品集' });
+  };
+
+  const handlePromoteToAmbassador = async (model: Model) => {
+    if (ambassadors.length >= 5) {
+      alert('品牌代言人上限為 5 位，請先移除現有代言人。');
+      return;
+    }
+    
+    await addAmbassador({
+      id: `amb_${Date.now()}`,
+      name: model.name,
+      imageUrl: model.imageUrl,
+      gender: 'female', // Default, should ideally be from model data
+      ethnicity: 'Asian',
+      bodyType: 'Standard',
+      createdAt: new Date().toISOString()
+    });
+    alert('已成功晉升為品牌代言人！');
+  };
+
+  const handlePortfolioImport = async (selectedItems: PortfolioItem[]) => {
+    for (const item of selectedItems) {
+      await addModel({
+        id: `model-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+        name: `Imported ${item.sourceModule}`,
+        imageUrl: item.imageUrl,
+        type: 'custom'
+      });
+    }
+  };
+
+  const toggleGallerySelection = (itemId: string) => {
+    setSelectedGalleryItems(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(itemId)) newSet.delete(itemId);
+      else newSet.add(itemId);
+      return newSet;
+    });
+  };
+
+  const handleDeleteGalleryItems = async () => {
+    if (!viewingPortfolioModelId || selectedGalleryItems.size === 0) return;
+    
+    if (confirm(`確定要刪除選中的 ${selectedGalleryItems.size} 張圖片嗎？`)) {
+        await removeFromModelGallery(viewingPortfolioModelId, Array.from(selectedGalleryItems));
+        setSelectedGalleryItems(new Set());
+        setIsPortfolioDeleteMode(false);
+        addNotification({ type: 'success', message: '圖片已成功刪除' });
+    }
+  };
+
+    return (
+        <div className={`min-h-screen bg-[var(--color-bg-deep)] text-[var(--color-text-main)] font-sans pb-20 ${isHubMode ? 'pt-8' : ''}`}>
+            {previewingImage && <ImagePreviewModal {...previewingImage} onClose={() => setPreviewingImage(null)} />}
+            
+            <AnimatePresence>
+                {readingDiary && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                        <motion.div 
+                            initial={{ opacity: 0 }} 
+                            animate={{ opacity: 1 }} 
+                            exit={{ opacity: 0 }}
+                            className="absolute inset-0 bg-black/90 backdrop-blur-md" 
+                            onClick={() => setReadingDiary(null)} 
+                        />
+                        <motion.div 
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                            className="relative w-full max-w-lg bg-[var(--color-bg-surface)] border border-[var(--color-gold)]/30 rounded-3xl p-10 shadow-2xl overflow-hidden"
+                        >
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-gold)]/5 blur-3xl -z-10"></div>
+                            <h3 className="text-xl font-display font-bold text-[var(--color-gold)] tracking-[0.2em] mb-6 uppercase">
+                                {readingDiary.name} 的靈魂敘事
+                            </h3>
+                            <div className="max-h-[60vh] overflow-y-auto pr-4 custom-scrollbar space-y-6">
+                                <div className="text-gray-300 font-serif italic leading-relaxed text-base whitespace-pre-wrap border-l-2 border-[var(--color-gold)]/20 pl-6">
+                                    {readingDiary.content}
+                                </div>
+                                
+                                {(readingDiary.visualPrompt || readingDiary.visualPromptZH) && (
+                                    <div className="pt-6 border-t border-white/5 space-y-6">
+                                        <h4 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-gold)]"></span>
+                                            視覺轉化參數 (Structured Visual Manifest)
+                                        </h4>
+                                        
+                                        {readingDiary.visualPromptZH && (
+                                            <div className="space-y-3">
+                                                <div className="text-[8px] text-[var(--color-gold)] font-bold uppercase tracking-tighter opacity-60">中文敘事對齊 (ZH)</div>
+                                                <div className="grid grid-cols-1 gap-2">
+                                                    {readingDiary.visualPromptZH.split('\n').map((line, i) => {
+                                                        const [key, ...val] = line.split(': ');
+                                                        return (
+                                                            <div key={i} className="bg-white/5 p-3 rounded-lg border border-white/5 flex gap-3 items-start">
+                                                                <span className="text-[9px] font-bold text-[var(--color-gold)]/70 whitespace-nowrap pt-0.5">{key}</span>
+                                                                <p className="text-[11px] text-gray-400 leading-relaxed">{val.join(': ')}</p>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {readingDiary.visualPrompt && (
+                                            <div className="space-y-3">
+                                                <div className="text-[8px] text-blue-400 font-bold uppercase tracking-tighter opacity-60">英文視覺指令 (EN)</div>
+                                                <div className="grid grid-cols-1 gap-2">
+                                                    {readingDiary.visualPrompt.split('\n').map((line, i) => {
+                                                        const [key, ...val] = line.split(': ');
+                                                        return (
+                                                            <div key={i} className="bg-black/40 p-3 rounded-lg border border-white/5 flex gap-3 items-start">
+                                                                <span className="text-[9px] font-mono font-bold text-blue-400/70 whitespace-nowrap pt-0.5">{key}</span>
+                                                                <p className="text-[10px] font-mono text-gray-500 leading-relaxed">{val.join(': ')}</p>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                            <Button 
+                                onClick={() => setReadingDiary(null)}
+                                className="w-full mt-10 py-4 text-xs font-bold tracking-[0.3em] uppercase"
+                            >
+                                關閉 (CLOSE)
+                            </Button>
+                        </motion.div>
+                    </div>
+                )}
+                {selectedModelForNarrative && (
+                    <NarrativeWorkflow 
+                        model={selectedModelForNarrative}
+                        onClose={() => setSelectedModelForNarrative(null)}
+                        onConfirm={handleNarrativeConfirm}
+                    />
+                )}
+                {editingModel && (
+                    <ModelIdentityEditor 
+                        model={editingModel}
+                        onClose={() => setEditingModel(null)}
+                    />
+                )}
+            </AnimatePresence>
+
+            <PortfolioSelectModal 
+              isOpen={showPortfolioImport}
+              onClose={() => setShowPortfolioImport(false)}
+              onConfirm={handlePortfolioImport}
+            />
+
+            {/* Header */}
+            {!isHubMode && (
+                <div className="sticky top-[80px] z-30 glass-panel border-x-0 border-t-0 px-6 py-4 mb-8">
+                    <div className="max-w-[110rem] mx-auto flex justify-between items-center">
+                        <div className="flex flex-col">
+                            <h2 className="text-2xl font-display font-bold uppercase tracking-[0.3em] text-[var(--color-text-main)]">模特兒休息室</h2>
+                            <span className="text-[9px] uppercase tracking-[0.5em] text-[var(--color-gold)] font-light">Model Lounge Studio</span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            {currentUser ? (
+                                <div className="flex items-center gap-2 bg-green-500/10 border border-green-500/20 px-3 py-1 rounded-full">
+                                    <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+                                    <span className="text-[10px] font-bold text-green-500">{currentUser.displayName || '已登入'}</span>
+                                    <button onClick={() => auth.signOut()} className="text-[9px] text-gray-500 hover:text-white ml-2 transition-colors">登出</button>
+                                </div>
+                            ) : (
+                                <button 
+                                    onClick={handleLogin}
+                                    className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-[var(--color-gold)] hover:bg-[var(--color-gold)]/10 hover:border-[var(--color-gold)] transition-all"
+                                >
+                                    ☁️ 連接雲端存檔
+                                </button>
+                            )}
+                            {onGoHome && <Button onClick={onGoHome} variant="secondary" className="text-[10px] font-bold tracking-widest">返回首頁</Button>}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <main className="max-w-[110rem] mx-auto px-6 lg:px-12">
+                {/* Toolbar */}
+                <div className="glass-panel rounded-2xl p-4 mb-10 flex flex-wrap justify-between items-center gap-4 border border-[var(--color-border)]">
+                    <div className="flex items-center gap-6">
+                        <label className="flex items-center gap-3 cursor-pointer group">
+                            <div className="relative w-5 h-5 border border-[var(--color-border)] rounded flex items-center justify-center transition-all group-hover:border-[var(--color-gold)]">
+                                <input 
+                                    type="checkbox" 
+                                    className="absolute inset-0 opacity-0 cursor-pointer" 
+                                    checked={models.length > 0 && selectedModels.size === models.length} 
+                                    onChange={handleSelectAll} 
+                                />
+                                {models.length > 0 && selectedModels.size === models.length && (
+                                    <div className="w-2.5 h-2.5 bg-[var(--color-gold)] rounded-sm"></div>
+                                )}
+                            </div>
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-dim)] group-hover:text-[var(--color-text-main)] transition-colors">全選</span>
+                        </label>
+                        
+                        <div className="h-4 w-px bg-[var(--color-border)]"></div>
+                        
+                        <span className="text-[10px] font-mono tracking-widest text-[var(--color-gold)]">
+                            {selectedModels.size} / {models.length} 已選擇
+                        </span>
+                    </div>
+
+                    <div className="flex gap-4">
+                        <label className="cursor-pointer">
+                            <input type="file" className="hidden" accept="image/*" onChange={handleManualUpload} />
+                            <div className="px-6 py-2 bg-white/5 border border-white/10 rounded-xl text-[10px] font-bold tracking-widest text-white hover:bg-white/10 hover:border-[var(--color-gold)] transition-all flex items-center gap-2">
+                                📤 手動上傳舊照片 (自動讀取)
+                            </div>
+                        </label>
+                        <Button 
+                            onClick={() => setShowPortfolioImport(true)}
+                            variant="primary"
+                            className="text-[10px] font-bold tracking-widest"
+                        >
+                            從作品集錦匯入
+                        </Button>
+                        <Button 
+                            onClick={handleDelete} 
+                            disabled={selectedModels.size === 0} 
+                            variant="secondary" 
+                            className="text-[10px] font-bold tracking-widest bg-red-500/10 hover:bg-red-500/20 text-red-500 border-red-500/20 disabled:opacity-30"
+                        >
+                            刪除已選
+                        </Button>
+                    </div>
+                </div>
+
+                {models.length > 0 ? (
+                    portfolioModel ? (
+                        /* MODEL PORTFOLIO VIEW (HUB) */
+                        <motion.div 
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            className="space-y-12"
+                        >
+                            {/* Portfolio Header */}
+                            <div className="flex flex-col md:flex-row gap-8 items-start">
+                                <div className="w-1/4 aspect-[3/4] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+                                    <AsyncImage src={portfolioModel.imageUrl} className="w-full h-full object-cover" />
+                                </div>
+                                <div className="flex-1 space-y-6 pt-4">
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <button 
+                                                onClick={() => setViewingPortfolioModelId(null)}
+                                                className="text-[10px] text-[var(--color-gold)] font-bold tracking-widest uppercase mb-4 flex items-center gap-2 hover:underline"
+                                            >
+                                                ← 返回模特兒清單
+                                            </button>
+                                            <h1 className="text-4xl font-display font-bold tracking-widest text-white uppercase">{portfolioModel.name}</h1>
+                                            <div className="flex gap-3 mt-4">
+                                                <span className="px-4 py-1.5 bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/20 rounded-full text-[10px] font-bold text-[var(--color-gold)] uppercase">
+                                                    MBTI: {portfolioModel.persona?.mbti || 'N/A'}
+                                                </span>
+                                                <span className="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold text-gray-400 uppercase">
+                                                    Vibe: {portfolioModel.persona?.coreVibe || 'Professional'}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-4">
+                                            {isPortfolioDeleteMode ? (
+                                                <>
+                                                    <Button 
+                                                        onClick={handleDeleteGalleryItems} 
+                                                        disabled={selectedGalleryItems.size === 0}
+                                                        className="px-6 py-3 bg-red-500 hover:bg-red-600 text-white border-0 text-[10px] tracking-widest disabled:opacity-30"
+                                                    >
+                                                        確定刪除 ({selectedGalleryItems.size})
+                                                    </Button>
+                                                    <Button onClick={() => { setIsPortfolioDeleteMode(false); setSelectedGalleryItems(new Set()); }} variant="secondary" className="px-6 py-3 border-white/10 text-[10px] tracking-widest">
+                                                        取消
+                                                    </Button>
+                                                </>
+                                            ) : (
+                                                <button 
+                                                    onClick={() => setIsPortfolioDeleteMode(true)}
+                                                    className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl text-[10px] font-bold tracking-widest text-gray-400 hover:text-white transition-all hover:border-red-500/50"
+                                                >
+                                                    🗑️ 批量刪除模式
+                                                </button>
+                                            )}
+                                            <Button onClick={() => setEditingModel(portfolioModel)} variant="secondary" className="px-6 py-3 border-white/10 text-[10px] tracking-widest">
+                                                編輯身份 (Edit Identity)
+                                            </Button>
+                                            <Button onClick={() => setSelectedModelForNarrative(portfolioModel)} className="px-8 py-3 text-[10px] tracking-[0.2em]">
+                                                啟動靈魂敘事 (START NARRATIVE)
+                                            </Button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-white/5 rounded-3xl border border-white/5">
+                                        <div>
+                                            <p className="text-[9px] text-gray-500 uppercase font-bold tracking-widest mb-1">作品數量</p>
+                                            <p className="text-xl text-white font-mono">{(portfolioModel.gallery?.length || 0) + 1}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-[9px] text-gray-500 uppercase font-bold tracking-widest mb-1">主導情緒</p>
+                                            <p className="text-xl text-white font-mono">{portfolioModel.persona?.toneOfVoice || '自然'}</p>
+                                        </div>
+                                        <div className="col-span-2">
+                                            <p className="text-[9px] text-gray-500 uppercase font-bold tracking-widest mb-1">物理參數 (Stats)</p>
+                                            <p className="text-xs text-gray-400 font-mono">
+                                                {portfolioModel.stats?.bust}-{portfolioModel.stats?.waist}-{portfolioModel.stats?.hip} // {portfolioModel.stats?.height}cm
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Assets Grid */}
+                            <div className="space-y-6">
+                                <h3 className="text-[11px] font-bold text-white uppercase tracking-[0.4em] border-b border-white/5 pb-4">
+                                    模特兒作品集與衍生資產 (Portfolio & Assets)
+                                </h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                    {/* Original Image */}
+                                    <div className="group relative glass-panel rounded-2xl overflow-hidden border border-[var(--color-gold)] shadow-lg">
+                                        <div className="aspect-[3/4] cursor-pointer" onClick={() => setPreviewingImage({images: [portfolioModel.imageUrl], startIndex: 0})}>
+                                            <AsyncImage src={portfolioModel.imageUrl} className="w-full h-full object-cover" />
+                                            <div className="absolute top-3 left-3 px-2 py-1 bg-[var(--color-gold)] rounded text-[8px] font-bold text-black uppercase tracking-widest">
+                                                Main Identity
+                                            </div>
+                                            <div className="absolute top-3 right-3 flex gap-2">
+                                                <button 
+                                                    onClick={(e) => { e.stopPropagation(); setActivePortfolioItemId('main'); }}
+                                                    className="w-8 h-8 flex items-center justify-center rounded-xl bg-black/60 hover:bg-[var(--color-gold)] text-white hover:text-black transition-all border border-white/10"
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        {/* Action Menu for Main Image */}
+                                        <ModelActionMenu 
+                                            model={portfolioModel}
+                                            isOpen={activePortfolioItemId === 'main'}
+                                            onClose={() => setActivePortfolioItemId(null)}
+                                            onModelSelect={(model, dest) => {
+                                                if (dest === 'narrative') {
+                                                    setSelectedModelForNarrative(model);
+                                                } else {
+                                                    onModelSelect(model, dest);
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                    
+                                    {/* Gallery Items */}
+                                    {portfolioModel.gallery?.map((item, idx) => (
+                                        <div key={item.id} className={`group relative glass-panel rounded-2xl overflow-hidden border transition-all ${selectedGalleryItems.has(item.id) ? 'border-red-500 shadow-[0_0_20px_rgba(239,68,68,0.2)]' : 'border-white/5 hover:border-white/20'}`}>
+                                            <div 
+                                                className="aspect-[3/4] cursor-pointer" 
+                                                onClick={() => {
+                                                    if (isPortfolioDeleteMode) {
+                                                        toggleGallerySelection(item.id);
+                                                    } else {
+                                                        setPreviewingImage({images: portfolioModel.gallery!.map(g => g.url), startIndex: idx})
+                                                    }
+                                                }}
+                                            >
+                                                <AsyncImage src={item.url} className={`w-full h-full object-cover transition-opacity ${selectedGalleryItems.has(item.id) ? 'opacity-50' : 'opacity-100'}`} />
+                                                
+                                                {isPortfolioDeleteMode && (
+                                                    <div className="absolute top-3 left-3 z-20">
+                                                        <div className={`w-6 h-6 rounded-lg border flex items-center justify-center transition-all ${selectedGalleryItems.has(item.id) ? 'bg-red-500 border-red-500 shadow-lg scale-110' : 'bg-black/60 border-white/20'}`}>
+                                                            {selectedGalleryItems.has(item.id) && (
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="white" className="w-3.5 h-3.5">
+                                                                    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                                                                </svg>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {!isPortfolioDeleteMode && item.narrativeContent && (
+                                                    <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/90 to-transparent group/diary">
+                                                        <p className="text-[10px] text-gray-300 line-clamp-1 italic font-serif mb-2">「{item.narrativeContent}」</p>
+                                                        <button 
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                setReadingDiary({ 
+                                                                    name: portfolioModel.name, 
+                                                                    content: item.narrativeContent || '',
+                                                                    visualPrompt: item.visualPrompt,
+                                                                    visualPromptZH: item.visualPromptZH
+                                                                });
+                                                            }}
+                                                            className="text-[9px] text-[var(--color-gold)] font-bold uppercase tracking-widest opacity-0 group-hover/diary:opacity-100 transition-opacity bg-black/40 px-3 py-1 rounded-full border border-[var(--color-gold)]/30 hover:bg-[var(--color-gold)] hover:text-black"
+                                                        >
+                                                            📖 閱讀完整日記 (READ DIARY)
+                                                        </button>
+                                                    </div>
+                                                )}
+                                                {!isPortfolioDeleteMode && (
+                                                    <div className="absolute top-3 right-3 flex gap-2">
+                                                        <button 
+                                                            onClick={(e) => { e.stopPropagation(); setActivePortfolioItemId(item.id); }}
+                                                            className="w-8 h-8 flex items-center justify-center rounded-xl bg-black/60 hover:bg-[var(--color-gold)] text-white hover:text-black transition-all border border-white/10"
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            {!isPortfolioDeleteMode && (
+                                                <ModelActionMenu 
+                                                    model={portfolioModel}
+                                                    imageUrl={item.url}
+                                                    isOpen={activePortfolioItemId === item.id}
+                                                    onClose={() => setActivePortfolioItemId(null)}
+                                                    onModelSelect={(model, dest) => {
+                                                        if (dest === 'narrative') {
+                                                            setSelectedModelForNarrative(model);
+                                                        } else {
+                                                            onModelSelect(model, dest);
+                                                        }
+                                                    }}
+                                                    isGalleryItem={true}
+                                                />
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </motion.div>
+                    ) : (
+                        /* MAIN MODELS LIST VIEW */
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8">
+                            {models.map((model, index) => (
+                                <div 
+                                    key={model.id} 
+                                    className="group relative glass-panel rounded-3xl overflow-hidden border border-white/5 transition-all duration-700 hover:-translate-y-2 hover:border-[var(--color-gold)]/50 hover:shadow-2xl"
+                                >
+                                    {/* Selection Checkbox */}
+                                    <div className="absolute top-4 left-4 z-20">
+                                        <label className="cursor-pointer">
+                                            <div className={`w-6 h-6 rounded-lg border flex items-center justify-center transition-all ${selectedModels.has(model.id) ? 'bg-[var(--color-gold)] border-[var(--color-gold)]' : 'bg-black/40 border-white/10 hover:border-[var(--color-gold)]'}`}>
+                                                <input
+                                                    type="checkbox"
+                                                    className="absolute inset-0 opacity-0 cursor-pointer"
+                                                    checked={selectedModels.has(model.id)}
+                                                    onChange={(e) => { e.stopPropagation(); toggleSelection(model.id); }}
+                                                />
+                                                {selectedModels.has(model.id) && (
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="black" className="w-3.5 h-3.5">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                                                    </svg>
+                                                )}
+                                            </div>
+                                        </label>
+                                    </div>
+
+                                    {/* Image & Click Area (Go to Hub) */}
+                                    <div 
+                                        className="aspect-[3/4] overflow-hidden bg-[var(--color-bg-surface)] cursor-pointer group"
+                                        onClick={() => setViewingPortfolioModelId(model.id)}
+                                    >
+                                        <AsyncImage 
+                                            src={model.imageUrl} 
+                                            alt={model.name} 
+                                            className="w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-105" 
+                                        />
+                                        
+                                        {/* Portfolio Hover State */}
+                                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-6 text-center space-y-4">
+                                            <div className="w-12 h-12 rounded-full border border-[var(--color-gold)] flex items-center justify-center text-[var(--color-gold)]">
+                                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                                            </div>
+                                            <p className="text-[11px] font-bold text-white uppercase tracking-[0.3em]">進入作品集總部 (Brand Hub)</p>
+                                        </div>
+                                    </div>
+
+                                    {/* Info Strip */}
+                                    <div className="p-5 bg-black/40 border-t border-white/5 flex justify-between items-center group/info">
+                                        <div className="flex flex-col">
+                                            <span className="text-xs font-display font-bold text-white tracking-widest uppercase">{model.name}</span>
+                                            <div className="flex gap-2 mt-1">
+                                                <span className="text-[8px] px-1.5 py-0.5 bg-white/5 rounded-sm text-gray-500 uppercase tracking-tighter">{model.persona?.mbti || '??'}</span>
+                                                <span className="text-[8px] px-1.5 py-0.5 bg-[var(--color-gold)]/10 rounded-sm text-[var(--color-gold)] uppercase tracking-tighter">{(model.gallery?.length || 0) + 1} 作品</span>
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-2">
+                                            <button 
+                                                onClick={(e) => { e.stopPropagation(); setActiveMenuId(model.id); }}
+                                                className="w-8 h-8 flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 transition-all text-gray-400 hover:text-white border border-white/5"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* Action Menu Overlay */}
+                                    <ModelActionMenu 
+                                        model={model}
+                                        isOpen={activeMenuId === model.id}
+                                        onClose={() => setActiveMenuId(null)}
+                                        onModelSelect={(model, dest) => {
+                                            if (dest === 'narrative') {
+                                                setSelectedModelForNarrative(model);
+                                            } else {
+                                                onModelSelect(model, dest);
+                                            }
+                                        }}
+                                        onPromote={handlePromoteToAmbassador}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    )
+                ) : (
+                    <div className="glass-panel rounded-3xl p-20 flex flex-col items-center justify-center text-center border border-[var(--color-border)]">
+                        <div className="w-24 h-24 rounded-full bg-[var(--color-bg-surface)] flex items-center justify-center mb-8 animate-pulse">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-12 h-12 text-[var(--color-text-dim)]">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                            </svg>
+                        </div>
+                        <h3 className="text-2xl font-display font-bold uppercase tracking-[0.3em] text-[var(--color-text-main)] mb-4">您的模特兒休息室是空的</h3>
+                        <p className="text-sm text-[var(--color-text-dim)] max-w-md leading-relaxed">請先至「模特兒生成」創建您的專屬模特兒。創建後，您可以在此管理並快速啟動其他創意流程。</p>
+                        <Button onClick={() => onModelSelect({} as any, 'model_setup')} variant="primary" className="mt-10 text-[10px] font-bold tracking-widest">前往模特兒生成</Button>
+                    </div>
+                )}
+            </main>
+        </div>
+    );
+
+};
+
+export default ModelLounge;

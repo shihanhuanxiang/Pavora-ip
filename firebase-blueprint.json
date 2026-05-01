@@ -1,0 +1,112 @@
+{
+  "entities": {
+    "ModelConfig": {
+      "title": "Model Configuration",
+      "description": "Full configuration for a generated digital model",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "gender": { "type": "string" },
+        "age": { "type": "number" },
+        "persona": {
+          "type": "object",
+          "properties": {
+            "coreVibe": { "type": "string" },
+            "mbti": { "type": "string" },
+            "profession": { "type": "string" },
+            "catchphrase": { "type": "string" },
+            "postingHabit": { "type": "string" },
+            "toneOfVoice": { "type": "string" }
+          }
+        },
+        "lifeCircuit": {
+          "type": "object",
+          "properties": {
+            "primaryCity": { "type": "string" },
+            "primaryDistrict": { "type": "string" },
+            "interests": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "preferences": {
+          "type": "object",
+          "properties": {
+            "preferred_archetypes": { "type": "array", "items": { "type": "string" } },
+            "aesthetic_tier_min": { "type": "number" },
+            "aesthetic_tier_max": { "type": "number" }
+          }
+        },
+        "metrics": {
+          "type": "object",
+          "properties": {
+            "height": { "type": "number" },
+            "bust": { "type": "number" },
+            "waist": { "type": "number" },
+            "hip": { "type": "number" },
+            "proportionMode": { "type": "string" }
+          }
+        },
+        "advancedStats": {
+          "type": "object",
+          "properties": {
+            "bustTension": { "type": "number" },
+            "physiqueCurvature": { "type": "number" },
+            "muscularDensity": { "type": "number" },
+            "vTaperScale": { "type": "number" }
+          }
+        },
+        "createdBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "imageUrl", "createdBy"]
+    },
+    "OutfitV2": {
+      "title": "Contextual Outfit V2",
+      "description": "Hardened outfit and prop matrix v2.0",
+      "type": "object",
+      "properties": {
+        "outfit_id": { "type": "string" },
+        "gender": { "type": "string", "enum": ["F", "M", "U"] },
+        "style_archetype": { "type": "string" },
+        "context_id": { "type": "string" },
+        "aesthetic_tier": { "type": "number" },
+        "pillars": {
+          "type": "object",
+          "properties": {
+            "layer_inner": { "type": "string" },
+            "top": { "type": "string" },
+            "layer_outer": { "type": "string" },
+            "bottom": { "type": "string" },
+            "shoes": { "type": "string" },
+            "accessories": { "type": "array", "items": { "type": "string" } },
+            "props": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "fabric_difficulty": { "type": "string", "enum": ["safe", "medium", "hard"] },
+        "wear_state": { "type": "string" },
+        "layering_count": { "type": "number" },
+        "compatible_contexts": { "type": "array", "items": { "type": "string" } },
+        "hand_occupation": {
+          "type": "object",
+          "properties": {
+            "left_hand": { "type": "string" },
+            "right_hand": { "type": "string" },
+            "both_busy": { "type": "boolean" }
+          }
+        },
+        "prompt_skeleton": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "models": {
+      "schema": "ModelConfig",
+      "description": "Archived digital models"
+    },
+    "outfits_v2": {
+      "schema": "OutfitV2",
+      "description": "The Contextual Outfit Matrix v2.0 repository"
+    }
+  }
+}

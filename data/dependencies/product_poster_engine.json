@@ -1,0 +1,27 @@
+{
+  "moduleName": "Image Director (PCPE)",
+  "entryComponent": "ProductPosterEngine.tsx",
+  "description": "A diagnosis-driven workflow that first analyzes an image, generates creative direction 'cards', and then produces a final, professional poster based on user-selected options and fine-tuning.",
+  "dependencies": {
+    "dataSources": [],
+    "services": [
+      "geminiService.getAIDiagnosis",
+      "geminiService.getBackgroundCards",
+      "geminiService.getAllControlOptions",
+      "geminiService.generateProductPoster"
+    ],
+    "sharedTypes": [
+      "types.ts#AIDiagnosis",
+      "types.ts#BackgroundCard",
+      "types.ts#PCPEForm"
+    ]
+  },
+  "outputs": {
+    "description": "Outputs a final, high-quality poster image URL.",
+    "schema": "string (Image URL)",
+    "consumers": [
+      "PortfolioGallery",
+      "User Download"
+    ]
+  }
+}
