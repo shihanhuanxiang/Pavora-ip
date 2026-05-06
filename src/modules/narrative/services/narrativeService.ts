@@ -47,8 +47,15 @@ const pickOutfit = (model: Model, contextId: string, targetTier: number): Outfit
     // Fallback: Pick anything if pool is empty after all filters
     if (pool.length === 0) return OUTFIT_SEEDS_V2[0];
 
+    // 5. Cooldown filter: exclude recently used outfits
+    const recentIds: string[] = model.preferences?.recent_outfit_ids || [];
+    const cooledPool = pool.filter(o => !recentIds.includes(o.outfit_id));
+
+    // Fallback: if cooldown makes pool empty, allow repeats
+    const finalPool = cooledPool.length > 0 ? cooledPool : pool;
+
     // Random pick
-    return pool[Math.floor(Math.random() * pool.length)];
+    return finalPool[Math.floor(Math.random() * finalPool.length)];
 };
 
 /**
@@ -90,13 +97,13 @@ const getNonVisualTraces = (relationshipId: string | null): string => {
  */
 const injectHandOccupation = (outfit: OutfitV2): string => {
     const roll = Math.random();
-    if (roll < 0.5) { // 50% 一手忙
+    if (roll < 0.6) { // 60% 一手忙
         return outfit.hand_occupation.left_hand || "one hand holding phone";
-    } else if (roll < 0.8) { // 30% 雙手忙
+    } else if (roll < 0.65) { // 5% 雙手忙
         return outfit.hand_occupation.both_busy ? "both hands occupied with items" : "carrying bags in both hands";
-    } else if (roll < 0.95) { // 15% 自然狀態
+    } else if (roll < 0.9) { // 25% 自然狀態
         return "hands in natural relaxed pose";
-    } else { // 5% 極致細節
+    } else { // 10% 極致細節
         return "extreme close-up on fingers touching a texture";
     }
 };
@@ -128,7 +135,8 @@ const buildFinalVisualPromptV11 = (
     const layer2 = (scene && scene.depth_module_id) ? scene.event : "";
     
     // Layer 3: outfit_token
-    const handAction = injectHandOccupation(outfit);
+    // POV 模式下跳過 hand_occupation 注入，避免與 Layer 8 衝突
+    const handAction = options?.isPOV === true ? "" : injectHandOccupation(outfit);
     const fabricSafe = getFabricSafeguard(outfit);
     const wearStateText = `wear state: ${outfit.wear_state.replace('_', ' ')}`;
     const layer3 = `${outfit.prompt_skeleton}, ${wearStateText}, ${handAction}${fabricSafe}`;
@@ -147,8 +155,46 @@ const buildFinalVisualPromptV11 = (
     const layer7 = warmthPhrases[Math.floor(Math.random() * warmthPhrases.length)];
     
     // Layer 8: pov_mode_inject
-    const povModes = scene.pov_modes || ["candid_50", "selfie_front"];
-    const layer8 = povModes[Math.floor(Math.random() * povModes.length)];
+    let layer8: string;
+    if (options?.isPOV === true) {
+        // 第一人稱：強制手機外伸自拍構圖
+        layer8 = "phone-held-out selfie taken by the subject herself, subject's face and upper body fill the frame, single arm extending from subject's body holding the phone toward camera, exactly two hands total in entire image (both belonging to the subject), close-up to medium shot framing, subject is the only person in the photo, no second pair of hands, no mirror, no reflection, no third-person observer angle, no full body shot, no other people";
+    } else if (options?.isPOV === false) {
+        // 第三人稱：強制注入旁觀視角
+        layer8 = "third-person observer perspective, full or half body shot of subject, candid documentary framing, captured by another person, MUST NOT show subject's own arms reaching toward camera, MUST NOT be mirror selfie or phone-held-out angle";
+    } else {
+        // 未指定（fallback）：保留原本的隨機行為
+        const povModes = scene.pov_modes || ["candid_50", "selfie_front"];
+        layer8 = povModes[Math.floor(Math.random() * povModes.length)];
+    }
+    
+    // Layer 8_5: composition_diversity（構圖多樣化）
+    // 當 isPOV 為 true 時跳過（自拍有自己的構圖邏輯）
+    let layer8_5 = "";
+    if (options?.isPOV !== true) {
+        const compositionPool = [
+            // 全身構圖類
+            "full body shot, natural standing posture, slight weight shift to one side",
+            "full body candid, mid-stride walking, motion blur on feet",
+            "full body from slight low angle, subject unaware of camera",
+            // 半身構圖類
+            "medium shot from chest up, three-quarter angle, slight head tilt",
+            "medium shot, subject looking slightly off-frame, candid expression",
+            "half body shot from slightly above, looking downward at something",
+            // 特寫構圖類
+            "close-up on face and shoulders, shallow depth of field, bokeh background",
+            "portrait close-up, three-quarter profile, natural light on one side of face",
+            // 創意角度類
+            "shot from behind, subject looking away into distance",
+            "low angle from below knee height, full body visible, dramatic perspective",
+            "overhead slightly, subject seated or crouched, looking up at camera",
+            "side profile full body, walking direction, cinematic crop",
+            // 細節類
+            "extreme close-up on hands and outfit detail, face partially visible",
+            "wide shot with subject as smaller element in larger environment",
+        ];
+        layer8_5 = compositionPool[Math.floor(Math.random() * compositionPool.length)];
+    }
     
     // Layer 9: spicy_modifiers (Aesthetic Tier logic)
     let layer9 = "";
@@ -192,6 +238,7 @@ const buildFinalVisualPromptV11 = (
         `[Traces]: ${layer6}`,
         `[Warmth]: ${layer7}`,
         `[POV]: ${layer8}`,
+        `[Composition]: ${layer8_5}`,
         `[Style]: ${layer9}`,
         `[Negative]: ${layer10}`
     ].filter(p => !p.endsWith(': '));
@@ -350,8 +397,17 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
 
     const outfit = pickOutfit(model, contextId, targetTier);
     
+    // Update recent_outfit_ids cooldown (keep last 5)
+    if (!model.preferences) (model as any).preferences = {};
+    const recentIds = model.preferences?.recent_outfit_ids || [];
+    const updatedRecent = [
+        outfit.outfit_id,
+        ...recentIds.filter((id: string) => id !== outfit.outfit_id)
+    ].slice(0, 5);
+    if (model.preferences) model.preferences.recent_outfit_ids = updatedRecent;
+    
     // 3. V1.1 Layered Prompt Composition
-    const finalVisualPrompt = buildFinalVisualPromptV11(model, sceneContext, outfit, targetTier);
+    const finalVisualPrompt = buildFinalVisualPromptV11(model, sceneContext, outfit, targetTier, options);
 
     // M9 Routing Restriction
     const platformRestriction = (sceneContext.depth_module_id === 9 || sceneContext.flags?.intimacy_emotional) 

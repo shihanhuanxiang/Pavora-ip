@@ -51,7 +51,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     
     // Advanced Controls
     const [aspectRatio, setAspectRatio] = useState('9:16');
-    const [quality, setQuality] = useState('Cinematic');
+    const [quality, setQuality] = useState('HD');
     const [isPOV, setIsPOV] = useState(true);
     const [editablePrompt, setEditablePrompt] = useState('');
     const [editablePromptZH, setEditablePromptZH] = useState('');
@@ -136,16 +136,23 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                 aspectRatio: aspectRatio,
             };
 
-            if (quality !== 'SD') {
-                imageConfig.imageSize = (quality === 'Cinematic' ? '2K' : '1K');
-            }
+            // HD: 1K, CINEMATIC: 2K, PRO: 4K
+            let resolutionTier = '1K';
+            if (quality === 'Cinematic') resolutionTier = '2K';
+            else if (quality === 'Pro') resolutionTier = '4K';
+            imageConfig.imageSize = resolutionTier;
 
+            // PRO 模式啟動「身份強化」flag,由 transformImage 內部處理
             const url = await transformImage(
                 sourceImageData,
                 editablePrompt,
                 [],
                 undefined,
-                { usePro: quality !== 'SD', imageConfig }
+                { 
+                    usePro: true,  // 三個選項都啟用 Pro Fidelity Mode
+                    imageConfig,
+                    identityBoost: quality === 'Pro'  // PRO 模式才注入額外身份指令
+                }
             );
 
             // Embed model identity (DNA) into the generated image
@@ -642,9 +649,9 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">畫質與光影預設 // QUALITY PRESET</label>
                                             <div className="grid grid-cols-1 gap-2">
                                                 {[
-                                                    { id: 'SD', label: '標準解析度 // SD', desc: '快速預演 // PREVIEW' },
-                                                    { id: 'HD', label: '高解析度還原 // HD', desc: '細節豐富 // DETAIL' },
-                                                    { id: 'Cinematic', label: '電影製片級 // CINEMATIC', desc: '極致光影 // PRO' }
+                                                    { id: 'HD', label: '高解析度還原 // HD', desc: '日常產出 1K // DAILY' },
+                                                    { id: 'Cinematic', label: '電影製片級 // CINEMATIC', desc: '精緻細節 2K // DETAIL' },
+                                                    { id: 'Pro', label: '極致還原 // PRO', desc: '臉部鎖定 4K // FIDELITY' }
                                                 ].map(q => (
                                                     <button
                                                         key={q.id}

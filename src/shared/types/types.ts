@@ -344,6 +344,7 @@ export interface Model {
         active_arc_id?: string | null;
         active_arc_phase_index?: number;
         active_outfit_id?: string | null;
+        recent_outfit_ids?: string[];
         manual_wear_state?: string | null;
         active_threads?: {
             thread_id: string;
