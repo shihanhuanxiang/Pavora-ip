@@ -52,7 +52,7 @@ export const EXTENDED_SCENES_PART1: ExtendedScene[] = [
     "outfit_hint": "loose oversized shirt + jeans",
     "spicy_level": 1,
     "pov_modes": ["selfie_front", "friend_pov_35"],
-    "promptSkeleton": "Asian woman on train, friend asleep on her shoulder (only friend's hair visible, never face), faint smile, hand carefully not moving, distant carriage rumble --no airbrushed",
+    "promptSkeleton": "Asian woman on train, friend asleep on her shoulder (only friend's hair visible, never face), faint smile, distant carriage rumble --no airbrushed",
     "negative_prompt": "plastic skin, doll-like face, perfect symmetry, airbrushed, oversaturated, HDR, fake bokeh, instagram filter, watermark, text, logo, deformed hand, extra fingers, no phone visible in frame, no second phone in mirror, no selfie stick, no studio lighting, no model pose",
     "emotions": ["沉浸", "日常"],
     "flags": {
@@ -154,7 +154,7 @@ export const EXTENDED_SCENES_PART1: ExtendedScene[] = [
     "outfit_hint": "loose tee + cotton pants",
     "spicy_level": 1,
     "pov_modes": ["top_down_28", "selfie_front"],
-    "promptSkeleton": "Asian woman seated on floor next to unopened brown-paper care package from grandmother, smile catching the side of mouth, fingertip on box label, late afternoon home light --no studio light",
+    "promptSkeleton": "Asian woman seated on floor next to unopened brown-paper care package from grandmother, smile catching the side of mouth, late afternoon home light --no studio light",
     "negative_prompt": "plastic skin, doll-like face, perfect symmetry, airbrushed, oversaturated, HDR, fake bokeh, instagram filter, watermark, text, logo, deformed hand, extra fingers, no phone visible in frame, no second phone in mirror, no selfie stick, no studio lighting, no model pose",
     "emotions": ["沉浸", "期待"],
     "flags": {
@@ -188,7 +188,7 @@ export const EXTENDED_SCENES_PART1: ExtendedScene[] = [
     "outfit_hint": "linen shirt sleeve",
     "spicy_level": 1,
     "pov_modes": ["top_down_28", "candid_50"],
-    "promptSkeleton": "Asian woman's wrist with green jade bracelet at corner of frame, hands cupping warm tea cup, kitchen morning light, faint grandma's recipe card on counter --no plastic skin",
+    "promptSkeleton": "Asian woman's wrist with green jade bracelet at corner of frame, warm tea cup, kitchen morning light, faint grandma's recipe card on counter --no plastic skin",
     "negative_prompt": "plastic skin, doll-like face, perfect symmetry, airbrushed, oversaturated, HDR, fake bokeh, instagram filter, watermark, text, logo, deformed hand, extra fingers, no phone visible in frame, no second phone in mirror, no selfie stick, no studio lighting, no model pose",
     "emotions": ["日常", "沉浸"],
     "flags": {
@@ -290,7 +290,7 @@ export const EXTENDED_SCENES_PART1: ExtendedScene[] = [
     "outfit_hint": "blouse + jeans",
     "spicy_level": 1,
     "pov_modes": ["selfie_front", "candid_50"],
-    "promptSkeleton": "Asian woman in back seat of Taipei taxi, late afternoon city neon reflecting on cheek through window, hand on phone in lap, faint engine hum, slight bored half-glance at lens --no studio light",
+    "promptSkeleton": "Asian woman in back seat of Taipei taxi, late afternoon city neon reflecting on cheek through window, faint engine hum, slight bored half-glance at lens --no studio light",
     "negative_prompt": "plastic skin, doll-like face, perfect symmetry, airbrushed, oversaturated, HDR, fake bokeh, instagram filter, watermark, text, logo, deformed hand, extra fingers, no phone visible in frame, no second phone in mirror, no selfie stick, no studio lighting, no model pose",
     "emotions": ["沉浸", "日常"],
     "flags": {
@@ -562,7 +562,7 @@ export const EXTENDED_SCENES_PART1: ExtendedScene[] = [
     "outfit_hint": "loose sweater + jeans",
     "spicy_level": 1,
     "pov_modes": ["top_down_28", "candid_50"],
-    "promptSkeleton": "Asian woman at library self-study room desk lamp pool of warm light, highlighter in hand, faint page turning sound, focused frown, late evening through window --no airbrushed",
+    "promptSkeleton": "Asian woman at library self-study room desk lamp pool of warm light, open textbook and neon highlighter on desk, faint page turning sound, focused frown, late evening through window --no airbrushed",
     "negative_prompt": "plastic skin, doll-like face, perfect symmetry, airbrushed, oversaturated, HDR, fake bokeh, instagram filter, watermark, text, logo, deformed hand, extra fingers, no phone visible in frame, no second phone in mirror, no selfie stick, no studio lighting, no model pose",
     "emotions": ["沉浸", "日常"],
     "flags": {
@@ -800,7 +800,7 @@ export const EXTENDED_SCENES_PART1: ExtendedScene[] = [
     "outfit_hint": "going-out dress + makeup",
     "spicy_level": 3,
     "pov_modes": ["candid_50", "top_down_28"],
-    "promptSkeleton": "Asian woman alone at restaurant table after 40 minutes waiting, untouched second plate across, hand on phone showing no reply, candle wax pooling, slight composed sad smile --no perfect symmetry",
+    "promptSkeleton": "Asian woman alone at restaurant table after 40 minutes waiting, untouched second plate across, candle wax pooling, slight composed sad smile --no perfect symmetry",
     "negative_prompt": "plastic skin, doll-like face, perfect symmetry, airbrushed, oversaturated, HDR, fake bokeh, instagram filter, watermark, text, logo, deformed hand, extra fingers, no phone visible in frame, no second phone in mirror, no selfie stick, no studio lighting, no model pose",
     "emotions": ["期待", "脆弱"],
     "flags": {

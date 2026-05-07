@@ -83,7 +83,7 @@ const pickOutfit = (model: Model, contextId: string, targetTier: number): Outfit
     // 判斷當前季節（台灣月份）
     const currentMonth = new Date().getMonth() + 1; // 1-12
     let currentSeason: string;
-    if (currentMonth >= 6 && currentMonth <= 9) {
+    if (currentMonth >= 5 && currentMonth <= 10) {
         currentSeason = 'summer';
     } else if (currentMonth >= 12 || currentMonth <= 2) {
         currentSeason = 'winter';

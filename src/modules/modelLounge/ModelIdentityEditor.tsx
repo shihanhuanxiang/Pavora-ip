@@ -22,7 +22,8 @@ const ModelIdentityEditor: React.FC<ModelIdentityEditorProps> = ({ model, onClos
             mbti: model.persona?.mbti || '',
             coreVibe: model.persona?.coreVibe || '',
             toneOfVoice: model.persona?.toneOfVoice || '',
-            profession: model.persona?.profession || ''
+            profession: model.persona?.profession || '',
+            locked_descriptor: model.persona?.locked_descriptor || ''
         },
         lifeCircuit: {
             primaryCity: model.lifeCircuit?.primaryCity || '',
@@ -211,6 +212,21 @@ const ModelIdentityEditor: React.FC<ModelIdentityEditorProps> = ({ model, onClos
                                         className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[var(--color-gold)] outline-none"
                                         value={formData.persona.coreVibe}
                                         onChange={(e) => setFormData({...formData, persona: {...formData.persona, coreVibe: e.target.value}})}
+                                    />
+                                </div>
+                                <div className="space-y-2 md:col-span-2">
+                                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest text-[9px]">
+                                        臉部鎖定描述 (Locked Descriptor)
+                                        <span className="ml-2 text-[9px] text-gray-500 normal-case tracking-normal">
+                                            — Layer 1 注入,鎖定臉部特徵以提升一致性
+                                        </span>
+                                    </label>
+                                    <textarea 
+                                        placeholder="例如: Asian woman, 25 years old, dark brown hair with darker roots, large expressive brown eyes with double eyelids, soft round face with defined jawline, natural minimal makeup with dewy skin, small lips with natural glossy color"
+                                        rows={4}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[var(--color-gold)] outline-none resize-none leading-relaxed"
+                                        value={formData.persona.locked_descriptor}
+                                        onChange={(e) => setFormData({...formData, persona: {...formData.persona, locked_descriptor: e.target.value}})}
                                     />
                                 </div>
                             </div>
