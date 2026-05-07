@@ -47,48 +47,103 @@ export const applyVisualPreset = (
  * Picks an appropriate outfit based on character and scene context.
  */
 const pickOutfit = (model: Model, contextId: string, targetTier: number): OutfitV2 => {
-    // 0. Manual override if active_outfit_id is set
+    // 0. Manual override: 使用者鎖定服裝時直接返回
     if (model.preferences?.active_outfit_id) {
         const userOutfits = WardrobeService.getUserOutfits();
-        const found = [...OUTFIT_SEEDS_V2, ...userOutfits].find(o => o.outfit_id === model.preferences?.active_outfit_id);
+        const found = [...OUTFIT_SEEDS_V2, ...userOutfits].find(
+            o => o.outfit_id === model.preferences?.active_outfit_id
+        );
         if (found) return found;
     }
 
-    // 1. Get combined pool (Seeds + User custom)
+    // 1. 建立候選池
     const userOutfits = WardrobeService.getUserOutfits();
     const fullPool = [...OUTFIT_SEEDS_V2, ...userOutfits];
 
-    // 2. Filter by gender (M/F matching or Unisex)
-    let pool = fullPool.filter(o => 
+    // 2. 硬性篩選：性別
+    const genderFiltered = fullPool.filter(o =>
         o.gender === model.gender?.charAt(0).toUpperCase() || o.gender === 'U'
     );
 
-    // 2. Filter by context (e.g., home_cozy, urban_street)
-    pool = pool.filter(o => o.compatible_contexts.includes(contextId));
+    // 3. 硬性篩選：場景（最高優先，防止西裝出現在海邊）
+    const contextFiltered = genderFiltered.filter(o =>
+        o.compatible_contexts.includes(contextId)
+    );
 
-    // 3. Filter by archetype if characters has preferences
+    // Fallback：場景篩選後無結果，放寬到性別篩選
+    const candidatePool = contextFiltered.length > 0 ? contextFiltered : genderFiltered;
+
+    // Fallback：候選池仍為空，返回預設
+    if (candidatePool.length === 0) return OUTFIT_SEEDS_V2[0];
+
+    // 4. 評分制選擇
     const preferred = model.preferences?.preferred_archetypes || [];
-    if (preferred.length > 0) {
-        const archetypeFiltered = pool.filter(o => preferred.includes(o.style_archetype));
-        if (archetypeFiltered.length > 0) pool = archetypeFiltered;
+    const recentIds = model.preferences?.recent_outfit_ids || [];
+
+    // 判斷當前季節（台灣月份）
+    const currentMonth = new Date().getMonth() + 1; // 1-12
+    let currentSeason: string;
+    if (currentMonth >= 6 && currentMonth <= 9) {
+        currentSeason = 'summer';
+    } else if (currentMonth >= 12 || currentMonth <= 2) {
+        currentSeason = 'winter';
+    } else {
+        currentSeason = 'spring_autumn';
     }
 
-    // 4. Filter by target tier
-    const tierFiltered = pool.filter(o => o.aesthetic_tier === targetTier);
-    if (tierFiltered.length > 0) pool = tierFiltered;
+    const scored = candidatePool.map(o => {
+        let score = 0;
 
-    // Fallback: Pick anything if pool is empty after all filters
-    if (pool.length === 0) return OUTFIT_SEEDS_V2[0];
+        // 風格吻合（+40分）：style_archetype 在偏好列表裡
+        if (preferred.length > 0 && preferred.includes(o.style_archetype)) {
+            score += 40;
+        }
 
-    // 5. Cooldown filter: exclude recently used outfits
-    const recentIds: string[] = model.preferences?.recent_outfit_ids || [];
-    const cooledPool = pool.filter(o => !recentIds.includes(o.outfit_id));
+        // Tier 吻合（+30分）：完全符合目標 Tier
+        if (o.aesthetic_tier === targetTier) {
+            score += 30;
+        }
+        // Tier 接近（+15分）：差距 1
+        else if (Math.abs(o.aesthetic_tier - targetTier) === 1) {
+            score += 15;
+        }
 
-    // Fallback: if cooldown makes pool empty, allow repeats
-    const finalPool = cooledPool.length > 0 ? cooledPool : pool;
+        // 季節吻合（+25分）
+        const outfitSeason = (o as any).season || 'all';
+        if (outfitSeason === 'all') {
+            score += 15; // 四季通用給基本分
+        } else if (outfitSeason === currentSeason) {
+            score += 25; // 完全吻合給高分
+        } else if (
+            (outfitSeason === 'spring_autumn' && currentSeason !== 'winter') ||
+            (outfitSeason === 'summer' && currentSeason === 'spring_autumn')
+        ) {
+            score += 5; // 相鄰季節給小分
+        } else {
+            score -= 30; // 季節不符給懲罰分
+        }
 
-    // Random pick
-    return finalPool[Math.floor(Math.random() * finalPool.length)];
+        // 新鮮獎勵（+10分）：完全沒在最近使用清單裡
+        if (!recentIds.includes(o.outfit_id)) {
+            score += 10;
+        }
+
+        // 冷卻懲罰（-50分）：最近使用過
+        if (recentIds.includes(o.outfit_id)) {
+            score -= 50;
+        }
+
+        return { outfit: o, score };
+    });
+
+    // 找最高分
+    const maxScore = Math.max(...scored.map(s => s.score));
+
+    // 從最高分的服裝中隨機抽一套（避免每次都選同一套）
+    const topCandidates = scored.filter(s => s.score === maxScore);
+    const chosen = topCandidates[Math.floor(Math.random() * topCandidates.length)];
+
+    return chosen.outfit;
 };
 
 /**
@@ -164,9 +219,12 @@ const buildFinalVisualPromptV11 = (
     // Layer 1: character_token
     const vc = model.visualConstants;
     const facialDesc = vc?.facialBoneStructure ? `, ${vc.facialBoneStructure}` : '';
+    const professionDesc = model.persona?.profession 
+        ? `, works as ${model.persona.profession}` 
+        : '';
     const layer1 = model.persona?.locked_descriptor 
         ? `${model.persona.locked_descriptor}${facialDesc}`
-        : `${model.name}, ${model.gender === 'M' ? 'Asian man' : 'Asian woman'}, ${model.age}yo, ${model.persona?.coreVibe || ''}${facialDesc}`;
+        : `${model.name}, ${model.gender === 'M' ? 'Asian man' : 'Asian woman'}, ${model.age}yo, ${model.persona?.coreVibe || ''}${professionDesc}${facialDesc}`;
     
     // Layer 2: depth_module_scene (if extended)
     const layer2 = (scene && scene.depth_module_id) ? scene.event : "";
@@ -176,7 +234,37 @@ const buildFinalVisualPromptV11 = (
     const handAction = options?.isPOV === true ? "" : injectHandOccupation(outfit);
     const fabricSafe = getFabricSafeguard(outfit);
     const wearStateText = `wear state: ${outfit.wear_state.replace('_', ' ')}`;
-    const layer3 = `${outfit.prompt_skeleton}, ${wearStateText}, ${handAction}${fabricSafe}`;
+    
+    // 根據 interests 偶爾加入標誌性道具（30% 機率，POV 模式跳過）
+    let interestProp = '';
+    const interests = model.lifeCircuit?.interests || [];
+    if (interests.length > 0 && Math.random() < 0.3 && !options?.isPOV) {
+        const interestPropMap: Record<string, string> = {
+            '攝影': 'holding a film camera or mirrorless camera',
+            '咖啡': 'holding a specialty coffee cup',
+            '閱讀': 'with a paperback book nearby',
+            '音樂': 'with wireless earbuds or headphones',
+            '瑜珈': 'with a rolled yoga mat nearby',
+            '旅行': 'with a travel journal or map',
+            '繪畫': 'with a sketchbook nearby',
+            '健身': 'with a water bottle',
+            '烹飪': 'with a reusable grocery bag',
+            '寵物': 'with a pet leash or pet toy visible'
+        };
+        const matchedInterest = interests.find(i => interestPropMap[i]);
+        if (matchedInterest) {
+            interestProp = `, ${interestPropMap[matchedInterest]}`;
+        }
+    }
+    
+    // iconicItems 視覺簽名（永遠出現，這是 IP 的標誌）
+    const iconicItemsDesc = (model.worldAnchors?.iconicItems || [])
+        .slice(0, 2) // 最多取前兩個，避免 prompt 過長
+        .map(item => item.description || item.name)
+        .join(', ');
+    const iconicSuffix = iconicItemsDesc ? `, signature items: ${iconicItemsDesc}` : '';
+
+    const layer3 = `${outfit.prompt_skeleton}, ${wearStateText}, ${handAction}${fabricSafe}${interestProp}${iconicSuffix}`;
     
     // Layer 4: scene_token
     const layer4 = scene.promptSkeleton || scene.prompt_skeleton || "";
@@ -204,6 +292,12 @@ const buildFinalVisualPromptV11 = (
             rules.push(`COLOR TONE MUST BE: ${vc7.colorTone}`);
         if (vc7.catchlightPreference) 
             rules.push(`LIGHTING STYLE: ${vc7.catchlightPreference}`);
+
+        // 從 persona.toneOfVoice 補充表情能量
+        const toneOfVoice = model.persona?.toneOfVoice;
+        if (toneOfVoice && !vc7.expressionStyle) {
+            rules.push(`EXPRESSION ENERGY: ${toneOfVoice}`);
+        }
         if (rules.length > 0) layer7_5 = rules.join('. ');
     }
     
@@ -227,50 +321,57 @@ const buildFinalVisualPromptV11 = (
     if (options?.isPOV !== true) {
         const compositionPool = [
             // 全身構圖類
-            "full body shot, natural standing posture, slight weight shift to one side, candid street photography",
-            "full body candid, mid-stride walking, motion captured naturally, subject unaware",
-            "full body from slight low angle, subject looking ahead, documentary style",
-            "full body reflected in shop window or mirror, subject seen from behind",
-            
-            // 半身構圖類
-            "medium shot from chest up, three-quarter angle, slight head tilt, soft background bokeh",
-            "medium shot, subject looking slightly off-frame at something, candid expression",
-            "half body shot from slightly above, subject looking downward, intimate mood",
-            "medium shot from behind slightly, subject turning head, hair movement visible",
-            
-            // 特寫構圖類
-            "close-up on face and shoulders, shallow depth of field, bokeh background, golden hour light",
-            "portrait close-up, three-quarter profile, natural window light on one cheek",
-            "extreme close-up on eyes and upper face only, lower face cropped out",
-            "close-up on neck collarbone and shoulder, face partially visible at edge",
-            
-            // 低角度類（對標帳號高頻）
-            "low angle from below waist height, legs and lower body prominent, subject looking down at camera",
-            "very low angle from floor level, full legs visible, urban background in upper frame",
-            "low angle upward shot emphasizing legs and outfit from knee down",
-            
+            "COMPOSITION MUST BE: full body shot, 35mm natural perspective, subject centered with breathing room, candid street documentary feel, background in soft focus",
+            "COMPOSITION MUST BE: full body candid, subject mid-stride, 35mm wide feel, motion energy captured, environment tells the story",
+            "COMPOSITION MUST BE: full body from low angle, 35mm slight upward tilt, subject looks taller, urban background in upper third",
+            "COMPOSITION MUST BE: full body mirror or window reflection, subject seen from behind or side, 50mm natural feel",
+
+            // 半身構圖類  
+            "COMPOSITION MUST BE: medium shot chest to head, 85mm portrait compression, subject fills 60% of frame, three-quarter angle, bokeh background",
+            "COMPOSITION MUST BE: medium shot, 85mm, subject looking slightly off-frame, candid unaware expression, background dissolved",
+            "COMPOSITION MUST BE: half body from slightly above, 50mm natural, subject looking down at hands or object, intimate overhead mood",
+            "COMPOSITION MUST BE: medium shot from behind, subject turning head back, 85mm, hair movement frozen in moment",
+
+            // 近距離特寫類（對標帳號高頻）
+            "COMPOSITION MUST BE: close portrait, 85mm compression, face fills 80% of frame, eyes sharp, background completely bokeh, shooting distance 60cm",
+            "COMPOSITION MUST BE: tight portrait, 135mm telephoto compression, extreme subject-background separation, skin texture visible, face fills frame",
+            "COMPOSITION MUST BE: extreme close-up eyes and upper face, 135mm, lower face cropped at lips, micro-detail visible, dreamy background",
+            "COMPOSITION MUST BE: close-up collarbone and shoulder, 85mm, face partially at top edge, intimate distance feel, skin texture and jewelry detail",
+
+            // 低角度類
+            "COMPOSITION MUST BE: low angle from knee height, 35mm upward, legs prominent in foreground, full outfit visible, subject looking ahead or down at camera",
+            "COMPOSITION MUST BE: very low angle from floor level, 24mm wide, full legs and shoes fill lower frame, urban or indoor background rises behind",
+            "COMPOSITION MUST BE: low angle emphasizing legs from knee down, shoes and lower outfit as hero, 35mm",
+
             // 俯角類
-            "overhead slightly, subject seated, looking up at camera with relaxed expression, no photographer hand visible, no camera in frame, as if camera is floating",
-            "bird's eye view, subject lying on bed or floor, full body from above, no photographer hand visible, no camera in frame, floating camera perspective",
-            "slight overhead angle, subject looking down at something in hands, no photographer hand visible, no extra hands in frame",
-            
+            "COMPOSITION MUST BE: slightly overhead, 50mm, subject seated relaxed looking up, floating camera perspective, no extra hands in frame",
+            "COMPOSITION MUST BE: bird's eye view, subject on bed or floor full body visible from above, 35mm wide overhead, floating camera, no hands in frame",
+            "COMPOSITION MUST BE: slight overhead looking down at subject, 50mm, subject focused on something in hands, no extra hands in frame",
+
             // 環境融入類
-            "wide shot with subject as smaller element in larger environment, sense of scale",
-            "subject partially obscured by foreground element, framed naturally",
-            "side profile full body, subject in motion, cinematic horizontal crop",
-            
-            // 細節與局部類
-            "extreme close-up on hands holding object, face softly visible in background",
-            "detail shot focusing on outfit texture and accessories, face partially cropped",
-            "close-up on feet and shoes, legs visible above, ground texture prominent",
-            
+            "COMPOSITION MUST BE: wide environmental shot, 24mm, subject as smaller figure in rich scene, strong sense of place and scale",
+            "COMPOSITION MUST BE: subject partially framed by foreground element, 85mm, foreground out of focus, natural framing",
+            "COMPOSITION MUST BE: side profile full body, 85mm horizontal crop, subject in motion direction, cinematic widescreen feel",
+
+            // 靠牆靠門（對標高頻，原本缺失）
+            "COMPOSITION MUST BE: subject leaning against wall or doorframe, 85mm, relaxed casual posture, architecture as framing element, natural light from side",
+            "COMPOSITION MUST BE: subject at doorway or entrance, 50mm, light from behind creating rim light, silhouette and detail balance",
+
+            // 窗邊光線（對標高頻，原本缺失）  
+            "COMPOSITION MUST BE: subject at window, 85mm, natural window light on face from side, dramatic light and shadow split, indoor setting",
+            "COMPOSITION MUST BE: close portrait by window, 85mm, backlit or side-lit by window, soft glowing skin, urban view through window bokeh",
+
+            // 細節與局部
+            "COMPOSITION MUST BE: detail shot on hands and outfit texture, 100mm macro feel, accessories sharp, face softly visible in upper background",
+            "COMPOSITION MUST BE: close-up on feet and shoes, 50mm low angle, legs visible ascending upward, ground texture as context",
+
             // 坐姿類
-            "seated candid, three-quarter angle, crossed legs visible, relaxed posture",
-            "seated at table or counter, upper body leaning slightly forward, natural gesture",
-            
+            "COMPOSITION MUST BE: seated candid, 85mm, crossed legs prominent, relaxed natural posture, three-quarter angle, background bokeh",
+            "COMPOSITION MUST BE: seated at table or café counter, 85mm, upper body leaning slightly forward, warm ambient light, natural gesture",
+
             // 動態類
-            "subject mid-laugh or candid expression, caught in natural moment",
-            "subject in motion turning around, hair caught in movement, dynamic energy",
+            "COMPOSITION MUST BE: subject mid-laugh or genuine candid expression, 85mm, caught in real moment, spontaneous energy",
+            "COMPOSITION MUST BE: subject turning around mid-motion, 85mm, hair caught in movement sweep, dynamic energy frozen",
         ];
         // 如果 IP 有設定招牌姿勢，70% 機率優先使用
         const signaturePoses = model.visualConstants?.signaturePoses || [];
@@ -387,7 +488,15 @@ export const generateDynamicEvent = async (model: Model, lastEntry?: { content?:
 - 性別代詞：${model.gender === 'female' ? 'She/Her' : 'He/Him'} (絕對禁止錯亂)
 - MBTI 人格：${model.persona?.mbti || 'ISTP'}
 - 核心氛圍：${model.persona?.coreVibe || '自然真實'}
-- 長期記憶：${model.worldAnchors?.longTermMemories?.join('、') || '無特別記憶'}
+- 職業身份：${model.persona?.profession || '未設定'}
+- 語氣風格：${model.persona?.toneOfVoice || '自然隨性'}
+- 口頭禪：${model.persona?.catchphrase ? `偶爾在日記中自然帶入「${model.persona.catchphrase}」` : '無特定口頭禪'}
+- 長期記憶（重要）：${(model.worldAnchors?.longTermMemories ?? []).length 
+    ? `${(model.worldAnchors?.longTermMemories ?? []).join('、')}。
+       【指示】：今天的日記中，請自然地呼應或延伸上述記憶中的 1-2 個，
+       例如提到「上次...之後」「最近一直在想...」「那天之後...」，
+       讓敘事有時間縱深感。不要每個記憶都提，選最相關的。`
+    : '無特別記憶（這是第一篇日記）'}
 `;
 
     const contextHeader = lastEntry ? `
@@ -405,7 +514,7 @@ export const generateDynamicEvent = async (model: Model, lastEntry?: { content?:
         - 事件原型：${scene.event}
         - 原始感官標籤：${scene.sensory}
         - 原始生活雜訊：${scene.visualNoise}
-        - 可選情緒維度：${scene.emotions.join('、')}
+        - 可選情緒維度：${(scene.emotions ?? []).join('、')}
         
         【任務：靈魂敘事轉化 (Creative Transformation)】
         1. **心理主動權**：不要隨機選擇情緒。請根據 ${model.name} 的 MBTI (${model.persona?.mbti}) 與「上一則動態」，主動從可選維度中鎖定一個最合理的心理切入點。
@@ -475,6 +584,18 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
     if (sceneContext.depth_module_id === 1) contextId = "home_cozy";
     else if (sceneContext.depth_module_id === 2) contextId = "travel_journey";
 
+    // 根據 primaryDistrict 調整 contextId 的預設傾向
+    const district = model.lifeCircuit?.primaryDistrict || '';
+    if (!sceneContext.depth_module_id) {
+        if (district.includes('信義') || district.includes('101') || district.includes('商業')) {
+            contextId = 'office_pro';
+        } else if (district.includes('東區') || district.includes('忠孝') || district.includes('逛街')) {
+            contextId = 'shopping_random';
+        } else if (district.includes('大安') || district.includes('師大') || district.includes('文青')) {
+            contextId = 'urban_street';
+        }
+    }
+
     const lowerEvent = event.toLowerCase();
     if (
         lowerEvent.includes("家") || lowerEvent.includes("宅") || 
@@ -530,6 +651,13 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
     // 3. V1.1 Layered Prompt Composition
     const finalVisualPrompt = buildFinalVisualPromptV11(model, sceneContext, outfit, targetTier, options);
 
+    // 有寵物時，偶爾在場景描述加入寵物（15% 機率，限居家場景）
+    let petNote = '';
+    const pet = model.worldAnchors?.pet;
+    if (pet && contextId === 'home_cozy' && Math.random() < 0.15) {
+        petNote = ` [PET VISIBLE: A ${pet.breed} named ${pet.name} visible in the background or nearby]`;
+    }
+
     // M9 Routing Restriction
     const platformRestriction = (sceneContext.depth_module_id === 9 || sceneContext.flags?.intimacy_emotional) 
         ? ["X", "Fanvue", "OnlyFans"] 
@@ -542,7 +670,13 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
 [角色核心 DNA]
 - 性別: ${model.gender} / 年齡: ${model.age}
 - MBTI/性格: ${model.persona?.mbti} / ${model.persona?.coreVibe}
-- 語氣風格: ${model.persona?.toneOfVoice}
+- 職業身份：${model.persona?.profession || '未設定'}
+- 語氣風格：${model.persona?.toneOfVoice || '自然隨性'}
+- 口頭禪：${model.persona?.catchphrase ? `偶爾在日記中自然帶入「${model.persona.catchphrase}」` : '無特定口頭禪'}
+- 常駐地區：${model.lifeCircuit?.primaryDistrict || model.lifeCircuit?.primaryCity || '台北市'}
+- 興趣標籤：${(model.lifeCircuit?.interests ?? []).join('、') || '未設定'}
+- 寵物：${model.worldAnchors?.pet ? `${model.worldAnchors.pet.name}（${model.worldAnchors.pet.breed}），${model.worldAnchors.pet.description}` : '無寵物'}
+- 標誌性物品：${(model.worldAnchors?.iconicItems?.map(i => i.name) ?? []).join('、') || '無特定物品'}
 
 [今日情境]
 - 地點: ${city} ${location}
@@ -554,8 +688,8 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
    - 上身: ${outfit.pillars.top}
    - 下身: ${outfit.pillars.bottom}
    - 鞋履: ${outfit.pillars.shoes}
-   - 配件: ${outfit.pillars.accessories.join(', ')}
-   - 道具/手部狀態: ${outfit.pillars.props.join(', ')} (左手: ${outfit.hand_occupation.left_hand}, 右手: ${outfit.hand_occupation.right_hand})
+   - 配件: ${(outfit.pillars.accessories ?? []).join(', ')}
+   - 道具/手部狀態: ${(outfit.pillars.props ?? []).join(', ')} (左手: ${outfit.hand_occupation.left_hand}, 右手: ${outfit.hand_occupation.right_hand})
 2. 生理寫實協議 v2.2 (去除「痣」):
    - 強調微觀皮膚質地 (Micro-pores)、細微的不對稱性 (Asymmetry)。
    - 髮絲必須有散亂感 (Flyaways)，拒絕完美的 AI 頭盔感。
@@ -611,6 +745,7 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
             visualPromptZH: data.visualPromptZH,
             meta: {
                 ...data.meta,
+                petNote,
                 depth_module_id: sceneContext.depth_module_id || 0,
                 story_arc_id: sceneContext.flags?.story_arc_id,
                 identity_thread_id: sceneContext.flags?.identity_thread_id,
@@ -637,10 +772,24 @@ export const extractNewMemories = async (model: Model, diaryContent: string): Pr
     const existingMems = model.worldAnchors?.longTermMemories || [];
     
     const prompt = `
-        分析日記紀錄，提取出 1-3 個對未來連貫性有意義的記憶點（如：#買了某物、#去了某地）。
-        【日記】: "${diaryContent}"
-        【已有記憶】: ${existingMems.join(', ')}
-        僅輸出 JSON 數組格式：["#標籤1", "#標籤2"]
+        你是一個記憶管理員，負責為虛擬 IP 提取值得長期保留的記憶。
+        
+        分析以下日記，提取 1-3 個對「未來日記連貫性」有意義的記憶點。
+        
+        好的記憶應該是：
+        - 具體的事件或決定（#買了第一台底片相機、#搬去大安區新家）
+        - 情感轉折點（#那天開始不再聯絡某人、#決定認真學攝影）
+        - 習慣或偏好的確立（#發現自己喜歡一個人吃早餐）
+        
+        不好的記憶是：
+        - 太泛泛（#今天很開心）
+        - 重複已有的記憶（已有記憶：${existingMems.join(', ')}）
+        
+        【日記內容】: "${diaryContent}"
+        【已有記憶】: ${existingMems.length > 0 ? existingMems.join(', ') : '（尚無記憶）'}
+        
+        僅輸出 JSON 數組格式，不要其他文字：["#記憶1", "#記憶2"]
+        如果沒有值得提取的記憶，輸出空數組：[]
     `;
 
     try {

@@ -133,7 +133,32 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         if (!diary || !editablePrompt) return;
         setIsGeneratingImage(true);
         try {
-            const sourceImageData = await imageUrlToimageData(model.imageUrl);
+            const faceRefs = (model.preferences?.face_reference_urls || []).filter(Boolean);
+            const primaryRef = faceRefs.length > 0 ? faceRefs[0] : model.imageUrl;
+            const sourceImageData = await imageUrlToimageData(primaryRef);
+
+            // 把其餘角度圖轉成 imageData 格式，作為 references 傳給 Gemini
+            const additionalRefs: { data: string; mimeType: string }[] = [];
+            if (faceRefs.length > 1) {
+                for (const refUrl of faceRefs.slice(1)) {
+                    try {
+                        const refData = await imageUrlToimageData(refUrl);
+                        additionalRefs.push(refData);
+                    } catch (e) {
+                        console.warn('Failed to load face reference:', e);
+                    }
+                }
+            }
+
+            // 根據角度數量生成說明指令
+            let secondaryRefNote = '';
+            if (faceRefs.length >= 4) {
+                secondaryRefNote = ' [IDENTITY REFERENCE: 4-angle head reference images provided (front, side, 45-degree, back). All reference images show the SAME person. Use ALL provided images to accurately reconstruct facial features, hairstyle structure, and head shape. Maintain 100% identity consistency.]';
+            } else if (faceRefs.length === 3) {
+                secondaryRefNote = ' [IDENTITY REFERENCE: 3-angle head reference images provided. All show the SAME person. Maintain consistent facial identity.]';
+            } else if (faceRefs.length === 2) {
+                secondaryRefNote = ' [IDENTITY REFERENCE: Front and side reference images provided for the same person. Maintain consistent facial identity.]';
+            }
             
             const imageConfig: any = {
                 aspectRatio: aspectRatio,
@@ -148,8 +173,8 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             // PRO 模式啟動「身份強化」flag,由 transformImage 內部處理
             const url = await transformImage(
                 sourceImageData,
-                editablePrompt,
-                [],
+                editablePrompt + (diary?.meta?.petNote || '') + secondaryRefNote,
+                additionalRefs,
                 undefined,
                 { 
                     usePro: true,  // 三個選項都啟用 Pro Fidelity Mode
@@ -654,6 +679,9 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                 第三人稱 (3RD)
                             </button>
                         </div>
+                        <p className="text-[7px] text-gray-600 text-center mt-1">
+                            切換後請重新點擊「同步靈魂敘事」
+                        </p>
                                         </div>
                                     </div>
                                     <div className="space-y-4">
@@ -726,7 +754,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                         </div>
                                                                         <textarea 
                                                                             className="w-full bg-transparent border-none p-0 text-[11px] text-[var(--color-text-main)] focus:ring-0 resize-none min-h-[40px] outline-none leading-relaxed placeholder-gray-500"
-                                                                            value={val.join(']: ')}
+                                                                            value={(val ?? []).join(']: ')}
                                                                             onChange={(e) => {
                                                                                 const lines = editablePromptZH.split('\n');
                                                                                 const lineIdx = lines.findIndex(l => l.startsWith(key + ']:'));
@@ -769,7 +797,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                         </span>
                                                                         <textarea 
                                                                             className="w-full bg-transparent border-none p-0 text-[10px] font-mono text-gray-400 focus:ring-0 resize-none min-h-[45px] outline-none leading-tight"
-                                                                            value={val.join(']: ')}
+                                                                            value={(val ?? []).join(']: ')}
                                                                             onChange={(e) => {
                                                                                 const lines = editablePrompt.split('\n');
                                                                                 lines[i] = `[${displayKey}]: ${e.target.value}`;

@@ -12,7 +12,9 @@ import NarrativeWorkflow from '../narrative/NarrativeWorkflow';
 import { auth } from '../../shared/services/firebase/firebaseConfig';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, User } from 'firebase/auth';
 import { extractMetadataFromFile, hasPavoraMetadata, embedMetadata } from '../../shared/utils/metadataUtils';
-import { downloadImage } from '../../shared/utils/imageUtils';
+import { downloadImage, cropImage, fileToBase64 } from '../../shared/utils/imageUtils';
+import ManualCropModal from '../../shared/components/business/ManualCropModal';
+import { detectMultiAngleLayout } from '../../shared/services/geminiService';
 import { useNotification } from '../../shared/context/NotificationContext';
 import Loader from '../../shared/components/common/Loader';
 
@@ -46,7 +48,7 @@ const DESTINATIONS = [
 ];
 
 const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHubMode }) => {
-  const { models, removeModels, addModel, syncWithCloud } = useModelStore();
+  const { models, removeModels, addModel, updateModel, syncWithCloud } = useModelStore();
   const { addAmbassador, ambassadors } = useBrandStore();
   const { addNotification } = useNotification();
   const [selectedModels, setSelectedModels] = useState<Set<string>>(new Set());
@@ -68,6 +70,11 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
   } | null>(null);
   const [selectedGalleryItems, setSelectedGalleryItems] = useState<Set<string>>(new Set());
   const [isPortfolioDeleteMode, setIsPortfolioDeleteMode] = useState(false);
+
+  const [isFaceCropModalOpen, setIsFaceCropModalOpen] = useState(false);
+  const [faceCropSource, setFaceCropSource] = useState<{ url: string; fileData: { data: string; mimeType: string } } | null>(null);
+  const [faceDetectedBoxes, setFaceDetectedBoxes] = useState<any[]>([]);
+  const [isFaceDetecting, setIsFaceDetecting] = useState(false);
 
   const { removeFromModelGallery } = useModelStore();
 
@@ -219,6 +226,68 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
 
     return (
         <div className={`min-h-screen bg-[var(--color-bg-deep)] text-[var(--color-text-main)] font-sans pb-20 ${isHubMode ? 'pt-8' : ''}`}>
+            {isFaceCropModalOpen && faceCropSource && portfolioModel && (
+                <ManualCropModal
+                    imageUrl={faceCropSource.url}
+                    initialBoxes={faceDetectedBoxes}
+                    angles={[
+                        { id: 'front', label: '正面 (FRONT)' },
+                        { id: 'side', label: '側面 (SIDE)' },
+                        { id: 'angle45', label: '45度角 (45°)' },
+                        { id: 'back', label: '背面 (BACK)' }
+                    ]}
+                    onSave={async (boxes) => {
+                        const newRefs = [...(portfolioModel.preferences?.face_reference_urls || ['', '', '', ''])];
+                        const slotMap: Record<string, number> = { 
+                            'front': 0, 'side': 1, 'angle45': 2, 'back': 3 
+                        };
+                        
+                        setIsFaceDetecting(true); // Reuse as saving state
+                        try {
+                            for (const box of boxes) {
+                                const idx = slotMap[box.angle];
+                                if (idx !== undefined) {
+                                    const cropped = await cropImage(faceCropSource.fileData, box.box_2d);
+                                    newRefs[idx] = `data:${cropped.mimeType};base64,${cropped.data}`;
+                                }
+                            }
+                            
+                            updateModel(portfolioModel.id, {
+                                preferences: {
+                                    ...portfolioModel.preferences,
+                                    face_reference_urls: newRefs
+                                }
+                            });
+                            addNotification({ type: 'success', message: '多角度裁切已完成並套用' });
+                        } catch (err) {
+                            console.error('Apply crops failed:', err);
+                            addNotification({ type: 'error', message: '裁切套用失敗' });
+                        } finally {
+                            setIsFaceDetecting(false);
+                            setIsFaceCropModalOpen(false);
+                            setFaceCropSource(null);
+                            setFaceDetectedBoxes([]);
+                        }
+                    }}
+                    onClose={() => {
+                        setIsFaceCropModalOpen(false);
+                        setFaceCropSource(null);
+                        setFaceDetectedBoxes([]);
+                    }}
+                    onResetToAI={async () => {
+                        if (!faceCropSource) return;
+                        try {
+                            const boxes = await detectMultiAngleLayout(faceCropSource.fileData);
+                            setFaceDetectedBoxes(boxes.map((b: any, i: number) => ({ 
+                                ...b, id: `face-auto-${Date.now()}-${i}` 
+                            })));
+                        } catch (e) {
+                            console.error('AI Reset failed', e);
+                        }
+                    }}
+                />
+            )}
+
             {previewingImage && <ImagePreviewModal {...previewingImage} onClose={() => setPreviewingImage(null)} />}
             
             <AnimatePresence>
@@ -262,7 +331,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                                         return (
                                                             <div key={i} className="bg-white/5 p-3 rounded-lg border border-white/5 flex gap-3 items-start">
                                                                 <span className="text-[9px] font-bold text-[var(--color-gold)]/70 whitespace-nowrap pt-0.5">{key}</span>
-                                                                <p className="text-[11px] text-gray-400 leading-relaxed">{val.join(': ')}</p>
+                                                                <p className="text-[11px] text-gray-400 leading-relaxed">{(val ?? []).join(': ')}</p>
                                                             </div>
                                                         );
                                                     })}
@@ -279,7 +348,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                                         return (
                                                             <div key={i} className="bg-black/40 p-3 rounded-lg border border-white/5 flex gap-3 items-start">
                                                                 <span className="text-[9px] font-mono font-bold text-blue-400/70 whitespace-nowrap pt-0.5">{key}</span>
-                                                                <p className="text-[10px] font-mono text-gray-500 leading-relaxed">{val.join(': ')}</p>
+                                                                <p className="text-[10px] font-mono text-gray-500 leading-relaxed">{(val ?? []).join(': ')}</p>
                                                             </div>
                                                         );
                                                     })}
@@ -489,36 +558,146 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                                     {/* Original Image */}
                                     <div className="group relative glass-panel rounded-2xl overflow-hidden border border-[var(--color-gold)] shadow-lg">
-                                        <div className="aspect-[3/4] cursor-pointer" onClick={() => setPreviewingImage({images: [portfolioModel.imageUrl], startIndex: 0})}>
-                                            <AsyncImage src={portfolioModel.imageUrl} className="w-full h-full object-cover" />
-                                            <div className="absolute top-3 left-3 px-2 py-1 bg-[var(--color-gold)] rounded text-[8px] font-bold text-black uppercase tracking-widest">
-                                                Main Identity
+                                        <div className="aspect-[3/4]">
+                                            {/* 臉部基準圖 2x2 Grid */}
+                                            <div className="w-full h-full grid grid-cols-2 gap-0.5 bg-black/40 p-1">
+                                                {[
+                                                    { id: 'front', label: 'FRONT', index: 0 },
+                                                    { id: 'side', label: 'SIDE', index: 1 },
+                                                    { id: 'angle45', label: '45°', index: 2 },
+                                                    { id: 'back', label: 'BACK', index: 3 }
+                                                ].map(slot => {
+                                                    const url = (portfolioModel.preferences?.face_reference_urls || [])[slot.index];
+                                                    return (
+                                                        <div
+                                                            key={slot.id}
+                                                            onClick={() => document.getElementById(`face-ref-${portfolioModel.id}-${slot.id}`)?.click()}
+                                                            className="relative overflow-hidden rounded-sm cursor-pointer 
+                                                                bg-black/60 border border-white/5 hover:border-[var(--color-gold)]/50 
+                                                                transition-all group/slot flex items-center justify-center"
+                                                        >
+                                                            {url ? (
+                                                                <>
+                                                                    <img src={url} className="w-full h-full object-cover" alt={slot.label} />
+                                                                    <div className="absolute inset-0 bg-black/60 opacity-0 
+                                                                        group-hover/slot:opacity-100 flex items-center justify-center 
+                                                                        transition-opacity">
+                                                                        <button
+                                                                            onClick={(e) => {
+                                                                                e.stopPropagation();
+                                                                                const current = [...(portfolioModel.preferences?.face_reference_urls || [])];
+                                                                                current[slot.index] = '';
+                                                                                updateModel(portfolioModel.id, {
+                                                                                    preferences: {
+                                                                                        ...portfolioModel.preferences,
+                                                                                        face_reference_urls: current
+                                                                                    }
+                                                                                });
+                                                                            }}
+                                                                            className="px-2 py-0.5 bg-red-600/80 text-white 
+                                                                                text-[7px] font-black rounded-full hover:bg-red-500"
+                                                                        >
+                                                                            刪除
+                                                                        </button>
+                                                                    </div>
+                                                                </>
+                                                            ) : (
+                                                                <div className="flex flex-col items-center gap-0.5">
+                                                                    <svg className="w-3 h-3 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" 
+                                                                            d="M12 4v16m8-8H4"/>
+                                                                    </svg>
+                                                                    <span className="text-[6px] text-gray-700 font-black uppercase tracking-widest">
+                                                                        {slot.label}
+                                                                    </span>
+                                                                </div>
+                                                            )}
+                                                            <input
+                                                                type="file"
+                                                                id={`face-ref-${portfolioModel.id}-${slot.id}`}
+                                                                className="hidden"
+                                                                accept="image/*"
+                                                                onChange={(e) => {
+                                                                    const file = e.target.files?.[0];
+                                                                    if (!file) return;
+                                                                    const reader = new FileReader();
+                                                                    reader.onload = (ev) => {
+                                                                        const dataUrl = ev.target?.result as string;
+                                                                        if (!dataUrl) return;
+                                                                        const current = [...(portfolioModel.preferences?.face_reference_urls || ['', '', '', ''])];
+                                                                        while (current.length <= slot.index) current.push('');
+                                                                        current[slot.index] = dataUrl;
+                                                                        updateModel(portfolioModel.id, {
+                                                                            preferences: {
+                                                                                ...portfolioModel.preferences,
+                                                                                face_reference_urls: current
+                                                                            }
+                                                                        });
+                                                                    };
+                                                                    reader.readAsDataURL(file);
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    );
+                                                })}
                                             </div>
-                                            <div className="absolute top-3 right-3 flex gap-2">
-                                                <button 
-                                                    onClick={(e) => { e.stopPropagation(); setActivePortfolioItemId('main'); }}
-                                                    className="w-8 h-8 flex items-center justify-center rounded-xl bg-black/60 hover:bg-[var(--color-gold)] text-white hover:text-black transition-all border border-white/10"
-                                                >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
-                                                    </svg>
-                                                </button>
+                                            
+                                            {/* AI Multi-Angle Upload */}
+                                            <div className="absolute bottom-2 left-0 right-0 flex justify-center">
+                                                <label className={`px-3 py-1 rounded-full text-[7px] font-black uppercase 
+                                                    tracking-widest cursor-pointer transition-all border border-white/10
+                                                    ${isFaceDetecting 
+                                                        ? 'bg-[var(--color-gold)]/20 text-[var(--color-gold)] animate-pulse' 
+                                                        : 'bg-black/60 text-gray-400 hover:bg-[var(--color-gold)]/20 hover:text-[var(--color-gold)]'
+                                                    }`}>
+                                                    {isFaceDetecting ? 'AI 偵測中...' : '+ 上傳並自動裁切'}
+                                                    <input
+                                                        type="file"
+                                                        className="hidden"
+                                                        accept="image/*"
+                                                        disabled={isFaceDetecting}
+                                                        onChange={async (e) => {
+                                                            const file = e.target.files?.[0];
+                                                            if (!file) return;
+                                                            setIsFaceDetecting(true);
+                                                            try {
+                                                                const fileData = await fileToBase64(file);
+                                                                const url = URL.createObjectURL(file);
+                                                                
+                                                                // AI 自動偵測多角度位置
+                                                                const boxes = await detectMultiAngleLayout(fileData);
+                                                                setFaceDetectedBoxes(boxes.map((b: any, i: number) => ({ 
+                                                                    ...b, id: `face-auto-${i}` 
+                                                                })));
+                                                                setFaceCropSource({ url, fileData });
+                                                                setIsFaceCropModalOpen(true);
+                                                            } catch (err) {
+                                                                console.error('Face detect failed:', err);
+                                                                // AI 失敗時直接開啟裁切視窗（無預設框）
+                                                                const reader = new FileReader();
+                                                                reader.onload = async () => {
+                                                                    const dataUrl = reader.result as string;
+                                                                    if (dataUrl) {
+                                                                        setFaceCropSource({ 
+                                                                            url: URL.createObjectURL(file), 
+                                                                            fileData: { data: dataUrl.split(',')[1], mimeType: file.type }
+                                                                        });
+                                                                        setFaceDetectedBoxes([]);
+                                                                        setIsFaceCropModalOpen(true);
+                                                                    }
+                                                                };
+                                                                reader.readAsDataURL(file);
+                                                            } finally {
+                                                                setIsFaceDetecting(false);
+                                                            }
+                                                        }}
+                                                    />
+                                                </label>
                                             </div>
                                         </div>
-
-                                        {/* Action Menu for Main Image */}
-                                        <ModelActionMenu 
-                                            model={portfolioModel}
-                                            isOpen={activePortfolioItemId === 'main'}
-                                            onClose={() => setActivePortfolioItemId(null)}
-                                            onModelSelect={(model, dest) => {
-                                                if (dest === 'narrative') {
-                                                    setSelectedModelForNarrative(model);
-                                                } else {
-                                                    onModelSelect(model, dest);
-                                                }
-                                            }}
-                                        />
+                                        <div className="absolute top-3 left-3 px-2 py-1 bg-[var(--color-gold)] rounded text-[8px] font-bold text-black uppercase tracking-widest">
+                                            Face Reference
+                                        </div>
                                     </div>
                                     
                                     {/* Gallery Items */}

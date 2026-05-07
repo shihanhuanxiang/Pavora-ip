@@ -15,9 +15,10 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: React.ReactNode;
   tooltip?: string;
   options: (SelectOption | SelectGroup)[];
+  isLoading?: boolean;
 }
 
-const Select: React.FC<SelectProps> = ({ label, tooltip, options, className, ...props }) => {
+const Select: React.FC<SelectProps> = ({ label, tooltip, options, className, isLoading, ...props }) => {
   const isGroup = (opt: SelectOption | SelectGroup): opt is SelectGroup => 'options' in opt;
 
   return (

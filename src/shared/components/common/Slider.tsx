@@ -10,10 +10,11 @@ interface SliderProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 
   step?: number;
   unit: string;
   safetyStatus?: 'safe' | 'warning' | 'risky';
+  isLoading?: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Slider: React.FC<SliderProps> = ({ label, tooltip, value, min, max, step = 1, unit, safetyStatus, onChange, ...props }) => {
+const Slider: React.FC<SliderProps> = ({ label, tooltip, value, min, max, step = 1, unit, safetyStatus, isLoading, onChange, ...props }) => {
     const percentage = ((value - min) / (max - min)) * 100;
 
     const [isDragging, setIsDragging] = React.useState(false);

@@ -4,9 +4,10 @@ import React from 'react';
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
   variant?: 'default' | 'glass' | 'solid';
+  isLoading?: boolean;
 }
 
-const Card = React.forwardRef<HTMLDivElement, CardProps>(({ children, className, variant = 'glass', ...props }, ref) => {
+const Card = React.forwardRef<HTMLDivElement, CardProps>(({ children, className, variant = 'glass', isLoading, ...props }, ref) => {
   const baseClasses = 'transition-all duration-500 relative overflow-hidden';
   
   const variantClasses = {

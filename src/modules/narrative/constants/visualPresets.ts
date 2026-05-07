@@ -40,25 +40,25 @@ export const VISUAL_PRESETS: VisualPreset[] = [
         description: "貼身上衣、黑絲襪、甜美活潑自拍，生活感場景，高互動率 IG 風格",
         visualConstants: {
             signaturePoses: [
-                "close-up selfie, face fills frame, soft smile, phone-held-out angle",
-                "low angle shot emphasizing legs and outfit, subject looking down at camera",
-                "seated candid, crossed legs visible, black stockings prominent",
-                "mirror selfie full body, outfit showcase, playful expression",
-                "close-up on face, pouting lips, eyes slightly downcast, ultra shallow depth of field"
+                "close-up selfie from slightly above, face fills 75% of frame, soft pout or big eyes expression, 85mm compression, dewy skin visible",
+                "full body shot at MRT station or street staircase, black tights prominent, 35mm natural, slight low angle emphasizing legs",
+                "seated on sofa or floor, legs bent showing black tights, casual home setting, top-down angle from subject's hand",
+                "crouching or bending down naturally, full outfit visible including tights, candid interaction with object or pet",
+                "bathroom or mirror selfie, close distance, slightly wet hair or fresh makeup, raw and natural mood"
             ],
             stylingFilters: [
-                "bright warm tones",
-                "korean IG aesthetic",
-                "soft skin glow",
-                "natural dewy finish"
+                "natural dewy skin glow",
+                "korean IG warm tones",
+                "soft bokeh background",
+                "authentic life photography"
             ],
-            expressionStyle: "playful smile or soft pout, bright expressive eyes, youthful energy",
-            colorTone: "warm ivory and peachy tones, soft golden hour light",
-            poseEnergy: "spontaneous and playful, caught in natural moment",
-            catchlightPreference: "natural window catchlight, bright eye reflections"
+            expressionStyle: "large expressive eyes looking directly at camera, soft pout with glossy lips, or genuine smile showing teeth, hand touching face or cheek naturally",
+            colorTone: "warm natural skin tones, soft peachy glow, no heavy filters, authentic daily life color palette",
+            poseEnergy: "close to camera and physically present, body-aware but natural, girl-next-door warmth with feminine allure",
+            catchlightPreference: "natural catchlight in large eyes, dewy skin reflection, bright eye highlights"
         },
         preferences: {
-            preferred_archetypes: ["feminine_sweet", "sporty_active"],
+            preferred_archetypes: ["korean_chic", "feminine_sweet", "sporty_active"],
             aesthetic_tier_min: 1,
             aesthetic_tier_max: 3
         },
@@ -91,7 +91,7 @@ export const VISUAL_PRESETS: VisualPreset[] = [
             catchlightPreference: "soft diffused window light, gentle eye reflection"
         },
         preferences: {
-            preferred_archetypes: ["feminine_mature", "vintage_retro", "minimalist"],
+            preferred_archetypes: ["vintage_retro", "minimalist", "feminine_mature"],
             aesthetic_tier_min: 2,
             aesthetic_tier_max: 4
         },
@@ -124,7 +124,7 @@ export const VISUAL_PRESETS: VisualPreset[] = [
             catchlightPreference: "bright office or outdoor natural light catchlight"
         },
         preferences: {
-            preferred_archetypes: ["feminine_mature", "minimalist"],
+            preferred_archetypes: ["feminine_mature", "minimalist", "feminine_sweet"],
             aesthetic_tier_min: 1,
             aesthetic_tier_max: 3
         },
@@ -160,7 +160,7 @@ export const VISUAL_PRESETS: VisualPreset[] = [
             catchlightPreference: "dramatic single point catchlight, sharp eye reflection"
         },
         preferences: {
-            preferred_archetypes: ["clean_masculine", "dandy_refined"],
+            preferred_archetypes: ["masculine_clean", "dandy_refined"],
             aesthetic_tier_min: 3,
             aesthetic_tier_max: 5
         },
@@ -193,7 +193,7 @@ export const VISUAL_PRESETS: VisualPreset[] = [
             catchlightPreference: "warm lamp or window diffused light, gentle soft catchlight"
         },
         preferences: {
-            preferred_archetypes: ["clean_masculine", "vintage_retro"],
+            preferred_archetypes: ["masculine_clean", "vintage_retro", "minimalist"],
             aesthetic_tier_min: 1,
             aesthetic_tier_max: 3
         },
@@ -226,7 +226,7 @@ export const VISUAL_PRESETS: VisualPreset[] = [
             catchlightPreference: "urban ambient light, minimal catchlight, natural street light"
         },
         preferences: {
-            preferred_archetypes: ["street_edgy", "sporty_active"],
+            preferred_archetypes: ["street_edgy", "street_techwear", "sporty_active"],
             aesthetic_tier_min: 1,
             aesthetic_tier_max: 3
         },

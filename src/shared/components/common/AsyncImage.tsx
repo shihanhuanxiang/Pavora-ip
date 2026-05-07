@@ -5,9 +5,10 @@ import PhotoIcon from '../../assets/icons/PhotoIcon';
 interface AsyncImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
   fallback?: React.ReactNode;
+  isLoading?: boolean;
 }
 
-const AsyncImage: React.FC<AsyncImageProps> = ({ src, fallback, className, ...props }) => {
+const AsyncImage: React.FC<AsyncImageProps> = ({ src, fallback, className, isLoading, ...props }) => {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [mimeType, setMimeType] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);

@@ -7,9 +7,11 @@ import {
     analyzeSceneAndSubject,
     generateScene,
     tuneImageDetail,
-    confirmPaidFeature
+    confirmPaidFeature,
+    detectMultiAngleLayout
 } from '../../shared/services/geminiService';
-import { downloadImage } from '../../shared/utils/imageUtils';
+import { downloadImage, cropImage } from '../../shared/utils/imageUtils';
+import ManualCropModal from '../../shared/components/business/ManualCropModal';
 import { PosePreset, ExpressionPreset } from '../../shared/types/types';
 import type { 
     ScenePhysics, SceneTimeSlot, SceneWeatherType 
@@ -75,6 +77,11 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
         'back': { id: 'back', label: '背面 (Back)', url: null, fileData: null },
     });
     const [isMultiAngleGen, setIsMultiAngleGen] = useState(false);
+
+    const [isSceneCropModalOpen, setIsSceneCropModalOpen] = useState(false);
+    const [sceneCropSource, setSceneCropSource] = useState<{ url: string; fileData: { data: string; mimeType: string } } | null>(null);
+    const [sceneDetectedBoxes, setSceneDetectedBoxes] = useState<any[]>([]);
+    const [isSceneDetecting, setIsSceneDetecting] = useState(false);
 
     const { 
         state: currentImage, push, history, undo, redo, canUndo, canRedo, reset: resetHistory, cursor
@@ -673,6 +680,65 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
 
     return (
         <div className="container mx-auto p-4 md:p-8 max-w-[1400px] animate-fade-in pb-20">
+            {isSceneCropModalOpen && sceneCropSource && (
+                <ManualCropModal
+                    imageUrl={sceneCropSource.url}
+                    initialBoxes={sceneDetectedBoxes}
+                    angles={[
+                        { id: 'front', label: '正面 (Front)', en: 'Front' },
+                        { id: 'side', label: '側面 (Side)', en: 'Side' },
+                        { id: 'angle', label: '45度角 (45°)', en: 'Angle' },
+                        { id: 'back', label: '背面 (Back)', en: 'Back' }
+                    ]}
+                    onSave={async (boxes) => {
+                        try {
+                            setIsLoading(true);
+                            setLoadingMessage('正在套用裁切...');
+                            for (const box of boxes) {
+                                const cropped = await cropImage(sceneCropSource.fileData, box.box_2d);
+                                const url = `data:${cropped.mimeType};base64,${cropped.data}`;
+                                setModelMatrix(prev => ({
+                                    ...prev,
+                                    [box.angle]: { 
+                                        ...prev[box.angle], 
+                                        url, 
+                                        fileData: cropped 
+                                    }
+                                }));
+                                if (box.angle === 'front') {
+                                    setOriginalBaseImage({ url, fileData: cropped });
+                                    resetHistory(url);
+                                }
+                            }
+                            addNotification({ type: 'success', message: '多角度裁切已完成並套用' });
+                        } catch (err) {
+                            console.error('Scene crop save failed:', err);
+                            addNotification({ type: 'error', message: '裁切套用失敗' });
+                        } finally {
+                            setIsLoading(false);
+                            setIsSceneCropModalOpen(false);
+                            setSceneCropSource(null);
+                            setSceneDetectedBoxes([]);
+                        }
+                    }}
+                    onClose={() => {
+                        setIsSceneCropModalOpen(false);
+                        setSceneCropSource(null);
+                        setSceneDetectedBoxes([]);
+                    }}
+                    onResetToAI={async () => {
+                        if (!sceneCropSource) return;
+                        try {
+                            const boxes = await detectMultiAngleLayout(sceneCropSource.fileData);
+                            setSceneDetectedBoxes(boxes.map((b: any, i: number) => ({ 
+                                ...b, id: `scene-auto-${Date.now()}-${i}` 
+                            })));
+                        } catch (e) {
+                            console.error('AI Reset failed', e);
+                        }
+                    }}
+                />
+            )}
             {isLoading && (
                 <div className="fixed inset-0 z-[200] bg-black/80 backdrop-blur-md flex flex-col items-center justify-center animate-fade-in">
                     <div className="relative w-64 h-64 mb-8">
@@ -851,6 +917,57 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                             {isMatrixMode ? (
                                 <div className="space-y-6 mb-6">
                                     <label className="block text-[10px] font-bold text-gray-500 mb-3 uppercase tracking-[0.2em]">多角度矩陣上傳 (虛擬試衣間模式)</label>
+                                    
+                                    <div className="mb-4">
+                                        <label className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl 
+                                            text-[9px] font-black uppercase tracking-widest cursor-pointer 
+                                            border transition-all w-full justify-center
+                                            ${isSceneDetecting 
+                                                ? 'border-[var(--color-gold)]/40 bg-[var(--color-gold)]/10 text-[var(--color-gold)] animate-pulse cursor-not-allowed' 
+                                                : 'border-white/10 bg-white/[0.02] text-gray-400 hover:border-[var(--color-gold)]/50 hover:text-[var(--color-gold)]'
+                                            }`}>
+                                            {isSceneDetecting ? '⚡ AI 偵測中...' : '📷 上傳合照並自動裁切到四個視角'}
+                                            <input
+                                                type="file"
+                                                className="hidden"
+                                                accept="image/*"
+                                                disabled={isSceneDetecting}
+                                                onChange={async (e) => {
+                                                    const file = e.target.files?.[0];
+                                                    if (!file) return;
+                                                    setIsSceneDetecting(true);
+                                                    try {
+                                                        const fileData = await fileToBase64(file);
+                                                        const url = URL.createObjectURL(file);
+                                                        const boxes = await detectMultiAngleLayout(fileData);
+                                                        setSceneDetectedBoxes(boxes.map((b: any, i: number) => ({ 
+                                                            ...b, id: `scene-auto-${i}` 
+                                                        })));
+                                                        setSceneCropSource({ url, fileData });
+                                                        setIsSceneCropModalOpen(true);
+                                                    } catch (err) {
+                                                        console.error('Scene detect failed:', err);
+                                                        const reader = new FileReader();
+                                                        reader.onload = (ev) => {
+                                                            const dataUrl = ev.target?.result as string;
+                                                            if (dataUrl) {
+                                                                setSceneCropSource({ 
+                                                                    url: URL.createObjectURL(file), 
+                                                                    fileData: { data: dataUrl.split(',')[1], mimeType: file.type }
+                                                                });
+                                                                setSceneDetectedBoxes([]);
+                                                                setIsSceneCropModalOpen(true);
+                                                            }
+                                                        };
+                                                        reader.readAsDataURL(file);
+                                                    } finally {
+                                                        setIsSceneDetecting(false);
+                                                    }
+                                                }}
+                                            />
+                                        </label>
+                                    </div>
+
                                     <div className="grid grid-cols-2 gap-3">
                                         {(Object.values(modelMatrix) as any[]).map(angle => (
                                             <div key={angle.id} className="space-y-2">

@@ -1,10 +1,11 @@
 
 import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { transformHairAndMakeup, getFriendlyErrorMessage, fileToBase64, imageUrlToimageData, getAIStyleAnalysis, getStylistFeedback, tuneImageDetail } from '../../shared/services/geminiService';
+import { transformHairAndMakeup, getFriendlyErrorMessage, imageUrlToimageData, getAIStyleAnalysis, getStylistFeedback, tuneImageDetail, detectMultiAngleLayout } from '../../shared/services/geminiService';
 import { buildSalonPrompt, STYLE_ANALYSIS_PROMPT } from '../../prompts/hair';
 import { savePortfolioItem, getSalonPresets, saveSalonPreset, deleteSalonPreset } from '../../shared/services/storageService';
-import { downloadImage, stitchImages } from '../../shared/utils/imageUtils';
+import { downloadImage, stitchImages, cropImage, fileToBase64 } from '../../shared/utils/imageUtils';
+import ManualCropModal from '../../shared/components/business/ManualCropModal';
 import type { HairstyleParams, MakeupParams, SavedPreset, StylistFeedback } from '../../shared/types/types';
 import { HAIRSTYLE_PRESETS, MAKEUP_PRESETS, BEARD_PRESETS, GRADIENT_PLACEMENT_PATTERNS, HIGHLIGHT_PATTERNS } from '../../shared/constants/constants';
 import Button from '../../shared/components/common/Button';
@@ -102,6 +103,10 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
     const [savedPresets, setSavedPresets] = useState<SavedPreset[]>([]);
     const [isSavingPreset, setIsSavingPreset] = useState(false);
     const [isPrecisionMode, setIsPrecisionMode] = useState(false);
+    const [isSalonCropModalOpen, setIsSalonCropModalOpen] = useState(false);
+    const [salonCropSource, setSalonCropSource] = useState<{ url: string; fileData: { data: string; mimeType: string } } | null>(null);
+    const [salonDetectedBoxes, setSalonDetectedBoxes] = useState<any[]>([]);
+    const [isSalonDetecting, setIsSalonDetecting] = useState(false);
 
     useEffect(() => {
         setSavedPresets(getSalonPresets());
@@ -544,6 +549,59 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
 
     return (
         <div className="min-h-screen bg-[var(--color-bg-deep)] text-[var(--color-text-main)] font-sans pb-20">
+             {isSalonCropModalOpen && salonCropSource && (
+                <ManualCropModal
+                    imageUrl={salonCropSource.url}
+                    initialBoxes={salonDetectedBoxes}
+                    angles={MODEL_ANGLES.map(a => ({ id: a.id, label: a.label, en: a.en }))}
+                    onSave={async (boxes) => {
+                        try {
+                            setIsLoading(true);
+                            setLoadingMessage('正在套用裁切...');
+                            for (const box of boxes) {
+                                const cropped = await cropImage(salonCropSource.fileData, box.box_2d);
+                                const url = `data:${cropped.mimeType};base64,${cropped.data}`;
+                                setSalonMatrix(prev => ({
+                                    ...prev,
+                                    [box.angle]: { 
+                                        ...prev[box.angle], 
+                                        url, 
+                                        fileData: cropped 
+                                    }
+                                }));
+                                if (box.angle === 'front') {
+                                    setBaseImage({ url, fileData: cropped });
+                                }
+                            }
+                            addNotification({ type: 'success', message: '多角度裁切已完成並套用' });
+                        } catch (err) {
+                            console.error('Salon crop save failed:', err);
+                            addNotification({ type: 'error', message: '裁切套用失敗' });
+                        } finally {
+                            setIsLoading(false);
+                            setIsSalonCropModalOpen(false);
+                            setSalonCropSource(null);
+                            setSalonDetectedBoxes([]);
+                        }
+                    }}
+                    onClose={() => {
+                        setIsSalonCropModalOpen(false);
+                        setSalonCropSource(null);
+                        setSalonDetectedBoxes([]);
+                    }}
+                    onResetToAI={async () => {
+                        if (!salonCropSource) return;
+                        try {
+                            const boxes = await detectMultiAngleLayout(salonCropSource.fileData);
+                            setSalonDetectedBoxes(boxes.map((b: any, i: number) => ({ 
+                                ...b, id: `salon-auto-${Date.now()}-${i}` 
+                            })));
+                        } catch (e) {
+                            console.error('AI Reset failed', e);
+                        }
+                    }}
+                />
+            )}
              {isLoading && <Loader message={loadingMessage} />}
              {previewingImage && (
                 <ImagePreviewModal 
@@ -588,7 +646,57 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                         <CollapsibleCard title="1. 初始模型" defaultOpen={true} icon={<PhotoIcon className="w-4 h-4" />}>
                             <div className="space-y-4">
                                 {isMultiAngleMode ? (
-                                    <div className="grid grid-cols-2 gap-3">
+                                    <div className="space-y-4">
+                                        <div className="mb-2">
+                                            <label className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl 
+                                                text-[9px] font-black uppercase tracking-widest cursor-pointer 
+                                                border transition-all w-full justify-center
+                                                ${isSalonDetecting 
+                                                    ? 'border-[var(--color-gold)]/40 bg-[var(--color-gold)]/10 text-[var(--color-gold)] animate-pulse cursor-not-allowed' 
+                                                    : 'border-white/10 bg-white/[0.02] text-gray-400 hover:border-[var(--color-gold)]/50 hover:text-[var(--color-gold)]'
+                                                }`}>
+                                                {isSalonDetecting ? '⚡ AI 偵測中...' : '📷 上傳合照並自動裁切到四個視角'}
+                                                <input
+                                                    type="file"
+                                                    className="hidden"
+                                                    accept="image/*"
+                                                    disabled={isSalonDetecting}
+                                                    onChange={async (e) => {
+                                                        const file = e.target.files?.[0];
+                                                        if (!file) return;
+                                                        setIsSalonDetecting(true);
+                                                        try {
+                                                            const fileData = await fileToBase64(file);
+                                                            const url = URL.createObjectURL(file);
+                                                            const boxes = await detectMultiAngleLayout(fileData);
+                                                            setSalonDetectedBoxes(boxes.map((b: any, i: number) => ({ 
+                                                                ...b, id: `salon-auto-${i}` 
+                                                            })));
+                                                            setSalonCropSource({ url, fileData });
+                                                            setIsSalonCropModalOpen(true);
+                                                        } catch (err) {
+                                                            console.error('Salon face detect failed:', err);
+                                                            const reader = new FileReader();
+                                                            reader.onload = (ev) => {
+                                                                const dataUrl = ev.target?.result as string;
+                                                                if (dataUrl) {
+                                                                    setSalonCropSource({ 
+                                                                        url: URL.createObjectURL(file), 
+                                                                        fileData: { data: dataUrl.split(',')[1], mimeType: file.type }
+                                                                    });
+                                                                    setSalonDetectedBoxes([]);
+                                                                    setIsSalonCropModalOpen(true);
+                                                                }
+                                                            };
+                                                            reader.readAsDataURL(file);
+                                                        } finally {
+                                                            setIsSalonDetecting(false);
+                                                        }
+                                                    }}
+                                                />
+                                            </label>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-3">
                                         {MODEL_ANGLES.map(angle => (
                                             <div key={angle.id} className="relative aspect-[3/4] bg-[var(--color-bg-input)] rounded-xl border border-[var(--color-border)] overflow-hidden group">
                                                 {salonMatrix[angle.id].url ? (
@@ -636,6 +744,7 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                                             </div>
                                         ))}
                                     </div>
+                                </div>
                                 ) : baseImage ? (
                                     <div className="relative group rounded-2xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg-surface)]">
                                         <img src={baseImage.url} alt="Base model" className="w-full h-96 object-cover object-top" />

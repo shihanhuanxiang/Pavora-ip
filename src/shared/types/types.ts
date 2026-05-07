@@ -349,6 +349,7 @@ export interface Model {
         active_outfit_id?: string | null;
         recent_outfit_ids?: string[];
         visual_preset_id?: string | null;
+        face_reference_urls?: string[];
         manual_wear_state?: string | null;
         active_threads?: {
             thread_id: string;
