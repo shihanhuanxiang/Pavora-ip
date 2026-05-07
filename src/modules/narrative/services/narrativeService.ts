@@ -9,6 +9,39 @@ import { NON_VISUAL_PERSONAS } from "../constants/nonVisualPersonas";
 import { DEPTH_MODULES } from "../constants/depthModules";
 import { COMPOSER_INJECTION_RULES } from "../constants/injectionRules";
 import { WardrobeService } from "./wardrobeService";
+import { getPresetById } from '../constants/visualPresets';
+
+/**
+ * 將 Visual Preset 的值填入 model 的對應欄位
+ * 這是「一鍵填充」函式，Preset 是起點，使用者之後可以繼續手動微調
+ */
+export const applyVisualPreset = (
+    model: Model,
+    presetId: string,
+    onUpdate: (updates: Partial<Model>) => void
+): void => {
+    const preset = getPresetById(presetId);
+    if (!preset) return;
+
+    onUpdate({
+        visualConstants: {
+            ...model.visualConstants,
+            signaturePoses: preset.visualConstants.signaturePoses,
+            stylingFilters: preset.visualConstants.stylingFilters,
+            expressionStyle: preset.visualConstants.expressionStyle,
+            colorTone: preset.visualConstants.colorTone,
+            poseEnergy: preset.visualConstants.poseEnergy,
+            catchlightPreference: preset.visualConstants.catchlightPreference,
+        },
+        preferences: {
+            ...model.preferences,
+            preferred_archetypes: preset.preferences.preferred_archetypes,
+            aesthetic_tier_min: preset.preferences.aesthetic_tier_min,
+            aesthetic_tier_max: preset.preferences.aesthetic_tier_max,
+            visual_preset_id: presetId,
+        }
+    });
+};
 
 /**
  * Picks an appropriate outfit based on character and scene context.
@@ -129,7 +162,11 @@ const buildFinalVisualPromptV11 = (
     options?: { isPOV?: boolean }
 ): string => {
     // Layer 1: character_token
-    const layer1 = model.persona?.locked_descriptor || `${model.name}, Asian woman, ${model.age}yo, ${model.persona?.coreVibe}`;
+    const vc = model.visualConstants;
+    const facialDesc = vc?.facialBoneStructure ? `, ${vc.facialBoneStructure}` : '';
+    const layer1 = model.persona?.locked_descriptor 
+        ? `${model.persona.locked_descriptor}${facialDesc}`
+        : `${model.name}, ${model.gender === 'M' ? 'Asian man' : 'Asian woman'}, ${model.age}yo, ${model.persona?.coreVibe || ''}${facialDesc}`;
     
     // Layer 2: depth_module_scene (if extended)
     const layer2 = (scene && scene.depth_module_id) ? scene.event : "";
@@ -154,6 +191,22 @@ const buildFinalVisualPromptV11 = (
     const warmthPhrases = ["gentle heartbeat", "soft breath", "traces of warmth", "subtle human touch"];
     const layer7 = warmthPhrases[Math.floor(Math.random() * warmthPhrases.length)];
     
+    // Layer 7_5: visual_dna（IP 視覺 DNA 注入，強制約束語氣）
+    let layer7_5 = "";
+    const vc7 = model.visualConstants;
+    if (vc7) {
+        const rules: string[] = [];
+        if (vc7.expressionStyle) 
+            rules.push(`EXPRESSION MUST BE: ${vc7.expressionStyle}`);
+        if (vc7.poseEnergy) 
+            rules.push(`POSE ENERGY MUST BE: ${vc7.poseEnergy}`);
+        if (vc7.colorTone) 
+            rules.push(`COLOR TONE MUST BE: ${vc7.colorTone}`);
+        if (vc7.catchlightPreference) 
+            rules.push(`LIGHTING STYLE: ${vc7.catchlightPreference}`);
+        if (rules.length > 0) layer7_5 = rules.join('. ');
+    }
+    
     // Layer 8: pov_mode_inject
     let layer8: string;
     if (options?.isPOV === true) {
@@ -174,26 +227,58 @@ const buildFinalVisualPromptV11 = (
     if (options?.isPOV !== true) {
         const compositionPool = [
             // 全身構圖類
-            "full body shot, natural standing posture, slight weight shift to one side",
-            "full body candid, mid-stride walking, motion blur on feet",
-            "full body from slight low angle, subject unaware of camera",
+            "full body shot, natural standing posture, slight weight shift to one side, candid street photography",
+            "full body candid, mid-stride walking, motion captured naturally, subject unaware",
+            "full body from slight low angle, subject looking ahead, documentary style",
+            "full body reflected in shop window or mirror, subject seen from behind",
+            
             // 半身構圖類
-            "medium shot from chest up, three-quarter angle, slight head tilt",
-            "medium shot, subject looking slightly off-frame, candid expression",
-            "half body shot from slightly above, looking downward at something",
+            "medium shot from chest up, three-quarter angle, slight head tilt, soft background bokeh",
+            "medium shot, subject looking slightly off-frame at something, candid expression",
+            "half body shot from slightly above, subject looking downward, intimate mood",
+            "medium shot from behind slightly, subject turning head, hair movement visible",
+            
             // 特寫構圖類
-            "close-up on face and shoulders, shallow depth of field, bokeh background",
-            "portrait close-up, three-quarter profile, natural light on one side of face",
-            // 創意角度類
-            "shot from behind, subject looking away into distance",
-            "low angle from below knee height, full body visible, dramatic perspective",
-            "overhead slightly, subject seated or crouched, looking up at camera",
-            "side profile full body, walking direction, cinematic crop",
-            // 細節類
-            "extreme close-up on hands and outfit detail, face partially visible",
-            "wide shot with subject as smaller element in larger environment",
+            "close-up on face and shoulders, shallow depth of field, bokeh background, golden hour light",
+            "portrait close-up, three-quarter profile, natural window light on one cheek",
+            "extreme close-up on eyes and upper face only, lower face cropped out",
+            "close-up on neck collarbone and shoulder, face partially visible at edge",
+            
+            // 低角度類（對標帳號高頻）
+            "low angle from below waist height, legs and lower body prominent, subject looking down at camera",
+            "very low angle from floor level, full legs visible, urban background in upper frame",
+            "low angle upward shot emphasizing legs and outfit from knee down",
+            
+            // 俯角類
+            "overhead slightly, subject seated, looking up at camera with relaxed expression, no photographer hand visible, no camera in frame, as if camera is floating",
+            "bird's eye view, subject lying on bed or floor, full body from above, no photographer hand visible, no camera in frame, floating camera perspective",
+            "slight overhead angle, subject looking down at something in hands, no photographer hand visible, no extra hands in frame",
+            
+            // 環境融入類
+            "wide shot with subject as smaller element in larger environment, sense of scale",
+            "subject partially obscured by foreground element, framed naturally",
+            "side profile full body, subject in motion, cinematic horizontal crop",
+            
+            // 細節與局部類
+            "extreme close-up on hands holding object, face softly visible in background",
+            "detail shot focusing on outfit texture and accessories, face partially cropped",
+            "close-up on feet and shoes, legs visible above, ground texture prominent",
+            
+            // 坐姿類
+            "seated candid, three-quarter angle, crossed legs visible, relaxed posture",
+            "seated at table or counter, upper body leaning slightly forward, natural gesture",
+            
+            // 動態類
+            "subject mid-laugh or candid expression, caught in natural moment",
+            "subject in motion turning around, hair caught in movement, dynamic energy",
         ];
-        layer8_5 = compositionPool[Math.floor(Math.random() * compositionPool.length)];
+        // 如果 IP 有設定招牌姿勢，70% 機率優先使用
+        const signaturePoses = model.visualConstants?.signaturePoses || [];
+        if (signaturePoses.length > 0 && Math.random() < 0.7) {
+            layer8_5 = signaturePoses[Math.floor(Math.random() * signaturePoses.length)];
+        } else {
+            layer8_5 = compositionPool[Math.floor(Math.random() * compositionPool.length)];
+        }
     }
     
     // Layer 9: spicy_modifiers (Aesthetic Tier logic)
@@ -221,7 +306,7 @@ const buildFinalVisualPromptV11 = (
     }
 
     // Layer 10: negative_prompt
-    let layer10 = scene.negative_prompt || "plastic skin, doll-like face, perfect symmetry, airbrushed, oversaturated, HDR, fake bokeh, instagram filter, watermark, text, logo, deformed hand, extra fingers, no phone visible in frame, no second phone in mirror, no selfie stick, no studio lighting, no model pose";
+    let layer10 = scene.negative_prompt || "plastic skin, doll-like face, perfect symmetry, airbrushed, oversaturated, HDR, fake bokeh, instagram filter, watermark, text, logo, deformed hand, extra fingers, no phone visible in frame, no second phone in mirror, no selfie stick, no studio lighting, no model pose, no readable text in background, no store signs, no neon signs with text, no street signs, no Chinese characters on signs, no subtitles, no billboards, no shop name boards";
     
     // Hard Fabric / Rain Safeguard
     if (outfit.fabric_difficulty === 'hard') {
@@ -237,9 +322,10 @@ const buildFinalVisualPromptV11 = (
         `[Festival]: ${layer5}`,
         `[Traces]: ${layer6}`,
         `[Warmth]: ${layer7}`,
+        `[VisualDNA]: ${layer7_5}`,
         `[POV]: ${layer8}`,
         `[Composition]: ${layer8_5}`,
-        `[Style]: ${layer9}`,
+        `[Style]: ${[layer9, ...(model.visualConstants?.stylingFilters || [])].filter(Boolean).join(', ')}`,
         `[Negative]: ${layer10}`
     ].filter(p => !p.endsWith(': '));
 
@@ -386,14 +472,49 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
     
     // Map activity to context
     let contextId = "urban_street";
-    if (sceneContext.depth_module_id === 1) contextId = "home_cozy"; // Relationship often at home/cafe
-    else if (sceneContext.depth_module_id === 2) contextId = "travel_journey"; // In-between is travel
-    
+    if (sceneContext.depth_module_id === 1) contextId = "home_cozy";
+    else if (sceneContext.depth_module_id === 2) contextId = "travel_journey";
+
     const lowerEvent = event.toLowerCase();
-    if (lowerEvent.includes("家") || lowerEvent.includes("宅") || lowerEvent.includes("房間")) contextId = "home_cozy";
-    else if (lowerEvent.includes("上班") || lowerEvent.includes("公") || lowerEvent.includes("會議")) contextId = "office_pro";
-    else if (lowerEvent.includes("逛") || lowerEvent.includes("買") || lowerEvent.includes("店")) contextId = "shopping_random";
-    else if (lowerEvent.includes("機") || lowerEvent.includes("飛") || lowerEvent.includes("旅")) contextId = "travel_journey";
+    if (
+        lowerEvent.includes("家") || lowerEvent.includes("宅") || 
+        lowerEvent.includes("房間") || lowerEvent.includes("房") ||
+        lowerEvent.includes("沙發") || lowerEvent.includes("床") ||
+        lowerEvent.includes("客廳") || lowerEvent.includes("浴室") ||
+        lowerEvent.includes("廚房") || lowerEvent.includes("陽台") ||
+        lowerEvent.includes("窩") || lowerEvent.includes("在家")
+    ) contextId = "home_cozy";
+    else if (
+        lowerEvent.includes("上班") || lowerEvent.includes("公司") || 
+        lowerEvent.includes("會議") || lowerEvent.includes("辦公") ||
+        lowerEvent.includes("開會") || lowerEvent.includes("工作") ||
+        lowerEvent.includes("同事") || lowerEvent.includes("老闆")
+    ) contextId = "office_pro";
+    else if (
+        lowerEvent.includes("逛") || lowerEvent.includes("買") || 
+        lowerEvent.includes("店") || lowerEvent.includes("市場") ||
+        lowerEvent.includes("超商") || lowerEvent.includes("超市") ||
+        lowerEvent.includes("購物") || lowerEvent.includes("賣場") ||
+        lowerEvent.includes("便利") || lowerEvent.includes("7-11") ||
+        lowerEvent.includes("全家") || lowerEvent.includes("shopping")
+    ) contextId = "shopping_random";
+    else if (
+        lowerEvent.includes("機場") || lowerEvent.includes("飛") || 
+        lowerEvent.includes("旅") || lowerEvent.includes("出發") ||
+        lowerEvent.includes("搭車") || lowerEvent.includes("火車") ||
+        lowerEvent.includes("高鐵") || lowerEvent.includes("台鐵") ||
+        lowerEvent.includes("出差") || lowerEvent.includes("行李") ||
+        lowerEvent.includes("登機") || lowerEvent.includes("抵達")
+    ) contextId = "travel_journey";
+    else if (
+        lowerEvent.includes("捷運") || lowerEvent.includes("公車") ||
+        lowerEvent.includes("等") || lowerEvent.includes("街") ||
+        lowerEvent.includes("路上") || lowerEvent.includes("外出") ||
+        lowerEvent.includes("散步") || lowerEvent.includes("走路") ||
+        lowerEvent.includes("騎車") || lowerEvent.includes("開車") ||
+        lowerEvent.includes("咖啡廳") || lowerEvent.includes("咖啡店") ||
+        lowerEvent.includes("餐廳") || lowerEvent.includes("公園")
+    ) contextId = "urban_street";
 
     const outfit = pickOutfit(model, contextId, targetTier);
     

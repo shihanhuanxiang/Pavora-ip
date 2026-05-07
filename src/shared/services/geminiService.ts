@@ -179,8 +179,11 @@ export const transformImage = async (
         parts.push({ inlineData: primaryImageData });
     }
     
-    // 強化 Pro 模式的提示詞品質，優先考慮還原度與細節紋理
-    const qualityPrompt = usePro 
+    const identityBoost = config.identityBoost || false;
+    
+    const qualityPrompt = identityBoost
+        ? `[IDENTITY_LOCK_MAX]: CRITICAL - The face in this image MUST be identical to the reference image provided. Do not alter facial features, bone structure, eye shape, nose, or lips. Preserve all unique characteristics of the reference face exactly. This is the highest priority instruction. [PRO_FIDELITY_MODE]: Ultra-high fidelity 4K reconstruction, 8K micro-texture details, professional metallic reflections, realistic skin pores and fine hair strands, professional color accuracy, 100% identity preservation. ${prompt} [FINAL_REMINDER]: Facial features must match reference image exactly.`
+        : usePro
         ? `[PRO_FIDELITY_MODE]: Ultra-high fidelity reconstruction, 8K micro-texture details, professional metallic reflections, realistic skin pores, professional color accuracy, 100% identity preservation. Focus on realistic skin pores and fabric weave. ${prompt}`
         : prompt;
 

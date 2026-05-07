@@ -155,6 +155,9 @@ export interface IPVisualConstants {
     signaturePoses?: string[];
     stylingFilters?: string[];
     facialBoneStructure?: string;
+    expressionStyle?: string;
+    colorTone?: string;
+    poseEnergy?: string;
 }
 
 export interface IPLifeCircuit {
@@ -345,6 +348,7 @@ export interface Model {
         active_arc_phase_index?: number;
         active_outfit_id?: string | null;
         recent_outfit_ids?: string[];
+        visual_preset_id?: string | null;
         manual_wear_state?: string | null;
         active_threads?: {
             thread_id: string;

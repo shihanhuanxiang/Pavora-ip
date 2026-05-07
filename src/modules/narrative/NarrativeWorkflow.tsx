@@ -49,6 +49,9 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     const [isGeneratingPlan, setIsGeneratingPlan] = useState(false);
     const [selectedBrief, setSelectedBrief] = useState<WeeklyPlanBrief | null>(null);
     
+    // 是否有任何任務進行中（防呆用）
+    const isAnyTaskRunning = isGenerating || isGeneratingDynamicEvent || isGeneratingImage || isSyncing || isExtractingMem || isGeneratingPlan;
+    
     // Advanced Controls
     const [aspectRatio, setAspectRatio] = useState('9:16');
     const [quality, setQuality] = useState('HD');
@@ -274,7 +277,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                 animate={{ opacity: 1 }} 
                 exit={{ opacity: 0 }}
                 className="absolute inset-0 bg-[var(--color-bg-deep)]/90 backdrop-blur-3xl" 
-                onClick={() => onClose()} 
+                onClick={() => { if (!isAnyTaskRunning) onClose(); }} 
             />
             {previewingImage && <ImagePreviewModal {...previewingImage} onClose={() => setPreviewingImage(null)} />}
             
@@ -320,7 +323,16 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                     />
 
                     <div className="mt-auto pb-8">
-                        <button onClick={onClose} className="p-3 text-gray-600 hover:text-white transition-colors bg-white/5 hover:bg-red-500/20 rounded-full group">
+                        <button 
+                            onClick={() => { if (!isAnyTaskRunning) onClose(); }}
+                            disabled={isAnyTaskRunning}
+                            title={isAnyTaskRunning ? "生圖進行中，請稍候..." : "關閉"}
+                            className={`p-3 transition-colors rounded-full group ${
+                                isAnyTaskRunning 
+                                    ? "opacity-30 cursor-not-allowed bg-white/5 text-gray-600" 
+                                    : "text-gray-600 hover:text-white bg-white/5 hover:bg-red-500/20"
+                            }`}
+                        >
                             <svg className="w-5 h-5 group-hover:rotate-90 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
                         </button>
                     </div>
@@ -869,7 +881,17 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                         Antigravity 靈魂視覺引擎已上線 // ENGINE ACTIVE
                     </span>
                     <div className="flex gap-4">
-                        <Button variant="secondary" onClick={onClose} className="px-8 border-white/10 text-[10px] tracking-widest font-black uppercase italic">取消 // CANCEL</Button>
+                        <Button 
+                            variant="secondary" 
+                            onClick={() => { if (!isAnyTaskRunning) onClose(); }}
+                            disabled={isAnyTaskRunning}
+                            title={isAnyTaskRunning ? "生圖進行中，請稍候..." : ""}
+                            className={`px-8 border-white/10 text-[10px] tracking-widest font-black uppercase italic ${
+                                isAnyTaskRunning ? "opacity-30 cursor-not-allowed" : ""
+                            }`}
+                        >
+                            取消 // CANCEL
+                        </Button>
                         <Button 
                             onClick={handleFinish} 
                             disabled={!diary || isExtractingMem}

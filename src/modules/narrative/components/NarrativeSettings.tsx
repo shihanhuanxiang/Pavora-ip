@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Model, StoryArc, IdentityThread } from '../../../shared/types/types';
 import { STORY_ARCS, IDENTITY_THREADS } from '../constants/storyElements';
+import { VISUAL_PRESETS, getPresetById } from '../constants/visualPresets';
+import { applyVisualPreset } from '../services/narrativeService';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface NarrativeSettingsProps {
@@ -150,8 +152,89 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
     const allArcs = [...STORY_ARCS, ...(model.preferences?.custom_story_arcs || [])];
     const allThreads = [...IDENTITY_THREADS, ...(model.preferences?.custom_identity_threads || [])];
 
+    const currentPreset = getPresetById(model.preferences?.visual_preset_id);
+    const genderPresets = VISUAL_PRESETS.filter(
+        p => p.gender === model.gender?.charAt(0).toUpperCase() || p.gender === 'U'
+    );
+
     return (
         <div className="space-y-12 p-10 bg-black/5 dark:bg-black/40 border border-black/5 dark:border-white/10 rounded-[3rem] backdrop-blur-xl">
+            {/* Visual Presets Selection */}
+            <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-6 text-left"
+            >
+                <div className="flex items-center gap-3">
+                    <div className="w-1.5 h-4 bg-[var(--color-gold)] rounded-full shadow-[0_0_12px_rgba(var(--color-gold-rgb),0.4)]"></div>
+                    <span className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text-main)]">
+                        視覺風格預設 // VISUAL PRESET
+                    </span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {/* CUSTOM / NONE Option */}
+                    <button
+                        onClick={() => onUpdate({
+                            preferences: {
+                                ...model.preferences,
+                                visual_preset_id: null
+                            }
+                        })}
+                        className={`p-4 rounded-2xl border text-left transition-all ${
+                            !model.preferences?.visual_preset_id
+                                ? 'border-[var(--color-gold)] bg-[var(--color-gold)]/10'
+                                : 'border-white/10 bg-white/[0.02] hover:border-white/20'
+                        }`}
+                    >
+                        <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">自訂 // CUSTOM</div>
+                        <div className="text-[9px] text-gray-500">不套用預設，手動設定所有選項</div>
+                    </button>
+
+                    {/* Preset Cards */}
+                    {genderPresets.map(preset => {
+                        const isActive = model.preferences?.visual_preset_id === preset.preset_id;
+                        return (
+                            <button
+                                key={preset.preset_id}
+                                onClick={() => applyVisualPreset(model, preset.preset_id, onUpdate)}
+                                className={`p-4 rounded-2xl border text-left transition-all ${
+                                    isActive
+                                        ? 'border-[var(--color-gold)] bg-[var(--color-gold)]/10 shadow-[0_0_20px_rgba(var(--color-gold-rgb),0.15)]'
+                                        : 'border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/5'
+                                }`}
+                            >
+                                <div className="flex items-center justify-between mb-1">
+                                    <div className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-main)]">{preset.label_zh}</div>
+                                    {isActive && (
+                                        <div className="text-[8px] font-black text-[var(--color-gold)] uppercase tracking-widest animate-pulse">ACTIVE</div>
+                                    )}
+                                </div>
+                                <div className="text-[9px] text-gray-500 line-clamp-2">
+                                    {preset.description}
+                                </div>
+                            </button>
+                        );
+                    })}
+                </div>
+
+                {/* Preset Summary */}
+                {currentPreset && (
+                    <motion.div 
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        className="p-4 rounded-2xl bg-[var(--color-gold)]/5 border border-[var(--color-gold)]/20 text-[9px] text-gray-400 space-y-1 overflow-hidden"
+                    >
+                        <div><span className="text-[var(--color-gold)] font-black">色調</span>：{currentPreset.visualConstants.colorTone}</div>
+                        <div><span className="text-[var(--color-gold)] font-black">表情</span>：{currentPreset.visualConstants.expressionStyle}</div>
+                        <div><span className="text-[var(--color-gold)] font-black">姿勢能量</span>：{currentPreset.visualConstants.poseEnergy}</div>
+                        <div className="pt-1 text-[8px] italic opacity-50 italic">此預設已優化層次：Layer 1, 7.5, 8.5, 9</div>
+                    </motion.div>
+                )}
+            </motion.div>
+
+            <hr className="border-white/5" />
+
             {/* Persona Extension */}
             <motion.div 
                 initial={{ opacity: 0, y: 20 }}
