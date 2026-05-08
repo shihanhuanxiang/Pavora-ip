@@ -77,6 +77,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
   const [formState, setFormState] = useState({
       ...ModelGenerationDefaults,
       name: '',
+      netRedLevel: 2,
       customOutfitPrompt: '',
       lockToAmbassador: false,
       persona: {
@@ -85,7 +86,8 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
           profession: '',
           catchphrase: '',
           postingHabit: '',
-          toneOfVoice: ''
+          toneOfVoice: '',
+          locked_descriptor: ''
       },
       lifeCircuit: {
           primaryCity: '台北市',
@@ -587,23 +589,14 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                 <div className="grid grid-cols-2 gap-5">
                     <Select label="生理性別 (GENDER)" options={GENDER_PRESETS} value={formState.gender} onChange={e => handleGenderChange(e.target.value)} />
                     <div className={getFieldClass('age')}>
-                        <label className="block text-[11px] font-bold text-gray-500 uppercase mb-3 flex justify-between min-h-[2.5rem] items-center font-display tracking-[0.2em] text-left">
-                            <div className="flex flex-col">
-                                <span className="block text-white mb-0.5">年齡</span>
-                                <span className="block text-[9px] opacity-40 font-normal normal-case tracking-normal">(Age)</span>
-                            </div>
-                            <span className="text-[var(--color-gold)] font-mono text-xs font-bold bg-[var(--color-gold)]/10 px-2 py-0.5 rounded-full">{formState.age} 歲</span>
-                        </label>
-                        <div className="pt-2">
-                          <Slider 
-                              label=""
-                              unit="歲"
-                              min={20} 
-                              max={90} 
-                              value={formState.age} 
-                              onChange={e => handleFormChange('age', Number(e.target.value))} 
-                          />
-                        </div>
+                        <Slider 
+                            label="年齡 (AGE)"
+                            unit="歲"
+                            min={20} 
+                            max={90} 
+                            value={formState.age} 
+                            onChange={e => handleFormChange('age', Number(e.target.value))} 
+                        />
                     </div>
                 </div>
                 <div className="grid grid-cols-2 gap-5 py-2">
@@ -621,7 +614,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                 <div className="pt-4 border-t border-white/5">
                     <label className="block text-[11px] font-bold text-gray-500 uppercase mb-3 flex justify-between items-center font-display tracking-[0.2em]">
                         <div className="flex flex-col">
-                            <span className="text-white mb-0.5">風格原型偏好 (矩陣 v2.0)</span>
+                            <span className="text-white mb-0.5">風格原型偏好</span>
                             <span className="text-[9px] opacity-40 font-normal normal-case">(Style Archetypes)</span>
                         </div>
                         <span className="text-[9px] text-[var(--color-gold)] opacity-60">用於智慧穿搭路由</span>
@@ -757,6 +750,32 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                     <div className="grid grid-cols-2 gap-4 pt-2">
                         <Select label="眼型與面部細節 (Eye & Face Details)" options={EYE_SHAPE_OPTIONS} value={formState.eyeShape} onChange={e => handleFormChange('eyeShape', e.target.value)} />
                         <Select label="妝感風格 (Makeup Style)" options={(MAKEUP_STYLE_OPTIONS as any)[formState.gender] || []} value={formState.makeupStyle} onChange={e => handleFormChange('makeupStyle', e.target.value)} />
+                    </div>
+                    <div className="space-y-3 pt-2">
+                        <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] flex flex-col leading-tight">
+                            <span className="text-white mb-0.5">網美等級</span>
+                            <span className="text-[9px] opacity-40 font-normal normal-case tracking-normal">(Photogenic Level)</span>
+                        </label>
+                        <div className="flex gap-2">
+                            {[
+                                { level: 1, label: '自然路人', sublabel: 'Natural' },
+                                { level: 2, label: '天然網美', sublabel: 'Influencer' },
+                                { level: 3, label: '精修偶像', sublabel: 'Idol' }
+                            ].map(({ level, label, sublabel }) => (
+                                <button
+                                    key={level}
+                                    onClick={() => handleFormChange('netRedLevel', level)}
+                                    className={`flex-1 py-2.5 rounded-xl border text-center transition-all ${
+                                        formState.netRedLevel === level
+                                            ? 'bg-[var(--color-gold)] text-black border-[var(--color-gold)] shadow-xl shadow-[var(--color-gold)]/20'
+                                            : 'bg-black/20 text-gray-400 border-white/10 hover:border-white/30'
+                                    }`}
+                                >
+                                    <div className="text-[11px] font-bold">{label}</div>
+                                    <div className="text-[9px] opacity-60 mt-0.5">{sublabel}</div>
+                                </button>
+                            ))}
+                        </div>
                     </div>
                   </motion.div>
                 )}

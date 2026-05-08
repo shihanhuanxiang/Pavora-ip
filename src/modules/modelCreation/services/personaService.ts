@@ -72,3 +72,83 @@ export const generatePersonaTraits = async (seed: PersonaSeed) => {
         interests: ["攝影", "時尚", "旅行"]
     };
 };
+
+export interface FacialDescriptorSeed {
+    name: string;
+    gender: string;
+    age?: number;
+    imageBase64: string;
+    mimeType: string;
+}
+
+export const generateFacialDescriptor = async (seed: FacialDescriptorSeed): Promise<string> => {
+    try {
+        const ai = await getGeminiClient(false) as any;
+
+        const prompt = `
+You are a forensic portrait analyst. Analyze the provided face photo and produce a precise English locked_descriptor string for AI image generation.
+
+Subject metadata:
+- Name: ${seed.name}
+- Gender: ${seed.gender === 'M' ? 'Asian man' : 'Asian woman'}
+- Age: ${seed.age || 25} years old
+
+Output requirements:
+1. Single-line English string (no line breaks, no markdown).
+2. Start with: "${seed.name}, ${seed.gender === 'M' ? 'Asian man' : 'Asian woman'}, ${seed.age || 25} years old, "
+3. Then describe ONLY observable distinguishing features in this order:
+   - Hair: color, length, texture, bangs style (if any), root color contrast (if visible)
+   - Eyes: shape, double/single eyelid, size, expression character
+   - Face shape: round / oval / heart / square + jaw definition
+   - Nose: bridge height, nose tip shape
+   - Lips: size, thickness, natural color tone
+   - Skin: texture quality, undertone
+   - Distinctive marks: moles, freckles, dimples (only if clearly visible)
+4. Use specific descriptive vocabulary (e.g. "almond-shaped eyes with prominent double eyelids", NOT "pretty eyes").
+5. Total length: 80-150 words, comma-separated phrases.
+6. NO subjective beauty words like "pretty", "beautiful", "stunning". Only objective features.
+7. NO clothing, accessories, background descriptions. Face only.
+
+Output the string directly, nothing else.
+        `;
+
+        const response = await ai.models.generateContent({
+            model: "gemini-3-flash-preview",
+            contents: [
+                {
+                    role: "user",
+                    parts: [
+                        { text: prompt },
+                        {
+                            inlineData: {
+                                mimeType: seed.mimeType,
+                                data: seed.imageBase64
+                            }
+                        }
+                    ]
+                }
+            ]
+        });
+
+        const text = (response.text || "").trim();
+
+        // 基本清理:移除可能的 markdown 標記與前後引號
+        const cleaned = text
+            .replace(/^```[a-z]*\n?/i, "")
+            .replace(/\n?```$/i, "")
+            .replace(/^["']|["']$/g, "")
+            .trim();
+
+        // 驗證:必須以 name + gender + age 開頭,長度合理
+        if (cleaned.length >= 50 && cleaned.length <= 800 && cleaned.includes(seed.name)) {
+            return cleaned;
+        }
+
+        console.warn("generateFacialDescriptor returned invalid format, using fallback");
+    } catch (e) {
+        console.error("Critical error in facial descriptor generation:", e);
+    }
+
+    // 失敗時回傳通用 fallback
+    return `${seed.name}, ${seed.gender === 'M' ? 'Asian man' : 'Asian woman'}, ${seed.age || 25} years old, natural Asian features, expressive eyes with double eyelids, balanced facial proportions, healthy dewy skin, natural lip color`;
+};

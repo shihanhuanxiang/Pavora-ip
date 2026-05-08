@@ -16,48 +16,48 @@ export const APPAREL_CATEGORIES = [
 ];
 
 export const APPAREL_ITEMS = [
-    // --- FULL SETS (成套預設：極簡、素色、身形展現優化) ---
-    { 
-        id: 'f_full_minimalist_nude', 
-        label: '裸感無縫成套 (Seamless Nude-feel Set)', 
-        prompt: 'minimalist seamless nude-colored athletic set, skin-tight second-skin fabric, high-waist briefs, sleeveless top, maximum silhouette visibility', 
-        category: 'full_set', 
-        gender: 'female' 
-    },
-    { 
-        id: 'f_full_pro_vogue', 
-        label: 'Vogue 簡約連體衣 (Couture Bodysuit)', 
-        prompt: 'high-cut elegant bodysuit, matte black stretch fabric, razor-sharp silhouette, showing long legs and refined torso', 
-        category: 'full_set', 
-        gender: 'female' 
-    },
+    // --- FULL SETS FEMALE (成套預設：IG 日常年輕風格) ---
     {
-        id: 'f_full_avant_garde_bandage',
-        label: '前衛繃帶感連體衣 (Avant-garde Bandage)',
-        prompt: 'structural overlapping compression bands, technical cross-strap architecture, maximum anatomical definition visibility, avant-garde silhouette',
+        id: 'f_full_tanktop_shorts',
+        label: '無袖背心 + 熱褲 (Tank + Hot Shorts)',
+        prompt: 'fitted ribbed sleeveless tank top with scoop neck, paired with high-waist denim hot pants, casual youthful street style, midriff slightly visible',
         category: 'full_set',
         gender: 'female'
     },
     {
-        id: 'f_full_precision_swim',
-        label: '精密工學兩件式 (Precision 2-Piece)',
-        prompt: 'Precision-engineered dual-piece technical ensemble. Separated crop-top and high-waisted briefs with visible midriff gap. Structural micro-corded ties, modular compression panels, technical matte material, clear anatomical seam lines.',
+        id: 'f_full_camisole_shorts',
+        label: '細肩帶背心 + 短褲 (Cami + Shorts)',
+        prompt: 'delicate spaghetti strap camisole top in pastel tone, paired with loose casual shorts, relaxed K-style summer outfit, soft feminine energy',
         category: 'full_set',
         gender: 'female'
     },
-    { 
-        id: 'f_vto_bra_bikeshorts', 
-        label: '競技交叉背心 + 自行車褲 (Pro-Cross Set)', 
-        prompt: 'cross-back performance sports bra, high-compression bike shorts, professional athletic physique display', 
-        category: 'full_set', 
-        gender: 'female' 
+    {
+        id: 'f_full_croptee_miniskirt',
+        label: '短版T + 迷你裙 (Crop Tee + Mini Skirt)',
+        prompt: 'cropped fitted short sleeve t-shirt, paired with high-waist pleated mini skirt, classic Korean IG girl aesthetic, clean and youthful',
+        category: 'full_set',
+        gender: 'female'
     },
-    { 
-        id: 'f_vto_bikini', 
-        label: '極簡細帶比基尼 (Slim-Strap Bikini)', 
-        prompt: 'minimalist color-block technical swimwear, structural micro-corded ties, clean profile architecture, high-end material finish', 
-        category: 'full_set', 
-        gender: 'female' 
+    {
+        id: 'f_full_offsholder_shorts',
+        label: '一字領上翼 + 熱褲 (Off-shoulder + Shorts)',
+        prompt: 'off-shoulder fitted top showing collarbone, paired with high-waist shorts, summer date outfit, soft warm tones',
+        category: 'full_set',
+        gender: 'female'
+    },
+    {
+        id: 'f_full_knit_vest_shorts',
+        label: '針織背心 + 休閒短褲 (Knit Vest + Casual Shorts)',
+        prompt: 'ribbed knit sleeveless vest top, paired with relaxed casual shorts, Korean college girl style, layered with optional small bag',
+        category: 'full_set',
+        gender: 'female'
+    },
+    {
+        id: 'f_full_sporty_set',
+        label: '運動背心 + 緊身短褲 (Sporty Set)',
+        prompt: 'athletic sleeveless sports top, paired with high-waist tight biker shorts, activewear K-beauty style, clean sporty energy',
+        category: 'full_set',
+        gender: 'female'
     },
     
     // --- TOPS (上身：專業細分) ---
@@ -77,13 +77,41 @@ export const APPAREL_ITEMS = [
     { id: 'foot_transparent_heels', label: '透明細帶高跟 (Clear Strappy Heels)', prompt: 'minimalist transparent strap high heels, invisible look', category: 'footwear', gender: 'female' },
     { id: 'foot_white_sneakers', label: '全白極簡板鞋 (Minimalist Trainers)', prompt: 'all-white minimal design sneakers', category: 'footwear', gender: 'both' },
 
-    // --- MALE (男性：身形強化預設) ---
+    // --- FULL SETS MALE (成套預設：男性日常街頭風格) ---
     { 
         id: 'm_full_pro_sculpt', 
-        label: '修身掛脖 + 運動短褲 (Athlete Sculpt Set)', 
+        label: '修身掛脖 + 運動短褲 (Athlete Set)', 
         prompt: 'tight athletic tank, high-cut performance shorts, showing muscular leg definition', 
         category: 'full_set', 
         gender: 'male' 
+    },
+    {
+        id: 'm_full_tee_shorts',
+        label: '素色T恤 + 休閒短褲 (Tee + Casual Shorts)',
+        prompt: 'clean solid color fitted crew-neck t-shirt, paired with relaxed casual shorts, everyday Korean street style, simple and clean',
+        category: 'full_set',
+        gender: 'male'
+    },
+    {
+        id: 'm_full_polo_chinos',
+        label: 'Polo衫 + 卡其褲 (Polo + Chinos)',
+        prompt: 'fitted short-sleeve polo shirt in neutral tone, paired with slim chino pants, smart casual Korean male style, clean preppy energy',
+        category: 'full_set',
+        gender: 'male'
+    },
+    {
+        id: 'm_full_hoodie_jogger',
+        label: '連帽衛衣 + 慢跑褲 (Hoodie + Joggers)',
+        prompt: 'fitted zip-up or pullover hoodie, paired with tapered jogger pants, casual sporty streetwear, relaxed urban male style',
+        category: 'full_set',
+        gender: 'male'
+    },
+    {
+        id: 'm_full_shirt_jeans',
+        label: '開領襯衫 + 牛仔褲 (Shirt + Jeans)',
+        prompt: 'light open-collar linen or cotton shirt slightly unbuttoned, paired with slim straight jeans, casual summer male style, relaxed masculine energy',
+        category: 'full_set',
+        gender: 'male'
     },
     { id: 'm_top_shirtless', label: '自然赤膊 (Natural Shirtless)', prompt: 'shirtless, showcasing toned muscular torso', category: 'top', gender: 'male' }
 ];
@@ -92,21 +120,20 @@ export const FEMALE_PRESETS = APPAREL_ITEMS.filter(i => i.gender !== 'male' && i
 export const MALE_PRESETS = APPAREL_ITEMS.filter(i => i.gender !== 'female' && i.category === 'full_set');
 
 export const FACE_ARCHETYPES = [
-    { value: 'standard', label: '標準臉孔 (Standard)', gender: 'both' },
-    { value: 'identity_lock', label: '✨ 依據參考圖生成 (Identity Lock)', gender: 'both' },
-    { value: 'delicate_asian', label: '精緻東方 (Delicate Asian)', gender: 'both' },
-    { value: 'sharp_western', label: '立體歐美 (Sharp Western)', gender: 'both' },
-    { value: 'soft_youthful', label: '清純幼態 (Soft Youthful)', gender: 'female' },
-    { value: 'exotic_mixed', label: '混血風情 (Exotic Mixed)', gender: 'both' },
-    { value: 'classic_beauty', label: '古典美人 (Classic Beauty)', gender: 'female' },
-    { value: 'high_cheekbones', label: '高級厭世 (High Fashion)', gender: 'both' },
-    { value: 'ethereal_elfin', label: '靈動空靈 (Ethereal Elfin)', gender: 'female' },
-    { value: 'mature_elegant', label: '成熟優雅 (Mature Elegant)', gender: 'female' },
-    { value: 'cyber_stray', label: '賽博流浪 (Cyber Stray)', gender: 'both' },
-    { value: 'fitness_leader', label: '健美領袖 (Fitness Leader)', gender: 'both' },
-    { value: 'nordic_minimal', label: '北歐極簡 (Nordic Minimal)', gender: 'both' },
-    { value: 'rugged_handsome', label: '粗獷帥氣 (Rugged)', gender: 'male' },
-    { value: 'boyish_charm', label: '鄰家男孩 (Boyish)', gender: 'male' }
+    { value: 'standard', label: '標準臉孔', gender: 'both' },
+    { value: 'identity_lock', label: '✨ 依據參考圖生成', gender: 'both' },
+    { value: 'taiwan_natural', label: '台系清新女孩', gender: 'female' },
+    { value: 'taiwan_sweet', label: '甜美鄰家女孩', gender: 'female' },
+    { value: 'korean_iu', label: '韓系微甜系', gender: 'female' },
+    { value: 'japanese_pure', label: '日系純淨系', gender: 'female' },
+    { value: 'mature_elegant', label: '知性都會女子', gender: 'female' },
+    { value: 'mixed_aesthetic', label: '混血感', gender: 'both' },
+    { value: 'sharp_western', label: '立體歐美', gender: 'both' },
+    { value: 'nordic_minimal', label: '北歐極簡', gender: 'both' },
+    { value: 'taiwan_boy_next_door', label: '台系暖男', gender: 'male' },
+    { value: 'korean_idol_male', label: '韓系花美男', gender: 'male' },
+    { value: 'japanese_fresh_male', label: '日系男孩', gender: 'male' },
+    { value: 'mature_taiwan_male', label: '熟男魅力', gender: 'male' }
 ];
 
 export const SKIN_TONE_OPTIONS = [
@@ -221,7 +248,7 @@ export const SMART_SUGGEST_PRESETS: Record<string, any> = {
     'female_korean_idol': { 
         label: '韓系偶像 (Korean Idol)',
         aestheticStyle: 'korean_soft', 
-        archetype: 'delicate_asian', 
+        archetype: 'korean_iu', 
         outfitPresetId: 'f_vto_tank_safety',
         proportionMode: 'slim',
         skinTone: 'fair',
@@ -233,7 +260,7 @@ export const SMART_SUGGEST_PRESETS: Record<string, any> = {
     'female_paris_chic': { 
         label: '巴黎名伶 (Paris Chic)',
         aestheticStyle: 'high_fashion', 
-        archetype: 'high_cheekbones', 
+        archetype: 'mature_elegant', 
         outfitPresetId: 'f_vto_bodysuit',
         proportionMode: 'tall',
         skinTone: 'fair',
@@ -257,7 +284,7 @@ export const SMART_SUGGEST_PRESETS: Record<string, any> = {
     'female_athleisure': { 
         label: '運動休閒 (Athleisure)',
         aestheticStyle: 'realistic', 
-        archetype: 'exotic_mixed', 
+        archetype: 'mixed_aesthetic', 
         outfitPresetId: 'f_vto_sports_bra_leggings',
         proportionMode: 'athletic',
         skinTone: 'medium',
@@ -479,6 +506,7 @@ export const ModelGenerationDefaults = {
     eyeShape: 'standard',
     lipThickness: 50,
     lightingPreset: 'studio_soft',
+    netRedLevel: 2,
     brandStyleAnchor: 'none',
     isMultiAngle: false,
     // Phase 1: Physiological Feature Controls

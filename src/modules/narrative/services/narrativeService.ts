@@ -223,7 +223,7 @@ const buildFinalVisualPromptV11 = (
         ? `, works as ${model.persona.profession}` 
         : '';
     const layer1 = model.persona?.locked_descriptor 
-        ? `${model.persona.locked_descriptor}${facialDesc}`
+        ? `${model.persona.locked_descriptor}${professionDesc}${facialDesc}`
         : `${model.name}, ${model.gender === 'M' ? 'Asian man' : 'Asian woman'}, ${model.age}yo, ${model.persona?.coreVibe || ''}${professionDesc}${facialDesc}`;
     
     // Layer 2: depth_module_scene (if extended)
@@ -300,6 +300,100 @@ const buildFinalVisualPromptV11 = (
         }
         if (rules.length > 0) layer7_5 = rules.join('. ');
     }
+
+    // Layer 7_5_BOOST: 強制具體表情動作（避免「無表情看鏡頭」預設值）
+    const facialActions = [
+        // 喜悅類 (8 個)
+        "FACIAL ACTION REQUIRED: bright open-mouth laugh with teeth showing, eyes crinkled into crescents, head slightly tilted back, NOT static smile",
+        "FACIAL ACTION REQUIRED: gentle closed-mouth smile with one corner slightly raised, soft warm gaze, NOT serious expression",
+        "FACIAL ACTION REQUIRED: eye-smile (eye-crescent) with mouth slightly closed, peaceful joyful energy, NOT wide stare",
+        "FACIAL ACTION REQUIRED: mid-laugh single moment caught, mouth open showing joy, eyes squinted naturally, NOT posed smile",
+        "FACIAL ACTION REQUIRED: subtle inward smile with lips pressed together happily, cheeks slightly raised, NOT neutral mouth",
+        "FACIAL ACTION REQUIRED: warm soft grin with relaxed eyes looking at camera, lived-in happiness, NOT dramatic expression",
+        "FACIAL ACTION REQUIRED: silent giggle with one hand half-covering smile, eyes bright, NOT plain pose",
+        "FACIAL ACTION REQUIRED: contented closed-eye smile, head slightly down, peaceful energy, NOT eye contact pose",
+
+        // 撒嬌可愛類 (7 個)
+        "FACIAL ACTION REQUIRED: pouty kiss face with lips pushed forward gently, soft eyes, NOT neutral expression",
+        "FACIAL ACTION REQUIRED: small puffed cheeks puffed-out playfully, lips closed, cute aegyo energy, NOT relaxed face",
+        "FACIAL ACTION REQUIRED: head tilted to one side with soft smile, gentle eye contact, NOT straight-on pose",
+        "FACIAL ACTION REQUIRED: peace sign V held near cheek with playful smile, classic Asian girl pose, NOT plain standing",
+        "FACIAL ACTION REQUIRED: cheek-to-palm with one hand, head leaning into palm, dreamy soft expression, NOT hands at sides",
+        "FACIAL ACTION REQUIRED: looking up at camera from slightly lowered head, doe-eyed soft expression, NOT direct level gaze",
+        "FACIAL ACTION REQUIRED: subtle finger heart gesture near face with soft smile, K-pop influenced cute pose, NOT bare-handed pose",
+
+        // 害羞內斂類 (6 個)
+        "FACIAL ACTION REQUIRED: soft bite on lower lip with relaxed jaw, slightly shy gaze off-camera, NOT confident stare",
+        "FACIAL ACTION REQUIRED: hand half-covering mouth as if hiding small laugh, eyes bright, NOT open mouth pose",
+        "FACIAL ACTION REQUIRED: looking down with small smile, eyelashes prominent, contemplative shy mood, NOT direct gaze",
+        "FACIAL ACTION REQUIRED: hair tucking behind ear with soft expression, gentle natural moment, NOT static pose",
+        "FACIAL ACTION REQUIRED: subtle blush with averted eyes and slight smile, demure soft energy, NOT bold expression",
+        "FACIAL ACTION REQUIRED: hands gently on face near jaw, looking down softly, vulnerable cute moment, NOT hands at sides",
+
+        // 思考發呆類 (5 個)
+        "FACIAL ACTION REQUIRED: gazing into distance with lips slightly parted, lost-in-thought mood, NOT direct eye contact",
+        "FACIAL ACTION REQUIRED: looking up and to the side as if remembering something, eyes soft and unfocused, NOT alert gaze",
+        "FACIAL ACTION REQUIRED: chin resting on hand thoughtfully, slight gentle smile, NOT direct camera engagement",
+        "FACIAL ACTION REQUIRED: closed eyes with serene expression, head slightly tilted back, peaceful moment, NOT open-eye pose",
+        "FACIAL ACTION REQUIRED: half-profile gaze with calm distant expression, hair partially covering one eye, NOT frontal pose",
+
+        // 互動驚喜類 (5 個)
+        "FACIAL ACTION REQUIRED: wide-eyed surprised mouth in soft O shape, fresh delight energy, NOT calm composed face",
+        "FACIAL ACTION REQUIRED: caught mid-eating soft serve or food, lips on food candidly, mid-bite moment, NOT empty hands pose",
+        "FACIAL ACTION REQUIRED: lifting eyebrows with parted lips as if reacting to something, expressive moment caught, NOT static face",
+        "FACIAL ACTION REQUIRED: turned head toward camera caught mid-action, slight smile starting to form, NOT prepared pose",
+        "FACIAL ACTION REQUIRED: holding a drink or snack near mouth with playful eye contact, NOT bare-mouth gaze",
+
+        // 動態瞬間類 (5 個)
+        "FACIAL ACTION REQUIRED: hair caught mid-toss or wind sweep, mouth slightly open in motion, dynamic energy, NOT still pose",
+        "FACIAL ACTION REQUIRED: laughing while looking down, body language relaxed and unposed, NOT camera-aware pose",
+        "FACIAL ACTION REQUIRED: turning toward camera mid-walk with surprised soft smile, candid moment, NOT static stance",
+        "FACIAL ACTION REQUIRED: closing eyes mid-smile against soft sunlight, peaceful golden moment, NOT eyes-open pose",
+        "FACIAL ACTION REQUIRED: blowing soft kiss toward camera with eyes squinted in smile, K-IG signature gesture, NOT plain expression"
+    ];
+    const forcedAction = facialActions[Math.floor(Math.random() * facialActions.length)];
+
+    // Layer 7_5_BODY: 肢體姿勢池(獨立於表情,提供身體動作維度)
+    const bodyPoses = [
+        // 坐姿類 (5 個)
+        "BODY POSE REQUIRED: sitting cross-legged on floor with one hand resting on knee, relaxed casual posture, NOT standing straight",
+        "BODY POSE REQUIRED: sitting on bed with knees pulled up to chest, arms wrapped around legs, cozy intimate posture, NOT formal sitting",
+        "BODY POSE REQUIRED: sitting sideways on chair with one arm draped over chair back, casual relaxed energy, NOT stiff posing",
+        "BODY POSE REQUIRED: sitting on stairs or curb with elbows on knees, candid street snap moment, NOT studio standing",
+        "BODY POSE REQUIRED: sitting with legs to one side mermaid-style, body twisted toward camera, soft feminine pose, NOT direct frontal",
+
+        // 蹲姿類 (3 個)
+        "BODY POSE REQUIRED: squatting low with arms wrapped around knees, looking up at camera, playful low-angle moment, NOT standing pose",
+        "BODY POSE REQUIRED: crouching down petting cat or dog, hand reaching out to animal, candid interaction, NOT facing camera directly",
+        "BODY POSE REQUIRED: half-crouched looking at something on ground, body curved naturally, exploratory moment, NOT static stance",
+
+        // 站姿動態類 (6 個)
+        "BODY POSE REQUIRED: hands tucked into front pockets, weight on one leg, casual confident stance, NOT both-feet-flat pose",
+        "BODY POSE REQUIRED: one hand on hip while other hand adjusts hair, mid-action gesture caught, NOT both-arms-down pose",
+        "BODY POSE REQUIRED: leaning back against wall with one knee bent foot pressed on wall, urban candid posture, NOT free-standing",
+        "BODY POSE REQUIRED: walking past with body slightly turned away, looking back over shoulder, motion energy, NOT facing camera",
+        "BODY POSE REQUIRED: arms slightly raised in mid-spin, dress or hair caught in motion, dynamic frozen moment, NOT static stillness",
+        "BODY POSE REQUIRED: stretching arms upward with body slightly arched, awakening energy, NOT slumped posture",
+
+        // 手部互動類 (5 個)
+        "BODY POSE REQUIRED: both hands gently holding hot drink cup near chest, warm cozy gesture, NOT empty-handed pose",
+        "BODY POSE REQUIRED: one hand touching railing or counter while body leans on it, environmental anchor, NOT free-floating stance",
+        "BODY POSE REQUIRED: hands organizing or holding small object like phone or keychain, looking down at hands, NOT face-to-camera pose",
+        "BODY POSE REQUIRED: one hand pulling hair tie or fixing ponytail behind head, mid-grooming candid moment, NOT done-up pose",
+        "BODY POSE REQUIRED: holding shopping bag or small bag with both hands in front, slight forward lean, casual carry pose, NOT empty hands",
+
+        // 互動環境類 (5 個)
+        "BODY POSE REQUIRED: leaning forearms on table from standing position, body angled toward camera, café candid feel, NOT direct standing",
+        "BODY POSE REQUIRED: lying sideways on bed propping head with hand, soft intimate angle, bedroom candid, NOT seated pose",
+        "BODY POSE REQUIRED: kneeling on floor or grass with one hand on ground for support, relaxed exploring posture, NOT standing height",
+        "BODY POSE REQUIRED: leaning against motorcycle, scooter, or vehicle with hand on it, urban prop interaction, NOT empty-space pose",
+        "BODY POSE REQUIRED: arms wrapped around self in slight chill or shy gesture, body language inward, NOT open-arms confidence pose"
+    ];
+    const forcedBodyPose = bodyPoses[Math.floor(Math.random() * bodyPoses.length)];
+    
+    layer7_5 = layer7_5 
+        ? `${layer7_5}. ${forcedAction}. ${forcedBodyPose}` 
+        : `${forcedAction}. ${forcedBodyPose}`;
     
     // Layer 8: pov_mode_inject
     let layer8: string;
@@ -320,62 +414,51 @@ const buildFinalVisualPromptV11 = (
     let layer8_5 = "";
     if (options?.isPOV !== true) {
         const compositionPool = [
-            // 全身構圖類
-            "COMPOSITION MUST BE: full body shot, 35mm natural perspective, subject centered with breathing room, candid street documentary feel, background in soft focus",
-            "COMPOSITION MUST BE: full body candid, subject mid-stride, 35mm wide feel, motion energy captured, environment tells the story",
-            "COMPOSITION MUST BE: full body from low angle, 35mm slight upward tilt, subject looks taller, urban background in upper third",
-            "COMPOSITION MUST BE: full body mirror or window reflection, subject seen from behind or side, 50mm natural feel",
+            // 近距離特寫類(對標高頻,提升至 12 個)
+            "COMPOSITION MUST BE: extreme close-up selfie, face fills 85% of frame, 85mm compression, dewy skin and makeup detail visible, eyes sharp",
+            "COMPOSITION MUST BE: close portrait, 85mm compression, face fills 75% of frame, eyes sharp, background completely bokeh, shooting distance 50cm",
+            "COMPOSITION MUST BE: tight portrait, 135mm telephoto compression, face fills 70% of frame, skin texture visible, dreamy background",
+            "COMPOSITION MUST BE: extreme close-up upper face and eyes, 135mm, lower face cropped at lips, micro-detail eye makeup visible",
+            "COMPOSITION MUST BE: close-up three-quarter portrait, 85mm, face fills 65% of frame, expression dominant, soft background",
+            "COMPOSITION MUST BE: ultra close cheek and lip detail, 100mm, blush and lip gloss prominent, hair strands visible",
+            "COMPOSITION MUST BE: phone-distance selfie close-up, 50mm, face fills 70% of frame, casual unposed angle, candid energy",
+            "COMPOSITION MUST BE: pouty lip close-up shot, 85mm, lower face emphasized, glossy lip detail prominent",
+            "COMPOSITION MUST BE: close-up laughing face caught mid-laugh, 85mm, teeth visible, eyes crinkled, genuine joy",
+            "COMPOSITION MUST BE: cheek-to-palm close portrait, 85mm, hand against face, playful tilt, intimate distance",
+            "COMPOSITION MUST BE: close-up bite-lip expression, 85mm, soft pout caught, glossy lip with teeth indent",
+            "COMPOSITION MUST BE: wide-eyed surprised close-up, 85mm, mouth slightly open, exaggerated expression captured",
 
-            // 半身構圖類  
-            "COMPOSITION MUST BE: medium shot chest to head, 85mm portrait compression, subject fills 60% of frame, three-quarter angle, bokeh background",
-            "COMPOSITION MUST BE: medium shot, 85mm, subject looking slightly off-frame, candid unaware expression, background dissolved",
-            "COMPOSITION MUST BE: half body from slightly above, 50mm natural, subject looking down at hands or object, intimate overhead mood",
-            "COMPOSITION MUST BE: medium shot from behind, subject turning head back, 85mm, hair movement frozen in moment",
+            // 半身構圖類(8 個)
+            "COMPOSITION MUST BE: half-body candid laugh shot, 85mm, head tilted back mid-laugh, hair messy from movement",
+            "COMPOSITION MUST BE: waist-up shot biting lower lip softly, 85mm, looking off-camera shyly, dewy skin shine",
+            "COMPOSITION MUST BE: half body from slightly above, 50mm natural, subject looking down at hands or phone, intimate overhead",
+            "COMPOSITION MUST BE: medium shot chest to head, 85mm portrait compression, subject fills 60% of frame, three-quarter angle",
+            "COMPOSITION MUST BE: half-body candid with food or cup partially in frame, 50mm, mouth full or mid-bite expression",
+            "COMPOSITION MUST BE: waist-up cheek squish gesture, 85mm, both hands on cheeks playfully, exaggerated cute energy",
+            "COMPOSITION MUST BE: half-body shot from low angle, 50mm slightly upward, subject looking down at camera with playful smile",
+            "COMPOSITION MUST BE: medium shot from behind, subject turning head back surprised, 85mm, hair caught in movement",
 
-            // 近距離特寫類（對標帳號高頻）
-            "COMPOSITION MUST BE: close portrait, 85mm compression, face fills 80% of frame, eyes sharp, background completely bokeh, shooting distance 60cm",
-            "COMPOSITION MUST BE: tight portrait, 135mm telephoto compression, extreme subject-background separation, skin texture visible, face fills frame",
-            "COMPOSITION MUST BE: extreme close-up eyes and upper face, 135mm, lower face cropped at lips, micro-detail visible, dreamy background",
-            "COMPOSITION MUST BE: close-up collarbone and shoulder, 85mm, face partially at top edge, intimate distance feel, skin texture and jewelry detail",
+            // 動態抓拍類(6 個,強調 candid)
+            "COMPOSITION MUST BE: subject mid-laugh genuine candid, 85mm, caught in real moment, eyes squinted from laughter",
+            "COMPOSITION MUST BE: subject turning around mid-motion, 85mm, hair caught in sweep, surprised expression",
+            "COMPOSITION MUST BE: candid eating drinking moment, 50mm, mouth full or sipping, unaware of camera energy",
+            "COMPOSITION MUST BE: subject mid-jump or mid-skip, 35mm, motion blur on edges, joyful spontaneous energy",
+            "COMPOSITION MUST BE: subject covering face partial-laugh, 85mm, hand half-blocking mouth, embarrassed-happy mood",
+            "COMPOSITION MUST BE: subject pointing at something off-camera, 50mm, surprised face caught mid-point, narrative moment",
 
-            // 低角度類
-            "COMPOSITION MUST BE: low angle from knee height, 35mm upward, legs prominent in foreground, full outfit visible, subject looking ahead or down at camera",
-            "COMPOSITION MUST BE: very low angle from floor level, 24mm wide, full legs and shoes fill lower frame, urban or indoor background rises behind",
-            "COMPOSITION MUST BE: low angle emphasizing legs from knee down, shoes and lower outfit as hero, 35mm",
+            // 全身構圖類(縮減為 4 個,且全部要求動感)
+            "COMPOSITION MUST BE: full body candid mid-stride walking past, 35mm, motion energy, environment tells story",
+            "COMPOSITION MUST BE: full body from low angle, 35mm slight upward tilt, subject mid-action not posed",
+            "COMPOSITION MUST BE: full body mirror selfie close to mirror, 35mm, phone and pose visible, casual energy",
+            "COMPOSITION MUST BE: full body crouching or sitting candid, 35mm, relaxed unposed posture",
 
-            // 俯角類
-            "COMPOSITION MUST BE: slightly overhead, 50mm, subject seated relaxed looking up, floating camera perspective, no extra hands in frame",
-            "COMPOSITION MUST BE: bird's eye view, subject on bed or floor full body visible from above, 35mm wide overhead, floating camera, no hands in frame",
-            "COMPOSITION MUST BE: slight overhead looking down at subject, 50mm, subject focused on something in hands, no extra hands in frame",
-
-            // 環境融入類
-            "COMPOSITION MUST BE: wide environmental shot, 24mm, subject as smaller figure in rich scene, strong sense of place and scale",
+            // 環境敘事類(縮減為 2 個)
             "COMPOSITION MUST BE: subject partially framed by foreground element, 85mm, foreground out of focus, natural framing",
-            "COMPOSITION MUST BE: side profile full body, 85mm horizontal crop, subject in motion direction, cinematic widescreen feel",
-
-            // 靠牆靠門（對標高頻，原本缺失）
-            "COMPOSITION MUST BE: subject leaning against wall or doorframe, 85mm, relaxed casual posture, architecture as framing element, natural light from side",
-            "COMPOSITION MUST BE: subject at doorway or entrance, 50mm, light from behind creating rim light, silhouette and detail balance",
-
-            // 窗邊光線（對標高頻，原本缺失）  
-            "COMPOSITION MUST BE: subject at window, 85mm, natural window light on face from side, dramatic light and shadow split, indoor setting",
-            "COMPOSITION MUST BE: close portrait by window, 85mm, backlit or side-lit by window, soft glowing skin, urban view through window bokeh",
-
-            // 細節與局部
-            "COMPOSITION MUST BE: detail shot on hands and outfit texture, 100mm macro feel, accessories sharp, face softly visible in upper background",
-            "COMPOSITION MUST BE: close-up on feet and shoes, 50mm low angle, legs visible ascending upward, ground texture as context",
-
-            // 坐姿類
-            "COMPOSITION MUST BE: seated candid, 85mm, crossed legs prominent, relaxed natural posture, three-quarter angle, background bokeh",
-            "COMPOSITION MUST BE: seated at table or café counter, 85mm, upper body leaning slightly forward, warm ambient light, natural gesture",
-
-            // 動態類
-            "COMPOSITION MUST BE: subject mid-laugh or genuine candid expression, 85mm, caught in real moment, spontaneous energy",
-            "COMPOSITION MUST BE: subject turning around mid-motion, 85mm, hair caught in movement sweep, dynamic energy frozen",
+            "COMPOSITION MUST BE: subject leaning against wall, 85mm, relaxed casual posture, looking at phone or pondering",
         ];
-        // 如果 IP 有設定招牌姿勢，70% 機率優先使用
+        // 如果 IP 有設定招牌姿勢，90% 機率優先使用
         const signaturePoses = model.visualConstants?.signaturePoses || [];
-        if (signaturePoses.length > 0 && Math.random() < 0.7) {
+        if (signaturePoses.length > 0 && Math.random() < 0.9) {
             layer8_5 = signaturePoses[Math.floor(Math.random() * signaturePoses.length)];
         } else {
             layer8_5 = compositionPool[Math.floor(Math.random() * compositionPool.length)];
@@ -392,9 +475,9 @@ const buildFinalVisualPromptV11 = (
         layer9 += extra.join(', ');
     }
     if (tier >= 4) {
-        const masters = ["Annie Leibovitz", "Peter Lindbergh", "Helmut Newton"];
+        const masters = ["candid iPhone photography", "Korean IG influencer aesthetic", "Japanese street snap style", "Y2K disposable camera feel"];
         const master = masters[Math.floor(Math.random() * masters.length)];
-        layer9 += `, shot in style of ${master}, Renaissance portrait composition, fine art photography`;
+        layer9 += `, ${master}, spontaneous moment captured, youthful energy`;
     }
     if (tier === 5) {
         const obscurers = ["long flowing hair", "morning mist", "sheer curtain", "back turned to camera", "classical drapery", "dappled shadow"];
@@ -450,9 +533,9 @@ const buildPromptByTier = (outfit: OutfitV2, tier: number): string => {
 
     // Tier 4-5 Art Direction Injection
     if (tier >= 4) {
-        const masters = ["Annie Leibovitz", "Peter Lindbergh", "Helmut Newton"];
+        const masters = ["candid iPhone photography", "Korean IG influencer aesthetic", "Japanese street snap style", "Y2K disposable camera feel"];
         const master = masters[Math.floor(Math.random() * masters.length)];
-        prompt += `, shot in style of ${master}, Renaissance portrait composition, fine art photography`;
+        prompt += `, ${master}, spontaneous moment captured, youthful energy`;
     }
 
     if (tier === 5) {

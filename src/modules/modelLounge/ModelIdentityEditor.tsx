@@ -214,7 +214,7 @@ const ModelIdentityEditor: React.FC<ModelIdentityEditorProps> = ({ model, onClos
                                         onChange={(e) => setFormData({...formData, persona: {...formData.persona, coreVibe: e.target.value}})}
                                     />
                                 </div>
-                                <div className="space-y-2 md:col-span-2">
+                                <div className="space-y-2 col-span-2">
                                     <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest text-[9px]">
                                         臉部鎖定描述 (Locked Descriptor)
                                         <span className="ml-2 text-[9px] text-gray-500 normal-case tracking-normal">

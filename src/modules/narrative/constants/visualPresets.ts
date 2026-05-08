@@ -37,24 +37,28 @@ export const VISUAL_PRESETS: VisualPreset[] = [
         label_zh: "日韓系 IG 網紅",
         label_en: "Korean IG Girl",
         gender: "F",
-        description: "貼身上衣、黑絲襪、甜美活潑自拍，生活感場景，高互動率 IG 風格",
+        description: "韓系 IG 抖音世代少女,年輕活潑,過曝高飽和,K-beauty 妝感,iPhone 隨拍生活感",
         visualConstants: {
             signaturePoses: [
-                "close-up selfie from slightly above, face fills 75% of frame, soft pout or big eyes expression, 85mm compression, dewy skin visible",
-                "full body shot at MRT station or street staircase, black tights prominent, 35mm natural, slight low angle emphasizing legs",
-                "seated on sofa or floor, legs bent showing black tights, casual home setting, top-down angle from subject's hand",
-                "crouching or bending down naturally, full outfit visible including tights, candid interaction with object or pet",
-                "bathroom or mirror selfie, close distance, slightly wet hair or fresh makeup, raw and natural mood"
+                "extreme close-up selfie, face fills 80% of frame, pouty kiss face or wide-eyed surprised expression, 85mm compression, dewy K-beauty skin with peachy blush prominent",
+                "half-body candid laugh shot, head tilted back mid-laugh, hair slightly messy, 50mm natural perspective, captured in genuine moment of joy",
+                "close-up portrait with cheek-to-palm gesture, playful eye contact, glossy wet lip visible, soft pout, 85mm compression",
+                "bathroom or mirror selfie close distance, slightly wet hair or fresh makeup, raw unposed mood, phone reflection visible",
+                "waist-up shot biting lower lip softly, looking off-camera shyly, 85mm compression, dewy skin shine prominent",
+                "candid eating or drinking moment caught mid-action, food or cup partially in frame, 50mm, mouth full or mid-bite expression",
+                "seated on sofa or floor leaning back relaxed, legs visible, casual home setting, slight overhead angle, natural unposed energy",
+                "full body MRT or street snap, walking past or about to turn, 35mm natural, motion energy frozen, NOT a posed model stance"
             ],
             stylingFilters: [
-                "natural dewy skin glow",
-                "korean IG warm tones",
-                "soft bokeh background",
-                "authentic life photography"
+                "K-beauty filter aesthetic",
+                "Gen Z high-saturation peachy tones",
+                "iPhone candid snapshot feel",
+                "TikTok generation vibe",
+                "harsh flash with bright highlights"
             ],
-            expressionStyle: "large expressive eyes looking directly at camera, soft pout with glossy lips, or genuine smile showing teeth, hand touching face or cheek naturally",
-            colorTone: "warm natural skin tones, soft peachy glow, no heavy filters, authentic daily life color palette",
-            poseEnergy: "close to camera and physically present, body-aware but natural, girl-next-door warmth with feminine allure",
+            expressionStyle: "varying youthful expressions: pouty kiss face, wide-eyed surprised, soft genuine laugh showing teeth, cheek squish gesture, biting lower lip playfully, NEVER static modeling pose, ALWAYS in-the-moment energy of a 23-year-old",
+            colorTone: "high saturation peachy blush prominent on cheeks, glossy wet-look lip with shine, dewy translucent skin with light glitter under-eye, slight overexposure on highlights, K-beauty filter aesthetic, NOT muted, NOT contemplative, NOT editorial",
+            poseEnergy: "energetic 23-year-old college-girl vibe, never posed like a model, always caught mid-motion or candid, body language playful and youthful, spontaneous and unposed, NEVER a static fashion shot",
             catchlightPreference: "natural catchlight in large eyes, dewy skin reflection, bright eye highlights"
         },
         preferences: {
@@ -62,7 +66,7 @@ export const VISUAL_PRESETS: VisualPreset[] = [
             aesthetic_tier_min: 1,
             aesthetic_tier_max: 3
         },
-        visual_aesthetic: "Korean IG fashion photography, bright and warm, youthful and trendy, natural skin texture, candid street or cafe setting"
+        visual_aesthetic: "Korean IG influencer photography for Gen Z, harsh flash and bright peachy tones, youthful 23-year-old vitality, glossy K-beauty makeup with prominent blush, iPhone candid moment, TikTok generation aesthetic, NOT editorial, NOT magazine, NOT mature woman style"
     },
 
     {

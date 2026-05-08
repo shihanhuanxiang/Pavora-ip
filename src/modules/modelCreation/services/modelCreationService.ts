@@ -8,9 +8,8 @@ export const generateModels = async (params: any): Promise<Model[]> => {
     const prompt = buildModelPrompt(params);
     
     // Determine model name
-    let modelName = 'gemini-1.5-flash-image'; 
+    let modelName = 'gemini-2.0-flash-preview-image-generation';
     if (params.generationQuality === 'ultra' || params.generationQuality === 'high' || hasFaceRef) {
-        // Force use of 3.1 Flash for all identity-critical tasks as it handles face-ref better
         modelName = 'gemini-3.1-flash-image-preview'; 
     }
 
@@ -129,6 +128,35 @@ The body proportions are extreme (Bust:${params.bust}, Waist:${params.waist}). Y
             } else if (textPart?.text) {
                 throw new Error(`AI 拒絕生成內容：${textPart.text}`);
             }
+        }
+
+        // A7: 為每個生成的模特兒自動產生 locked_descriptor
+        try {
+            const { generateFacialDescriptor } = await import("./personaService");
+            for (const model of models) {
+                if (!model.imageUrl || !model.imageUrl.startsWith("data:")) continue;
+                const matched = model.imageUrl.match(/^data:([^;]+);base64,(.+)$/);
+                if (!matched) continue;
+                const mimeType = matched[1];
+                const base64Data = matched[2];
+
+                const descriptor = await generateFacialDescriptor({
+                    name: model.name,
+                    gender: model.gender,
+                    age: model.age,
+                    imageBase64: base64Data,
+                    mimeType: mimeType
+                });
+
+                if (model.persona) {
+                    (model.persona as any).locked_descriptor = descriptor;
+                } else {
+                    model.persona = { coreVibe: '', locked_descriptor: descriptor } as any;
+                }
+            }
+        } catch (descriptorError) {
+            console.error("Locked descriptor auto-generation failed (non-blocking):", descriptorError);
+            // 失敗不阻擋整個流程,使用者可後續手動補填
         }
 
         if (models.length === 0) {

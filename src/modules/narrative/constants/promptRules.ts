@@ -1,17 +1,16 @@
 export const ALLOWED_KEYWORDS_V2 = [
-  "feminine", "intimate", "soft", "vulnerable", "contemplative",
-  "elegant", "tasteful", "editorial", "magazine-quality",
-  "dappled morning light", "golden hour", "soft focus",
-  "silk slip strap", "robe loosely tied", "off-shoulder",
-  "shot in style of Annie Leibovitz",
-  "shot in style of Peter Lindbergh",
-  "shot in style of Helmut Newton",
-  "shot in style of Mario Testino",
-  "fashion photography", "vogue editorial", "harper's bazaar editorial",
-  "Renaissance portrait composition", "Botticelli proportions",
-  "classical painting style", "fine art photography",
-  "implied not shown", "mood-based composition",
-  "monochrome elegance", "black and white film grain"
+  "youthful energy", "playful", "candid", "spontaneous", "Gen Z aesthetic",
+  "fresh dewy skin", "K-beauty glow", "iPhone snapshot", "TikTok generation",
+  "bright peachy blush", "glossy wet-look lip", "translucent skin with shine",
+  "casual everyday moment", "unposed natural", "in-the-moment caught",
+  "Korean IG influencer style",
+  "Japanese street snap aesthetic",
+  "Y2K disposable camera feel",
+  "harsh flash highlight",
+  "overexposed bright tones", "saturated peachy hues",
+  "iPhone candid photography", "selfie aesthetic",
+  "spontaneous laugh frozen", "playful expression",
+  "youthful 23-year-old vitality", "fresh-faced energy"
 ];
 
 export const BANNED_KEYWORDS_V2 = [
