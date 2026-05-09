@@ -24,7 +24,7 @@ import { embedMetadata } from '../../shared/utils/metadataUtils';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
     GENDER_PRESETS, APPAREL_CATEGORIES, APPAREL_ITEMS,
-    FACE_ARCHETYPES, SKIN_TONE_OPTIONS, SKIN_FINISH_OPTIONS, MAKEUP_STYLE_OPTIONS,
+    FACE_ARCHETYPES, FACE_ARCHETYPE_STYLE_MAP, SKIN_TONE_OPTIONS, SKIN_FINISH_OPTIONS, MAKEUP_STYLE_OPTIONS,
     PROPORTION_MODE_OPTIONS, PROPORTION_DEFAULTS,
     FEMALE_HAIR_LENGTH_OPTIONS, FEMALE_HAIR_STYLE_OPTIONS, FEMALE_HAIR_BANG_OPTIONS,
     MALE_HAIR_LENGTH_OPTIONS, MALE_HAIR_STYLE_OPTIONS, MALE_HAIR_BANG_OPTIONS,
@@ -690,7 +690,21 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                             <Select 
                                 options={filteredFaceArchetypes} 
                                 value={faceReferences.length > 0 ? 'identity_lock' : formState.archetype} 
-                                onChange={e => handleFormChange('archetype', e.target.value)} 
+                                onChange={e => {
+                                    const newArchetype = e.target.value;
+                                    const styleMap = FACE_ARCHETYPE_STYLE_MAP[newArchetype];
+                                    if (styleMap && newArchetype !== 'identity_lock') {
+                                        setFormState(prev => ({
+                                            ...prev,
+                                            archetype: newArchetype,
+                                            aestheticStyle: styleMap.aestheticStyle,
+                                            skinFinish: styleMap.skinFinish,
+                                            makeupStyle: styleMap.makeupStyle
+                                        }));
+                                    } else {
+                                        handleFormChange('archetype', newArchetype);
+                                    }
+                                }} 
                                 disabled={faceReferences.length > 0} 
                             />
                         </div>
@@ -733,25 +747,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                 
                 {isExpertMode && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="space-y-6 overflow-hidden">
-                    <Select 
-                        label="基礎人型預設 (Base Preset)" 
-                        options={[
-                            { value: 'custom', label: '自定義 (Custom)' },
-                            ...Object.keys(SMART_SUGGEST_PRESETS)
-                                .filter(key => key.startsWith(formState.gender))
-                                .map(key => ({
-                                    value: key,
-                                    label: SMART_SUGGEST_PRESETS[key].label || key
-                                }))
-                        ]} 
-                        value={selectedPresetId} 
-                        onChange={(e) => applyBasePreset(e.target.value)} 
-                    />
-                    <div className="grid grid-cols-2 gap-4 pt-2">
-                        <Select label="眼型與面部細節 (Eye & Face Details)" options={EYE_SHAPE_OPTIONS} value={formState.eyeShape} onChange={e => handleFormChange('eyeShape', e.target.value)} />
-                        <Select label="妝感風格 (Makeup Style)" options={(MAKEUP_STYLE_OPTIONS as any)[formState.gender] || []} value={formState.makeupStyle} onChange={e => handleFormChange('makeupStyle', e.target.value)} />
-                    </div>
-                    <div className="space-y-3 pt-2">
+                    <div className="space-y-3">
                         <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] flex flex-col leading-tight">
                             <span className="text-white mb-0.5">網美等級</span>
                             <span className="text-[9px] opacity-40 font-normal normal-case tracking-normal">(Photogenic Level)</span>
@@ -796,77 +792,10 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                     />
                 </div>
 
-                {isExpertMode && (
-                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="space-y-6 pt-2 border-t border-white/5 overflow-hidden">
+                <div className="space-y-4 pt-2 border-t border-white/5">
                     <Select label="體態選項 (Physique)" options={PROPORTION_MODE_OPTIONS} value={formState.proportionMode} onChange={e => handlePhysiqueChange(e.target.value)} />
-                    
-                      <div className="space-y-5 bg-white/5 p-4 rounded-xl border border-white/5">
-                      <div className="flex justify-between items-start mb-4">
-                          <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest text-left flex flex-col leading-tight">
-                              <span>精確參數</span>
-                              <span className="opacity-50 font-normal normal-case">(Physical Metrics)</span>
-                          </label>
-                          <span className="text-[9px] text-[var(--color-gold)] opacity-60 pt-1 text-right max-w-[150px]">自動同步由體態選項連動 (Auto-synced with physique selection)</span>
-                      </div>
-                      
-                      {/* Standard Metrics */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                        <Slider label="身高 (Height)" min={150} max={200} step={1} unit="cm" value={formState.height} onChange={e => handleFormChange('height', Number(e.target.value))} />
-                        <Slider label="胸圍 (Bust)" min={70} max={120} step={1} unit="cm" value={formState.bust} safetyStatus={getSafetyStatus('bust', formState.bust)} onChange={e => handleFormChange('bust', Number(e.target.value))} />
-                        <Slider label="腰圍 (Waist)" min={50} max={100} step={1} unit="cm" value={formState.waist} onChange={e => handleFormChange('waist', Number(e.target.value))} />
-                        <Slider label="臀圍 (Hip)" min={70} max={130} step={1} unit="cm" value={formState.hip} onChange={e => handleFormChange('hip', Number(e.target.value))} />
-                      </div>
-
-                      {/* Advanced Physiological Controls */}
-                      <div className="pt-4 mt-2 border-t border-white/5 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                        {formState.gender === 'female' ? (
-                          <>
-                            <Slider 
-                                label="上圍體積感 (Bust Volume)" 
-                                min={0} max={100} unit="%" 
-                                value={formState.bustTension} 
-                                safetyStatus={getSafetyStatus('bustTension', formState.bustTension)}
-                                onChange={e => handleFormChange('bustTension', Number(e.target.value))} 
-                            />
-                            <Slider 
-                                label="身型曲線弧度 (Physique Contour)" 
-                                min={0} max={100} unit="%" 
-                                value={formState.physiqueCurvature} 
-                                safetyStatus={getSafetyStatus('physiqueCurvature', formState.physiqueCurvature)}
-                                onChange={e => handleFormChange('physiqueCurvature', Number(e.target.value))} 
-                            />
-                          </>
-                        ) : (
-                          <>
-                            <Slider 
-                                label="肌肉品質定義 (Muscular Definition)" 
-                                min={0} max={100} unit="%" 
-                                value={formState.muscularDensity} 
-                                onChange={e => handleFormChange('muscularDensity', Number(e.target.value))} 
-                            />
-                            <Slider 
-                                label="肩甲骨架比例 (Shoulder Frame)" 
-                                min={0} max={100} unit="%" 
-                                value={formState.vTaperScale} 
-                                onChange={e => handleFormChange('vTaperScale', Number(e.target.value))} 
-                            />
-                          </>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <Select label="皮膚紋理 (Skin Texture)" options={(SKIN_FINISH_OPTIONS as any)[formState.gender] || []} value={formState.skinFinish} onChange={e => handleFormChange('skinFinish', e.target.value)} />
-                      <Slider label="自然瑕疵強度 (Blemishes)" min={0} max={100} unit="%" value={formState.imperfectionLevel || 20} onChange={e => handleFormChange('imperfectionLevel', Number(e.target.value))} />
-                    </div>
-                  </motion.div>
-                )}
-
-                {!isExpertMode && (
-                  <div className="pt-2">
-                      <Slider label="身高 (Height)" min={150} max={200} unit="cm" value={formState.height} onChange={e => handleFormChange('height', Number(e.target.value))} />
-                  </div>
-                )}
+                    <Slider label="身高 (Height)" min={150} max={200} unit="cm" value={formState.height} onChange={e => handleFormChange('height', Number(e.target.value))} />
+                </div>
               </div>
             </Card>
 

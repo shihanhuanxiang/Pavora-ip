@@ -1,0 +1,842 @@
+[
+  {
+    "outfit_id": "M-TW-CAFE-001",
+    "season": "summer",
+    "gender": "M",
+    "style_archetype": "masculine_clean",
+    "context_id": "cafe_aesthetic",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "fitted white cotton tee",
+      "layer_outer": null,
+      "bottom": "black tapered trousers",
+      "shoes": "white leather sneakers",
+      "accessories": [
+        "silver watch",
+        "thin chain"
+      ],
+      "props": [
+        "iced coffee"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "cafe_aesthetic",
+      "urban_street"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding iced coffee",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "fitted white cotton tee, black tapered trousers, white leather sneakers, silver watch, clean Korean cafe boyfriend look"
+  },
+  {
+    "outfit_id": "M-TW-CAFE-002",
+    "season": "spring_autumn",
+    "gender": "M",
+    "style_archetype": "dandy_refined",
+    "context_id": "cafe_aesthetic",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "open navy knit polo with deep collar",
+      "layer_outer": null,
+      "bottom": "cream pleated trousers",
+      "shoes": "brown loafers",
+      "accessories": [
+        "gold-rim glasses",
+        "leather belt"
+      ],
+      "props": [
+        "espresso cup"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "cafe_aesthetic",
+      "temple_old_town"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding espresso cup",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "open navy knit polo with deep collar, cream pleated trousers, brown loafers, gold-rim glasses, refined cafe date styling"
+  },
+  {
+    "outfit_id": "M-TW-NMARKET-001",
+    "season": "summer",
+    "gender": "M",
+    "style_archetype": "street_edgy",
+    "context_id": "night_market",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "black oversized graphic tee",
+      "layer_outer": null,
+      "bottom": "washed denim shorts",
+      "shoes": "chunky sneakers",
+      "accessories": [
+        "crossbody pouch",
+        "silver bracelet"
+      ],
+      "props": [
+        "night market drink"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "night_market",
+      "urban_street",
+      "shopping_random"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding night market drink",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "black oversized graphic tee, washed denim shorts, chunky sneakers, crossbody pouch, casual Taiwan night market streetwear"
+  },
+  {
+    "outfit_id": "M-TW-BEACH-001",
+    "season": "summer",
+    "gender": "M",
+    "style_archetype": "masculine_clean",
+    "context_id": "beach_island",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "open linen shirt over fitted tank",
+      "layer_outer": null,
+      "bottom": "tailored swim shorts",
+      "shoes": "leather sandals",
+      "accessories": [
+        "woven bracelet",
+        "sunglasses"
+      ],
+      "props": [
+        "beach towel"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "beach_island"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding beach towel",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "open linen shirt over fitted tank, tailored swim shorts, leather sandals, sunglasses, clean resort island styling"
+  },
+  {
+    "outfit_id": "M-TW-MOUNTAIN-001",
+    "season": "summer",
+    "gender": "M",
+    "style_archetype": "masculine_rugged",
+    "context_id": "mountain_outdoor",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "breathable olive trail shirt sleeves rolled",
+      "layer_outer": null,
+      "bottom": "black hiking shorts",
+      "shoes": "trail shoes",
+      "accessories": [
+        "sport watch",
+        "cap"
+      ],
+      "props": [
+        "water bottle"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "mountain_outdoor",
+      "travel_journey"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding water bottle",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "olive trail shirt sleeves rolled, black hiking shorts, trail shoes, sport watch, practical rugged hiking look"
+  },
+  {
+    "outfit_id": "M-TW-OLDTOWN-001",
+    "season": "spring_autumn",
+    "gender": "M",
+    "style_archetype": "vintage_retro",
+    "context_id": "temple_old_town",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "cream camp-collar shirt",
+      "layer_outer": null,
+      "bottom": "brown cropped trousers",
+      "shoes": "loafers",
+      "accessories": [
+        "leather watch",
+        "canvas tote"
+      ],
+      "props": [
+        "old street snack"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "temple_old_town",
+      "cafe_aesthetic"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding old street snack",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "cream camp-collar shirt, brown cropped trousers, loafers, leather watch, nostalgic old street casual styling"
+  },
+  {
+    "outfit_id": "M-TW-FEST-001",
+    "season": "all",
+    "gender": "M",
+    "style_archetype": "dandy_refined",
+    "context_id": "festival_event",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "black mandarin-collar short jacket",
+      "layer_outer": null,
+      "bottom": "straight dark trousers",
+      "shoes": "polished loafers",
+      "accessories": [
+        "red string bracelet",
+        "small ring"
+      ],
+      "props": [
+        "lantern"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "festival_event",
+      "temple_old_town"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding lantern",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "black mandarin-collar short jacket, straight dark trousers, polished loafers, subtle festive cultural styling"
+  },
+  {
+    "outfit_id": "M-TW-RURAL-001",
+    "season": "summer",
+    "gender": "M",
+    "style_archetype": "masculine_clean",
+    "context_id": "rural_field",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "soft beige linen shirt half buttoned",
+      "layer_outer": null,
+      "bottom": "light khaki shorts",
+      "shoes": "canvas sneakers",
+      "accessories": [
+        "straw hat",
+        "simple watch"
+      ],
+      "props": [
+        "fruit basket"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "rural_field",
+      "cafe_aesthetic"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding fruit basket",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "soft beige linen shirt half buttoned, light khaki shorts, canvas sneakers, straw hat, relaxed rural travel style"
+  },
+  {
+    "outfit_id": "M-TW-TRAVEL-001",
+    "season": "all",
+    "gender": "M",
+    "style_archetype": "minimalist",
+    "context_id": "travel_journey",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "slim grey travel tee",
+      "layer_outer": null,
+      "bottom": "black nylon tapered pants",
+      "shoes": "white sneakers",
+      "accessories": [
+        "earbuds",
+        "nylon sling bag"
+      ],
+      "props": [
+        "carry-on suitcase"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "travel_journey",
+      "urban_street"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding carry-on suitcase",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "slim grey travel tee, black nylon tapered pants, white sneakers, sling bag, airport transit minimal look"
+  },
+  {
+    "outfit_id": "M-TW-SHOP-001",
+    "season": "spring_autumn",
+    "gender": "M",
+    "style_archetype": "street_edgy",
+    "context_id": "shopping_random",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "cropped black boxy jacket over fitted tank",
+      "layer_outer": null,
+      "bottom": "wide-leg grey denim",
+      "shoes": "black platform boots",
+      "accessories": [
+        "silver chain",
+        "rings"
+      ],
+      "props": [
+        "shopping bag"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "shopping_random",
+      "urban_street"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding shopping bag",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "cropped black boxy jacket over fitted tank, wide-leg grey denim, black platform boots, edgy city shopping look"
+  },
+  {
+    "outfit_id": "M-TW-HOTSPRING-001",
+    "season": "winter",
+    "gender": "M",
+    "style_archetype": "masculine_clean",
+    "context_id": "mountain_outdoor",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "soft charcoal cardigan over white tank",
+      "layer_outer": null,
+      "bottom": "loose cream lounge trousers",
+      "shoes": "slides",
+      "accessories": [
+        "towel tote",
+        "minimal necklace"
+      ],
+      "props": [
+        "hot drink cup"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "mountain_outdoor",
+      "cafe_aesthetic"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding hot drink cup",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "soft charcoal cardigan over white tank, loose cream lounge trousers, slides, towel tote, after-onsen relaxed styling"
+  },
+  {
+    "outfit_id": "M-TW-RAIN-001",
+    "season": "winter",
+    "gender": "M",
+    "style_archetype": "dandy_refined",
+    "context_id": "urban_street",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "fitted black turtleneck",
+      "layer_outer": null,
+      "bottom": "charcoal tailored trousers",
+      "shoes": "black Chelsea boots",
+      "accessories": [
+        "transparent umbrella",
+        "silver watch"
+      ],
+      "props": [
+        "umbrella"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "urban_street",
+      "travel_journey"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding umbrella",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "fitted black turtleneck, charcoal tailored trousers, black Chelsea boots, transparent umbrella, rainy city cinematic look"
+  },
+  {
+    "outfit_id": "M-TW-CAFE-101",
+    "season": "summer",
+    "gender": "M",
+    "style_archetype": "masculine_clean",
+    "context_id": "cafe_aesthetic",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "fitted black ribbed tee",
+      "layer_outer": null,
+      "bottom": "cream relaxed trousers",
+      "shoes": "white leather sneakers",
+      "accessories": [
+        "silver watch",
+        "thin chain"
+      ],
+      "props": [
+        "iced coffee"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "cafe_aesthetic",
+      "urban_street"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding iced coffee",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "fitted black ribbed tee, cream relaxed trousers, white sneakers, iced coffee, clean Korean cafe portrait look"
+  },
+  {
+    "outfit_id": "M-TW-CAFE-102",
+    "season": "winter",
+    "gender": "M",
+    "style_archetype": "dandy_refined",
+    "context_id": "cafe_aesthetic",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "dark brown fitted knit polo",
+      "layer_outer": null,
+      "bottom": "charcoal wool trousers",
+      "shoes": "brown loafers",
+      "accessories": [
+        "gold-rim glasses",
+        "leather belt"
+      ],
+      "props": [
+        "espresso cup"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "cafe_aesthetic",
+      "temple_old_town"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding espresso cup",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "dark brown fitted knit polo, charcoal wool trousers, brown loafers, espresso cup, winter cafe date styling"
+  },
+  {
+    "outfit_id": "M-TW-NMARKET-103",
+    "season": "summer",
+    "gender": "M",
+    "style_archetype": "street_edgy",
+    "context_id": "night_market",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "white sleeveless tee under open black short-sleeve shirt",
+      "layer_outer": null,
+      "bottom": "washed black denim shorts",
+      "shoes": "chunky sneakers",
+      "accessories": [
+        "crossbody pouch",
+        "silver bracelet"
+      ],
+      "props": [
+        "night market drink"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "night_market",
+      "urban_street",
+      "shopping_random"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding night market drink",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "white sleeveless tee under open black short-sleeve shirt, washed denim shorts, chunky sneakers, night market streetwear"
+  },
+  {
+    "outfit_id": "M-TW-BEACH-104",
+    "season": "summer",
+    "gender": "M",
+    "style_archetype": "masculine_clean",
+    "context_id": "beach_island",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "open white linen shirt over ribbed tank",
+      "layer_outer": null,
+      "bottom": "sage green swim shorts",
+      "shoes": "leather sandals",
+      "accessories": [
+        "woven bracelet",
+        "sunglasses"
+      ],
+      "props": [
+        "beach towel"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "beach_island"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding beach towel",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "open white linen shirt over ribbed tank, sage green swim shorts, sandals, sunglasses, island resort boyfriend styling"
+  },
+  {
+    "outfit_id": "M-TW-MOUNTAIN-105",
+    "season": "spring_autumn",
+    "gender": "M",
+    "style_archetype": "masculine_rugged",
+    "context_id": "mountain_outdoor",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "black fitted thermal shirt under olive utility vest",
+      "layer_outer": null,
+      "bottom": "black hiking shorts",
+      "shoes": "trail shoes",
+      "accessories": [
+        "sport watch",
+        "cap"
+      ],
+      "props": [
+        "water bottle"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "mountain_outdoor",
+      "travel_journey"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding water bottle",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "black fitted thermal shirt under olive utility vest, black hiking shorts, trail shoes, rugged mountain travel look"
+  },
+  {
+    "outfit_id": "M-TW-OLDTOWN-106",
+    "season": "spring_autumn",
+    "gender": "M",
+    "style_archetype": "vintage_retro",
+    "context_id": "temple_old_town",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "terracotta camp-collar shirt slightly open",
+      "layer_outer": null,
+      "bottom": "cream cropped trousers",
+      "shoes": "loafers",
+      "accessories": [
+        "leather watch",
+        "canvas tote"
+      ],
+      "props": [
+        "old street snack"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "temple_old_town",
+      "cafe_aesthetic"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding old street snack",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "terracotta camp-collar shirt slightly open, cream cropped trousers, loafers, old street summer retro styling"
+  },
+  {
+    "outfit_id": "M-TW-FEST-107",
+    "season": "all",
+    "gender": "M",
+    "style_archetype": "dandy_refined",
+    "context_id": "festival_event",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "white mandarin-collar linen shirt",
+      "layer_outer": null,
+      "bottom": "black straight trousers",
+      "shoes": "polished loafers",
+      "accessories": [
+        "red string bracelet",
+        "small ring"
+      ],
+      "props": [
+        "lantern"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "festival_event",
+      "temple_old_town"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding lantern",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "white mandarin-collar linen shirt, black straight trousers, polished loafers, temple festival clean styling"
+  },
+  {
+    "outfit_id": "M-TW-RURAL-108",
+    "season": "summer",
+    "gender": "M",
+    "style_archetype": "masculine_clean",
+    "context_id": "rural_field",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "pale blue linen shirt sleeves rolled",
+      "layer_outer": null,
+      "bottom": "white tailored shorts",
+      "shoes": "canvas sneakers",
+      "accessories": [
+        "straw hat",
+        "simple watch"
+      ],
+      "props": [
+        "fruit basket"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "rural_field",
+      "cafe_aesthetic"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding fruit basket",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "pale blue linen shirt sleeves rolled, white tailored shorts, canvas sneakers, straw hat, rural field summer look"
+  },
+  {
+    "outfit_id": "M-TW-TRAVEL-109",
+    "season": "all",
+    "gender": "M",
+    "style_archetype": "minimalist",
+    "context_id": "travel_journey",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "fitted navy travel polo",
+      "layer_outer": null,
+      "bottom": "grey nylon tapered pants",
+      "shoes": "white sneakers",
+      "accessories": [
+        "earbuds",
+        "nylon sling bag"
+      ],
+      "props": [
+        "carry-on suitcase"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "travel_journey",
+      "urban_street"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding carry-on suitcase",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "fitted navy travel polo, grey nylon tapered pants, white sneakers, sling bag, clean transit look"
+  },
+  {
+    "outfit_id": "M-TW-SHOP-110",
+    "season": "spring_autumn",
+    "gender": "M",
+    "style_archetype": "street_edgy",
+    "context_id": "shopping_random",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "black cropped bomber over fitted white tank",
+      "layer_outer": null,
+      "bottom": "black wide-leg trousers",
+      "shoes": "black platform boots",
+      "accessories": [
+        "silver chain",
+        "rings"
+      ],
+      "props": [
+        "shopping bag"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "shopping_random",
+      "urban_street"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding shopping bag",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "black cropped bomber over fitted white tank, black wide-leg trousers, platform boots, city shopping editorial streetwear"
+  },
+  {
+    "outfit_id": "M-TW-HOTSPRING-111",
+    "season": "spring_autumn",
+    "gender": "M",
+    "style_archetype": "masculine_clean",
+    "context_id": "mountain_outdoor",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "cream waffle knit cardigan over white tank",
+      "layer_outer": null,
+      "bottom": "charcoal lounge shorts",
+      "shoes": "slides",
+      "accessories": [
+        "towel tote",
+        "minimal necklace"
+      ],
+      "props": [
+        "hot drink cup"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "mountain_outdoor",
+      "cafe_aesthetic"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding hot drink cup",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "cream waffle knit cardigan over white tank, charcoal lounge shorts, slides, towel tote, hot spring lodge relaxed look"
+  },
+  {
+    "outfit_id": "M-TW-RAIN-112",
+    "season": "winter",
+    "gender": "M",
+    "style_archetype": "dandy_refined",
+    "context_id": "urban_street",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "deep green fitted mock-neck",
+      "layer_outer": null,
+      "bottom": "black tailored trousers",
+      "shoes": "black Chelsea boots",
+      "accessories": [
+        "transparent umbrella",
+        "silver watch"
+      ],
+      "props": [
+        "umbrella"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "urban_street",
+      "travel_journey"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding umbrella",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "deep green fitted mock-neck, black tailored trousers, Chelsea boots, transparent umbrella, rainy night city styling"
+  }
+]

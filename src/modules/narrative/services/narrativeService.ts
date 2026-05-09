@@ -46,7 +46,9 @@ export const applyVisualPreset = (
 /**
  * Picks an appropriate outfit based on character and scene context.
  */
-const pickOutfit = (model: Model, contextId: string, targetTier: number): OutfitV2 => {
+const pickOutfit = (model: Model, contextInput: string | string[], targetTier: number): OutfitV2 => {
+    const contextIds = Array.isArray(contextInput) ? contextInput : [contextInput];
+
     // 0. Manual override: 使用者鎖定服裝時直接返回
     if (model.preferences?.active_outfit_id) {
         const userOutfits = WardrobeService.getUserOutfits();
@@ -67,7 +69,7 @@ const pickOutfit = (model: Model, contextId: string, targetTier: number): Outfit
 
     // 3. 硬性篩選：場景（最高優先，防止西裝出現在海邊）
     const contextFiltered = genderFiltered.filter(o =>
-        o.compatible_contexts.includes(contextId)
+        contextIds.some(contextId => o.compatible_contexts.includes(contextId))
     );
 
     // Fallback：場景篩選後無結果，放寬到性別篩選
@@ -654,7 +656,25 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
     }
 
     const location = event || sceneContext.event;
-    const weather = "陰天偶陣雨"; 
+    
+    // 依月份隨機抽台灣天氣(避免永遠下雨)
+    const month = new Date().getMonth() + 1;
+    let weatherPool: string[];
+    if (month >= 6 && month <= 9) {
+        // 夏季:晴天為主,偶有午後雷陣雨
+        weatherPool = ['晴天', '晴天', '晴天', '晴朗多雲', '午後雷陣雨', '悶熱晴天'];
+    } else if (month >= 12 || month <= 2) {
+        // 冬季:多雲、偶陰雨
+        weatherPool = ['多雲', '陰天', '陰天偶陣雨', '冬日晴朗', '濕冷多雲'];
+    } else if (month >= 3 && month <= 5) {
+        // 春季:多變
+        weatherPool = ['晴朗', '多雲', '春雨綿綿', '陽光普照', '微風晴天'];
+    } else {
+        // 秋季:涼爽舒適
+        weatherPool = ['秋高氣爽', '晴朗微涼', '多雲', '舒適晴天', '秋日金黃陽光'];
+    }
+    const weather = weatherPool[Math.floor(Math.random() * weatherPool.length)];
+    
     const activity = event;
 
     // 2. Selection of Aesthetic Tier and Outfit
@@ -720,7 +740,16 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
         lowerEvent.includes("餐廳") || lowerEvent.includes("公園")
     ) contextId = "urban_street";
 
-    const outfit = pickOutfit(model, contextId, targetTier);
+    const sceneOutfitFilters = (sceneContext as any).outfit_filter as string[] | undefined;
+    const sceneContextId = (sceneContext as any).scene_context_id as string | undefined;
+    const contextCandidates = sceneOutfitFilters?.length
+        ? sceneOutfitFilters
+        : sceneContextId
+            ? [sceneContextId]
+            : [contextId];
+    contextId = contextCandidates[0] || contextId;
+
+    const outfit = pickOutfit(model, contextCandidates, targetTier);
     
     // Update recent_outfit_ids cooldown (keep last 5)
     if (!model.preferences) (model as any).preferences = {};
@@ -931,39 +960,54 @@ export const syncPrompts = async (text: string, from: 'ZH' | 'EN'): Promise<{ZH:
 export const generateRandomEvent = (model: Model): string => {
     const baseCity = model.lifeCircuit?.primaryCity || '台北市';
     
-    // 3.3 跨縣市「移動感」演算法 (30% chance)
+    // 跨縣市「移動感」演算法 (30% chance)
     const isTraveling = Math.random() < 0.3;
     let targetCity = baseCity;
     if (isTraveling) {
-        const otherCities = ["台北市", "新北市", "台中市", "台南市", "高雄市", "宜蘭縣", "花蓮縣", "屏東縣", "台東縣", "瑪祖"];
+        const otherCities = [
+            "台北市", "新北市", "基隆市", "桃園市", "新竹市", "宜蘭縣",
+            "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣",
+            "嘉義市", "台南市", "高雄市", "屏東縣",
+            "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"
+        ];
         targetCity = otherCities[Math.floor(Math.random() * otherCities.length)];
     }
 
-    const localScenes = getScenesByCity(targetCity);
-    const scene = localScenes[Math.floor(Math.random() * localScenes.length)];
-    const emotion = scene.emotions[Math.floor(Math.random() * scene.emotions.length)];
+    const extendedScenes = ALL_EXTENDED_SCENES.filter(s =>
+        s.city === targetCity ||
+        s.city === "any" ||
+        targetCity.includes(s.city) ||
+        s.city.includes(targetCity)
+    );
+
+    const fallbackScenes = getScenesByCity(targetCity);
+    const scenePool = extendedScenes.length > 0 ? extendedScenes : fallbackScenes;
+    const scene = scenePool[Math.floor(Math.random() * scenePool.length)];
+    const emotionPool = scene.emotions && scene.emotions.length > 0 ? scene.emotions : ["日常", "放鬆", "沉浸"];
+    const emotion = emotionPool[Math.floor(Math.random() * emotionPool.length)];
     
-    // 3.1 & 3.2 敘事深度拼接與脆弱性注入
-    const sensory = scene.sensory.split('、');
-    const noise = scene.visualNoise.split('、');
+    const sensoryText = Array.isArray(scene.sensory) ? scene.sensory.join('、') : scene.sensory;
+    const visualNoiseText = Array.isArray(scene.visualNoise) ? scene.visualNoise.join('、') : scene.visualNoise;
+    const sensory = sensoryText.split('、');
+    const noise = visualNoiseText.split('、');
     const s = sensory[Math.floor(Math.random() * sensory.length)];
     const n = noise[Math.floor(Math.random() * noise.length)];
 
     const vulnerabilities = [
-        "這時候領口的白色絲綢上，偏偏暈開了剛才忙亂中滴落的焦糖色咖啡痕跡，讓人有點心煩",
-        "午後突如其來的地雷陣雨，讓原本細心整理的髮絲此刻有些狼狽地黏在發燙的臉頰上",
-        "新買的海鹽拿鐵濺濕了桌上的筆記本邊緣，墨水在紙上緩緩化開，像是一場小小的事故",
-        "高跟鞋磨得腳踝隱隱作痛，在繁華的街道上，每一步似乎都在挑戰社交禮儀的邊界",
-        "因為感冒戴著厚重的口罩，呼吸間全是侷促的熱氣，視線似乎也跟著變得有些模糊"
+        "剛買的飲料杯壁全是水珠，指尖被冰得有點麻，連手機螢幕都沾上一層濕氣",
+        "走太久之後鞋跟開始磨腳，只好在路邊停下來，假裝是在看風景",
+        "風把瀏海吹得亂七八糟，整理了幾次還是放棄，反而有種今天就這樣吧的鬆弛感",
+        "包包裡的發票被揉得皺皺的，和充電線纏在一起，像是生活自己留下的小線索",
+        "剛才排隊時被人群擠到肩膀，心情短暫地皺了一下，又被眼前的氣味慢慢撫平"
     ];
     const vulnerability = Math.random() < 0.25 ? `。${vulnerabilities[Math.floor(Math.random() * vulnerabilities.length)]}` : "";
 
-    const travelNote = isTraveling ? `這週末特地離開了熟悉的${baseCity}，獨自在${targetCity}隨意晃蕩。` : "";
+    const travelNote = isTraveling ? `這次離開熟悉的${baseCity}，跑到${targetCity}讓自己換一種節奏。` : "";
     
     const narrativeTemplates = [
-        `${travelNote}${emotion === '沉浸' ? '這瞬間，世界似乎安靜得只剩下細節。' : ''}人在${scene.event}，空氣裡全被${s}填滿了。視線一角是${n}${vulnerability}，這種真實的生活碎屑，反而讓人感覺活得踏實。`,
-        `${travelNote}${emotion === '脆弱' ? '在大城市的縫隙裡，偶爾會感覺自己出奇地渺小。' : ''}此刻正待在${scene.event}，看著${n}發呆。聞得到${s}的氣息${vulnerability}，這就是都市特有的、帶著一點溫度的日常吧。`,
-        `${travelNote}在${targetCity}的節奏裡，${scene.event}顯得格外清晰。鼻尖縈繞著${s}，身旁${n}在晃動${vulnerability}。${emotion === '釋然' ? '就把那些煩人的工作暫時忘在腦後吧。' : '這種平凡的時刻，其實最難得。'}`
+        `${travelNote}人在${scene.event}，空氣裡全被${s}填滿了。視線一角是${n}${vulnerability}，這種真實的生活碎屑，反而讓人感覺今天不是被安排好的。`,
+        `${travelNote}此刻正待在${scene.event}，看著${n}發呆。聞得到${s}的氣息${vulnerability}，情緒有點${emotion}，但不是那種誇張的感動，比較像生活剛好停在一個能呼吸的位置。`,
+        `${travelNote}在${targetCity}的節奏裡，${scene.event}顯得格外清晰。鼻尖縈繞著${s}，身旁${n}在晃動${vulnerability}。這種平凡的時刻，其實最像會被留下來的記憶。`
     ];
 
     return narrativeTemplates[Math.floor(Math.random() * narrativeTemplates.length)];

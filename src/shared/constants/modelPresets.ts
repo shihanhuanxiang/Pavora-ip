@@ -136,6 +136,23 @@ export const FACE_ARCHETYPES = [
     { value: 'mature_taiwan_male', label: '熟男魅力', gender: 'male' }
 ];
 
+// 臉部原型對應的固定風格設定(選臉部原型時自動套用,取代基礎人型預設)
+export const FACE_ARCHETYPE_STYLE_MAP: Record<string, { aestheticStyle: string; skinFinish: string; makeupStyle: string }> = {
+    standard: { aestheticStyle: 'realistic', skinFinish: 'natural', makeupStyle: 'natural' },
+    taiwan_natural: { aestheticStyle: 'realistic', skinFinish: 'dewy', makeupStyle: 'natural' },
+    taiwan_sweet: { aestheticStyle: 'korean_soft', skinFinish: 'dewy', makeupStyle: 'natural' },
+    korean_iu: { aestheticStyle: 'korean_soft', skinFinish: 'dewy', makeupStyle: 'k_pop' },
+    japanese_pure: { aestheticStyle: 'japanese_fresh', skinFinish: 'matte', makeupStyle: 'natural' },
+    mature_elegant: { aestheticStyle: 'high_fashion', skinFinish: 'matte', makeupStyle: 'glam' },
+    mixed_aesthetic: { aestheticStyle: 'western_vogue', skinFinish: 'natural', makeupStyle: 'glam' },
+    sharp_western: { aestheticStyle: 'western_vogue', skinFinish: 'matte', makeupStyle: 'glam' },
+    nordic_minimal: { aestheticStyle: 'high_fashion', skinFinish: 'matte', makeupStyle: 'natural' },
+    taiwan_boy_next_door: { aestheticStyle: 'realistic', skinFinish: 'natural', makeupStyle: 'natural' },
+    korean_idol_male: { aestheticStyle: 'korean_soft', skinFinish: 'dewy', makeupStyle: 'natural' },
+    japanese_fresh_male: { aestheticStyle: 'japanese_fresh', skinFinish: 'matte', makeupStyle: 'natural' },
+    mature_taiwan_male: { aestheticStyle: 'high_fashion', skinFinish: 'natural', makeupStyle: 'grooming' }
+};
+
 export const SKIN_TONE_OPTIONS = [
     { value: 'fair', label: '白皙 (Fair)' },
     { value: 'medium', label: '自然 (Medium)' },
@@ -181,14 +198,14 @@ export const PROPORTION_MODE_OPTIONS = [
 
 export const PROPORTION_DEFAULTS = {
     female: {
-        standard: { height: 168, bust: 85, waist: 65, hip: 90 },
-        tall: { height: 178, bust: 85, waist: 65, hip: 90 },
-        petite: { height: 155, bust: 80, waist: 60, hip: 82 },
-        slim: { height: 170, bust: 80, waist: 58, hip: 85 },
-        curvy: { height: 165, bust: 95, waist: 68, hip: 100 },
-        plus_size: { height: 168, bust: 105, waist: 85, hip: 110 },
-        athletic: { height: 172, bust: 88, waist: 68, hip: 92 },
-        v_shape: { height: 175, bust: 92, waist: 66, hip: 88 }
+        standard: { height: 160, bust: 92, waist: 61, hip: 92, bustTension: 75, physiqueCurvature: 78 },
+        tall: { height: 170, bust: 92, waist: 61, hip: 92, bustTension: 75, physiqueCurvature: 78 },
+        petite: { height: 153, bust: 90, waist: 59, hip: 90, bustTension: 75, physiqueCurvature: 78 },
+        slim: { height: 163, bust: 90, waist: 59, hip: 90, bustTension: 72, physiqueCurvature: 72 },
+        curvy: { height: 160, bust: 96, waist: 63, hip: 96, bustTension: 82, physiqueCurvature: 85 },
+        plus_size: { height: 160, bust: 100, waist: 70, hip: 102, bustTension: 80, physiqueCurvature: 80 },
+        athletic: { height: 163, bust: 91, waist: 62, hip: 91, bustTension: 73, physiqueCurvature: 75 },
+        v_shape: { height: 165, bust: 93, waist: 61, hip: 93, bustTension: 76, physiqueCurvature: 78 }
     },
     male: {
         standard: { height: 180, bust: 95, waist: 80, hip: 95 },

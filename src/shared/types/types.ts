@@ -238,6 +238,10 @@ export interface ExtendedScene extends LocalizedScene {
   season?: string[];
   time_of_day?: string[];
   outfit_hint?: string;
+  outfit_filter?: string[];
+  outfit_suggestion?: string[];
+  forbidden_outfit_contexts?: string[];
+  scene_context_id?: string;
   spicy_level?: number;
   pov_modes?: string[];
   negative_prompt?: string;

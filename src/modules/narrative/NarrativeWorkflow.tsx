@@ -436,9 +436,15 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                     whileTap={{ scale: 0.98 }}
                                                     onClick={() => {
                                                         setSelectedBrief(brief);
-                                                        setEventInput(brief.title);
+                                                        const scriptLines = (brief.scripts && brief.scripts.length > 0)
+                                                            ? brief.scripts.map(s => `・${s}`).join('\n')
+                                                            : '';
+                                                        const fullEvent = scriptLines
+                                                            ? `${brief.title}\n${scriptLines}`
+                                                            : brief.title;
+                                                        setEventInput(fullEvent);
                                                         setShowPlan(false);
-                                                        addNotification({ type: 'success', message: '靈魂與計畫對齊', description: '生成引擎已載入此劇本矩陣設定。' });
+                                                        addNotification({ type: 'success', message: '靈魂與計畫對齊', description: '生成引擎已載入劇本標題與子任務。' });
                                                     }}
                                                     className={`w-full py-4.5 rounded-[1.5rem] text-[11px] font-black uppercase tracking-[0.25em] transition-all relative z-10 ${
                                                         brief.isArcScene 

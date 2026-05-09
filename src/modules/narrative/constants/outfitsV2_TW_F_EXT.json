@@ -1,0 +1,1264 @@
+[
+  {
+    "outfit_id": "F-TW-CAFE-001",
+    "season": "summer",
+    "gender": "F",
+    "style_archetype": "feminine_sweet",
+    "context_id": "cafe_aesthetic",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "fitted ribbed charcoal camisole with thin straps",
+      "layer_outer": null,
+      "bottom": "heather grey drawstring short drawstring shorts",
+      "shoes": "white crew socks and low sneakers",
+      "accessories": [
+        "tiny heart necklace",
+        "deep red manicure"
+      ],
+      "props": [
+        "iced bubble milk tea"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "cafe_aesthetic",
+      "urban_street"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding iced bubble milk tea",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "fitted ribbed charcoal camisole, heather grey drawstring short drawstring shorts, white crew socks, tiny heart necklace, deep red manicure, iced bubble milk tea, close Korean selfie energy, open neckline detail"
+  },
+  {
+    "outfit_id": "F-TW-CAFE-002",
+    "season": "spring_autumn",
+    "gender": "F",
+    "style_archetype": "feminine_mature",
+    "context_id": "cafe_aesthetic",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "navy fitted keyhole long-sleeve knit top",
+      "layer_outer": null,
+      "bottom": "white pleated mini skirt",
+      "shoes": "black ankle boots",
+      "accessories": [
+        "small hoop earrings",
+        "thin watch"
+      ],
+      "props": [
+        "takeaway latte"
+      ]
+    },
+    "fabric_difficulty": "hard",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "cafe_aesthetic",
+      "temple_old_town"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding takeaway latte",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "navy fitted keyhole long-sleeve knit top, white pleated mini skirt, black semi-opaque tights, black ankle boots, small hoop earrings, polished Taipei MRT date look"
+  },
+  {
+    "outfit_id": "F-TW-CAFE-003",
+    "season": "summer",
+    "gender": "F",
+    "style_archetype": "feminine_sweet",
+    "context_id": "cafe_aesthetic",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "white puff-sleeve floral crop blouse",
+      "layer_outer": null,
+      "bottom": "light denim high-waist shorts",
+      "shoes": "cream sandals",
+      "accessories": [
+        "pearl hair clip",
+        "woven mini bag"
+      ],
+      "props": [
+        "iced americano"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "cafe_aesthetic",
+      "rural_field"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding iced americano",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "white floral puff-sleeve crop blouse, high-waist light denim shorts, cream sandals, pearl hair clip, soft cafe window light, sweet lively cafe styling"
+  },
+  {
+    "outfit_id": "F-TW-NMARKET-001",
+    "season": "summer",
+    "gender": "F",
+    "style_archetype": "street_edgy",
+    "context_id": "night_market",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "black fitted baby tee with tiny graphic",
+      "layer_outer": null,
+      "bottom": "raw-edge denim denim shorts",
+      "shoes": "chunky white sneakers",
+      "accessories": [
+        "silver chain necklace",
+        "mini shoulder bag"
+      ],
+      "props": [
+        "skewer snack"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "night_market",
+      "urban_street",
+      "shopping_random"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding skewer snack",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "black fitted baby tee, raw-edge denim denim shorts, chunky white sneakers, mini shoulder bag, holding night market skewer, bold Taiwan street snap"
+  },
+  {
+    "outfit_id": "F-TW-NMARKET-002",
+    "season": "summer",
+    "gender": "F",
+    "style_archetype": "feminine_sweet",
+    "context_id": "night_market",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "soft pink ribbed short-sleeve crop knit",
+      "layer_outer": null,
+      "bottom": "white tennis mini skirt",
+      "shoes": "platform sneakers",
+      "accessories": [
+        "bow hair tie",
+        "small crossbody bag"
+      ],
+      "props": [
+        "papaya milk"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "night_market",
+      "shopping_random"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding papaya milk",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "soft pink ribbed short-sleeve crop knit, white tennis mini skirt, platform sneakers, bow hair tie, holding papaya milk, bright night market candid"
+  },
+  {
+    "outfit_id": "F-TW-BEACH-001",
+    "season": "summer",
+    "gender": "F",
+    "style_archetype": "feminine_mature",
+    "context_id": "beach_island",
+    "aesthetic_tier": 4,
+    "pillars": {
+      "layer_inner": null,
+      "top": "ivory swim crop top under loose lightweight linen shirt",
+      "layer_outer": null,
+      "bottom": "high-waist beige beach shorts",
+      "shoes": "barefoot sandals",
+      "accessories": [
+        "straw hat",
+        "gold anklet"
+      ],
+      "props": [
+        "sunglasses"
+      ]
+    },
+    "fabric_difficulty": "hard",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "beach_island"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding sunglasses",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "ivory swim crop top under loose lightweight linen shirt, high-waist beige beach shorts, straw hat, gold anklet, windblown resort island look"
+  },
+  {
+    "outfit_id": "F-TW-BEACH-002",
+    "season": "summer",
+    "gender": "F",
+    "style_archetype": "street_edgy",
+    "context_id": "beach_island",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "black sporty halter swim top",
+      "layer_outer": null,
+      "bottom": "loose nylon cargo shorts",
+      "shoes": "water sandals",
+      "accessories": [
+        "waterproof watch",
+        "small hoop earrings"
+      ],
+      "props": [
+        "snorkel mask"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "beach_island",
+      "travel_journey"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding snorkel mask",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "black sporty halter swim top, loose nylon cargo shorts, water sandals, waterproof watch, snorkel mask, athletic island adventure styling"
+  },
+  {
+    "outfit_id": "F-TW-OLDTOWN-001",
+    "season": "spring_autumn",
+    "gender": "F",
+    "style_archetype": "vintage_retro",
+    "context_id": "temple_old_town",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "cream fitted square-neck knit top",
+      "layer_outer": null,
+      "bottom": "brown plaid mini skirt",
+      "shoes": "brown loafers",
+      "accessories": [
+        "thin gold necklace",
+        "retro leather bag"
+      ],
+      "props": [
+        "paper fan"
+      ]
+    },
+    "fabric_difficulty": "hard",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "temple_old_town",
+      "cafe_aesthetic"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding paper fan",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "cream fitted square-neck knit top, brown plaid mini skirt, semi-opaque tights, brown loafers, retro leather bag, old street date outfit"
+  },
+  {
+    "outfit_id": "F-TW-OLDTOWN-002",
+    "season": "all",
+    "gender": "F",
+    "style_archetype": "feminine_mature",
+    "context_id": "temple_old_town",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "modern qipao-inspired short dress with side buttons",
+      "layer_outer": null,
+      "bottom": "dress doubles as bottom",
+      "shoes": "low block heels",
+      "accessories": [
+        "jade-toned earrings",
+        "small clutch"
+      ],
+      "props": [
+        "incense pack"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "temple_old_town",
+      "festival_event"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding incense pack",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "modern qipao-inspired short dress with side buttons, low block heels, jade-toned earrings, tasteful cultural old-town styling"
+  },
+  {
+    "outfit_id": "F-TW-MOUNTAIN-001",
+    "season": "summer",
+    "gender": "F",
+    "style_archetype": "sporty_active",
+    "context_id": "mountain_outdoor",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "cropped breathable sun hoodie",
+      "layer_outer": null,
+      "bottom": "black high-waist biker shorts",
+      "shoes": "trail running shoes",
+      "accessories": [
+        "baseball cap",
+        "sport watch"
+      ],
+      "props": [
+        "water bottle"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "mountain_outdoor",
+      "travel_journey"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding water bottle",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "cropped breathable sun hoodie, black high-waist biker shorts, trail running shoes, baseball cap, practical mountain look with fitted athletic line"
+  },
+  {
+    "outfit_id": "F-TW-MOUNTAIN-002",
+    "season": "spring_autumn",
+    "gender": "F",
+    "style_archetype": "street_edgy",
+    "context_id": "mountain_outdoor",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "fitted black thermal mock-neck",
+      "layer_outer": null,
+      "bottom": "olive cargo mini skort",
+      "shoes": "hiking sneakers",
+      "accessories": [
+        "small backpack",
+        "silver earrings"
+      ],
+      "props": [
+        "folded map"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "mountain_outdoor",
+      "beach_island"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding folded map",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "fitted black thermal mock-neck, olive cargo mini skort, hiking sneakers, small backpack, outdoor utility with Korean street silhouette"
+  },
+  {
+    "outfit_id": "F-TW-RURAL-001",
+    "season": "spring_autumn",
+    "gender": "F",
+    "style_archetype": "feminine_sweet",
+    "context_id": "rural_field",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "butter yellow cropped cardigan over white camisole",
+      "layer_outer": null,
+      "bottom": "light blue denim A-line mini skirt",
+      "shoes": "canvas sneakers",
+      "accessories": [
+        "flower hair clip",
+        "canvas tote"
+      ],
+      "props": [
+        "fruit basket"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "rural_field",
+      "cafe_aesthetic"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding fruit basket",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "butter yellow cropped cardigan over white camisole, denim A-line mini skirt, canvas sneakers, soft rural cafe girl look"
+  },
+  {
+    "outfit_id": "F-TW-FEST-001",
+    "season": "winter",
+    "gender": "F",
+    "style_archetype": "feminine_sweet",
+    "context_id": "festival_event",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "red cropped knit top with ribbon detail",
+      "layer_outer": null,
+      "bottom": "black pleated mini skirt",
+      "shoes": "Mary Jane shoes",
+      "accessories": [
+        "red hair ribbon",
+        "small gold earrings"
+      ],
+      "props": [
+        "lantern charm"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "festival_event",
+      "temple_old_town"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding lantern charm",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "red cropped knit top with ribbon detail, black pleated mini skirt, Mary Jane shoes, red hair ribbon, festive Taiwan lantern night style"
+  },
+  {
+    "outfit_id": "F-TW-TRAVEL-001",
+    "season": "summer",
+    "gender": "F",
+    "style_archetype": "minimalist",
+    "context_id": "travel_journey",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "fitted white short-sleeve tee",
+      "layer_outer": null,
+      "bottom": "charcoal pleated tennis skirt",
+      "shoes": "white sneakers",
+      "accessories": [
+        "noise-canceling earbuds",
+        "passport pouch"
+      ],
+      "props": [
+        "carry-on suitcase"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "travel_journey",
+      "urban_street"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding carry-on suitcase",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "fitted white short-sleeve tee, charcoal pleated tennis skirt, white sneakers, earbuds, carry-on suitcase, airport transit chic"
+  },
+  {
+    "outfit_id": "F-TW-SHOP-001",
+    "season": "summer",
+    "gender": "F",
+    "style_archetype": "street_edgy",
+    "context_id": "shopping_random",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "one-shoulder black fitted top",
+      "layer_outer": null,
+      "bottom": "washed grey denim mini skirt",
+      "shoes": "black platform loafers",
+      "accessories": [
+        "silver hoop earrings",
+        "mini baguette bag"
+      ],
+      "props": [
+        "shopping bag"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "shopping_random",
+      "urban_street"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding shopping bag",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "one-shoulder black fitted top, washed grey denim mini skirt, black platform loafers, silver hoops, department store mirror selfie look"
+  },
+  {
+    "outfit_id": "F-TW-HOTSPRING-001",
+    "season": "winter",
+    "gender": "F",
+    "style_archetype": "feminine_mature",
+    "context_id": "mountain_outdoor",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "soft off-shoulder cream knit",
+      "layer_outer": null,
+      "bottom": "ribbed knit shorts",
+      "shoes": "fuzzy mule sandals",
+      "accessories": [
+        "thin gold chain",
+        "towel tote"
+      ],
+      "props": [
+        "hot drink cup"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "mountain_outdoor",
+      "cafe_aesthetic"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding hot drink cup",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "soft off-shoulder cream knit, ribbed knit shorts, fuzzy mule sandals, towel tote, after-onsen relaxed resort styling"
+  },
+  {
+    "outfit_id": "F-TW-RAIN-001",
+    "season": "spring_autumn",
+    "gender": "F",
+    "style_archetype": "feminine_mature",
+    "context_id": "urban_street",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "fitted wine-red long-sleeve top",
+      "layer_outer": null,
+      "bottom": "black high-waist mini skirt",
+      "shoes": "black ankle boots",
+      "accessories": [
+        "transparent umbrella",
+        "small leather bag"
+      ],
+      "props": [
+        "umbrella"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "urban_street",
+      "travel_journey"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding umbrella",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "fitted wine-red long-sleeve top, black high-waist mini skirt, black ankle boots, transparent umbrella, rainy city night Korean IG look"
+  },
+  {
+    "outfit_id": "F-TW-COMFY-001",
+    "season": "summer",
+    "gender": "F",
+    "style_archetype": "tomboy",
+    "context_id": "home_cozy",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "oversized white tee with a relaxed wide neckline",
+      "layer_outer": null,
+      "bottom": "grey cotton dolphin shorts",
+      "shoes": "crew socks and slides",
+      "accessories": [
+        "messy claw clip",
+        "silver chain"
+      ],
+      "props": [
+        "convenience store snack"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "home_cozy",
+      "shopping_random",
+      "urban_street"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding convenience store snack",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "oversized white tee with a relaxed wide neckline, grey cotton dolphin shorts, crew socks and slides, casual convenience store run styling"
+  },
+  {
+    "outfit_id": "F-TW-CAFE-101",
+    "season": "spring_autumn",
+    "gender": "F",
+    "style_archetype": "feminine_sweet",
+    "context_id": "cafe_aesthetic",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "fitted long-sleeve ribbed charcoal top with wide scoop neckline",
+      "layer_outer": null,
+      "bottom": "black pleated short pleated skirt",
+      "shoes": "black loafers with semi-opaque tights",
+      "accessories": [
+        "tiny heart necklace",
+        "deep red manicure"
+      ],
+      "props": [
+        "iced bubble milk tea"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "cafe_aesthetic",
+      "urban_street"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding iced bubble milk tea",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "fitted long-sleeve ribbed charcoal scoop-neck top, black pleated short pleated skirt, semi-opaque tights, loafers, iced bubble milk tea, polished Korean cafe selfie styling"
+  },
+  {
+    "outfit_id": "F-TW-CAFE-102",
+    "season": "winter",
+    "gender": "F",
+    "style_archetype": "feminine_mature",
+    "context_id": "cafe_aesthetic",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "wine-red fitted mock-neck knit with small neckline detail",
+      "layer_outer": null,
+      "bottom": "black wool mini skirt",
+      "shoes": "black ankle boots with semi-opaque tights",
+      "accessories": [
+        "small hoop earrings",
+        "thin watch"
+      ],
+      "props": [
+        "takeaway latte"
+      ]
+    },
+    "fabric_difficulty": "hard",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "cafe_aesthetic",
+      "temple_old_town"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding takeaway latte",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "wine-red fitted mock-neck knit with subtle neckline detail, black wool mini skirt, semi-opaque tights, black ankle boots, winter MRT date look"
+  },
+  {
+    "outfit_id": "F-TW-CAFE-103",
+    "season": "summer",
+    "gender": "F",
+    "style_archetype": "feminine_sweet",
+    "context_id": "cafe_aesthetic",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "ivory lace-trim camisole under cropped cardigan",
+      "layer_outer": null,
+      "bottom": "light denim raw-edge shorts",
+      "shoes": "cream sandals",
+      "accessories": [
+        "pearl hair clip",
+        "woven mini bag"
+      ],
+      "props": [
+        "iced americano"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "cafe_aesthetic",
+      "rural_field"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding iced americano",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "ivory lace-trim camisole under cropped cardigan, raw-edge light denim shorts, cream sandals, pearl hair clip, sweet old-house cafe styling"
+  },
+  {
+    "outfit_id": "F-TW-NMARKET-104",
+    "season": "summer",
+    "gender": "F",
+    "style_archetype": "street_edgy",
+    "context_id": "night_market",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "white fitted crop tee with small red print",
+      "layer_outer": null,
+      "bottom": "black faux-leather mini skirt",
+      "shoes": "chunky white sneakers",
+      "accessories": [
+        "silver chain necklace",
+        "mini shoulder bag"
+      ],
+      "props": [
+        "skewer snack"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "night_market",
+      "urban_street",
+      "shopping_random"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding skewer snack",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "white fitted crop tee with tiny red print, black faux-leather mini skirt, chunky sneakers, night market skewer, bolder Taiwan street snap"
+  },
+  {
+    "outfit_id": "F-TW-NMARKET-105",
+    "season": "summer",
+    "gender": "F",
+    "style_archetype": "feminine_sweet",
+    "context_id": "night_market",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "mint green halter ribbed knit top",
+      "layer_outer": null,
+      "bottom": "white high-waist denim shorts",
+      "shoes": "platform sneakers",
+      "accessories": [
+        "bow hair tie",
+        "small crossbody bag"
+      ],
+      "props": [
+        "papaya milk"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "night_market",
+      "shopping_random"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding papaya milk",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "mint green halter ribbed knit top, white high-waist denim shorts, platform sneakers, papaya milk, fresh summer night market styling"
+  },
+  {
+    "outfit_id": "F-TW-BEACH-106",
+    "season": "summer",
+    "gender": "F",
+    "style_archetype": "feminine_mature",
+    "context_id": "beach_island",
+    "aesthetic_tier": 4,
+    "pillars": {
+      "layer_inner": null,
+      "top": "black swim crop top under open white cotton shirt",
+      "layer_outer": null,
+      "bottom": "high-waist denim cutoffs",
+      "shoes": "barefoot sandals",
+      "accessories": [
+        "straw hat",
+        "gold anklet"
+      ],
+      "props": [
+        "sunglasses"
+      ]
+    },
+    "fabric_difficulty": "hard",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "beach_island"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding sunglasses",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "black swim crop top under open white cotton shirt, high-waist denim cutoffs, straw hat, sunlit island resort look"
+  },
+  {
+    "outfit_id": "F-TW-BEACH-107",
+    "season": "summer",
+    "gender": "F",
+    "style_archetype": "street_edgy",
+    "context_id": "beach_island",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "white sporty one-shoulder swim top",
+      "layer_outer": null,
+      "bottom": "black nylon dolphin shorts",
+      "shoes": "water sandals",
+      "accessories": [
+        "waterproof watch",
+        "small hoop earrings"
+      ],
+      "props": [
+        "snorkel mask"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "beach_island",
+      "travel_journey"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding snorkel mask",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "white one-shoulder sporty swim top, black nylon dolphin shorts, water sandals, snorkel mask, active Green Island styling"
+  },
+  {
+    "outfit_id": "F-TW-OLDTOWN-108",
+    "season": "summer",
+    "gender": "F",
+    "style_archetype": "vintage_retro",
+    "context_id": "temple_old_town",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "cream sleeveless square-neck knit top",
+      "layer_outer": null,
+      "bottom": "brown linen wrap mini skirt",
+      "shoes": "strappy sandals",
+      "accessories": [
+        "thin gold necklace",
+        "retro leather bag"
+      ],
+      "props": [
+        "paper fan"
+      ]
+    },
+    "fabric_difficulty": "hard",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "temple_old_town",
+      "cafe_aesthetic"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding paper fan",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "cream sleeveless square-neck knit top, brown linen wrap mini skirt, strappy sandals, retro leather bag, summer old street styling"
+  },
+  {
+    "outfit_id": "F-TW-OLDTOWN-109",
+    "season": "all",
+    "gender": "F",
+    "style_archetype": "feminine_mature",
+    "context_id": "temple_old_town",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "black modern qipao-inspired fitted mini dress with red piping",
+      "layer_outer": null,
+      "bottom": "dress doubles as bottom",
+      "shoes": "low block heels",
+      "accessories": [
+        "jade-toned earrings",
+        "small clutch"
+      ],
+      "props": [
+        "incense pack"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "temple_old_town",
+      "festival_event"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding incense pack",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "black modern qipao-inspired fitted mini dress with red piping, low block heels, jade earrings, cultural festival styling with sharp silhouette"
+  },
+  {
+    "outfit_id": "F-TW-MOUNTAIN-110",
+    "season": "spring_autumn",
+    "gender": "F",
+    "style_archetype": "sporty_active",
+    "context_id": "mountain_outdoor",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "cropped beige windbreaker over black athletic crop top",
+      "layer_outer": null,
+      "bottom": "black high-waist biker shorts",
+      "shoes": "trail running shoes",
+      "accessories": [
+        "baseball cap",
+        "sport watch"
+      ],
+      "props": [
+        "water bottle"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "mountain_outdoor",
+      "travel_journey"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding water bottle",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "cropped beige windbreaker over black athletic crop top, black biker shorts, trail running shoes, fitted outdoor hiking silhouette"
+  },
+  {
+    "outfit_id": "F-TW-MOUNTAIN-111",
+    "season": "winter",
+    "gender": "F",
+    "style_archetype": "street_edgy",
+    "context_id": "mountain_outdoor",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "fitted charcoal thermal top under cropped puffer vest",
+      "layer_outer": null,
+      "bottom": "olive cargo mini skirt with leggings",
+      "shoes": "hiking sneakers",
+      "accessories": [
+        "small backpack",
+        "silver earrings"
+      ],
+      "props": [
+        "folded map"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "mountain_outdoor",
+      "beach_island"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding folded map",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "fitted charcoal thermal top under cropped puffer vest, olive cargo mini skirt over leggings, hiking sneakers, winter trail styling"
+  },
+  {
+    "outfit_id": "F-TW-RURAL-112",
+    "season": "spring_autumn",
+    "gender": "F",
+    "style_archetype": "feminine_sweet",
+    "context_id": "rural_field",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "white tie-front short-sleeve blouse",
+      "layer_outer": null,
+      "bottom": "yellow floral mini skirt",
+      "shoes": "canvas sneakers",
+      "accessories": [
+        "flower hair clip",
+        "canvas tote"
+      ],
+      "props": [
+        "fruit basket"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "rural_field",
+      "cafe_aesthetic"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding fruit basket",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "white tie-front short-sleeve blouse, yellow floral mini skirt, canvas sneakers, fruit basket, bright rural field influencer look"
+  },
+  {
+    "outfit_id": "F-TW-FEST-113",
+    "season": "winter",
+    "gender": "F",
+    "style_archetype": "feminine_sweet",
+    "context_id": "festival_event",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "scarlet off-shoulder knit top",
+      "layer_outer": null,
+      "bottom": "black satin mini skirt",
+      "shoes": "Mary Jane shoes",
+      "accessories": [
+        "red hair ribbon",
+        "small gold earrings"
+      ],
+      "props": [
+        "lantern charm"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "festival_event",
+      "temple_old_town"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding lantern charm",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "scarlet off-shoulder knit top, black satin mini skirt, Mary Jane shoes, lantern charm, festive night styling with open neckline detail"
+  },
+  {
+    "outfit_id": "F-TW-TRAVEL-114",
+    "season": "summer",
+    "gender": "F",
+    "style_archetype": "minimalist",
+    "context_id": "travel_journey",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "grey fitted zip-up crop hoodie",
+      "layer_outer": null,
+      "bottom": "black pleated mini skirt",
+      "shoes": "white sneakers",
+      "accessories": [
+        "noise-canceling earbuds",
+        "passport pouch"
+      ],
+      "props": [
+        "carry-on suitcase"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "travel_journey",
+      "urban_street"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding carry-on suitcase",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "grey fitted zip-up crop hoodie, black pleated mini skirt, white sneakers, earbuds, carry-on suitcase, airport casual idol styling"
+  },
+  {
+    "outfit_id": "F-TW-SHOP-115",
+    "season": "summer",
+    "gender": "F",
+    "style_archetype": "street_edgy",
+    "context_id": "shopping_random",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "white asymmetrical one-shoulder knit",
+      "layer_outer": null,
+      "bottom": "washed blue denim mini skirt",
+      "shoes": "black platform loafers",
+      "accessories": [
+        "silver hoop earrings",
+        "mini baguette bag"
+      ],
+      "props": [
+        "shopping bag"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "shopping_random",
+      "urban_street"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding shopping bag",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "white asymmetrical one-shoulder knit, washed blue denim mini skirt, black platform loafers, department store try-on selfie styling"
+  },
+  {
+    "outfit_id": "F-TW-HOTSPRING-116",
+    "season": "spring_autumn",
+    "gender": "F",
+    "style_archetype": "feminine_mature",
+    "context_id": "mountain_outdoor",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "soft blush off-shoulder knit",
+      "layer_outer": null,
+      "bottom": "cream knit mini shorts",
+      "shoes": "fuzzy mule sandals",
+      "accessories": [
+        "thin gold chain",
+        "towel tote"
+      ],
+      "props": [
+        "hot drink cup"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "mountain_outdoor",
+      "cafe_aesthetic"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding hot drink cup",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "soft blush off-shoulder knit, cream knit mini shorts, fuzzy mule sandals, towel tote, hot spring resort lounge look"
+  },
+  {
+    "outfit_id": "F-TW-RAIN-117",
+    "season": "spring_autumn",
+    "gender": "F",
+    "style_archetype": "feminine_mature",
+    "context_id": "urban_street",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "black fitted long-sleeve mesh-layer top",
+      "layer_outer": null,
+      "bottom": "burgundy pleated mini skirt",
+      "shoes": "black ankle boots",
+      "accessories": [
+        "transparent umbrella",
+        "small leather bag"
+      ],
+      "props": [
+        "umbrella"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "urban_street",
+      "travel_journey"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding umbrella",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "black fitted long-sleeve mesh-layer top, burgundy pleated mini skirt, ankle boots, transparent umbrella, rainy alley cinematic style"
+  },
+  {
+    "outfit_id": "F-TW-COMFY-118",
+    "season": "summer",
+    "gender": "F",
+    "style_archetype": "tomboy",
+    "context_id": "home_cozy",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "oversized navy hoodie half-zipped with a relaxed wide neckline",
+      "layer_outer": null,
+      "bottom": "black short drawstring shorts",
+      "shoes": "crew socks and slides",
+      "accessories": [
+        "messy claw clip",
+        "silver chain"
+      ],
+      "props": [
+        "convenience store snack"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "home_cozy",
+      "shopping_random",
+      "urban_street"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding convenience store snack",
+      "right_hand": "touching hair or holding phone",
+      "both_busy": false
+    },
+    "prompt_skeleton": "oversized navy hoodie half-zipped with a relaxed wide neckline, black short drawstring shorts, slides, convenience store snack, late-night relaxed styling"
+  }
+]
