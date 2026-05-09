@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { Model, DiaryEntry } from '../../shared/types/types';
 import Button from '../../shared/components/common/Button';
 import Loader from '../../shared/components/common/Loader';
-import { generateIPDiary, generateRandomEvent, syncPrompts, generateDynamicEvent, extractNewMemories } from './services/narrativeService';
+import { generateIPDiary, generateRandomEvent, syncPrompts, generateDynamicEvent, extractNewMemories, generateRandomEventWithScene, generateDynamicEventWithScene } from './services/narrativeService';
 import { OrchestratorService } from './services/orchestratorService';
 import { transformImage } from '../../shared/services/geminiService';
 import { motion, AnimatePresence } from 'motion/react';
@@ -31,6 +31,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     
     const [previewingImage, setPreviewingImage] = useState<{images: string[], startIndex: number} | null>(null);
     const [eventInput, setEventInput] = useState('');
+    const [randomSceneId, setRandomSceneId] = useState<string | null>(null);
     const [isGenerating, setIsGenerating] = useState(false);
     const [isGeneratingDynamicEvent, setIsGeneratingDynamicEvent] = useState(false);
     const [isGeneratingImage, setIsGeneratingImage] = useState(false);
@@ -94,10 +95,11 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             const result = await generateIPDiary(model, eventInput, { 
                 isPOV, 
                 lastEntry: context,
-                forcedSceneId: selectedBrief?.sceneId
+                forcedSceneId: selectedBrief?.sceneId || randomSceneId || undefined
             });
             setDiary(result);
             setSelectedBrief(null); // Reset after use
+            setRandomSceneId(null); // Reset after use
             // Handle new direct prompt structure
             if (result.visualPrompt) {
                 setEditablePrompt(result.visualPrompt);
@@ -200,8 +202,10 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     };
 
     const handleRandomEvent = () => {
-        const randomEvent = generateRandomEvent(model);
-        setEventInput(randomEvent);
+        const randomEvent = generateRandomEventWithScene(model);
+        setEventInput(randomEvent.text);
+        setRandomSceneId(randomEvent.sceneId || null);
+        setSelectedBrief(null);
     };
 
     const handleAIGenerateEvent = async () => {
@@ -217,8 +221,11 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             const lastEntry = model.gallery?.[model.gallery.length - 1];
             const context = lastEntry ? { content: lastEntry.narrativeContent, mood: lastEntry.mood } : undefined;
 
-            const event = await generateDynamicEvent(model, context);
-            setEventInput(event);
+            const result = await generateDynamicEventWithScene(model, context);
+            setEventInput(result.text);
+            setRandomSceneId(result.sceneId || null);
+            setSelectedBrief(null);
+
             addNotification({ type: 'success', message: '靈魂與現世已對齊 (Context Aligned)', description: '及時場景與故事弧邏輯已啟動 (Real-time scene and story arc logic active).' });
         } catch (e) {
             addNotification({ type: 'error', message: '靈感獲取失敗' });
@@ -593,7 +600,11 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                         className="w-full h-36 bg-black/5 dark:bg-black/40 border border-black/5 dark:border-white/5 rounded-[2.5rem] p-6 text-sm text-gray-800 dark:text-gray-200 focus:border-[var(--color-gold)]/30 focus:shadow-[0_0_40px_rgba(212,175,55,0.05)] transition-all resize-none font-medium leading-relaxed outline-none shadow-inner"
                                         placeholder="描繪此刻的情境... 靈魂敘事將以此為軸心展開。"
                                         value={eventInput}
-                                        onChange={(e) => setEventInput(e.target.value)}
+                                        onChange={(e) => {
+                                            setEventInput(e.target.value);
+                                            setRandomSceneId(null);
+                                            setSelectedBrief(null);
+                                        }}
                                     />
                                     <div className="absolute bottom-6 right-6 w-12 h-0.5 bg-gradient-to-r from-transparent to-[var(--color-gold)]/20 opacity-0 group-focus-within:opacity-100 transition-opacity"></div>
                                 </div>

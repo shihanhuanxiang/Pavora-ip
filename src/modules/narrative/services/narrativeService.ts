@@ -550,67 +550,78 @@ const buildPromptByTier = (outfit: OutfitV2, tier: number): string => {
 };
 
 /**
- * Generates a creative, dynamic event trigger based on the model's persona, life circuit, and previous events.
+ * Generates a creative, dynamic event trigger based on the model's persona, life circuit, and previous events (Legacy Wrapper).
  */
 export const generateDynamicEvent = async (model: Model, lastEntry?: { content?: string, mood?: string }): Promise<string> => {
+    const result = await generateDynamicEventWithScene(model, lastEntry);
+    return result.text;
+};
+
+/**
+ * Generates a dynamic event with a scene ID for consistency (AI Generated version).
+ */
+export const generateDynamicEventWithScene = async (model: Model, lastEntry?: { content?: string, mood?: string }): Promise<{ text: string, sceneId?: string }> => {
     const client = await getGeminiClient(true) as any;
-    const relationshipJson = JSON.stringify(model.worldAnchors?.relationships || []);
     
-    // Retrieve city-specific knowledge
-    const city = model.lifeCircuit?.primaryCity || '台北市';
-    let localKnowledge = getScenesByCity(city);
-    
-    // Diversity Injection: 40% chance to look "elsewhere" or use a broader pool if city Knowledge is sparse
-    if (localKnowledge.length < 5 || Math.random() < 0.4) {
-        localKnowledge = LOCALIZED_SCENES;
+    // 1. Identify Target Location
+    const targetCity = model.lifeCircuit?.primaryCity || '台北市';
+    const targetDistrict = model.lifeCircuit?.primaryDistrict || '';
+
+    // 2. Scene Selection Strategy (Prioritize Extended Scenes for better depth integration)
+    let candidates: (ExtendedScene | any)[] = ALL_EXTENDED_SCENES.filter(s => 
+        ((s as any).district && targetDistrict.includes((s as any).district)) || 
+        (s.city && (s.city === targetCity || targetCity.includes(s.city))) ||
+        s.city === "any"
+    );
+
+    // Fallback if city/district matches are scarce
+    if (candidates.length < 3) {
+        const cityFallback = getScenesByCity(targetCity);
+        candidates = [...candidates, ...cityFallback];
     }
-    
-    const scene = localKnowledge[Math.floor(Math.random() * localKnowledge.length)];
+
+    const scene = candidates[Math.floor(Math.random() * candidates.length)] || LOCALIZED_SCENES[0];
+    const sceneId = (scene as any).scene_id || (scene as any).id;
 
     const identityHeader = `
 【!!! 人格心理憲法 (Psychological Core) !!!】
 - IP 姓名：${model.name}
-- 性別代詞：${model.gender === 'female' ? 'She/Her' : 'He/Him'} (絕對禁止錯亂)
 - MBTI 人格：${model.persona?.mbti || 'ISTP'}
 - 核心氛圍：${model.persona?.coreVibe || '自然真實'}
 - 職業身份：${model.persona?.profession || '未設定'}
 - 語氣風格：${model.persona?.toneOfVoice || '自然隨性'}
-- 口頭禪：${model.persona?.catchphrase ? `偶爾在日記中自然帶入「${model.persona.catchphrase}」` : '無特定口頭禪'}
-- 長期記憶（重要）：${(model.worldAnchors?.longTermMemories ?? []).length 
-    ? `${(model.worldAnchors?.longTermMemories ?? []).join('、')}。
-       【指示】：今天的日記中，請自然地呼應或延伸上述記憶中的 1-2 個，
-       例如提到「上次...之後」「最近一直在想...」「那天之後...」，
-       讓敘事有時間縱深感。不要每個記憶都提，選最相關的。`
-    : '無特別記憶（這是第一篇日記）'}
+- 長期記憶：${(model.worldAnchors?.longTermMemories ?? []).length 
+    ? `${(model.worldAnchors?.longTermMemories ?? []).join('、')}。`
+    : '無特別記憶'}
 `;
 
     const contextHeader = lastEntry ? `
 【時空連貫 (Timeline Context)】
 - 上一則動態：“${lastEntry.content}”
-- 該事件對心理的延續影響：請從這裡延伸，確保角色生活在流動的時間裡。
-    ` : '【新故事線起始】目前尚無前置事件，請創造一個令人驚艷的開場。';
+    ` : '【新故事線起始】';
+
+    // 準備場景數據，避免直接暴露英文 prompt 素材給 AI 直接複製
+    const sceneEvent = (scene as any).name_zh || scene.event;
+    const sceneSensory = Array.isArray(scene.sensory) ? scene.sensory.join('、') : scene.sensory;
+    const sceneNoise = Array.isArray(scene.visualNoise) ? scene.visualNoise.join('、') : scene.visualNoise;
 
     const prompt = `
         ${identityHeader}
         ${contextHeader}
-        你現在是這名數位 IP 的【靈體編導兼微文學作家】。請根據其人格底座，在【${city}】策劃一則具備「台灣體溫」且能引起粉絲強烈共鳴的敘事靈感。
+        你現在是這名數位 IP 的【靈體編導】。請根據其人格與上一則動態，在【${targetCity}】策劃一則生活靈感。
         
-        【待處現場 (Liminal/City DNA)】
-        - 事件原型：${scene.event}
-        - 原始感官標籤：${scene.sensory}
-        - 原始生活雜訊：${scene.visualNoise}
-        - 可選情緒維度：${(scene.emotions ?? []).join('、')}
+        【場景設定】
+        - 地點與事件：${sceneEvent}
+        - 氛圍標籤：${sceneSensory}
+        - 生活細節：${sceneNoise}
         
-        【任務：靈魂敘事轉化 (Creative Transformation)】
-        1. **心理主動權**：不要隨機選擇情緒。請根據 ${model.name} 的 MBTI (${model.persona?.mbti}) 與「上一則動態」，主動從可選維度中鎖定一個最合理的心理切入點。
-        2. **解鎖文字張力**：
-           - **嚴禁**輸出 40 字以下的短句。
-           - **長度區間**：60 - 120 字。
-           - **強結構化**：敘述必須嚴格遵循 [環境冷暖/氣息描述] -> [此刻的主體微小動態] -> [一個深刻的生活碎屑（如揉皺的發票、捷運進站的風壓）]。
-        3. **脆弱性注入**：在生活中加入 20% 的不完美（例如：因為腳痛稍微調整了高跟鞋、被雨淋濕的狼狽感、或戴著口罩悶熱的呼吸）。
-        4. **語言風格**：繁體中文。帶有一點孤獨但優雅的現代都市質感。
+        【任務】
+        1. 文字長度：60 - 120 字。
+        2. 結構：[感官氣息] -> [主體微小動作] -> [深刻生活碎屑]。
+        3. 注入 20% 的不完美感（例如：汗水、凌亂、或是一點疲累）。
+        4. **語言：繁體中文**。嚴禁輸出英文 prompt 素材，確保文字像真實的人類生活紀錄。
 
-        直接輸出內容，不需任何前言或引號。
+        直接輸出內容，不要前言。
     `;
 
     try {
@@ -620,12 +631,12 @@ export const generateDynamicEvent = async (model: Model, lastEntry?: { content?:
         });
         const resultText = (resultResponse.text || "").trim();
         
-        // Fallback for very short outputs
-        if (resultText.length < 30) throw new Error("Output too short, entering fallback");
-        return resultText;
+        if (resultText.length < 30) throw new Error("Output too short");
+        return { text: resultText, sceneId };
     } catch (e) {
-        console.warn("Pro brain generation failed, using random engine:", e);
-        return generateRandomEvent(model);
+        console.warn("AI generation failed, using fallback:", e);
+        const fallback = generateRandomEventWithScene(model);
+        return { text: fallback.text, sceneId: fallback.sceneId };
     }
 };
 
@@ -636,21 +647,63 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
     const client = await getGeminiClient(true) as any;
 
     // 1. Context and Scene Selection
-    const city = model.lifeCircuit?.primaryCity || '台北市';
+    const primaryCity = model.lifeCircuit?.primaryCity || '台北市';
+    const primaryDistrict = model.lifeCircuit?.primaryDistrict || '';
     
-    // Forced Scene override
-    let sceneContext: ExtendedScene | any;
+    let sceneContext: ExtendedScene | any = null;
+
     if (options?.forcedSceneId) {
-        sceneContext = ALL_EXTENDED_SCENES.find(s => s.scene_id === options.forcedSceneId) || LOCALIZED_SCENES[0];
-    } else {
-        // Choose between base scenes and extended scenes
-        // 60% chance for extended depth module scenes if any
-        const useExtended = Math.random() < 0.6;
-        if (useExtended) {
-            const localExtended = ALL_EXTENDED_SCENES.filter(s => s.city === city || s.city === "any");
-            sceneContext = localExtended[Math.floor(Math.random() * localExtended.length)] || LOCALIZED_SCENES[0];
-        } else {
-            const localKnowledge = getScenesByCity(city);
+        // Forced Scene override (Highest Priority)
+        sceneContext = ALL_EXTENDED_SCENES.find(s => s.scene_id === options.forcedSceneId);
+        if (!sceneContext) {
+            // Check legacy scenes if not in extended
+            sceneContext = LOCALIZED_SCENES.find((s: any) => s.id === options.forcedSceneId);
+        }
+    }
+
+    if (!sceneContext) {
+        // TIER 1: 符合角色生活圈的場景 (City & District Matching)
+        let candidates = ALL_EXTENDED_SCENES.filter(s => {
+            const cityMatch = s.city && (s.city === primaryCity || primaryCity.includes(s.city) || s.city.includes(primaryCity));
+            const districtMatch = primaryDistrict && (
+                ((s as any).district && (primaryDistrict.includes((s as any).district) || (s as any).district.includes(primaryDistrict))) ||
+                (s.event && s.event.includes(primaryDistrict)) ||
+                (s.name_zh && s.name_zh.includes(primaryDistrict)) ||
+                (s.category && s.category.includes(primaryDistrict))
+            );
+            return cityMatch || districtMatch;
+        });
+
+        // TIER 2: 通用場景 (region: all / city: any)
+        if (candidates.length === 0) {
+            candidates = ALL_EXTENDED_SCENES.filter(s => s.region === 'all' || s.city === 'any');
+        }
+
+        // TIER 3: ALL_EXTENDED_SCENES 全池
+        if (candidates.length === 0) {
+            candidates = ALL_EXTENDED_SCENES;
+        }
+
+        if (candidates.length > 0) {
+            // 加權處理：若有行政區匹配，優先從中抽選
+            if (primaryDistrict) {
+                const districtMatches = candidates.filter(s => 
+                    ((s as any).district && (primaryDistrict.includes((s as any).district) || (s as any).district.includes(primaryDistrict))) ||
+                    (s.event && s.event.includes(primaryDistrict)) ||
+                    (s.name_zh && s.name_zh.includes(primaryDistrict))
+                );
+                if (districtMatches.length > 0) {
+                    sceneContext = districtMatches[Math.floor(Math.random() * districtMatches.length)];
+                }
+            }
+            if (!sceneContext) {
+                sceneContext = candidates[Math.floor(Math.random() * candidates.length)];
+            }
+        }
+        
+        // TIER 4: 最後才 fallback 到 LOCALIZED_SCENES / getScenesByCity
+        if (!sceneContext) {
+            const localKnowledge = getScenesByCity(primaryCity);
             sceneContext = localKnowledge[Math.floor(Math.random() * localKnowledge.length)] || LOCALIZED_SCENES[0];
         }
     }
@@ -678,8 +731,10 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
     const activity = event;
 
     // 2. Selection of Aesthetic Tier and Outfit
-    const minTier = model.preferences?.aesthetic_tier_min || 1;
-    const maxTier = model.preferences?.aesthetic_tier_max || 2;
+    const rawMinTier = model.preferences?.aesthetic_tier_min || 1;
+    const rawMaxTier = model.preferences?.aesthetic_tier_max || 2;
+    const minTier = Math.min(rawMinTier, rawMaxTier);
+    const maxTier = Math.max(rawMinTier, rawMaxTier);
     const targetTier = Math.floor(Math.random() * (maxTier - minTier + 1)) + minTier;
     
     // Map activity to context
@@ -791,7 +846,7 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
 - 標誌性物品：${(model.worldAnchors?.iconicItems?.map(i => i.name) ?? []).join('、') || '無特定物品'}
 
 [今日情境]
-- 地點: ${city} ${location}
+- 地點: ${primaryCity} ${location}
 - 天氣: ${weather}
 - 活動: ${activity}
 
@@ -810,7 +865,7 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
    - 你必須產出英文提示詞，並將其拆分為以下模塊格式：
      [Subject]: (包含生理寫實細節)
      [Apparel]: (包含本次指定的完整穿搭)
-     [Environment]: (包含 ${city} 的場景碎屑與雜訊)
+     [Environment]: (包含 ${primaryCity} 的場景碎屑與雜訊)
      [Lighting]: (包含對應天氣與 Tier 的光影語法)
      [Camera]: (包含對應 Tier 的攝影機設定與術語)
 
@@ -954,10 +1009,9 @@ export const syncPrompts = async (text: string, from: 'ZH' | 'EN'): Promise<{ZH:
 };
 
 /**
- * Generates a random event based on the character's footprints and vibe.
- * Implements Phase 3: Dynamic sensory stitching and vulnerability filter.
+ * Generates a random event with a scene ID for consistency.
  */
-export const generateRandomEvent = (model: Model): string => {
+export const generateRandomEventWithScene = (model: Model): { text: string; sceneId?: string } => {
     const baseCity = model.lifeCircuit?.primaryCity || '台北市';
     
     // 跨縣市「移動感」演算法 (30% chance)
@@ -976,8 +1030,8 @@ export const generateRandomEvent = (model: Model): string => {
     const extendedScenes = ALL_EXTENDED_SCENES.filter(s =>
         s.city === targetCity ||
         s.city === "any" ||
-        targetCity.includes(s.city) ||
-        s.city.includes(targetCity)
+        targetCity.includes(s.city || "") ||
+        (s.city && s.city.includes(targetCity))
     );
 
     const fallbackScenes = getScenesByCity(targetCity);
@@ -986,12 +1040,35 @@ export const generateRandomEvent = (model: Model): string => {
     const emotionPool = scene.emotions && scene.emotions.length > 0 ? scene.emotions : ["日常", "放鬆", "沉浸"];
     const emotion = emotionPool[Math.floor(Math.random() * emotionPool.length)];
     
-    const sensoryText = Array.isArray(scene.sensory) ? scene.sensory.join('、') : scene.sensory;
-    const visualNoiseText = Array.isArray(scene.visualNoise) ? scene.visualNoise.join('、') : scene.visualNoise;
-    const sensory = sensoryText.split('、');
-    const noise = visualNoiseText.split('、');
-    const s = sensory[Math.floor(Math.random() * sensory.length)];
-    const n = noise[Math.floor(Math.random() * noise.length)];
+    // Helper to get Chinese display text, avoiding English prompts
+    const getZHDetail = (scene: any) => {
+        const category = scene.category || "";
+        const outfitFilter = scene.outfit_filter || [];
+        const contextId = scene.scene_context_id || "";
+        
+        const detailMap: Record<string, string[]> = {
+            'home_cozy': ['木地板', '散落衣物', '棉被皺摺', '窗邊光線', '外送袋', '充電線'],
+            'cafe_aesthetic': ['冰咖啡水珠', '甜點盤', '木桌紋理', '窗邊座位', '杯套', '發票'],
+            'night_market': ['油煙', '排隊人潮', '塑膠袋聲', '攤販燈', '紙袋', '竹籤'],
+            'beach_island': ['海風', '鹽分', '拖鞋砂粒', '防曬乳味', '濕髮', '浪聲'],
+            'temple_old_town': ['香火味', '石板路', '紅磚牆', '老招牌', '紙袋', '午後光'],
+            'mountain_outdoor': ['濕葉', '木棧道', '薄霧', '背包肩帶', '水壺', '泥土味'],
+            'rural_field': ['稻浪', '泥土味', '塑膠籃', '曬太陽的鐵皮屋', '田邊風'],
+            'festival_event': ['燈籠', '紙屑', '攤販音樂', '人潮縫隙', '手上的小物'],
+            'shopping_random': ['購物袋', '電梯鏡面', '發票', '試衣間燈', '手扶梯聲'],
+            'travel_journey': ['車票', '行李輪', '月台廣播', '背包肩帶', '便利商店早餐']
+        };
+
+        const keys = [contextId, category, ...outfitFilter];
+        for (const key of keys) {
+            if (detailMap[key]) return detailMap[key];
+        }
+        return ['生活碎屑', '空氣微粒', '光影折射'];
+    };
+
+    const details = getZHDetail(scene);
+    const s = details[Math.floor(Math.random() * details.length)];
+    const n = details[(Math.floor(Math.random() * details.length) + 1) % details.length];
 
     const vulnerabilities = [
         "剛買的飲料杯壁全是水珠，指尖被冰得有點麻，連手機螢幕都沾上一層濕氣",
@@ -1004,11 +1081,24 @@ export const generateRandomEvent = (model: Model): string => {
 
     const travelNote = isTraveling ? `這次離開熟悉的${baseCity}，跑到${targetCity}讓自己換一種節奏。` : "";
     
+    // Use scene.name_zh or event but ensure it's Chinese
+    const eventName = scene.name_zh || scene.event;
+
     const narrativeTemplates = [
-        `${travelNote}人在${scene.event}，空氣裡全被${s}填滿了。視線一角是${n}${vulnerability}，這種真實的生活碎屑，反而讓人感覺今天不是被安排好的。`,
-        `${travelNote}此刻正待在${scene.event}，看著${n}發呆。聞得到${s}的氣息${vulnerability}，情緒有點${emotion}，但不是那種誇張的感動，比較像生活剛好停在一個能呼吸的位置。`,
-        `${travelNote}在${targetCity}的節奏裡，${scene.event}顯得格外清晰。鼻尖縈繞著${s}，身旁${n}在晃動${vulnerability}。這種平凡的時刻，其實最像會被留下來的記憶。`
+        `${travelNote}人在${eventName}，空氣裡全被${s}填滿了。視線一角是${n}${vulnerability}，這種真實的生活碎屑，反而讓人感覺今天不是被安排好的。`,
+        `${travelNote}此刻正待在${eventName}，看著${n}發呆。聞得到${s}的氣息${vulnerability}，情緒有點${emotion}，但不是那種誇張的感動，比較像生活剛好停在一個能呼吸的位置。`,
+        `${travelNote}在${targetCity}的節奏裡，${eventName}顯得格外清晰。鼻尖縈繞著${s}，身旁${n}在晃動${vulnerability}。這種平凡的時刻，其實最像會被留下來的記憶。`
     ];
 
-    return narrativeTemplates[Math.floor(Math.random() * narrativeTemplates.length)];
+    return {
+        text: narrativeTemplates[Math.floor(Math.random() * narrativeTemplates.length)],
+        sceneId: scene.scene_id
+    };
+};
+
+/**
+ * Generates a random event based on the character's footprints and vibe (Legacy Wrapper).
+ */
+export const generateRandomEvent = (model: Model): string => {
+    return generateRandomEventWithScene(model).text;
 };

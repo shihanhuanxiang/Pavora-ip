@@ -7,6 +7,60 @@ import Button from '../../../shared/components/common/Button';
 import { OUTFIT_SEEDS_V2 } from '../constants/outfitSeeds';
 
 const TERM_DICT: Record<string, string> = {
+    // ==== 核心關鍵字 (原子級) ====
+    "fitted": "合身",
+    "ribbed": "羅紋",
+    "knit": "針織",
+    "cotton": "棉質",
+    "linen": "亞麻",
+    "silk": "絲質",
+    "lace": "蕾絲",
+    "sheer": "透膚",
+    "mesh": "網紗",
+    "cropped": "短版",
+    "crop": "短版",
+    "oversized": "寬鬆",
+    "long-sleeve": "長袖",
+    "long sleeve": "長袖",
+    "short-sleeve": "短袖",
+    "short sleeve": "短袖",
+    "sleeveless": "無袖",
+    "camisole": "細肩帶背心",
+    "tank": "背心",
+    "tee": "T恤",
+    "hoodie": "連帽上衣",
+    "cardigan": "開襟衫",
+    "blouse": "上衣",
+    "shirt": "襯衫",
+    "dress": "洋裝",
+    "mini skirt": "迷你裙",
+    "pleated skirt": "百褶裙",
+    "shorts": "短褲",
+    "denim": "丹寧",
+    "jeans": "牛仔褲",
+    "tights": "褲襪",
+    "sneakers": "休閒鞋",
+    "loafers": "樂福鞋",
+    "boots": "靴子",
+    "sandals": "涼鞋",
+    "barefoot": "赤腳",
+    "black": "黑色",
+    "white": "白色",
+    "cream": "奶油白",
+    "ivory": "奶油白",
+    "grey": "灰色",
+    "gray": "灰色",
+    "pink": "粉色",
+    "navy": "海軍藍",
+    "burgundy": "酒紅色",
+    "wine-red": "酒紅色",
+    "charcoal": "炭灰色",
+    "beige": "米色",
+    "brown": "棕色",
+    "red": "紅色",
+    "blue": "藍色",
+    "green": "綠色",
+
     // ==== 整句/長片語（必須優先翻譯）====
     "long ivory cotton bedsheet draped classical style": "象牙白棉布古典垂墜",
     "long flowing white linen dress, classical drape": "白色亞麻長裙古典垂墜",
@@ -210,7 +264,6 @@ const TERM_DICT: Record<string, string> = {
     "barefoot with subtle nail polish": "赤腳淡色指甲油",
     "barefoot or cotton socks": "赤腳或棉襪",
     "barefoot or embroidered slippers": "赤腳或刺繡拖鞋",
-    "barefoot": "赤腳",
     "crew socks bunched at ankle": "腳踝堆疊船型襪",
     "thick cotton ankle socks": "厚棉短襪",
     "thick wool socks": "厚羊毛襪",
@@ -324,12 +377,62 @@ const TERM_DICT: Record<string, string> = {
     "black thermal": "黑色保暖內搭",
     "khaki shorts": "卡其短褲",
     "distressed black skinny jeans": "做舊黑色緊身牛仔褲",
-    "loafers": "樂福鞋",
     
     // ==== wear_state ====
-    "barely_worn": "幾乎全新",
     "well_loved": "穿過",
     "worn_in": "略舊"
+};
+
+const STYLE_ARCHETYPE_MAP: Record<string, string> = {
+    'feminine_sweet': '甜美少女風格 // SWEET',
+    'feminine_mature': '成熟御姐風格 // MATURE',
+    'korean_chic': '韓系時髦風格 // KOREAN CHIC',
+    'street_edgy': '街頭辣妹風格 // STREET',
+    'sporty_active': '運動元氣風格 // SPORTY',
+    'vintage_retro': '復古懷舊風格 // VINTAGE',
+    'minimalist': '極簡清爽風格 // MINIMAL',
+    'tomboy': '率性中性風格 // TOMBOY',
+    'masculine_clean': '清爽男友風格 // CLEAN',
+    'masculine_rugged': '硬朗戶外風格 // RUGGED',
+    'masculine_formal': '都會正裝風格 // FORMAL',
+    'feminine_office': '職場精英風格 // OFFICE',
+    'dandy_refined': '雅痞紳士風格 // DANDY',
+    'cultural_traditional': '文化深蘊風格 // CULTURAL',
+    'street_techwear': '街頭機能風格 // TECHWEAR'
+};
+
+const WEAR_STATE_MAP: Record<string, { label: string, width: string }> = {
+    'barely_worn': { label: '近全新', width: '90%' },
+    'styled_daily': { label: '精心日常', width: '70%' },
+    'well_loved': { label: '常穿自然', width: '55%' },
+    'worn_in': { label: '明顯磨損', width: '20%' }
+};
+
+const getOutfitDisplayText = (value: string | null | undefined): string => {
+    if (!value) return "---";
+    
+    // 1. 完全匹配字典
+    if (TERM_DICT[value]) return TERM_DICT[value];
+    
+    // 2. 處理長句拼裝
+    let result = value.toLowerCase();
+    
+    // 依字長排序，先翻長詞
+    const sortedKeys = Object.keys(TERM_DICT).sort((a, b) => b.length - a.length);
+    const usedTerms: string[] = [];
+
+    for (const key of sortedKeys) {
+        if (result.includes(key)) {
+            usedTerms.push(TERM_DICT[key]);
+            result = result.replace(key, ""); // 移除已匹配部分
+        }
+    }
+
+    if (usedTerms.length > 0) {
+        return usedTerms.join("");
+    }
+    
+    return value;
 };
 
 const translateOutfitTerm = (text: string | null | undefined): string => {
@@ -538,21 +641,7 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
 
                                         <div className="space-y-1">
                                             <h4 className={`font-display font-black text-lg tracking-tight leading-none uppercase italic transition-colors ${isActive ? 'text-[var(--color-gold)]' : 'text-[var(--color-text-title)]'}`}>
-                                                {outfit.style_archetype === 'feminine_sweet' ? '甜美少女風格 // SWEET' : 
-                                                 outfit.style_archetype === 'feminine_mature' ? '成熟御姐風格 // MATURE' : 
-                                                 outfit.style_archetype === 'feminine_office' ? '職場精英風格 // OFFICE' :
-                                                 outfit.style_archetype === 'masculine_clean' ? '清爽簡約風格 // CLEAN' :
-                                                 outfit.style_archetype === 'masculine_rugged' ? '硬朗粗獷風格 // RUGGED' :
-                                                 outfit.style_archetype === 'masculine_formal' ? '商務正裝風格 // FORMAL' :
-                                                 outfit.style_archetype === 'dandy_refined' ? '雅痞紳士風格 // DANDY' :
-                                                 outfit.style_archetype === 'street_edgy' ? '街頭酷感風格 // EDGY' :
-                                                 outfit.style_archetype === 'sporty_active' ? '動感活力風格 // SPORTY' :
-                                                 outfit.style_archetype === 'cultural_traditional' ? '文化深蘊風格 // CULTURAL' :
-                                                 outfit.style_archetype === 'tomboy' ? '率性中性風格 // TOMBOY' :
-                                                 outfit.style_archetype === 'minimalist' ? '極簡主義風格 // MINIMALIST' :
-                                                 outfit.style_archetype === 'vintage_retro' ? '復古懷舊風格 // VINTAGE' :
-                                                 outfit.style_archetype === 'street_techwear' ? '街頭機能風格 // TECHWEAR' :
-                                                 outfit.style_archetype.replace('_', ' ')}
+                                                {STYLE_ARCHETYPE_MAP[outfit.style_archetype] || outfit.style_archetype.replace('_', ' ')}
                                             </h4>
                                             <div className={`h-0.5 w-8 rounded-full transition-all duration-500 ${isActive ? 'bg-[var(--color-gold)] w-16' : 'bg-[var(--color-border)]'}`}></div>
                                         </div>
@@ -561,17 +650,17 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                             <div className="space-y-3">
                                                 <div className="space-y-1">
                                                     <p className="text-gray-400 dark:text-gray-600 font-bold uppercase text-[8px] tracking-widest">上裝 // TOP</p>
-                                                    <p className="text-gray-800 dark:text-white font-medium line-clamp-1">{translateOutfitTerm(outfit.pillars.top) || '---'}</p>
+                                                    <p className="text-gray-800 dark:text-white font-medium line-clamp-1">{getOutfitDisplayText(outfit.pillars.top)}</p>
                                                 </div>
                                                 <div className="space-y-1">
                                                     <p className="text-gray-400 dark:text-gray-600 font-bold uppercase text-[8px] tracking-widest">鞋履 // SHOES</p>
-                                                    <p className="text-gray-800 dark:text-white font-medium line-clamp-1">{translateOutfitTerm(outfit.pillars.shoes) || '---'}</p>
+                                                    <p className="text-gray-800 dark:text-white font-medium line-clamp-1">{getOutfitDisplayText(outfit.pillars.shoes)}</p>
                                                 </div>
                                             </div>
                                             <div className="space-y-3">
                                                 <div className="space-y-1">
                                                     <p className="text-gray-400 dark:text-gray-600 font-bold uppercase text-[8px] tracking-widest">下裝 // BOTTOM</p>
-                                                    <p className="text-gray-800 dark:text-white font-medium line-clamp-1">{translateOutfitTerm(outfit.pillars.bottom) || '---'}</p>
+                                                    <p className="text-gray-800 dark:text-white font-medium line-clamp-1">{getOutfitDisplayText(outfit.pillars.bottom)}</p>
                                                 </div>
                                                 <div className="space-y-1">
                                                     <div className="flex justify-between items-center mb-1">
@@ -579,16 +668,14 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                                         <span className={`text-[8px] font-black uppercase ${
                                                         outfit.wear_state === 'worn_in' ? 'text-red-500' : 'text-[var(--color-gold)]'
                                                         }`}>
-                                                            {translateOutfitTerm(outfit.wear_state)}
+                                                            {WEAR_STATE_MAP[outfit.wear_state]?.label || '未知狀態'}
                                                         </span>
                                                     </div>
                                                     <div className="w-full h-1 bg-[var(--color-bg-input)] rounded-full overflow-hidden">
                                                         <motion.div 
                                                             initial={{ width: 0 }}
                                                             animate={{ 
-                                                                width: outfit.wear_state === 'barely_worn' ? '90%' : 
-                                                                       outfit.wear_state === 'well_loved' ? '55%' : 
-                                                                       outfit.wear_state === 'worn_in' ? '20%' : '50%'
+                                                                width: WEAR_STATE_MAP[outfit.wear_state]?.width || '50%'
                                                             }}
                                                             className={`h-full rounded-full ${
                                                                 outfit.wear_state === 'worn_in' ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.4)]' : 'bg-[var(--color-gold)] shadow-[0_0_8px_rgba(212,175,55,0.4)]'

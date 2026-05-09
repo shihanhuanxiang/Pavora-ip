@@ -5,6 +5,62 @@ import { ALL_EXTENDED_SCENES } from "../constants/extendedScenes";
 
 export const OrchestratorService = {
     /**
+     * Helper to pick a suitable scene for a weekly plan item.
+     */
+    pickSceneForWeeklyPlan: (
+        model: Model,
+        moduleId?: number,
+        preferredSceneId?: string
+    ): ExtendedScene => {
+        const primaryCity = model.lifeCircuit?.primaryCity || '台北市';
+        const primaryDistrict = model.lifeCircuit?.primaryDistrict || '';
+
+        // 1. 如果 preferredSceneId 存在，優先從 ALL_EXTENDED_SCENES 找 scene_id 相同的場景
+        if (preferredSceneId) {
+            const found = ALL_EXTENDED_SCENES.find(s => s.scene_id === preferredSceneId);
+            if (found) return found;
+        }
+
+        // 2. 自動挑選邏輯
+        let candidates = ALL_EXTENDED_SCENES;
+
+        // A. 優先過濾 moduleId
+        if (moduleId !== undefined) {
+            candidates = candidates.filter(s => s.depth_module_id === moduleId);
+        }
+
+        // B. 強匹配：符合城市與行政區
+        let bestCandidates = candidates.filter(s => {
+            const cityMatch = s.city && (s.city === primaryCity || primaryCity.includes(s.city) || s.city.includes(primaryCity));
+            const districtMatch = primaryDistrict && (
+                ((s as any).district && (primaryDistrict.includes((s as any).district) || (s as any).district.includes(primaryDistrict))) ||
+                (s.event && s.event.includes(primaryDistrict)) ||
+                (s.name_zh && (s as any).name_zh.includes(primaryDistrict)) ||
+                (s.category && s.category.includes(primaryDistrict))
+            );
+            return cityMatch && districtMatch;
+        });
+
+        if (bestCandidates.length > 0) return bestCandidates[Math.floor(Math.random() * bestCandidates.length)];
+
+        // C. 次佳：符合城市
+        let cityCandidates = candidates.filter(s => 
+            s.city && (s.city === primaryCity || primaryCity.includes(s.city) || s.city.includes(primaryCity))
+        );
+        if (cityCandidates.length > 0) return cityCandidates[Math.floor(Math.random() * cityCandidates.length)];
+
+        // D. 再次：僅符合 moduleId
+        if (candidates.length > 0) return candidates[Math.floor(Math.random() * candidates.length)];
+
+        // E. 再次：通用場景 (region: all / city: any)
+        const genericCandidates = ALL_EXTENDED_SCENES.filter(s => s.region === 'all' || s.city === 'any');
+        if (genericCandidates.length > 0) return genericCandidates[Math.floor(Math.random() * genericCandidates.length)];
+
+        // F. 最後 fallback
+        return ALL_EXTENDED_SCENES[0];
+    },
+
+    /**
      * Generates a weekly plan (7 briefs) for a character.
      * Analyzes "Story Arcs", "Identity Threads", and "Brand Identity" (Persona/Vibe).
      */
@@ -26,15 +82,19 @@ export const OrchestratorService = {
             const arc = allArcs.find(a => a.arc_id === activeArcId);
             const currentPhaseIdx = model.preferences?.active_arc_phase_index || 0;
             
-            if (arc && currentPhaseIdx < arc.scenes.length) {
+            if (arc) {
+                const preferredSceneId = arc.scenes?.[currentPhaseIdx];
+                const scene = OrchestratorService.pickSceneForWeeklyPlan(model, 4, preferredSceneId);
+                
                 plan.push({
                     day: 1, 
                     moduleId: 4,
-                    sceneId: arc.scenes[currentPhaseIdx],
+                    sceneId: scene.scene_id || "",
                     title: `【故事弧推進】${arc.name_zh}`,
                     scripts: [
                         "晨間劇本研讀與情緒對齊",
                         `${arc.name_zh} 核心場景拍攝 - 相位 ${currentPhaseIdx + 1}`,
+                        `場景任務：${scene.event || scene.name_zh}`,
                         "敘事節點覆盤與靈魂記錄",
                         "深度故事弧進度規劃"
                     ],
@@ -47,15 +107,19 @@ export const OrchestratorService = {
         // Step 2: Injected Identity Thread scenes (The Long-term Growth)
         activeThreads.forEach((threadState, idx) => {
             const thread = allThreads.find(t => t.thread_id === threadState.thread_id);
-            if (thread && threadState.current_milestone_index < thread.scenes.length) {
+            if (thread) {
+                const preferredSceneId = thread.scenes?.[threadState.current_milestone_index];
+                const scene = OrchestratorService.pickSceneForWeeklyPlan(model, 8, preferredSceneId);
+                
                 plan.push({
                     day: 3 + idx, 
                     moduleId: 8,
-                    sceneId: thread.scenes[threadState.current_milestone_index],
+                    sceneId: scene.scene_id || "",
                     title: `【身份深化】${thread.name_zh}`,
                     scripts: [
                         "人格特質探索與肢體紀錄",
                         `身份線任務：${thread.milestones[threadState.current_milestone_index]}`,
+                        `場景任務：${scene.event || scene.name_zh}`,
                         "社交足跡擴展",
                         "核心記憶同步"
                     ],
@@ -86,8 +150,7 @@ export const OrchestratorService = {
                     brandActivity = "未來主義視覺實驗";
                 }
 
-                const brandScenes = ALL_EXTENDED_SCENES.filter(s => s.depth_module_id === brandModule);
-                const scene = brandScenes[Math.floor(Math.random() * brandScenes.length)] || ALL_EXTENDED_SCENES[0];
+                const scene = OrchestratorService.pickSceneForWeeklyPlan(model, brandModule);
                 
                 plan.push({
                     day,
@@ -97,6 +160,7 @@ export const OrchestratorService = {
                     scripts: [
                         "品牌氛圍對齊工作坊",
                         brandActivity,
+                        `場景任務：${scene.event || scene.name_zh}`,
                         "視覺素材初篩",
                         "社群影響力資料錄入"
                     ],
@@ -112,8 +176,7 @@ export const OrchestratorService = {
             if (filledDays.has(day)) continue;
 
             const rule = COMPOSER_INJECTION_RULES[Math.floor(Math.random() * COMPOSER_INJECTION_RULES.length)];
-            const scenes = ALL_EXTENDED_SCENES.filter(s => s.depth_module_id === rule.depth_module_id);
-            const scene = scenes[Math.floor(Math.random() * scenes.length)] || ALL_EXTENDED_SCENES[0];
+            const scene = OrchestratorService.pickSceneForWeeklyPlan(model, rule.depth_module_id);
 
             let activity = "隨機靈感擷取";
             if (rule.depth_module_id === 1) activity = "棚拍美學構思";
@@ -132,6 +195,7 @@ export const OrchestratorService = {
                 scripts: [
                     "靈魂暖身與日常情緒紀錄",
                     activity,
+                    `場景任務：${scene.event || scene.name_zh}`,
                     "隨筆日記編織",
                     "翌日敘事矩陣預讀"
                 ],

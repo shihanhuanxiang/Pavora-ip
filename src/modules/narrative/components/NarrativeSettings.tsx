@@ -301,7 +301,17 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                 <input 
                                     type="range" min="1" max="5" 
                                     value={model.preferences?.aesthetic_tier_min || 1}
-                                    onChange={(e) => onUpdate({ preferences: { ...model.preferences, aesthetic_tier_min: parseInt(e.target.value) } })}
+                                    onChange={(e) => {
+                                        const newMin = parseInt(e.target.value);
+                                        const currentMax = model.preferences?.aesthetic_tier_max || 5;
+                                        onUpdate({ 
+                                            preferences: { 
+                                                ...model.preferences, 
+                                                aesthetic_tier_min: newMin,
+                                                aesthetic_tier_max: Math.max(newMin, currentMax)
+                                            } 
+                                        });
+                                    }}
                                     className="w-full h-1.5 bg-black/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-purple-500"
                                 />
                             </div>
@@ -310,7 +320,17 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                 <input 
                                     type="range" min="1" max="5" 
                                     value={model.preferences?.aesthetic_tier_max || 5}
-                                    onChange={(e) => onUpdate({ preferences: { ...model.preferences, aesthetic_tier_max: parseInt(e.target.value) } })}
+                                    onChange={(e) => {
+                                        const newMax = parseInt(e.target.value);
+                                        const currentMin = model.preferences?.aesthetic_tier_min || 1;
+                                        onUpdate({ 
+                                            preferences: { 
+                                                ...model.preferences, 
+                                                aesthetic_tier_max: newMax,
+                                                aesthetic_tier_min: Math.min(newMax, currentMin)
+                                            } 
+                                        });
+                                    }}
                                     className="w-full h-1.5 bg-black/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-purple-500"
                                 />
                             </div>
