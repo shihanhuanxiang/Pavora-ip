@@ -22,6 +22,8 @@ interface NarrativeWorkflowProps {
     onConfirm: (diary: Partial<DiaryEntry>, generatedImageUrl?: string) => void;
 }
 
+type EventSource = 'manual' | 'random' | 'ai' | 'weekly' | 'none';
+
 const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel, onClose, onConfirm }) => {
     const { addNotification } = useNotification();
     const { updateModelGallery, updateModel, models } = useModelStore();
@@ -60,6 +62,171 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     const [editablePrompt, setEditablePrompt] = useState('');
     const [editablePromptZH, setEditablePromptZH] = useState('');
     const [activePromptLang, setActivePromptLang] = useState<'ZH' | 'EN'>('ZH');
+    const [eventSource, setEventSource] = useState<EventSource>('none');
+
+    // Narrative Helpers
+    const getEventSourceLabel = (source: EventSource) => {
+        const labels: Record<EventSource, string> = {
+            none: '尚未設定',
+            manual: '手動輸入',
+            random: '隨機場景',
+            ai: 'AI 劇本啟發',
+            weekly: '週計畫任務'
+        };
+        return labels[source];
+    };
+
+    const getLockedSceneId = () => selectedBrief?.sceneId || randomSceneId || undefined;
+
+    const getSceneLockLabel = () => {
+        if (selectedBrief?.sceneId) return '週計畫鎖定';
+        if (randomSceneId && eventSource === 'random') return '隨機場景鎖定';
+        if (randomSceneId && eventSource === 'ai') return 'AI 劇本場景鎖定';
+        return '自動抽選';
+    };
+
+    const getActiveOutfitLabel = () => {
+        const outfitId = model.preferences?.active_outfit_id;
+        return outfitId ? `已鎖定：${outfitId}` : '依場景自動搭配';
+    };
+
+    const getShootingPurposeLabel = () => {
+        if (aspectRatio === '9:16') return '直式短影音 / Reels';
+        if (aspectRatio === '1:1') return '社群貼文 / Post';
+        if (aspectRatio === '4:5') return 'IG 直式貼文';
+        return '自訂素材';
+    };
+
+    const FinalShootCard = () => (
+        <div className="bg-white/[0.03] border border-[var(--color-border)] rounded-[2rem] p-6 space-y-6 shadow-xl backdrop-blur-md relative overflow-hidden group">
+            {/* Subtle Shooting Order Accents */}
+            <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-[var(--color-gold)]/20 rounded-tl-[2rem] pointer-events-none"></div>
+            <div className="absolute top-4 right-4 text-[8px] font-mono text-white/10 select-none">PAVORA_SHT_ORDER_2026</div>
+
+            <div className="flex justify-between items-center border-b border-white/5 pb-3">
+                <div className="flex items-center gap-3">
+                    <div className="w-1 h-3 bg-[var(--color-gold)] rounded-full"></div>
+                    <h4 className="text-[10px] font-black text-[var(--color-gold)] tracking-[0.3em] uppercase">
+                        最終拍攝卡 // SHOOT BRIEF
+                    </h4>
+                </div>
+                <div className={`w-1.5 h-1.5 rounded-full shadow-[0_0_8px_rgba(212,175,55,0.5)] ${diary ? 'bg-emerald-500 animate-pulse' : 'bg-[var(--color-gold)]'}`}></div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+                {/* 1. MATERIAL */}
+                <div className="space-y-4">
+                    <div className="flex items-center gap-2">
+                        <p className="text-[9px] text-[var(--color-gold)] font-black uppercase tracking-widest pl-2 border-l-2 border-[var(--color-gold)]">素材 // MATERIAL</p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-3 pl-3">
+                        <div className="space-y-1">
+                            <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest">角色</p>
+                            <p className="text-[10px] text-white font-medium">{model.name}</p>
+                        </div>
+                        <div className="space-y-1">
+                            <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest">城市</p>
+                            <p className="text-[10px] text-white font-medium">{model.lifeCircuit?.primaryCity || model.lifeCircuit?.primaryDistrict || '未設定'}</p>
+                        </div>
+                        <div className="space-y-1">
+                            <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest">用途</p>
+                            <p className="text-[10px] text-white font-medium leading-tight">{getShootingPurposeLabel()}</p>
+                        </div>
+                        <div className="space-y-1">
+                            <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest">規格</p>
+                            <div className="flex items-center gap-1.5">
+                                <span className="text-[10px] text-white font-mono">{aspectRatio}</span>
+                                <span className="text-[10px] text-white/30">/</span>
+                                <span className="text-[10px] text-white font-mono">{quality}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* 2. SCENE */}
+                <div className="space-y-4">
+                    <div className="flex items-center gap-2">
+                        <p className="text-[9px] text-[var(--color-gold)] font-black uppercase tracking-widest pl-2 border-l-2 border-[var(--color-gold)]">場景 // SCENE</p>
+                        {getLockedSceneId() && <div className="w-1 h-1 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>}
+                    </div>
+                    <div className="space-y-3 pl-3">
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-1">
+                                <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest">來源</p>
+                                <p className={`text-[10px] font-black italic ${eventSource === 'none' ? 'text-gray-600' : 'text-[var(--color-gold)]'}`}>
+                                    {getEventSourceLabel(eventSource)}
+                                </p>
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest">鎖定狀態</p>
+                                <p className={`text-[10px] font-medium ${getSceneLockLabel() === '自動抽選' ? 'text-gray-500' : 'text-white'}`}>
+                                    {getSceneLockLabel()}
+                                </p>
+                            </div>
+                        </div>
+                        <div className="space-y-1">
+                            <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest">SCENE_ID</p>
+                            <p className={`text-[9px] font-mono truncate ${getLockedSceneId() ? 'text-[var(--color-gold)]' : 'text-gray-600'}`}>
+                                {getLockedSceneId() || 'SYS_AUTO_PENDING'}
+                            </p>
+                        </div>
+                        <div className="space-y-1">
+                            <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest">敘事摘要</p>
+                            <p className={`text-[9px] leading-relaxed italic line-clamp-1 ${eventInput ? 'text-gray-300' : 'text-gray-600'}`}>
+                                {eventInput ? (eventInput.length > 80 ? eventInput.substring(0, 80) + '...' : eventInput) : '等待敘事起點注入'}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* 3. STYLING */}
+                <div className="space-y-4">
+                    <div className="flex items-center gap-2">
+                        <p className="text-[9px] text-[var(--color-gold)] font-black uppercase tracking-widest pl-2 border-l-2 border-[var(--color-gold)]">造型 // STYLING</p>
+                        {model.preferences?.active_outfit_id && <div className="w-1 h-1 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>}
+                    </div>
+                    <div className="pl-3 space-y-1">
+                        <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest">服裝鎖定策略</p>
+                        <p className={`text-[10px] font-mono ${model.preferences?.active_outfit_id ? 'text-white' : 'text-gray-500'}`}>
+                            {getActiveOutfitLabel()}
+                        </p>
+                    </div>
+                </div>
+
+                {/* 4. RENDER */}
+                <div className="space-y-4">
+                    <div className="flex items-center gap-2">
+                        <p className="text-[9px] text-[var(--color-gold)] font-black uppercase tracking-widest pl-2 border-l-2 border-[var(--color-gold)]">生成 // RENDER</p>
+                        {diary && <div className="w-1 h-1 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] animate-pulse"></div>}
+                    </div>
+                    <div className="grid grid-cols-2 gap-y-4 gap-x-4 pl-3">
+                        <div className="space-y-1">
+                            <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest">相機 POV</p>
+                            <p className="text-[9px] text-white font-medium">{isPOV ? '第一人稱' : '第三人稱'}</p>
+                        </div>
+                        <div className="space-y-1">
+                            <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest">流派敘事</p>
+                            <p className={`text-[9px] font-medium ${diary?.mood ? 'text-white' : 'text-gray-600'}`}>
+                                {diary?.mood || 'PENDING'}
+                            </p>
+                        </div>
+                        <div className="space-y-1">
+                            <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest">審美層次</p>
+                            <p className={`text-[9px] font-medium ${diary?.meta?.aesthetic_tier ? 'text-white' : 'text-gray-600'}`}>
+                                {diary?.meta?.aesthetic_tier || 'AUTO_EVAL'}
+                            </p>
+                        </div>
+                        <div className="space-y-1">
+                            <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest">提示詞狀態</p>
+                            <p className={`text-[9px] font-medium ${editablePrompt ? 'text-emerald-500' : 'text-gray-600'}`}>
+                                {editablePrompt ? 'READY_TO_GEN' : 'NOT_SYNCED'}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 
     // UI Helper Components
     const NavIconButton = ({ active, onClick, icon, label, isLoading }: { active: boolean, onClick: () => void, icon: React.ReactNode, label: string, isLoading?: boolean }) => (
@@ -206,6 +373,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         setEventInput(randomEvent.text);
         setRandomSceneId(randomEvent.sceneId || null);
         setSelectedBrief(null);
+        setEventSource('random');
     };
 
     const handleAIGenerateEvent = async () => {
@@ -225,6 +393,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             setEventInput(result.text);
             setRandomSceneId(result.sceneId || null);
             setSelectedBrief(null);
+            setEventSource('ai');
 
             addNotification({ type: 'success', message: '靈魂與現世已對齊 (Context Aligned)', description: '及時場景與故事弧邏輯已啟動 (Real-time scene and story arc logic active).' });
         } catch (e) {
@@ -443,6 +612,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                     whileTap={{ scale: 0.98 }}
                                                     onClick={() => {
                                                         setSelectedBrief(brief);
+                                                        setEventSource('weekly');
                                                         const scriptLines = (brief.scripts && brief.scripts.length > 0)
                                                             ? brief.scripts.map(s => `・${s}`).join('\n')
                                                             : '';
@@ -557,6 +727,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                         </motion.div>
 
                                         <div className="grid grid-cols-1 xl:grid-cols-2 gap-16 pt-4">
+                                            {/* Left: Narrative Decision 敘事決策區 */}
                                             <div className="space-y-10">
                                                 <motion.div 
                                                     initial={{ opacity: 0, x: -10 }}
@@ -565,90 +736,121 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                     className="space-y-8"
                                                 >
                                                     <div className="space-y-6">
-                                <div className="flex justify-between items-end">
-                                    <div className="space-y-1">
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-1 h-3 bg-white/20 rounded-full"></div>
-                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.4em]">
-                                                當下敘事起點 // EVENT TRIGGER
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div className="flex gap-6 pb-1">
-                                        <motion.button 
-                                            whileHover={{ scale: 1.05, y: -2 }}
-                                            whileTap={{ scale: 0.95 }}
-                                            onClick={handleAIGenerateEvent}
-                                            disabled={isGeneratingDynamicEvent}
-                                            className="text-[10px] text-[var(--color-gold)] font-black uppercase tracking-[0.2em] border-b border-[var(--color-gold)]/30 hover:border-[var(--color-gold)] transition-all flex items-center gap-2 disabled:opacity-30"
-                                        >
-                                            <span className="animate-pulse">{isGeneratingDynamicEvent ? '○' : '✨'}</span>
-                                            {isGeneratingDynamicEvent ? '感應靈魂中...' : 'AI 劇本啟發'}
-                                        </motion.button>
-                                        <motion.button 
-                                            whileHover={{ scale: 1.05, y: -2 }}
-                                            whileTap={{ scale: 0.95 }}
-                                            onClick={handleRandomEvent}
-                                            className="text-[10px] text-gray-500 font-black uppercase tracking-[0.2em] border-b border-white/10 hover:text-white transition-all flex items-center gap-2"
-                                        >
-                                            <span>🎲</span> 隨機場景 
-                                        </motion.button>
-                                    </div>
-                                </div>
-                                <div className="group relative">
-                                    <textarea 
-                                        className="w-full h-36 bg-black/5 dark:bg-black/40 border border-black/5 dark:border-white/5 rounded-[2.5rem] p-6 text-sm text-gray-800 dark:text-gray-200 focus:border-[var(--color-gold)]/30 focus:shadow-[0_0_40px_rgba(212,175,55,0.05)] transition-all resize-none font-medium leading-relaxed outline-none shadow-inner"
-                                        placeholder="描繪此刻的情境... 靈魂敘事將以此為軸心展開。"
-                                        value={eventInput}
-                                        onChange={(e) => {
-                                            setEventInput(e.target.value);
-                                            setRandomSceneId(null);
-                                            setSelectedBrief(null);
-                                        }}
-                                    />
-                                    <div className="absolute bottom-6 right-6 w-12 h-0.5 bg-gradient-to-r from-transparent to-[var(--color-gold)]/20 opacity-0 group-focus-within:opacity-100 transition-opacity"></div>
-                                </div>
-                                <motion.button 
-                                    whileHover={{ scale: 1.02 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    onClick={handleGenerateDiary} 
-                                    isLoading={isGenerating} 
-                                    disabled={!eventInput.trim() || isGenerating}
-                                    className="w-full py-5 bg-[var(--color-gold)] text-black text-[12px] font-black tracking-[0.5em] uppercase rounded-3xl shadow-[0_20px_40px_rgba(212,175,55,0.15)] hover:shadow-[0_25px_50px_rgba(212,175,55,0.25)] transition-all disabled:opacity-30"
-                                >
-                                    {isGenerating ? '正在編織命運線 (SYNCING...)' : '同步靈魂敘事 // SYNCHRONIZE'}
-                                </motion.button>
-                            </div>
+                                                        <div className="flex justify-between items-end">
+                                                            <div className="space-y-1">
+                                                                <div className="flex items-center gap-2">
+                                                                    <div className="w-1 h-3 bg-white/20 rounded-full"></div>
+                                                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.4em]">
+                                                                        當下敘事起點 // EVENT TRIGGER
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div className="flex gap-6 pb-1">
+                                                                <motion.button 
+                                                                    whileHover={{ scale: 1.05, y: -2 }}
+                                                                    whileTap={{ scale: 0.95 }}
+                                                                    onClick={handleAIGenerateEvent}
+                                                                    disabled={isGeneratingDynamicEvent}
+                                                                    className="text-[10px] text-[var(--color-gold)] font-black uppercase tracking-[0.2em] border-b border-[var(--color-gold)]/30 hover:border-[var(--color-gold)] transition-all flex items-center gap-2 disabled:opacity-30"
+                                                                >
+                                                                    <span className="animate-pulse">{isGeneratingDynamicEvent ? '○' : '✨'}</span>
+                                                                    {isGeneratingDynamicEvent ? '感應靈魂中...' : 'AI 劇本啟發'}
+                                                                </motion.button>
+                                                                <motion.button 
+                                                                    whileHover={{ scale: 1.05, y: -2 }}
+                                                                    whileTap={{ scale: 0.95 }}
+                                                                    onClick={handleRandomEvent}
+                                                                    className="text-[10px] text-gray-500 font-black uppercase tracking-[0.2em] border-b border-white/10 hover:text-white transition-all flex items-center gap-2"
+                                                                >
+                                                                    <span>🎲</span> 隨機場景 
+                                                                </motion.button>
+                                                            </div>
+                                                        </div>
 
-                            <AnimatePresence>
-                                {diary && (
-                                    <motion.div 
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className="space-y-4"
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-gold)] animate-pulse"></div>
-                                            <span className="text-[10px] font-bold text-[var(--color-gold)] uppercase tracking-[0.3em]">{model.name} 的敘事日記 (Narrative Diary)</span>
-                                        </div>
-                                            <div className="bg-[var(--color-bg-input)] p-8 rounded-[2.5rem] border border-[var(--color-border)] font-serif italic text-[var(--color-text-main)] leading-relaxed text-base whitespace-pre-wrap shadow-xl">
-                                                「{diary.content}」
-                                            </div>
-                                    <div className="flex flex-wrap gap-2">
-                                        <span className="px-3 py-1 bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/20 rounded-full text-[9px] font-bold text-[var(--color-gold)] uppercase">
-                                            情緒狀態 (Mood): {diary.mood}
-                                        </span>
-                                        <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[9px] font-bold text-gray-400 uppercase">
-                                            場景類型 (Scene): {diary.generatedPromptParams?.locationType}
-                                        </span>
-                                    </div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
+                                                        {/* Step Indicator & Status Hint */}
+                                                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 px-6 py-4 bg-black/20 rounded-[1.5rem] border border-white/5 backdrop-blur-lg">
+                                                            <div className="flex items-center gap-2 shrink-0">
+                                                                <div className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest ${!eventInput.trim() ? 'bg-gray-600 text-white' : !diary ? 'bg-[var(--color-gold)] text-black' : 'bg-emerald-500 text-black'}`}>
+                                                                    {!eventInput.trim() ? 'STEP 01' : !diary ? 'STEP 02' : 'STEP 03'}
+                                                                </div>
+                                                                <div className={`w-1 h-1 rounded-full animate-pulse ${!eventInput.trim() ? 'bg-gray-500' : !diary ? 'bg-[var(--color-gold)]' : 'bg-emerald-500'}`}></div>
+                                                            </div>
+                                                            
+                                                            <div className="space-y-0.5 min-w-0">
+                                                                <p className="text-[10px] font-black text-white/90 uppercase tracking-[0.2em]">
+                                                                    {!eventInput.trim() ? '等待敘事起點 // IDLE' : !diary ? '敘事起點已建立 // CAPTURED' : '拍攝劇本已就緒 // READY'}
+                                                                </p>
+                                                                <p className="text-[9px] font-medium text-gray-500 truncate italic">
+                                                                    {!eventInput.trim() 
+                                                                        ? "輸入今日情境，或使用 AI 劇本啟發建立拍攝方向" 
+                                                                        : !diary 
+                                                                            ? "敘事靈感已到位，下一步建立拍攝劇本以整理場景細節" 
+                                                                            : "劇本已編織完成，確認右側視覺參數後可開始生成"}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="group relative">
+                                                            <textarea 
+                                                                className="w-full h-36 bg-black/5 dark:bg-black/40 border border-black/5 dark:border-white/5 rounded-[2.5rem] p-6 text-sm text-gray-800 dark:text-gray-200 focus:border-[var(--color-gold)]/30 focus:shadow-[0_0_40px_rgba(212,175,55,0.05)] transition-all resize-none font-medium leading-relaxed outline-none shadow-inner"
+                                                                placeholder="描繪此刻的情境... 靈魂敘事將以此為軸心展開。"
+                                                                value={eventInput}
+                                                                onChange={(e) => {
+                                                                    setEventInput(e.target.value);
+                                                                    setRandomSceneId(null);
+                                                                    setSelectedBrief(null);
+                                                                    setEventSource('manual');
+                                                                }}
+                                                            />
+                                                            <div className="absolute bottom-6 right-6 w-12 h-0.5 bg-gradient-to-r from-transparent to-[var(--color-gold)]/20 opacity-0 group-focus-within:opacity-100 transition-opacity"></div>
+                                                        </div>
+                                                        <motion.button 
+                                                            whileHover={!eventInput.trim() || isGenerating ? {} : { scale: 1.02 }}
+                                                            whileTap={!eventInput.trim() || isGenerating ? {} : { scale: 0.98 }}
+                                                            onClick={handleGenerateDiary} 
+                                                            isLoading={isGenerating} 
+                                                            disabled={!eventInput.trim() || isGenerating}
+                                                            className={`w-full py-5 text-[12px] font-black tracking-[0.5em] uppercase rounded-3xl transition-all duration-300 ${
+                                                                !eventInput.trim() || isGenerating
+                                                                    ? 'bg-white/5 text-gray-600 border border-white/5 cursor-not-allowed opacity-50'
+                                                                    : 'bg-[var(--color-gold)] text-black shadow-[0_20px_40px_rgba(212,175,55,0.15)] hover:shadow-[0_25px_50px_rgba(212,175,55,0.25)]'
+                                                            }`}
+                                                        >
+                                                            {isGenerating ? '正在編織命運線 (SYNCING...)' : '建立拍攝劇本 // BUILD SHOOT BRIEF'}
+                                                        </motion.button>
+                                                    </div>
+
+                                                    <AnimatePresence>
+                                                        {diary && (
+                                                            <motion.div 
+                                                                initial={{ opacity: 0, y: 10 }}
+                                                                animate={{ opacity: 1, y: 0 }}
+                                                                className="space-y-4"
+                                                            >
+                                                                <div className="flex items-center gap-3">
+                                                                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-gold)] animate-pulse"></div>
+                                                                    <span className="text-[10px] font-bold text-[var(--color-gold)] uppercase tracking-[0.3em]">{model.name} 的敘事日記 (Narrative Diary)</span>
+                                                                </div>
+                                                                <div className="bg-[var(--color-bg-input)] p-8 rounded-[2.5rem] border border-[var(--color-border)] font-serif italic text-[var(--color-text-main)] leading-relaxed text-base whitespace-pre-wrap shadow-xl">
+                                                                    「{diary.content}」
+                                                                </div>
+                                                                <div className="flex flex-wrap gap-2">
+                                                                    <span className="px-3 py-1 bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/20 rounded-full text-[9px] font-bold text-[var(--color-gold)] uppercase">
+                                                                        情緒狀態 (Mood): {diary.mood}
+                                                                    </span>
+                                                                    <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[9px] font-bold text-gray-400 uppercase">
+                                                                        場景類型 (Scene): {diary.generatedPromptParams?.locationType}
+                                                                    </span>
+                                                                </div>
+                                                            </motion.div>
+                                                        )}
+                                                    </AnimatePresence>
+
+                                                    <FinalShootCard />
                                                 </motion.div>
                                             </div>
 
-                                            {/* Right: Visual Generation */}
+                                            {/* Right: Visual Production 生成控制區 */}
                                             <motion.div 
                                                 initial={{ opacity: 0, x: 10 }}
                                                 animate={{ opacity: 1, x: 0 }}
@@ -848,15 +1050,20 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                     </div>
                                 </div>
 
-                                <Button 
+                                <motion.button 
+                                    whileHover={!diary || isGeneratingImage ? {} : { scale: 1.02 }}
+                                    whileTap={!diary || isGeneratingImage ? {} : { scale: 0.98 }}
                                     onClick={handleGenerateImage} 
                                     isLoading={isGeneratingImage} 
-                                    disabled={!diary || !editablePrompt || isGeneratingImage}
-                                    variant="primary"
-                                    className="w-full py-4 text-[11px] font-bold tracking-[0.4em] uppercase shadow-xl shadow-[var(--color-gold)]/10"
+                                    disabled={!diary || isGeneratingImage}
+                                    className={`w-full py-5 text-[12px] font-black tracking-[0.5em] uppercase rounded-3xl transition-all duration-300 ${
+                                        !diary || isGeneratingImage
+                                            ? 'bg-white/5 text-gray-600 border border-white/5 cursor-not-allowed opacity-50'
+                                            : 'bg-emerald-500 text-black shadow-[0_20px_40px_rgba(16,185,129,0.15)] hover:shadow-[0_25px_50px_rgba(16,185,129,0.25)]'
+                                    }`}
                                 >
-                                    {generatedImageUrl ? '重新生成影像 (Regenerate)' : '生成敘事影像 (Generate)'}
-                                </Button>
+                                    {isGeneratingImage ? '正在捕捉靈魂切片 (RENDERING...)' : (generatedImageUrl ? '重新生成影像 // REGENERATE' : '生成故事影像 // GENERATE IMAGE')}
+                                </motion.button>
                             </div>
 
                             {/* Image Preview Result */}
@@ -911,14 +1118,14 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         </div>
                                                     )}
                                                 </AnimatePresence>
-                            </div>
-                        </motion.div>
-                    </div>
+                                            </div>
+                                        </motion.div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        }
+                    </AnimatePresence>
                 </div>
-            </motion.div>
-        }
-    </AnimatePresence>
-</div>
 
     {/* Footer and Finish - Sticky at the bottom of Content Hub */}
     <div className="p-8 bg-[var(--color-bg-surface)]/60 border-t border-[var(--color-border)] flex justify-between items-center backdrop-blur-md">

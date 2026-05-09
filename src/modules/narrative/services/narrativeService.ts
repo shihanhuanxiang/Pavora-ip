@@ -1037,61 +1037,88 @@ export const generateRandomEventWithScene = (model: Model): { text: string; scen
     const fallbackScenes = getScenesByCity(targetCity);
     const scenePool = extendedScenes.length > 0 ? extendedScenes : fallbackScenes;
     const scene = scenePool[Math.floor(Math.random() * scenePool.length)];
-    const emotionPool = scene.emotions && scene.emotions.length > 0 ? scene.emotions : ["日常", "放鬆", "沉浸"];
-    const emotion = emotionPool[Math.floor(Math.random() * emotionPool.length)];
     
-    // Helper to get Chinese display text, avoiding English prompts
-    const getZHDetail = (scene: any) => {
-        const category = scene.category || "";
-        const outfitFilter = scene.outfit_filter || [];
-        const contextId = scene.scene_context_id || "";
-        
-        const detailMap: Record<string, string[]> = {
-            'home_cozy': ['木地板', '散落衣物', '棉被皺摺', '窗邊光線', '外送袋', '充電線'],
-            'cafe_aesthetic': ['冰咖啡水珠', '甜點盤', '木桌紋理', '窗邊座位', '杯套', '發票'],
-            'night_market': ['油煙', '排隊人潮', '塑膠袋聲', '攤販燈', '紙袋', '竹籤'],
-            'beach_island': ['海風', '鹽分', '拖鞋砂粒', '防曬乳味', '濕髮', '浪聲'],
-            'temple_old_town': ['香火味', '石板路', '紅磚牆', '老招牌', '紙袋', '午後光'],
-            'mountain_outdoor': ['濕葉', '木棧道', '薄霧', '背包肩帶', '水壺', '泥土味'],
-            'rural_field': ['稻浪', '泥土味', '塑膠籃', '曬太陽的鐵皮屋', '田邊風'],
-            'festival_event': ['燈籠', '紙屑', '攤販音樂', '人潮縫隙', '手上的小物'],
-            'shopping_random': ['購物袋', '電梯鏡面', '發票', '試衣間燈', '手扶梯聲'],
-            'travel_journey': ['車票', '行李輪', '月台廣播', '背包肩帶', '便利商店早餐']
-        };
-
-        const keys = [contextId, category, ...outfitFilter];
-        for (const key of keys) {
-            if (detailMap[key]) return detailMap[key];
-        }
-        return ['生活碎屑', '空氣微粒', '光影折射'];
-    };
-
-    const details = getZHDetail(scene);
-    const s = details[Math.floor(Math.random() * details.length)];
-    const n = details[(Math.floor(Math.random() * details.length) + 1) % details.length];
-
-    const vulnerabilities = [
-        "剛買的飲料杯壁全是水珠，指尖被冰得有點麻，連手機螢幕都沾上一層濕氣",
-        "走太久之後鞋跟開始磨腳，只好在路邊停下來，假裝是在看風景",
-        "風把瀏海吹得亂七八糟，整理了幾次還是放棄，反而有種今天就這樣吧的鬆弛感",
-        "包包裡的發票被揉得皺皺的，和充電線纏在一起，像是生活自己留下的小線索",
-        "剛才排隊時被人群擠到肩膀，心情短暫地皺了一下，又被眼前的氣味慢慢撫平"
+    // 1. 人物動作池 (只能放人的狀態或動作)
+    const humanActions = [
+        "靠在桌邊發呆",
+        "低頭滑手機",
+        "坐在椅子上放空",
+        "一邊喝東西一邊看向窗外",
+        "手停在鍵盤旁沒有繼續打字",
+        "整理包包裡的東西",
+        "靠著牆等訊息",
+        "把外套搭在椅背上",
+        "專注地看著未完成的工作",
+        "伸個懶腰呼吸一口氣"
     ];
-    const vulnerability = Math.random() < 0.25 ? `。${vulnerabilities[Math.floor(Math.random() * vulnerabilities.length)]}` : "";
 
+    // 2. 生活碎屑池 (只能放物件或環境細節)
+    const livingDebris = [
+        "鍵盤旁放著吃到一半的饅頭",
+        "桌角壓著一張發票",
+        "充電線纏在杯子旁",
+        "外送袋靠在椅腳邊",
+        "杯套上還有水珠",
+        "紙巾皺在桌邊",
+        "手機殼邊角有刮痕",
+        "包包拉鍊沒有完全拉上",
+        "髮圈掉在鍵盤旁",
+        "半杯冰飲放到退冰"
+    ];
+
+    // 3. 氛圍池
+    const atmospheres = ["慵懶", "隨性", "沉靜", "生活感", "溫度", "鬆弛", "真實"];
+
+    // 4. 環境細節池
+    const envDetails = [
+        "傍晚的光影折射",
+        "窗外透進來的微光",
+        "遠處模糊的車聲",
+        "冷氣機輕微的運轉聲",
+        "葉片在風中晃動的影子",
+        "空氣中帶點乾糙的氣息"
+    ];
+
+    const action = humanActions[Math.floor(Math.random() * humanActions.length)];
+    const debris = livingDebris[Math.floor(Math.random() * livingDebris.length)];
+    const atmos = atmospheres[Math.floor(Math.random() * atmospheres.length)];
+    const detail = envDetails[Math.floor(Math.random() * envDetails.length)];
+    
     const travelNote = isTraveling ? `這次離開熟悉的${baseCity}，跑到${targetCity}讓自己換一種節奏。` : "";
-    
-    // Use scene.name_zh or event but ensure it's Chinese
-    const eventName = scene.name_zh || scene.event;
+    const eventName = scene.name_zh || scene.event || "生活角落";
 
-    const narrativeTemplates = [
-        `${travelNote}人在${eventName}，空氣裡全被${s}填滿了。視線一角是${n}${vulnerability}，這種真實的生活碎屑，反而讓人感覺今天不是被安排好的。`,
-        `${travelNote}此刻正待在${eventName}，看著${n}發呆。聞得到${s}的氣息${vulnerability}，情緒有點${emotion}，但不是那種誇張的感動，比較像生活剛好停在一個能呼吸的位置。`,
-        `${travelNote}在${targetCity}的節奏裡，${eventName}顯得格外清晰。鼻尖縈繞著${s}，身旁${n}在晃動${vulnerability}。這種平凡的時刻，其實最像會被留下來的記憶。`
+    // 5. 模板組合
+    const templates = [
+        // 模板 A
+        `${travelNote}這次鏡頭落在${eventName}，${action}。${debris}，空氣裡有一點${atmos}，反而讓畫面不像被安排好的。`,
+        // 模板 B
+        `${travelNote}${eventName}裡，${action}。${debris}，這些不太整齊的小痕跡，讓今天看起來更像真的發生過。`,
+        // 模板 C
+        `${travelNote}畫面停在${eventName}，${action}。旁邊${debris}，視線一角還有${detail}。`
     ];
+
+    let finalResult = templates[Math.floor(Math.random() * templates.length)];
+
+    // 六、防呆檢查：禁止物件變成主詞動作
+    const bannedPrefixes = [
+        "人在饅頭", "人在發票", "人在充電線", "人在外送袋", "人在光影",
+        "人在生活碎屑", "人在鍵盤", "人在杯套", "人在紙巾", "人在手機殼",
+        "人在包包拉鍊", "人在髮圈"
+    ];
+
+    const hasBanned = bannedPrefixes.some(prefix => finalResult.includes(prefix));
+    if (hasBanned) {
+        // 如果不幸中招（雖然邏輯上已經分離，但多一層保障），遞迴重抽或替換關鍵字
+        // 在新結構下，eventName 應該是地點，action 才是動作，所以只要 eventName 不是物件就沒問題
+        // 這裡我們直接強制修正，如果 eventName 誤用了物件詞，用 "生活角落" 替換
+        const itemsToClean = ["饅頭", "發票", "充電線", "外送袋", "光影", "生活碎屑", "鍵盤", "杯套", "紙巾", "手機殼", "包包拉鍊", "髮圈"];
+        itemsToClean.forEach(item => {
+            finalResult = finalResult.replace(new RegExp(`人在${item}`, 'g'), `人在生活角落`);
+        });
+    }
 
     return {
-        text: narrativeTemplates[Math.floor(Math.random() * narrativeTemplates.length)],
+        text: finalResult,
         sceneId: scene.scene_id
     };
 };

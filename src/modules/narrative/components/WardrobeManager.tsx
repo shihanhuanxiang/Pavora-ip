@@ -6,219 +6,157 @@ import Card from '../../../shared/components/common/Card';
 import Button from '../../../shared/components/common/Button';
 import { OUTFIT_SEEDS_V2 } from '../constants/outfitSeeds';
 
+const ATOM_DICT = {
+    // 顏色
+    colors: {
+        "white": "白色", "black": "黑色", "cream": "奶油白", "ivory": "象牙白",
+        "grey": "灰色", "gray": "灰色", "pink": "粉色", "dusty pink": "霧粉色",
+        "red": "紅色", "rust red": "紅褐色", "scarlet": "猩紅色", "blue": "藍色",
+        "navy": "海軍藍", "green": "綠色", "teal green": "藍綠色", "olive": "橄欖綠",
+        "brown": "棕色", "beige": "米色", "charcoal": "炭灰色", "oatmeal": "燕麥色",
+        "nude": "裸色", "gold": "金色", "silver": "銀色", "deep green": "深綠色",
+        "dark olive": "深橄欖綠", "dark brown": "深棕色", "teal": "藍綠色", "light blue": "淺藍色"
+    },
+    // 材質
+    materials: {
+        "silk": "絲質", "cotton": "棉質", "linen": "亞麻", "knit": "針織",
+        "ribbed": "羅紋", "lace": "蕾絲", "sheer": "透膚", "mesh": "網紗",
+        "fleece": "刷毛", "wool": "羊毛", "denim": "丹寧", "leather": "皮革",
+        "suede": "麂皮", "satin": "緞面", "cashmere": "羊絨", "nylon": "尼龍",
+        "waffle": "鬆餅紋", "corduroy": "燈芯絨", "flannel": "法蘭絨", "technical": "機能性",
+        "waterproof": "防水", "velvet": "天鵝絨"
+    },
+    // 版型 / 長度
+    fits: {
+        "fitted": "合身", "oversized": "寬鬆", "loose": "寬鬆", "slim": "修身",
+        "cropped": "短版", "crop": "短版", "long": "長版", "short": "極短",
+        "mini": "迷你", "midi": "中長", "knee length": "及膝", "high-waist": "高腰",
+        "wide-leg": "寬褲", "tapered": "錐形", "straight": "直筒", "baggy": "寬鬆",
+        "relaxed": "寬鬆", "tight": "緊身", "unstructured": "無結構", "tailored": "剪裁",
+        "open": "敞開", "zip-up": "拉鍊"
+    },
+    // 單品核心
+    items: {
+        "slip dress": "吊帶洋裝", "kimono-style robe": "和服式罩袍", "robe": "罩袍",
+        "dress": "洋裝", "tank top": "背心", "tank": "背心", "tee": "T恤", "t-shirt": "T恤", 
+        "sports bra": "運動內衣", "bra top": "運動背心", "crop top": "短版上衣", 
+        "jacket": "外套", "windbreaker": "風衣", "hoodie": "連帽上衣",
+        "cardigan": "開襟衫", "blouse": "上衣", "shirt": "襯衫", "button-up": "排扣襯衫",
+        "button-down": "扣領襯衫", "jersey": "球衣", "sweatshirt": "衛衣", "pullover": "套頭衫",
+        "blazer": "西裝外套", "coat": "大衣", "trench coat": "風衣大衣", "bomber": "飛行外套",
+        "harrington": "哈靈頓外套", "varsity jacket": "棒球夾克", "track jacket": "運動夾克",
+        "henley": "亨利衫",
+        "dolphin shorts": "真理褲", "biker shorts": "單車褲", "sweat shorts": "運動短褲", "shorts": "短褲",
+        "leggings": "內搭褲", "tights": "褲襪", "sweatpants": "運動長褲", "joggers": "慢跑褲",
+        "pants": "長褲", "trousers": "長褲", "chinos": "卡其褲", "jeans": "牛仔褲", 
+        "mini skirt": "迷你裙", "pleated skirt": "百褶裙", "pencil skirt": "鉛筆裙", "skirt": "裙",
+        "running sneakers": "運動跑鞋", "sneakers": "休閒鞋", "ankle boots": "短靴", "boots": "靴",
+        "high-top": "高筒鞋", "low-top": "低筒鞋", "heels": "高跟鞋", "loafers": "樂福鞋",
+        "oxfords": "牛津鞋", "brogues": "雕花鞋", "derbies": "德比鞋", "slides": "拖鞋",
+        "slippers": "室內拖", "sandals": "涼鞋", "socks": "襪", "barefoot": "赤腳"
+    },
+    // 特徵 / 細節
+    details: {
+        "spaghetti strap": "細肩帶", "delicate strap": "細肩帶", "v-neckline": "V 領", "v-neck": "V 領", "round neck": "圓領",
+        "crew neck": "圓領", "mock-neck": "半高領", "turtleneck": "高領", "halter neck": "繞頸",
+        "off-shoulder": "露肩", "pushed up": "捲袖", "rolled": "捲起", "zipped": "拉鍊", "zip": "拉鍊",
+        "zip-up": "拉鍊", "buttoned": "排扣", "drawstring": "抽繩", "pleated": "百褶",
+        "ribbon": "緞帶", "detail": "細節", "piping": "滾邊", "gingham check": "格紋",
+        "plaid": "格紋", "houndstooth": "千鳥格", "distress": "破洞", "wash": "水洗",
+        "graphic": "圖案", "logo": "圖標", "lace-up": "綁帶", "strappy": "細帶",
+        "print": "印花", "vintage": "復古", "faded": "褪色", "performance": "機能性", "halfway": "半開",
+        "sleeveless": "無袖", "sleeves rolled": "捲袖", "backless": "露背", "low-back": "露背",
+        "platform": "厚底", "chunky": "厚底", "polished": "拋光", "suede": "麂皮",
+        "opaque": "不透膚", "sheer": "透膚", "double-breasted": "雙排扣"
+    }
+};
+
 const TERM_DICT: Record<string, string> = {
     // ==== 完整片語 (優先比對) ====
-    "low block heels": "低跟粗跟鞋",
-    "block heels": "粗跟鞋",
-    "mary jane shoes": "瑪莉珍鞋",
-    "mary jane heels": "瑪莉珍高跟鞋",
-    "trail running shoes": "越野跑鞋",
-    "hiking sneakers": "登山休閒鞋",
-    "hiking boots": "登山靴",
-    "trail shoes": "越野鞋",
-    "running sneakers": "跑鞋",
-    "retro white sneakers": "復古白色休閒鞋",
-    "white platform sneakers": "白色厚底休閒鞋",
-    "platform sneakers": "厚底休閒鞋",
-    "chunky white sneakers": "厚底白色休閒鞋",
-    "black ankle boots": "黑色短靴",
-    "black leather ankle boots": "黑色皮革短靴",
-    "brown leather flat sandals": "棕色皮革平底涼鞋",
-    "cream sandals": "奶油白涼鞋",
-    "water sandals": "涉水涼鞋",
-    "barefoot sandals": "赤腳涼鞋",
-    "strappy sandals": "細帶涼鞋",
-    "fuzzy mule sandals": "毛絨穆勒涼鞋",
-    "crew socks and slides": "中筒襪配拖鞋",
-    "barefoot or white slides": "赤腳或白色拖鞋",
-    "black sheer tights": "黑色透膚褲襪",
-    "black opaque tights": "黑色不透膚褲襪",
-    "black seamless leggings": "黑色無縫內搭褲",
-    "high-waist black seamless leggings": "黑色高腰無縫內搭褲",
-    "high-waist black mini skirt with black sheer tights": "黑色高腰迷你裙搭透膚褲襪",
-    "black slim hiking pants or leggings": "黑色修身登山褲或內搭褲",
-    "dark olive slim outdoor pants": "深橄欖色修身戶外長褲",
-    "white flowy spaghetti strap mini dress with v-neckline": "白色細肩帶 V 領飄逸迷你洋裝",
-    "teal green and white gingham check spaghetti strap mini dress": "藍綠白格紋細肩帶迷你洋裝",
-    "modern qipao-inspired short dress with side buttons": "改良旗袍短洋裝",
-    "black modern qipao-inspired fitted mini dress with red piping": "黑色紅邊改良旗袍合身迷你洋裝",
-    "cropped breathable sun hoodie": "短版透氣防曬連帽上衣",
-    "cropped beige windbreaker over black athletic crop top": "米色短版風衣外套搭黑色運動短版上衣",
-    "scarlet off-shoulder knit top": "猩紅色露肩針織上衣",
-    "black leather chelsea boots": "黑色皮革切爾西靴",
-    "black chelsea boots": "黑色切爾西靴",
-    "black suede loafers": "黑色麂皮樂福鞋",
-    "brown leather brogues": "棕色皮革雕花鞋",
-    "brown suede wallabees": "棕色麂皮袋鼠鞋",
-    "black high-top sneakers": "黑色高筒休閒鞋",
-    "white leather low-top sneakers": "白色皮革低筒休閒鞋",
-    "white leather sneakers": "白色皮革休閒鞋",
-    "black running sneakers": "黑色跑鞋",
-    "black platform boots": "黑色厚底靴",
-    "polished dark brown oxfords": "深棕色拋光牛津鞋",
-    "brown loafers": "棕色樂福鞋",
-    "slides": "拖鞋",
-    "canvas sneakers": "帆布休閒鞋",
-    "chunky sneakers": "厚底休閒鞋",
-    "white clean sneakers": "乾淨白色休閒鞋",
-    "polished loafers": "拋光樂福鞋",
-    "fitted black turtleneck": "黑色合身高領上衣",
-    "fitted white dress shirt, top buttons open": "白色合身襯衫微敞領口",
-    "fitted black henley, sleeves pushed up": "黑色合身亨利衫捲袖",
-    "fitted black compression workout top": "黑色合身壓縮運動上衣",
-    "fitted white ribbed tank top": "白色合身羅紋背心",
-    "open grey zip hoodie": "灰色拉鍊連帽外套敞開",
-    "caramel brown corduroy overshirt jacket": "焦糖棕燈芯絨外襯衫外套",
-    "fitted sage green oxford shirt": "鼠尾草綠合身牛津襯衫",
-    "oversized black graphic tee, washed out print": "寬鬆黑色水洗圖案T恤",
-    "fitted black mock-neck long sleeve": "黑色合身半高領長袖",
-    "oversized grey utility jacket with pockets": "灰色寬鬆多口袋機能外套",
-    "fitted white crew neck tee": "白色合身圓領T恤",
-    "fitted light grey crew neck sweatshirt": "淺灰色合身圓領衛衣",
-    "slim black tailored trousers": "黑色修身西裝褲",
-    "black tapered trousers": "黑色錐形長褲",
-    "cream pleated trousers": "奶油白百褶西裝褲",
-    "black nylon tapered pants": "黑色尼龍錐形褲",
-    "slim tapered grey joggers": "灰色修身錐形慢跑褲",
-    "slim cargo trousers": "修身工裝長褲",
-    "slim straight dark jeans": "深色修身直筒牛仔褲",
-    "slim straight dark olive chinos": "深橄欖色修身直筒卡其褲",
-    "baggy light wash jeans with slight distress": "淺水洗微破寬鬆牛仔褲",
-    "black wide-leg trousers": "黑色寬褲",
-    "charcoal lounge shorts": "炭灰色休閒短褲",
-    "dress doubles as bottom": "洋裝兼下身",
-    "grey hiking boots or trail shoes": "灰色登山靴或越野鞋",
-    "black opaque tights with micro shorts underneath": "黑色不透膚褲襪內搭極短褲",
-    "fitted navy double-breasted blazer": "海軍藍合身雙排扣西裝外套",
-    "slim navy zip-up harrington jacket": "海軍藍修身拉鍊哈靈頓外套",
-    "open flannel shirt in red plaid": "紅色格紋敞開法蘭絨襯衫",
-    "oversized vintage black bomber jacket": "黑色寬鬆復古轟炸機外套",
-    "breathable olive trail shirt sleeves rolled": "橄欖綠透氣捲袖越野襯衫",
-    "deep green fitted mock-neck": "深綠色合身半高領上衣",
-
-    // 基礎關鍵字
-    "fitted": "合身",
-    "ribbed": "羅紋",
-    "knit": "針織",
-    "cotton": "棉質",
-    "linen": "亞麻",
-    "silk": "絲質",
-    "lace": "蕾絲",
-    "sheer": "透膚",
-    "mesh": "網紗",
-    "cropped": "短版",
-    "crop": "短版",
-    "oversized": "寬鬆",
-    "long-sleeve": "長袖",
-    "long sleeve": "長袖",
-    "short-sleeve": "短袖",
-    "short sleeve": "短袖",
-    "sleeveless": "無袖",
-    "camisole": "細肩帶背心",
-    "tank": "背心",
-    "tee": "T恤",
-    "hoodie": "連帽上衣",
-    "cardigan": "開襟衫",
-    "blouse": "上衣",
-    "shirt": "襯衫",
-    "dress": "洋裝",
-    "mini skirt": "迷你裙",
-    "pleated skirt": "百褶裙",
-    "shorts": "短褲",
-    "denim": "丹寧",
-    "jeans": "牛仔褲",
-    "tights": "褲襪",
-    "sneakers": "休閒鞋",
-    "loafers": "樂福鞋",
-    "boots": "靴子",
-    "sandals": "涼鞋",
     "barefoot": "赤腳",
-    "black": "黑色",
-    "white": "白色",
-    "cream": "奶油白",
-    "ivory": "奶油白",
-    "grey": "灰色",
-    "gray": "灰色",
-    "pink": "粉色",
-    "navy": "海軍藍",
-    "burgundy": "酒紅色",
-    "charcoal": "炭灰色",
-    "beige": "米色",
-    "brown": "棕色",
-    "red": "紅色",
-    "blue": "藍色",
-    "green": "綠色",
-    "olive": "橄欖色",
-    "khaki": "卡其色",
-    "taupe": "灰褐色",
-    "button-up": "排釦",
-    "pointed": "尖頭",
-    "flat": "平底",
-    "houndstooth": "千鳥格",
-    "blazer": "西裝外套",
-    "opaque": "不透膚",
-    "micro": "極短",
-    "underneath": "裡面",
-    "varsity jacket": "棒球夾克",
-    "retro": "復古",
-    "hiking": "登山",
-    "pants": "長褲",
-    "trousers": "長褲",
-    "leggings": "內搭褲",
-    "dusty pink": "粉色",
-    "rust red": "紅褐色",
-    "fleece": "刷毛",
-    "flowy": "飄逸",
+    "dress doubles as bottom": "洋裝兼下身",
+    "slip dress doubles as bottom": "吊帶洋裝兼下身",
+    "running sneakers": "運動跑鞋",
+    "kimono-style robe": "和服式罩袍",
     "spaghetti strap": "細肩帶",
+    "delicate strap": "細肩帶",
     "v-neckline": "V 領",
-    "teal green": "藍綠色",
-    "gingham check": "格紋",
-    "qipao-inspired": "旗袍式",
-    "modern": "現代",
-    "sun hoodie": "太陽連帽上衣",
-    "biker shorts": "單車褲",
-    "ribbon": "緞帶",
-    "detail": "細節",
-    "relaxed": "寬鬆",
-    "neckline": "領口",
-    "dolphin shorts": "真理褲",
-    "crew socks": "中筒襪",
-    "wool": "羊毛",
-    "chelsea": "切爾西",
-    "suit": "套裝",
-    "unstructured": "無結構",
-    "suede": "麂皮",
-    "pushed up": "捲起",
-    "sweatpants": "運動長褲",
-    "compression": "壓縮",
-    "workout": "運動",
-    "athletic": "運動",
-    "half-zipped": "半拉鍊",
-    "zip-up": "拉鍊",
-    "corduroy": "燈芯絨",
-    "overshirt": "外襯衫",
-    "straight": "直筒",
-    "wash": "水洗",
-    "wallabees": "袋鼠鞋",
-    "oatmeal": "燕麥色",
-    "brogues": "雕花鞋",
-    "oxford": "牛津",
-    "flannel": "法蘭絨",
-    "plaid": "格紋",
-    "baggy": "寬鬆",
-    "distress": "破洞",
-    "utility": "機能",
-    "tapered": "錐形",
-    "cargo": "工裝",
-    "chunky": "厚底",
-    "bomber": "轟炸機外套",
-    "high-top": "高筒",
-    "double-breasted": "雙排扣",
-    "harrington": "哈靈頓外套",
-    "sweatshirt": "圓領衛衣",
-    "well_loved": "穿過",
-    "worn_in": "略舊"
+    "knee length": "及膝"
 };
+
+/**
+ * 結構化解析與拼裝
+ */
+const buildStructuredOutfitLabel = (value: string, type: string): string => {
+    const raw = value.toLowerCase().trim();
+    if (!raw || raw === "---") return "";
+
+    // 0. 完整片語優先
+    if (TERM_DICT[raw]) return TERM_DICT[raw];
+
+    // 1. 原子特徵擷取
+    const found: Record<string, string[]> = {
+        color: [],
+        material: [],
+        fit: [],
+        item: [],
+        detail: []
+    };
+
+    // 輔助函式：按長度排序並移除包含關係，避免 shorts 匹配到 short
+    const matchAtom = (dict: Record<string, string>, target: string[]) => {
+        const sorted = Object.keys(dict).sort((a, b) => b.length - a.length);
+        let remaining = raw;
+        for (const en of sorted) {
+            // 使用邊界檢查或確保不重複匹配
+            const regex = new RegExp(`\\b${en.replace('-', '\\-')}\\b`, 'g');
+            if (regex.test(remaining)) {
+                target.push(dict[en]);
+                remaining = remaining.replace(regex, " ".repeat(en.length));
+            }
+        }
+    };
+
+    matchAtom(ATOM_DICT.colors, found.color);
+    matchAtom(ATOM_DICT.materials, found.material);
+    matchAtom(ATOM_DICT.fits, found.fit);
+    matchAtom(ATOM_DICT.items, found.item);
+    matchAtom(ATOM_DICT.details, found.detail);
+
+    // 2. 拼裝策略：顏色 + 材質 + 特徵 + 版型 + 單品
+    const resultParts = [
+        ...new Set(found.color),
+        ...new Set(found.material),
+        ...new Set(found.detail),
+        ...new Set(found.fit),
+        ...new Set(found.item)
+    ];
+
+    let final = resultParts.join("");
+
+    // 3. 特殊處理：doubles as bottom
+    if (raw.includes("doubles as bottom")) {
+        const base = final.replace("兼下身", "").trim();
+        return base.includes("洋裝") ? `${base}兼下身` : `${base} (兼下身)`;
+    }
+
+    // 4. 如果最終完全沒抓到單品詞，且有英文殘留，嘗試 fallback 到一個更直觀的名稱
+    if (found.item.length === 0 && final.length > 0) {
+        // 如果抓到了材質或顏色，補一個預設單品詞
+        const fallbackItems: Record<string, string> = {
+            top: "上衣",
+            bottom: "下身",
+            shoes: "鞋履",
+            accessory: "單品",
+            layer: "罩衫"
+        };
+        final += (fallbackItems[type] || "");
+    }
+
+    return final || value; // 真的抓不到就吐原文字，由上層處理
+};
+
+
 
 const STYLE_ARCHETYPE_MAP: Record<string, string> = {
     'feminine_sweet': '甜美少女風格 // SWEET',
@@ -245,64 +183,104 @@ const WEAR_STATE_MAP: Record<string, { label: string, width: string }> = {
     'worn_in': { label: '明顯磨損', width: '20%' }
 };
 
-const getOutfitDisplayText = (value: string | null | undefined, type: 'top' | 'bottom' | 'shoes' | 'generic' = 'generic'): string => {
-    if (!value || value === "---") {
-        const fallbacks = {
-            top: "造型上衣",
-            bottom: "造型下身",
-            shoes: "造型鞋履",
-            generic: "造型單品"
-        };
-        return fallbacks[type];
-    }
-    
-    let result = value.toLowerCase();
-    const sortedKeys = Object.keys(TERM_DICT).sort((a, b) => b.length - a.length);
-    const usedTerms: string[] = [];
+const isLowQualityDisplayText = (text: string, type: string): boolean => {
+    // 嚴禁 fallback 到這些極短或模糊的詞 (除非它真的是單一單品且長度夠)
+    const genericFallbacks = ["造型上裝單品", "造型下身單品", "造型鞋履", "造型配件"];
+    if (genericFallbacks.includes(text)) return true;
 
-    // 使用暫時變數來處理替換，避免重複匹配
-    let tempText = result;
-    for (const key of sortedKeys) {
-        if (tempText.includes(key)) {
-            usedTerms.push(TERM_DICT[key]);
-            tempText = tempText.replace(key, " "); // 用空格代替以防縮段誤連
+    const forbiddenOnly = ["絲質", "棉質", "針織", "蕾絲", "紅色", "黑色", "白色", "寬鬆", "合身", "短褲", "長褲", "衣服", "外套拉鍊"];
+    if (forbiddenOnly.includes(text)) return true;
+    
+    // 長度檢查 (太短的通常有問題，但單獨的「洋裝」「外套」OK)
+    if (text.length < 2) return true;
+
+    // 類型特徵檢查 (必須包含核心單品詞，放寬限制以減少過度 fallback)
+    const topKeywords = ["衣", "上衣", "背心", "襯衫", "外套", "洋裝", "罩袍", "球衣", "衛衣", "連帽", "袍", "大衣", "恤", "夾克", "衫", "開襟"];
+    const bottomKeywords = ["裙", "褲", "短褲", "長褲", "下身", "洋裝"];
+    const shoeKeywords = ["鞋", "靴", "涼鞋", "拖鞋", "赤腳", "襪"];
+
+    if (type === 'top') return !topKeywords.some(kw => text.includes(kw));
+    if (type === 'bottom') return !bottomKeywords.some(kw => text.includes(kw));
+    if (type === 'shoes') return !shoeKeywords.some(kw => text.includes(kw));
+    
+    return false;
+};
+
+const getOutfitDisplayText = (value: string | null | undefined, type: 'top' | 'bottom' | 'shoes' | 'generic' = 'generic'): string => {
+    const fallbacks = {
+        top: "造型上裝單品",
+        bottom: "造型下身單品",
+        shoes: "造型鞋履",
+        generic: "造型配件"
+    };
+
+    if (!value || value === "---") return fallbacks[type];
+
+    // 1. 結構化翻譯優先 (內部已包含 TERM_DICT 優先權)
+    const structured = buildStructuredOutfitLabel(value, type);
+
+    // 2. 品質檢查
+    if (isLowQualityDisplayText(structured, type)) {
+        // 如果結構化結果品質低，但包含英文，則保持結構化結果（至少比 fallback 好）
+        // 除非原始值真的沒東西
+        if (structured && structured !== value && !/[a-zA-Z]/.test(structured)) {
+            return structured;
         }
     }
-
-    let finalOutput = usedTerms.length > 0 ? usedTerms.join("") : value;
-
-    // 最終輸出前檢查：如果輸出結果仍包含英文字母 A-Z 或 a-z，禁止直接回傳英文原字串
-    if (/[a-zA-Z]/.test(finalOutput)) {
-        const fallbacks = {
-            top: "造型上衣",
-            bottom: "造型下身",
-            shoes: "造型鞋履",
-            generic: "造型單品"
-        };
+    
+    // 3. 最後防線：若 structured 含有英文或為空，才進入 fallback
+    if (!structured || structured === "" || /[a-zA-Z]/.test(structured)) {
         return fallbacks[type];
     }
-    
-    return finalOutput;
+
+    return structured;
 };
+
 
 const getTopDisplayText = (outfit: OutfitV2): string => {
     const top = outfit.pillars.top;
     const inner = outfit.pillars.layer_inner;
     const outer = outfit.pillars.layer_outer;
 
-    // 優先序：top > (layer_inner + layer_outer) > inner > outer
+    const translateGarment = (val: string | null | undefined): string | null => {
+        if (!val || val === "---") return null;
+        const res = getOutfitDisplayText(val, 'top');
+        // 過濾掉明顯是下身的詞，除非是洋裝
+        const forbidden = ["裙", "褲", "短褲", "長褲", "鞋", "靴", "拖鞋", "襪", "涼鞋"];
+        if (res !== "造型上裝單品" && !res.includes("洋裝") && forbidden.some(kw => res.includes(kw))) {
+            return null;
+        }
+        return (res === "造型上裝單品") ? null : res;
+    };
+
+    const t = translateGarment(top);
+    const i = translateGarment(inner);
+    const o = translateGarment(outer);
+
+    // 優先序策略：組合最外層的兩件，或顯示最外層
+    // M-URBAN-T1-CLEAN-062: top(tee) + outer(jacket) -> tee + jacket
+    if (o) {
+        const base = t || i;
+        if (base) return `${base} + ${o}`;
+        return o;
+    }
+    
+    if (t) {
+        // M-HOME-T2-CLEAN-052: inner(tee) + top(shirt) -> shirt (因為 shirt 是 top 層，tee 是 inner)
+        // 但如果想要更豐富，可以組合 i + t
+        if (i) return `${i} + ${t}`;
+        return t;
+    }
+
+    if (i) return i;
+
+    // 最後保險：如果 top 有字但沒翻譯出來（可能包含英文或品質低），強制再試一次不帶過濾的翻譯
     if (top && top !== "---") {
-        return getOutfitDisplayText(top, 'top');
+        const raw = getOutfitDisplayText(top, 'top');
+        if (raw !== "造型上裝單品") return raw;
     }
 
-    if (inner && inner !== "---" && outer && outer !== "---") {
-        return `${getOutfitDisplayText(inner, 'top')} + ${getOutfitDisplayText(outer, 'top')}`;
-    }
-
-    if (inner && inner !== "---") return getOutfitDisplayText(inner, 'top');
-    if (outer && outer !== "---") return getOutfitDisplayText(outer, 'top');
-
-    return "造型上衣";
+    return "造型上裝單品";
 };
 
 const translateOutfitTerm = (text: string | null | undefined): string => {
