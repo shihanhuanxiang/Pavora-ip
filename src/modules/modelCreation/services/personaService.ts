@@ -103,7 +103,7 @@ Output requirements:
    - Nose: bridge height, nose tip shape
    - Lips: size, thickness, natural color tone
    - Skin: texture quality, undertone
-   - Distinctive marks: moles, freckles, dimples (only if clearly visible)
+   - Confirmed facial traits: dimples or other permanent facial traits ONLY if clearly visible and explicitly confirmed by the source identity. Do not infer or invent moles, freckles, beauty marks, dark facial spots, birthmarks, or skin marks. If uncertain, keep the face clean and mark-free.
 4. Use specific descriptive vocabulary (e.g. "almond-shaped eyes with prominent double eyelids", NOT "pretty eyes").
 5. Total length: 80-150 words, comma-separated phrases.
 6. NO subjective beauty words like "pretty", "beautiful", "stunning". Only objective features.

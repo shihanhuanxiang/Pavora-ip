@@ -19,11 +19,13 @@ export const generateModels = async (params: any): Promise<Model[]> => {
         const baseSystemInstruction = "You are a world-class fashion photographer and master of digital human realism. Your goal is to generate images that are indistinguishable from real high-end photography. You prioritize biometric accuracy above all aesthetic styles.";
         const identityInstruction = `[🚨 BIOMETRIC_ANCHOR_PROTOCOL: LEVEL_OMEGA 🚨]
 The user has provided FACE REFERENCE IMAGES. These are the ABSOLUTE and EXCLUSIVE source for identity.
-- GEOMETRIC MANDATE: Perform 1:1 Biometric Transfer of the "Five Features" (五官: eyes, nose, lips, jawline, ears) from the photos. 
+- GEOMETRIC MANDATE: Perform 1:1 Biometric Transfer of the Five Features (eyes, nose, lips, jawline, ears) from the photos. 
 - MESH ALIGNMENT: You must align the generated character's facial mesh to the exact bone structure and feature placement of the reference.
-- FORBIDDEN: Do NOT use generic AI datasets, beautification filters, or standardized beauty presets. 
+- FORBIDDEN: Do NOT use generic AI datasets, beautification filters, standardized beauty presets, or invented facial marks. 
 - PRIORITY: Biometric restoration (Weight: 5.0) overrides all background, lighting, and apparel prompts. 
-- EVIDENCE-BASED: Maximize unique facial identifiers (moles, skin marks, specific geometry) present in the source photos to ensure 95%+ identity match.`;
+- NO-NEW-FACIAL-MARK RULE: Do not infer or invent moles, freckles, beauty marks, dark facial spots, or birthmarks unless explicitly visible and confirmed in the source identity.
+- FACIAL MARK POLICY: Do NOT invent new moles, beauty marks, freckles, birthmarks, dark facial spots, or skin marks. Preserve permanent facial marks ONLY when they are clearly visible in the reference photos AND explicitly part of the user's confirmed identity. If uncertain, keep the face clean and mark-free while preserving bone structure, eyes, nose, lips, jawline, and skin texture.
+- EVIDENCE-BASED: Maximize confirmed facial geometry and stable identity traits from the source photos to ensure 95%+ identity match without adding unconfirmed facial marks.`;
         
         const physiqueInstruction = params.isExpertMode 
             ? `STRICT PHYSIQUE ENFORCEMENT: The model's body MUST strictly follow the technical metrics provided (Height, Bust, Waist, Hips). These are hard physical constraints for the skeletal structure, not suggestions.` 
