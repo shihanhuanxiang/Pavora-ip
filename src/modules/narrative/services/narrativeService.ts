@@ -1126,83 +1126,357 @@ export const generateRandomEventWithScene = (model: Model): { text: string; scen
     const scenePool = extendedScenes.length > 0 ? extendedScenes : fallbackScenes;
     const scene = scenePool[Math.floor(Math.random() * scenePool.length)];
     
-    // 1. 人物動作池 (只能放人的狀態或動作)
-    const humanActions = [
-        "靠在桌邊發呆",
-        "低頭滑手機",
-        "坐在椅子上放空",
-        "一邊喝東西一邊看向窗外",
-        "手停在鍵盤旁沒有繼續打字",
-        "整理包包裡的東西",
-        "靠著牆等訊息",
-        "把外套搭在椅背上",
-        "專注地看著未完成的工作",
-        "伸個懶腰呼吸一口氣"
+    const sceneTextForContext = `${scene.category || ""} ${(scene as any).context_id || ""} ${scene.name_zh || ""} ${scene.event || ""} ${scene.city || ""}`;
+
+    const pickOne = (items: string[]) => items[Math.floor(Math.random() * items.length)];
+
+    const inferRandomEventContext = () => {
+        if (/家|宅|房間|客廳|臥室|沙發|床|廚房|陽台|home|cozy/i.test(sceneTextForContext)) return "home";
+        if (/咖啡|咖啡廳|cafe|茶|甜點|brunch/i.test(sceneTextForContext)) return "cafe";
+        if (/辦公|公司|會議|工作|coworking|office/i.test(sceneTextForContext)) return "office";
+        if (/捷運|車站|高鐵|台鐵|公車|通勤|機場|airport|train|station|travel/i.test(sceneTextForContext)) return "commute";
+        if (/超商|便利|7-11|全家|商場|百貨|更衣|逛街|shopping|store|mall/i.test(sceneTextForContext)) return "shopping";
+        if (/夜市|小吃|餐廳|食物|市場|food|restaurant|snack/i.test(sceneTextForContext)) return "food";
+        if (/海|山|湖|步道|公園|戶外|草地|河|beach|park|trail|outdoor|nature/i.test(sceneTextForContext)) return "outdoor";
+        return "urban";
+    };
+
+    const contextKey = inferRandomEventContext();
+
+    const commonActions = [
+        "低頭確認手機訊息",
+        "把耳邊的碎髮撥到耳後",
+        "抬頭看了一眼遠處",
+        "停下來整理肩上的包包",
+        "把外套袖口往上推了一點",
+        "伸手接住快滑落的杯子",
+        "忽然笑了一下又低頭",
+        "把手機螢幕按暗",
+        "用手背輕輕碰了一下臉頰",
+        "站在原地等下一個空檔",
+        "把手插進外套口袋",
+        "側身讓人群先經過",
+        "低頭看鞋尖沾到的灰",
+        "把包包背帶重新拉正",
+        "拿起飲料又放回桌上",
+        "盯著窗外出神幾秒",
+        "一邊走一邊回頭看",
+        "把髮圈套回手腕",
+        "用指尖敲了敲杯緣",
+        "深呼吸後重新打起精神"
     ];
 
-    // 2. 生活碎屑池 (只能放物件或環境細節)
-    const livingDebris = [
-        "鍵盤旁放著吃到一半的饅頭",
-        "桌角壓著一張發票",
-        "充電線纏在杯子旁",
-        "外送袋靠在椅腳邊",
-        "杯套上還有水珠",
-        "紙巾皺在桌邊",
-        "手機殼邊角有刮痕",
-        "包包拉鍊沒有完全拉上",
-        "髮圈掉在鍵盤旁",
-        "半杯冰飲放到退冰"
+    const contextActions: Record<string, string[]> = {
+        home: [
+            "盤腿坐在地毯上翻找遙控器",
+            "靠在沙發扶手旁滑手機",
+            "把洗好的衣服從椅背拿起來",
+            "站在冰箱前猶豫要喝什麼",
+            "坐在床邊整理耳機線",
+            "把抱枕拍鬆後又靠回去",
+            "趴在桌邊看未回完的訊息",
+            "在廚房流理台旁等水燒開",
+            "把拖鞋踢回腳邊",
+            "對著鏡子隨手整理瀏海"
+        ],
+        cafe: [
+            "用湯匙攪著快融化的冰塊",
+            "把杯墊往桌邊推了一點",
+            "低頭看菜單又抬頭看窗外",
+            "把筆記本翻到空白頁",
+            "用手指擦掉杯壁水珠",
+            "拿起叉子又忘了吃甜點",
+            "把托特包從椅背拉回膝上",
+            "對著咖啡表面的奶泡發呆",
+            "把收據夾進書頁裡",
+            "側身避開隔壁桌經過的人"
+        ],
+        office: [
+            "盯著會議筆記停頓幾秒",
+            "把筆電螢幕角度調低",
+            "用指尖按住快翹起的便利貼",
+            "拿起馬克杯走向茶水間",
+            "把識別證翻回正面",
+            "對著未送出的訊息猶豫",
+            "把文件夾抱在胸前",
+            "用筆在紙角畫了兩條線",
+            "揉了揉眉心再看螢幕",
+            "把椅子往桌邊拉近"
+        ],
+        commute: [
+            "扶著欄杆看車窗倒影",
+            "低頭確認下一班車時間",
+            "把票卡捏在指尖",
+            "在人群中側身讓出通道",
+            "拖著行李箱停在指示牌前",
+            "把耳機塞回充電盒",
+            "站在月台邊線後等待",
+            "看著玻璃反光整理表情",
+            "把登機證對折收進包裡",
+            "在電扶梯上握緊扶手"
+        ],
+        shopping: [
+            "站在貨架前比較兩個顏色",
+            "把購物袋換到另一隻手",
+            "看著鏡子調整衣角",
+            "低頭確認電子發票",
+            "把試穿號碼牌拿在手上",
+            "在超商冷藏櫃前停住",
+            "拿起一瓶飲料又放回去",
+            "把零錢收回小包夾層",
+            "站在店門口等朋友回訊息",
+            "側身避開推車經過"
+        ],
+        food: [
+            "吹了吹湯匙上的熱氣",
+            "把筷子停在碗邊",
+            "低頭看醬汁有沒有滴到衣服",
+            "拿紙巾壓住杯底水痕",
+            "排隊時把菜單折起來",
+            "把小吃袋拎高避開人群",
+            "咬了一口又忍不住笑",
+            "看著攤位燈光發呆",
+            "把吸管戳進封膜裡",
+            "手裡拿著號碼牌等叫號"
+        ],
+        outdoor: [
+            "抬手遮了一下刺眼的陽光",
+            "把被風吹亂的頭髮壓回耳後",
+            "踩過樹影停下來看天空",
+            "蹲下來綁鬆掉的鞋帶",
+            "站在欄杆旁看遠方",
+            "把外套拉鍊拉高一點",
+            "伸手接住落在肩上的葉子",
+            "在風裡停下腳步",
+            "把水壺從包側拿出來",
+            "回頭確認朋友有沒有跟上"
+        ],
+        urban: [
+            "停在騎樓下等紅燈",
+            "靠著牆看街角的人流",
+            "把手機放回包包外袋",
+            "低頭避開突然吹來的風",
+            "穿過斑馬線時回頭看了一眼",
+            "在便利貼般的霓虹光裡停住",
+            "站在路邊整理外套下擺",
+            "把手搓熱後拿起飲料",
+            "抬頭看招牌又低頭確認地址",
+            "沿著人行道慢慢往前走"
+        ]
+    };
+
+    const commonDebris = [
+        "包包外袋露出一角發票",
+        "手機螢幕上還停著未讀訊息",
+        "耳機盒躺在掌心旁",
+        "口紅蓋子沒有完全蓋緊",
+        "一張小票被壓在杯底下",
+        "髮夾卡在包包背帶上",
+        "濕紙巾包裝被折到皺起來",
+        "悠遊卡露在手機殼後面",
+        "外套吊牌還沒完全剪乾淨",
+        "指尖沾到一點杯壁水珠",
+        "透明傘套被塞在腳邊",
+        "小鏡子邊緣留下指紋",
+        "護唇膏滾到桌角",
+        "鑰匙圈掛著一個褪色小吊飾",
+        "髮圈套在手腕上勒出淡淡痕跡",
+        "紙袋邊角被雨水沾濕",
+        "手機充電線繞成一小團",
+        "包包拉鍊停在半開的位置",
+        "袖口沾到一點灰塵",
+        "飲料封膜上有一圈水痕"
     ];
 
-    // 3. 氛圍池
-    const atmospheres = ["慵懶", "隨性", "沉靜", "生活感", "溫度", "鬆弛", "真實"];
+    const contextDebris: Record<string, string[]> = {
+        home: [
+            "沙發邊放著折到一半的薄毯",
+            "茶几上有半包打開的蘇打餅",
+            "拖鞋一隻在地毯上一隻在門邊",
+            "洗衣籃裡露出白色襯衫袖口",
+            "水杯旁有一顆剝到一半的橘子",
+            "電視遙控器卡在抱枕縫裡",
+            "床邊放著翻開的小說",
+            "桌上有一碗吃到一半的地瓜",
+            "窗台邊放著快枯掉的小盆栽",
+            "廚房紙巾被撕得不太整齊"
+        ],
+        cafe: [
+            "拿鐵杯緣留著淡淡唇印",
+            "可頌屑掉在小盤子旁",
+            "手沖咖啡濾紙放在托盤角落",
+            "蛋糕叉子斜靠在盤邊",
+            "冰美式杯壁凝著水珠",
+            "菜單邊角被壓在手機下",
+            "肉桂捲的糖霜沾到紙巾",
+            "桌上放著一張集點卡",
+            "玻璃水瓶旁有兩個空杯",
+            "紙吸管套被揉成小小一團"
+        ],
+        office: [
+            "便當盒蓋子還沒完全扣緊",
+            "便利貼貼在筆電邊框上",
+            "咖啡杯旁放著一支紅筆",
+            "會議資料夾露出彩色標籤",
+            "鍵盤旁有一包海苔飯糰包裝",
+            "識別證掛繩垂在桌邊",
+            "茶水間紙杯堆在托盤角落",
+            "便條紙上寫著沒完成的待辦",
+            "滑鼠墊旁有一顆茶葉蛋殼",
+            "抽屜夾縫露出一包堅果"
+        ],
+        commute: [
+            "票卡被捏得有點彎",
+            "行李箱輪子卡著一片小葉子",
+            "車票收據露在外套口袋",
+            "便利商店飯糰包裝摺在包裡",
+            "紙杯咖啡套在手上有點鬆",
+            "耳機線從圍巾下方露出來",
+            "登機證邊角被折了一道",
+            "月台地面反著冷白燈光",
+            "雨傘尖端滴著水",
+            "背包側袋塞著半瓶礦泉水"
+        ],
+        shopping: [
+            "試穿號碼牌掛在手指上",
+            "購物袋裡露出一角吊牌",
+            "電子發票存在手機畫面上",
+            "超商茶葉蛋袋子放在收銀台旁",
+            "手搖杯貼紙寫著半糖少冰",
+            "小包濕紙巾壓在口紅旁",
+            "更衣間門上的掛鉤晃了一下",
+            "衣架尺寸標籤翻到背面",
+            "紙袋提繩勒出一道痕",
+            "收銀台旁放著一排薄荷糖"
+        ],
+        food: [
+            "鹽酥雞紙袋邊緣沾到椒鹽",
+            "滷味袋裡的竹籤露出一小截",
+            "蛋餅盒蓋子被熱氣蒸出水珠",
+            "飯糰海苔包裝撕到一半",
+            "便當盒旁放著一小包辣椒醬",
+            "珍奶封膜上有一圈水痕",
+            "地瓜紙袋還帶著溫熱霧氣",
+            "臭豆腐泡菜盒角落沾到湯汁",
+            "雞排紙袋被壓出油痕",
+            "豆漿杯蓋上貼著早餐店貼紙"
+        ],
+        outdoor: [
+            "鞋尖沾到一點草屑",
+            "水壺外側有細小刮痕",
+            "防曬乳蓋子卡在包包側袋",
+            "風把地圖摺角吹起來",
+            "小毛巾搭在背包肩帶上",
+            "葉子落在鞋邊",
+            "太陽眼鏡掛在領口",
+            "門票收據被夾在手機殼後",
+            "礦泉水瓶被曬得有點溫",
+            "帽簷下有一小片陰影"
+        ],
+        urban: [
+            "外帶咖啡杯套被捏出摺痕",
+            "機車鑰匙掛在指尖晃著",
+            "雨傘靠在騎樓柱子旁",
+            "路邊發票被風吹到鞋邊",
+            "手機導航停在下一個轉角",
+            "超商袋子裡露出一瓶無糖茶",
+            "口罩被折好收進外套口袋",
+            "街邊燈箱反光落在包包扣環上",
+            "手搖杯杯底有一圈水痕",
+            "斑馬線旁的風把髮尾吹亂"
+        ]
+    };
 
-    // 4. 環境細節池
+    const atmospheres = [
+        "慵懶", "隨性", "沉靜", "生活感", "溫度", "鬆弛", "真實", "微微疲憊", "剛好的混亂", "低調的可愛",
+        "一點點狼狽", "安靜的專注", "午後的恍神", "剛醒的慢半拍", "不小心流露的情緒", "城市裡的停頓",
+        "自然的凌亂", "沒有修飾的日常", "柔軟的空白", "被生活打斷的節奏"
+    ];
+
     const envDetails = [
         "傍晚的光影折射",
         "窗外透進來的微光",
         "遠處模糊的車聲",
         "冷氣機輕微的運轉聲",
         "葉片在風中晃動的影子",
-        "空氣中帶點乾糙的氣息"
+        "空氣中帶點乾糙的氣息",
+        "玻璃反射出一層淡淡光暈",
+        "遠方人聲像被壓低了一樣",
+        "地面反著一點潮濕亮光",
+        "門口風鈴短短響了一聲",
+        "日光被窗框切成幾塊",
+        "牆面留著午後偏黃的光",
+        "背景裡有一點不清楚的招牌光",
+        "空氣裡混著咖啡和雨水的味道",
+        "椅腳摩擦地面的聲音很輕",
+        "遠處傳來機車停下的聲音",
+        "桌面陰影剛好壓住手邊小物",
+        "風把布料吹出一點皺褶",
+        "室內燈和自然光混在一起",
+        "背景被淺景深柔柔地推遠"
     ];
 
-    const action = humanActions[Math.floor(Math.random() * humanActions.length)];
-    const debris = livingDebris[Math.floor(Math.random() * livingDebris.length)];
-    const atmos = atmospheres[Math.floor(Math.random() * atmospheres.length)];
-    const detail = envDetails[Math.floor(Math.random() * envDetails.length)];
+    const action = pickOne([...(contextActions[contextKey] ?? contextActions.urban), ...commonActions]);
+    const debris = pickOne([...(contextDebris[contextKey] ?? contextDebris.urban), ...commonDebris]);
+    const atmos = pickOne(atmospheres);
+    const detail = pickOne(envDetails);
     
     const travelNote = isTraveling ? `這次離開熟悉的${baseCity}，跑到${targetCity}讓自己換一種節奏。` : "";
-    const eventName = scene.name_zh || scene.event || "生活角落";
+    const rawSceneLabel = scene.name_zh || scene.event || "";
+    const rawActivityLabel = scene.event || scene.name_zh || "日常片刻";
+    const sceneCity = scene.city && scene.city !== "any" ? scene.city : targetCity;
+
+    const nonPlaceTerms = [
+        "等待", "滴到", "燒焦", "初學", "手沖", "外送", "Uber", "Eats",
+        "發票", "饅頭", "充電線", "外送袋", "紙巾", "手機殼", "包包拉鍊", "髮圈"
+    ];
+
+    const isLikelyNonPlace = (label: string) => {
+        return nonPlaceTerms.some(term => label.includes(term));
+    };
+
+    const placeLabel = rawSceneLabel && !isLikelyNonPlace(rawSceneLabel)
+        ? `${sceneCity}${rawSceneLabel}`
+        : `${sceneCity}的生活角落`;
+
+    const activityLabel = rawActivityLabel && rawActivityLabel !== rawSceneLabel
+        ? rawActivityLabel
+        : (isLikelyNonPlace(rawSceneLabel) ? rawSceneLabel : "一段沒有被刻意安排的日常");
 
     // 5. 模板組合
     const templates = [
         // 模板 A
-        `${travelNote}這次鏡頭落在${eventName}，${action}。${debris}，空氣裡有一點${atmos}，反而讓畫面不像被安排好的。`,
+        `${travelNote}這次鏡頭落在${placeLabel}，${action}。${debris}，空氣裡有一點${atmos}，反而讓畫面不像被安排好的。`,
         // 模板 B
-        `${travelNote}${eventName}裡，${action}。${debris}，這些不太整齊的小痕跡，讓今天看起來更像真的發生過。`,
+        `${travelNote}人在${placeLabel}，剛好遇上${activityLabel}。${action}，${debris}，這些不太整齊的小痕跡，讓今天看起來更像真的發生過。`,
         // 模板 C
-        `${travelNote}畫面停在${eventName}，${action}。旁邊${debris}，視線一角還有${detail}。`
+        `${travelNote}畫面停在${placeLabel}，${activityLabel}被留在背景裡。${action}，旁邊${debris}，視線一角還有${detail}。`
     ];
 
     let finalResult = templates[Math.floor(Math.random() * templates.length)];
 
-    // 六、防呆檢查：禁止物件變成主詞動作
-    const bannedPrefixes = [
-        "人在饅頭", "人在發票", "人在充電線", "人在外送袋", "人在光影",
-        "人在生活碎屑", "人在鍵盤", "人在杯套", "人在紙巾", "人在手機殼",
-        "人在包包拉鍊", "人在髮圈"
+    // 六、防呆檢查：禁止物件或事件被當成地點使用
+    const badLocationPhrases = [
+        "Uber Eats 玄關等待裡",
+        "食物滴到白衣裡",
+        "初學手沖燒焦裡",
+        "人在饅頭",
+        "人在發票",
+        "人在充電線",
+        "人在外送袋",
+        "人在光影",
+        "人在生活碎屑",
+        "人在鍵盤",
+        "人在杯套",
+        "人在紙巾",
+        "人在手機殼",
+        "人在包包拉鍊",
+        "人在髮圈"
     ];
 
-    const hasBanned = bannedPrefixes.some(prefix => finalResult.includes(prefix));
-    if (hasBanned) {
-        // 如果不幸中招（雖然邏輯上已經分離，但多一層保障），遞迴重抽或替換關鍵字
-        // 在新結構下，eventName 應該是地點，action 才是動作，所以只要 eventName 不是物件就沒問題
-        // 這裡我們直接強制修正，如果 eventName 誤用了物件詞，用 "生活角落" 替換
-        const itemsToClean = ["饅頭", "發票", "充電線", "外送袋", "光影", "生活碎屑", "鍵盤", "杯套", "紙巾", "手機殼", "包包拉鍊", "髮圈"];
-        itemsToClean.forEach(item => {
-            finalResult = finalResult.replace(new RegExp(`人在${item}`, 'g'), `人在生活角落`);
-        });
+    const hasBadLocationPhrase = badLocationPhrases.some(phrase => finalResult.includes(phrase));
+    if (hasBadLocationPhrase) {
+        finalResult = `${travelNote}這次鏡頭落在${sceneCity}的生活角落，${action}。${debris}，空氣裡有一點${atmos}，反而讓畫面不像被安排好的。`;
     }
 
     return {

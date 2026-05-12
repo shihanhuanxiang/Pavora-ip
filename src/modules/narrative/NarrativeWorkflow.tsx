@@ -106,8 +106,20 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         return labelMap[normalized] || null;
     };
 
+    const normalizeInlinePromptSections = (prompt: string): string => {
+        const sectionLabelPattern = /(\[[^\]]+\]|【[^】]+】|Subject|Apparel|Environment|Lighting|Camera|主體|穿搭|環境|光影|鏡頭)\s*([:：])/g;
+
+        return prompt
+            .replace(sectionLabelPattern, '\n$1$2')
+            .replace(/^\n/, '')
+            .replace(/\n{2,}/g, '\n')
+            .trim();
+    };
+
     const parseStructuredPrompt = (prompt: string): PromptSection[] => {
-        return prompt.split('\n').map((line, lineIndex) => {
+        const normalizedPrompt = normalizeInlinePromptSections(prompt);
+
+        return normalizedPrompt.split('\n').map((line, lineIndex) => {
             const match = line.match(/^\s*(\[[^\]]+\]|【[^】]+】|[A-Za-z][A-Za-z\s_-]*|[\u4e00-\u9fff]{1,12})\s*([:：])\s*(.*)$/);
             if (!match) return null;
 
