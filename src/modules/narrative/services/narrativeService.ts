@@ -953,7 +953,44 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
             /^\s*(\[鏡頭\]|【鏡頭】|鏡頭)\s*[:：]/m
         );
 
-        const sanitizedVisualPrompt = sanitizeFinalPrompt(repairedVisualPrompt).prompt;
+        const repairApparelSection = (promptText: string) => {
+            const outfitParts = [
+                outfit.pillars.top,
+                outfit.pillars.bottom,
+                outfit.pillars.shoes,
+                ...(outfit.pillars.accessories ?? []),
+                ...(outfit.pillars.props ?? [])
+            ].filter((part): part is string => Boolean(part && part.trim()));
+
+            if (outfitParts.length === 0) return promptText;
+
+            const lines = promptText.split('\n');
+            const apparelIndex = lines.findIndex(line => /^\s*(\[Apparel\]|【Apparel】|Apparel)\s*[:：]/i.test(line.trim()));
+            const apparelLine = apparelIndex >= 0 ? lines[apparelIndex] : '';
+
+            const missingParts = outfitParts.filter(part => !apparelLine.toLowerCase().includes(part.toLowerCase()));
+            if (missingParts.length === 0) return promptText;
+
+            const missingText = missingParts.join(', ');
+
+            if (apparelIndex >= 0) {
+                lines[apparelIndex] = `${apparelLine.trim()} ${missingText}`;
+                return lines.join('\n');
+            }
+
+            const environmentIndex = lines.findIndex(line => /^\s*(\[Environment\]|【Environment】|Environment)\s*[:：]/i.test(line.trim()));
+            const apparelFallbackLine = `[Apparel]: ${missingText}`;
+
+            if (environmentIndex >= 0) {
+                lines.splice(environmentIndex, 0, apparelFallbackLine);
+                return lines.join('\n');
+            }
+
+            return `${promptText}\n${apparelFallbackLine}`;
+        };
+
+        const repairedApparelVisualPrompt = repairApparelSection(repairedVisualPrompt);
+        const sanitizedVisualPrompt = sanitizeFinalPrompt(repairedApparelVisualPrompt).prompt;
         const sanitizedVisualPromptZH = sanitizeFinalPrompt(repairedVisualPromptZH).prompt;
         
         return {
