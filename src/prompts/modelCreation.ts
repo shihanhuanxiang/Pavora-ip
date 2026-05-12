@@ -254,7 +254,6 @@ export const buildModelPrompt = (params: any) => {
         
         prompt += `[EXPERT SURFACE REALISM]\n`;
         if (params.skinMicroTexture) prompt += `- SKIN: Enable hyper-realistic skin micro-texture, visible pores, and subsurface scattering. \n`;
-        if (params.naturalBlemishes) prompt += `- SKIN: Include subtle natural imperfections (moles, freckles) from references for identity verification. \n`;
         if (params.irisDetail) prompt += `- EYES: High-fidelity iris depth and realistic catchlights. \n`;
         
         if (hasFaceRef) {

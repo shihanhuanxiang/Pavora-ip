@@ -517,7 +517,6 @@ export const ModelGenerationDefaults = {
     // Phase 1: Advanced Parameters
     isExpertMode: false,
     skinMicroTexture: true,
-    naturalBlemishes: false,
     irisDetail: true,
     noseHeight: 50,
     eyeShape: 'standard',

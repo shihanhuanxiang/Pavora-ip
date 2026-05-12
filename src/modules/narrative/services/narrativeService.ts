@@ -1,4 +1,5 @@
 import { getGeminiClient } from "../../../shared/services/core/geminiClient";
+import { sanitizeFinalPrompt } from "../../../shared/services/promptSanitizer";
 import type { Model, DiaryEntry, OutfitV2, ExtendedScene, NonVisualPersona } from "../../../shared/types/types";
 import { LOCALIZED_SCENES, getScenesByCity } from "../constants/localizedScenes";
 
@@ -515,7 +516,19 @@ const buildFinalVisualPromptV11 = (
         `[Negative]: ${layer10}`
     ].filter(p => !p.endsWith(': '));
 
-    return cleanPromptV2(parts.join('\n'));
+    const rawPrompt = cleanPromptV2(parts.join('\n'));
+    const sanitized = sanitizeFinalPrompt(rawPrompt);
+
+    if (typeof window !== 'undefined' && window.localStorage && window.localStorage.getItem('PAVORA_DEBUG_PROMPT') === '1') {
+        console.info('[PAVORA_DEBUG_PROMPT]', {
+            source: 'buildFinalVisualPromptV11',
+            rawPrompt,
+            finalPrompt: sanitized.prompt,
+            sanitizerReport: sanitized.report
+        });
+    }
+
+    return sanitized.prompt;
 };
 
 /**
