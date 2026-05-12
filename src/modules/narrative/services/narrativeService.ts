@@ -952,12 +952,15 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
             `[光影]: 呼應${weather}與${primaryCity}${location}的自然光影、環境陰影與真實現場光感，避免棚拍燈感`,
             /^\s*(\[鏡頭\]|【鏡頭】|鏡頭)\s*[:：]/m
         );
+
+        const sanitizedVisualPrompt = sanitizeFinalPrompt(repairedVisualPrompt).prompt;
+        const sanitizedVisualPromptZH = sanitizeFinalPrompt(repairedVisualPromptZH).prompt;
         
         return {
             content: data.content,
             mood: data.mood,
-            visualPrompt: repairedVisualPrompt,
-            visualPromptZH: repairedVisualPromptZH,
+            visualPrompt: sanitizedVisualPrompt,
+            visualPromptZH: sanitizedVisualPromptZH,
             meta: {
                 ...data.meta,
                 petNote,

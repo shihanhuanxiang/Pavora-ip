@@ -63,8 +63,15 @@ const escapeRegExp = (value: string): string => {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 };
 
+const hasCjkCharacters = (value: string): boolean => {
+  return /[\u4e00-\u9fff]/.test(value);
+};
+
 const buildTermPattern = (term: string): RegExp => {
   const escapedTerm = escapeRegExp(term).replace(/\s+/g, '\\s+');
+  if (hasCjkCharacters(term)) {
+    return new RegExp(escapedTerm, 'gi');
+  }
   return new RegExp(`\\b${escapedTerm}\\b`, 'gi');
 };
 
