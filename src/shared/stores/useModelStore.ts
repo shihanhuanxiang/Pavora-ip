@@ -233,6 +233,20 @@ export const useModelStore = create<ModelState>()(
     {
       name: 'pavora-models-store',
       storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        activeModelId: state.activeModelId,
+        models: state.models.map((model) => ({
+          ...model,
+          gallery: (model.gallery || []).slice(0, 20).map((item) => ({
+            id: item.id,
+            url: item.url,
+            timestamp: item.timestamp,
+            narrativeContent: item.narrativeContent ? item.narrativeContent.slice(0, 300) : undefined,
+            visualPrompt: item.visualPrompt ? item.visualPrompt.slice(0, 1200) : undefined,
+            visualPromptZH: item.visualPromptZH ? item.visualPromptZH.slice(0, 800) : undefined
+          }))
+        }))
+      }),
       // Only persist metadata, images are in IDB linked by URL
     }
   )

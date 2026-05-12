@@ -64,6 +64,85 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     const [activePromptLang, setActivePromptLang] = useState<'ZH' | 'EN'>('ZH');
     const [eventSource, setEventSource] = useState<EventSource>('none');
 
+    type PromptSection = {
+        label: string;
+        value: string;
+        lineIndex: number;
+        prefix: string;
+        separator: string;
+    };
+
+    const normalizePromptSectionLabel = (label: string) => {
+        const cleaned = label.trim().replace(/^\[|\]$/g, '').replace(/^【|】$/g, '').trim();
+        const normalized = cleaned.toLowerCase().replace(/[\s_-]/g, '');
+
+        const labelMap: Record<string, string> = {
+            subject: 'SUBJECT',
+            主體: 'SUBJECT',
+            人物: 'SUBJECT',
+            模特兒: 'SUBJECT',
+            apparel: 'APPAREL',
+            outfit: 'APPAREL',
+            clothing: 'APPAREL',
+            服裝: 'APPAREL',
+            穿搭: 'APPAREL',
+            environment: 'ENVIRONMENT',
+            scene: 'ENVIRONMENT',
+            location: 'ENVIRONMENT',
+            環境: 'ENVIRONMENT',
+            場景: 'ENVIRONMENT',
+            地點: 'ENVIRONMENT',
+            lighting: 'LIGHTING',
+            light: 'LIGHTING',
+            光線: 'LIGHTING',
+            燈光: 'LIGHTING',
+            camera: 'CAMERA',
+            shot: 'CAMERA',
+            composition: 'CAMERA',
+            鏡頭: 'CAMERA',
+            構圖: 'CAMERA'
+        };
+
+        return labelMap[normalized] || null;
+    };
+
+    const parseStructuredPrompt = (prompt: string): PromptSection[] => {
+        return prompt.split('\n').map((line, lineIndex) => {
+            const match = line.match(/^\s*(\[[^\]]+\]|【[^】]+】|[A-Za-z][A-Za-z\s_-]*|[\u4e00-\u9fff]{1,12})\s*([:：])\s*(.*)$/);
+            if (!match) return null;
+
+            const label = normalizePromptSectionLabel(match[1]);
+            if (!label) return null;
+
+            return {
+                label,
+                value: match[3],
+                lineIndex,
+                prefix: match[1].trim(),
+                separator: match[2]
+            };
+        }).filter((section): section is PromptSection => Boolean(section));
+    };
+
+    const promptSectionsZH = parseStructuredPrompt(editablePromptZH);
+    const promptSectionsEN = parseStructuredPrompt(editablePrompt);
+    const hasStructuredPromptZH = promptSectionsZH.length >= 2;
+    const hasStructuredPromptEN = promptSectionsEN.length >= 2;
+
+    const getPromptSectionDisplayLabel = (label: string, lang: 'ZH' | 'EN') => {
+        if (lang === 'EN') return label;
+
+        const zhLabels: Record<string, string> = {
+            SUBJECT: '主體',
+            APPAREL: '穿搭',
+            ENVIRONMENT: '環境',
+            LIGHTING: '光影',
+            CAMERA: '鏡頭'
+        };
+
+        return zhLabels[label] || label;
+    };
+
     // Narrative Helpers
     const getEventSourceLabel = (source: EventSource) => {
         const labels: Record<EventSource, string> = {
@@ -958,34 +1037,27 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         <span className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">分段式編輯 (Modular Edit Mode)</span>
                                                         <div className="w-2 h-2 rounded-full bg-emerald-500/50 animate-pulse"></div>
                                                     </div>
-                                                    {editablePromptZH.includes('[') && editablePromptZH.includes(']: ') ? (
+                                                    {hasStructuredPromptZH ? (
                                                         <div className="grid grid-cols-1 gap-2.5">
-                                                            {editablePromptZH.split('\n').filter(l => l.trim().includes(']:')).map((line, i) => {
-                                                                const [key, ...val] = line.split(']: ');
-                                                                const displayKey = key.replace('[', '').replace(']', '');
-                                                                return (
-                                                                    <div key={i} className="group flex flex-col bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-3 hover:border-[var(--color-gold)]/30 transition-all shadow-sm">
-                                                                        <div className="flex justify-between items-center mb-1">
-                                                                            <span className="text-[8px] font-black text-[var(--color-gold)] uppercase tracking-widest pl-1">
-                                                                                {displayKey}
-                                                                            </span>
-                                                                            <div className="w-1 h-1 rounded-full bg-[var(--color-gold)]/20 group-hover:bg-[var(--color-gold)] transition-colors"></div>
-                                                                        </div>
-                                                                        <textarea 
-                                                                            className="w-full bg-transparent border-none p-0 text-[11px] text-[var(--color-text-main)] focus:ring-0 resize-none min-h-[40px] outline-none leading-relaxed placeholder-gray-500"
-                                                                            value={(val ?? []).join(']: ')}
-                                                                            onChange={(e) => {
-                                                                                const lines = editablePromptZH.split('\n');
-                                                                                const lineIdx = lines.findIndex(l => l.startsWith(key + ']:'));
-                                                                                if (lineIdx !== -1) {
-                                                                                    lines[lineIdx] = `${key}]: ${e.target.value}`;
-                                                                                    setEditablePromptZH(lines.join('\n'));
-                                                                                }
-                                                                            }}
-                                                                        />
+                                                            {promptSectionsZH.map((section) => (
+                                                                <div key={`${section.label}-${section.lineIndex}`} className="group flex flex-col bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-3 hover:border-[var(--color-gold)]/30 transition-all shadow-sm">
+                                                                    <div className="flex justify-between items-center mb-1">
+                                                                        <span className="text-[8px] font-black text-[var(--color-gold)] uppercase tracking-widest pl-1">
+                                                                            {getPromptSectionDisplayLabel(section.label, 'ZH')}
+                                                                        </span>
+                                                                        <div className="w-1 h-1 rounded-full bg-[var(--color-gold)]/20 group-hover:bg-[var(--color-gold)] transition-colors"></div>
                                                                     </div>
-                                                                );
-                                                            })}
+                                                                    <textarea 
+                                                                        className="w-full bg-transparent border-none p-0 text-[11px] text-[var(--color-text-main)] focus:ring-0 resize-none min-h-[40px] outline-none leading-relaxed placeholder-gray-500"
+                                                                        value={section.value}
+                                                                        onChange={(e) => {
+                                                                            const lines = editablePromptZH.split('\n');
+                                                                            lines[section.lineIndex] = `${section.prefix}${section.separator} ${e.target.value}`;
+                                                                            setEditablePromptZH(lines.join('\n'));
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                            ))}
                                                         </div>
                                                     ) : (
                                                         <textarea 
@@ -1003,29 +1075,24 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         <span className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">Visual DNA Editor (Modular)</span>
                                                         <div className="w-2 h-2 rounded-full bg-blue-500/50 animate-pulse"></div>
                                                     </div>
-                                                    {editablePrompt.includes('[') && editablePrompt.includes(']: ') ? (
+                                                    {hasStructuredPromptEN ? (
                                                         <div className="grid grid-cols-1 gap-2.5">
-                                                            {editablePrompt.split('\n').map((line, i) => {
-                                                                const [key, ...val] = line.split(']: ');
-                                                                if (!key || val.length === 0) return null;
-                                                                const displayKey = key.replace('[', '').replace(']', '');
-                                                                return (
-                                                                    <div key={i} className="group flex flex-col bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-3 hover:border-blue-500/20 transition-all">
-                                                                        <span className="text-[8px] font-mono font-bold text-blue-400/40 uppercase tracking-widest mb-1 pl-1">
-                                                                            {displayKey}
-                                                                        </span>
-                                                                        <textarea 
-                                                                            className="w-full bg-transparent border-none p-0 text-[10px] font-mono text-gray-400 focus:ring-0 resize-none min-h-[45px] outline-none leading-tight"
-                                                                            value={(val ?? []).join(']: ')}
-                                                                            onChange={(e) => {
-                                                                                const lines = editablePrompt.split('\n');
-                                                                                lines[i] = `[${displayKey}]: ${e.target.value}`;
-                                                                                setEditablePrompt(lines.join('\n'));
-                                                                            }}
-                                                                        />
-                                                                    </div>
-                                                                );
-                                                            }).filter(Boolean)}
+                                                            {promptSectionsEN.map((section) => (
+                                                                <div key={`${section.label}-${section.lineIndex}`} className="group flex flex-col bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-3 hover:border-blue-500/20 transition-all">
+                                                                    <span className="text-[8px] font-mono font-bold text-blue-400/40 uppercase tracking-widest mb-1 pl-1">
+                                                                        {section.label}
+                                                                    </span>
+                                                                    <textarea 
+                                                                        className="w-full bg-transparent border-none p-0 text-[10px] font-mono text-gray-400 focus:ring-0 resize-none min-h-[45px] outline-none leading-tight"
+                                                                        value={section.value}
+                                                                        onChange={(e) => {
+                                                                            const lines = editablePrompt.split('\n');
+                                                                            lines[section.lineIndex] = `${section.prefix}${section.separator} ${e.target.value}`;
+                                                                            setEditablePrompt(lines.join('\n'));
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                            ))}
                                                         </div>
                                                     ) : (
                                                         <textarea 

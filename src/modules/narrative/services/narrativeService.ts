@@ -917,12 +917,47 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
         }
 
         const data = JSON.parse(jsonStr.replace(/^[^{]*/, "").replace(/[^}]*$/, ""));
+
+        const ensurePromptSection = (
+            promptValue: unknown,
+            sectionPattern: RegExp,
+            fallbackLine: string,
+            insertBeforePattern: RegExp
+        ) => {
+            const promptText = typeof promptValue === 'string' ? promptValue.trim() : '';
+            if (!promptText) return fallbackLine;
+            if (sectionPattern.test(promptText)) return promptText;
+
+            const lines = promptText.split('\n');
+            const insertIndex = lines.findIndex(line => insertBeforePattern.test(line.trim()));
+
+            if (insertIndex >= 0) {
+                lines.splice(insertIndex, 0, fallbackLine);
+                return lines.join('\n');
+            }
+
+            return `${promptText}\n${fallbackLine}`;
+        };
+
+        const repairedVisualPrompt = ensurePromptSection(
+            data.visualPrompt,
+            /^\s*(\[Lighting\]|【Lighting】|Lighting)\s*[:：]/im,
+            `[Lighting]: natural ${weather} lighting matching ${primaryCity} ${location}, realistic ambient shadows, no studio lighting`,
+            /^\s*(\[Camera\]|【Camera】|Camera)\s*[:：]/im
+        );
+
+        const repairedVisualPromptZH = ensurePromptSection(
+            data.visualPromptZH,
+            /^\s*(\[光影\]|【光影】|光影)\s*[:：]/m,
+            `[光影]: 呼應${weather}與${primaryCity}${location}的自然光影、環境陰影與真實現場光感，避免棚拍燈感`,
+            /^\s*(\[鏡頭\]|【鏡頭】|鏡頭)\s*[:：]/m
+        );
         
         return {
             content: data.content,
             mood: data.mood,
-            visualPrompt: data.visualPrompt,
-            visualPromptZH: data.visualPromptZH,
+            visualPrompt: repairedVisualPrompt,
+            visualPromptZH: repairedVisualPromptZH,
             meta: {
                 ...data.meta,
                 petNote,
