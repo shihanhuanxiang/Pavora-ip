@@ -17,12 +17,47 @@ const PORT = 3000;
 
 const clientID = process.env.GOOGLE_CLIENT_ID;
 const clientSecret = process.env.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_CLIENT_SEC;
-const redirectUri = process.env.GOOGLE_REDIRECT_URI || process.env.GOOGLE_REDIRECT_U || `${process.env.APP_BASE_URL}/api/auth/google/callback`;
+const redirectUri = process.env.GOOGLE_REDIRECT_URI || process.env.GOOGLE_REDIRECT_U || process.env.GOOGLE_REDIRECT_L || `${process.env.APP_BASE_URL}/api/auth/google/callback`;
+
+const getRequestOrigin = (req: express.Request) => {
+  const forwardedProto = req.headers['x-forwarded-proto'];
+  const forwardedHost = req.headers['x-forwarded-host'];
+  const proto = Array.isArray(forwardedProto) ? forwardedProto[0] : forwardedProto;
+  const host = Array.isArray(forwardedHost) ? forwardedHost[0] : forwardedHost;
+  
+  // AI Studio 網域強制使用 https
+  const finalProto = (host?.includes('asia-northeast1.run.app') || host?.includes('aistudio.google')) ? 'https' : (proto || req.protocol);
+  return `${finalProto}://${host || req.get('host')}`;
+};
+
+const buildRedirectUri = (req: express.Request) => {
+  const currentOrigin = getRequestOrigin(req);
+  const potentialUris = [
+    process.env.GOOGLE_REDIRECT_URI,
+    process.env.GOOGLE_REDIRECT_U,
+    process.env.GOOGLE_REDIRECT_L,
+    process.env.GOOGLE_REDIRECT_PRE,
+    process.env.GOOGLE_REDIRECT_DEV
+  ].filter(Boolean) as string[];
+
+  // 嘗試在 Secrets 中尋找與目前網域匹配的設定 (精確匹配或包含網域)
+  const matchedUri = potentialUris.find(uri => currentOrigin.includes(new URL(uri).hostname));
+  
+  if (matchedUri) {
+    console.log(`Matched environment-specific redirect URI: ${matchedUri}`);
+    return matchedUri;
+  }
+
+  // 若無匹配則使用動態生成的網址
+  const dynamicUri = `${currentOrigin}/api/auth/google/callback`;
+  console.log(`No direct match in secrets, using dynamic: ${dynamicUri}`);
+  return dynamicUri;
+};
 
 console.log('--- Server Environment Check ---');
 console.log('GOOGLE_CLIENT_ID present:', !!clientID);
 console.log('GOOGLE_CLIENT_SECRET/SEC present:', !!clientSecret);
-console.log('GOOGLE_REDIRECT_URI/U:', redirectUri);
+console.log('Configured Secrets URIs:', [process.env.GOOGLE_REDIRECT_URI, process.env.GOOGLE_REDIRECT_L].filter(Boolean).join(', ') || 'NONE');
 console.log('APP_BASE_URL:', process.env.APP_BASE_URL);
 console.log('--------------------------------');
 
@@ -45,7 +80,15 @@ const SCOPES = [
 
 app.get('/api/auth/google/url', (req, res) => {
   console.log('GET /api/auth/google/url');
-  const url = oauth2Client.generateAuthUrl({
+  // AI Studio 優先使用動態偵測 buildRedirectUri(req)，確保跳轉網址正確
+  const finalRedirectUri = buildRedirectUri(req);
+  console.log('Google OAuth request redirect URI (Dynamic):', finalRedirectUri);
+  const requestOAuthClient = new google.auth.OAuth2(
+    clientID,
+    clientSecret,
+    finalRedirectUri
+  );
+  const url = requestOAuthClient.generateAuthUrl({
     access_type: 'offline',
     scope: SCOPES,
     prompt: 'consent'
@@ -54,26 +97,52 @@ app.get('/api/auth/google/url', (req, res) => {
 });
 
 app.get('/api/auth/google/callback', async (req, res) => {
-  console.log('GET /api/auth/google/callback');
+  console.log('GET /api/auth/google/callback - Code received:', !!req.query.code);
   const { code, error } = req.query;
 
   if (error) {
     console.error('Google OAuth error from query:', error);
     return res.send(`
       <html>
-        <body>
+        <body style="background: #111; color: white; display: flex; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif;">
+          <div style="text-align: center; padding: 40px; background: #222; border-radius: 20px; border: 1px solid #333;">
+            <h2 style="color: #ff5555; margin-bottom: 20px;">認證錯誤</h2>
+            <p style="opacity: 0.8;">${error}</p>
+            <p style="font-size: 12px; margin-top: 20px; color: #666;">視窗即將關閉...</p>
+          </div>
           <script>
-            window.opener.postMessage({ type: 'GOOGLE_AUTH_ERROR', error: '${error}' }, '*');
-            window.close();
+            if (window.opener) {
+              window.opener.postMessage({ type: 'GOOGLE_AUTH_ERROR', error: '${error}' }, '*');
+            }
+            setTimeout(() => window.close(), 2000);
           </script>
         </body>
       </html>
     `);
   }
 
+  if (!code) {
+    console.error('No code provided in Google OAuth callback');
+    return res.status(400).send('No code provided');
+  }
+
   try {
-    const { tokens } = await oauth2Client.getToken(code as string);
+    const finalRedirectUri = buildRedirectUri(req);
+    console.log('Google OAuth callback handler redirect URI (Dynamic):', finalRedirectUri);
+    
+    // Create temporary client to avoid modifying global client's private state
+    const callbackClient = new google.auth.OAuth2(
+      clientID,
+      clientSecret,
+      finalRedirectUri
+    );
+    
+    console.log('Exchanging code for tokens...');
+    const { tokens } = await callbackClient.getToken(code as string);
+    console.log('Tokens received successfully');
+
     if (tokens.refresh_token) {
+      console.log('Setting refresh token in cookie');
       res.cookie('google_refresh_token', tokens.refresh_token, {
         httpOnly: true,
         secure: true,
@@ -84,22 +153,36 @@ app.get('/api/auth/google/callback', async (req, res) => {
     
     res.send(`
       <html>
-        <body>
+        <body style="background: #111; color: white; display: flex; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif;">
+          <div style="text-align: center; padding: 40px; background: #222; border-radius: 20px; border: 1px solid #333; box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
+            <div style="font-size: 40px; margin-bottom: 20px;">✓</div>
+            <h2 style="color: #61DAFB; margin-bottom: 10px;">Google Drive 連線成功</h2>
+            <p style="opacity: 0.8;">身分驗證完成，正在同步資料...</p>
+            <p style="font-size: 11px; margin-top: 20px; color: #555;">SECURITY: SESSION ESTABLISHED</p>
+          </div>
           <script>
-            window.opener.postMessage({ type: 'GOOGLE_AUTH_SUCCESS' }, '*');
-            window.close();
+            if (window.opener) {
+              window.opener.postMessage({ type: 'GOOGLE_AUTH_SUCCESS' }, '*');
+            }
+            setTimeout(() => window.close(), 1500);
           </script>
         </body>
       </html>
     `);
   } catch (error: any) {
-    console.error('Error getting tokens from Google:', error?.response?.data || error.message || error);
+    console.error('Error during Google token exchange:', error?.response?.data || error.message || error);
     res.send(`
       <html>
-        <body>
+        <body style="background: #111; color: white; display: flex; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif;">
+          <div style="text-align: center; padding: 40px; background: #222; border-radius: 20px; border: 1px solid #333;">
+            <h2 style="color: #ff5555; margin-bottom: 20px;">連線失敗</h2>
+            <p style="opacity: 0.8;">${error.message || '認證程序發生錯誤'}</p>
+            <button onclick="window.close()" style="margin-top: 30px; background: #333; color: white; border: 1px solid #444; padding: 10px 24px; border-radius: 8px; cursor: pointer;">關閉視窗</button>
+          </div>
           <script>
-            window.opener.postMessage({ type: 'GOOGLE_AUTH_ERROR', error: 'auth_failed' }, '*');
-            window.close();
+            if (window.opener) {
+              window.opener.postMessage({ type: 'GOOGLE_AUTH_ERROR', error: 'auth_failed' }, '*');
+            }
           </script>
         </body>
       </html>

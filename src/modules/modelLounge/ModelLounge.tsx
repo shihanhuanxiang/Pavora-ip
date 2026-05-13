@@ -17,6 +17,7 @@ import ManualCropModal from '../../shared/components/business/ManualCropModal';
 import { detectMultiAngleLayout } from '../../shared/services/geminiService';
 import { useNotification } from '../../shared/context/NotificationContext';
 import Loader from '../../shared/components/common/Loader';
+import { checkGoogleDriveStatus, syncToGoogleDrive } from '../../shared/services/googleDriveService';
 
 import ModelIdentityEditor from './ModelIdentityEditor';
 import ModelActionMenu from './components/ModelActionMenu';
@@ -70,6 +71,8 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
   } | null>(null);
   const [selectedGalleryItems, setSelectedGalleryItems] = useState<Set<string>>(new Set());
   const [isPortfolioDeleteMode, setIsPortfolioDeleteMode] = useState(false);
+  const [isDriveSyncing, setIsDriveSyncing] = useState(false);
+  const [driveConnected, setDriveConnected] = useState(false);
 
   const [isFaceCropModalOpen, setIsFaceCropModalOpen] = useState(false);
   const [faceCropSource, setFaceCropSource] = useState<{ url: string; fileData: { data: string; mimeType: string } } | null>(null);
@@ -90,6 +93,10 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
     });
     return () => unsubscribe();
   }, [syncWithCloud]);
+
+  useEffect(() => {
+    checkGoogleDriveStatus().then(setDriveConnected);
+  }, []);
 
   const handleLogin = async () => {
     const provider = new GoogleAuthProvider();
@@ -160,11 +167,9 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
 
   const handleDelete = () => {
     if (selectedModels.size > 0) {
-      if (confirm(`確定要刪除選中的 ${selectedModels.size} 個模特兒人物嗎？此操作不可撤銷。`)) {
-        removeModels(Array.from(selectedModels));
-        setSelectedModels(new Set());
-        addNotification({ type: 'success', message: '模特兒人物已成功刪除' });
-      }
+      removeModels(Array.from(selectedModels));
+      setSelectedModels(new Set());
+      addNotification({ type: 'success', message: '模特兒人物已成功刪除' });
     }
   };
 
@@ -217,12 +222,68 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
   const handleDeleteGalleryItems = async () => {
     if (!viewingPortfolioModelId || selectedGalleryItems.size === 0) return;
     
-    if (confirm(`確定要刪除選中的 ${selectedGalleryItems.size} 張圖片嗎？`)) {
-        await removeFromModelGallery(viewingPortfolioModelId, Array.from(selectedGalleryItems));
-        setSelectedGalleryItems(new Set());
-        setIsPortfolioDeleteMode(false);
-        addNotification({ type: 'success', message: '圖片已成功刪除' });
+    await removeFromModelGallery(viewingPortfolioModelId, Array.from(selectedGalleryItems));
+    setSelectedGalleryItems(new Set());
+    setIsPortfolioDeleteMode(false);
+    addNotification({ type: 'success', message: '圖片已成功刪除' });
+  };
+
+  const handleSyncGalleryToDrive = async () => {
+    if (!viewingPortfolioModelId) return;
+    const model = models.find(m => m.id === viewingPortfolioModelId);
+    if (!model?.gallery?.length) return;
+
+    const unsynced = model.gallery.filter(item => !item.driveFileId);
+    if (unsynced.length === 0) {
+      addNotification({ type: 'info', message: '所有圖片已同步至 Google Drive' });
+      return;
     }
+
+    setIsDriveSyncing(true);
+    let successCount = 0;
+    let updatedGallery = model.gallery;
+
+    for (const item of unsynced) {
+      try {
+        let fileData = item.url;
+        if (item.url.startsWith('idb://')) {
+          const { imageDB } = await import('../../shared/services/imageDB');
+          const blob = await imageDB.get(item.url);
+          if (blob) fileData = await imageDB.blobToBase64(blob);
+        }
+
+        const result = await syncToGoogleDrive(
+          `ModelGallery_${viewingPortfolioModelId}_${item.timestamp}.png`,
+          fileData,
+          'image/png',
+          'Pavora_Model_Gallery'
+        );
+
+        if (result.success && result.fileId) {
+          const driveSyncedAt = new Date().toISOString();
+          updatedGallery = updatedGallery.map(g =>
+            g.id === item.id
+              ? { ...g, driveFileId: result.fileId, driveLink: result.link, driveSyncedAt }
+              : g
+          );
+          successCount++;
+        }
+      } catch (e) {
+        console.error('Drive sync failed for item', item.id, e);
+      }
+    }
+
+    if (successCount > 0) {
+      await updateModel(viewingPortfolioModelId, { gallery: updatedGallery });
+    }
+
+    setIsDriveSyncing(false);
+    addNotification({
+      type: successCount > 0 ? 'success' : 'error',
+      message: successCount > 0
+        ? `已同步 ${successCount} 張圖片至 Google Drive`
+        : '同步失敗，請確認 Google Drive 已連線'
+    });
   };
 
     return (
@@ -516,12 +577,23 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                                     </Button>
                                                 </>
                                             ) : (
-                                                <button 
-                                                    onClick={() => setIsPortfolioDeleteMode(true)}
-                                                    className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl text-[10px] font-bold tracking-widest text-gray-400 hover:text-white transition-all hover:border-red-500/50"
-                                                >
-                                                    🗑️ 批量刪除模式
-                                                </button>
+                                                <>
+                                                    <button 
+                                                        onClick={() => setIsPortfolioDeleteMode(true)}
+                                                        className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl text-[10px] font-bold tracking-widest text-gray-400 hover:text-white transition-all hover:border-red-500/50"
+                                                    >
+                                                        🗑️ 批量刪除模式
+                                                    </button>
+                                                    {driveConnected && (
+                                                        <button
+                                                            onClick={handleSyncGalleryToDrive}
+                                                            disabled={isDriveSyncing}
+                                                            className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl text-[10px] font-bold tracking-widest text-sky-400 hover:text-white transition-all hover:border-sky-500/50 disabled:opacity-30"
+                                                        >
+                                                            {isDriveSyncing ? '同步中...' : '☁️ 同步圖片到 Drive'}
+                                                        </button>
+                                                    )}
+                                                </>
                                             )}
                                             <Button onClick={() => setEditingModel(portfolioModel)} variant="secondary" className="px-6 py-3 border-white/10 text-[10px] tracking-widest">
                                                 編輯身份 (Edit Identity)
