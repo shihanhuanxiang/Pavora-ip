@@ -167,6 +167,8 @@ export interface IPLifeCircuit {
     relationships?: string[];
 }
 
+export type ContentCategory = 'lifestyle' | 'curve' | 'drama';
+
 export interface DiaryEntry {
     id: string;
     modelId: string;
@@ -179,6 +181,7 @@ export interface DiaryEntry {
     generatedPromptParams?: any;
     meta?: any;
     status: 'draft' | 'confirmed' | 'generated';
+    contentCategory?: ContentCategory;
 }
 
 export interface NarrativeContext {
@@ -385,6 +388,8 @@ export interface Model {
         narrativeContent?: string;
         visualPrompt?: string;
         visualPromptZH?: string;
+        contentCategory?: ContentCategory;
+        styleTags?: string[];
         driveFileId?: string;
         driveLink?: string;
         driveSyncedAt?: string;

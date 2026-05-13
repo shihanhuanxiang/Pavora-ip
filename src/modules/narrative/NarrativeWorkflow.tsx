@@ -592,7 +592,9 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                     url: generatedImageUrl,
                     narrativeContent: diary.content,
                     visualPrompt: editablePrompt,
-                    visualPromptZH: editablePromptZH
+                    visualPromptZH: editablePromptZH,
+                    contentCategory: diary.contentCategory,
+                    styleTags: diary.contentCategory ? [diary.contentCategory] : undefined
                 });
 
                 // 2. Extract potential memories

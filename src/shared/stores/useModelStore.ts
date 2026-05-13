@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import type { Model } from '../types/types';
+import type { Model, ContentCategory } from '../types/types';
 import { imageDB, base64ToBlob } from '../services/imageDB';
 import { saveModelToCloud, getMyCloudModels, deleteModelFromCloud } from '../services/firebase/modelService';
 import { checkGoogleDriveStatus, syncToGoogleDrive } from '../services/googleDriveService';
@@ -21,6 +21,8 @@ interface ModelState {
     narrativeContent?: string;
     visualPrompt?: string;
     visualPromptZH?: string;
+    contentCategory?: ContentCategory;
+    styleTags?: string[];
   }) => Promise<void>;
   removeFromModelGallery: (modelId: string, itemIds: string[]) => Promise<void>;
 }
@@ -168,6 +170,8 @@ export const useModelStore = create<ModelState>()(
                     narrativeContent: item.narrativeContent,
                     visualPrompt: item.visualPrompt,
                     visualPromptZH: item.visualPromptZH,
+                    contentCategory: item.contentCategory,
+                    styleTags: item.styleTags,
                     driveFileId,
                     driveLink,
                     driveSyncedAt
@@ -282,6 +286,8 @@ export const useModelStore = create<ModelState>()(
             narrativeContent: item.narrativeContent ? item.narrativeContent.slice(0, 300) : undefined,
             visualPrompt: item.visualPrompt ? item.visualPrompt.slice(0, 1200) : undefined,
             visualPromptZH: item.visualPromptZH ? item.visualPromptZH.slice(0, 800) : undefined,
+            contentCategory: item.contentCategory,
+            styleTags: item.styleTags,
             driveFileId: item.driveFileId,
             driveLink: item.driveLink,
             driveSyncedAt: item.driveSyncedAt

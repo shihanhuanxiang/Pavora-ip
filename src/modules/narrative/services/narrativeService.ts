@@ -970,6 +970,39 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
         ? ["X", "Fanvue", "OnlyFans"] 
         : ["Instagram", "Threads", "TikTok", "Facebook"];
 
+    const categoryText = [
+        event,
+        contextId,
+        sceneContext.category,
+        sceneContext.name_zh,
+        sceneContext.event,
+        sceneContext.scene_context_id,
+        ...(Array.isArray((sceneContext as any).outfit_filter) ? (sceneContext as any).outfit_filter : [])
+    ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+    const contentCategory: DiaryEntry['contentCategory'] =
+        sceneContext.flags?.intimacy_emotional ||
+        sceneContext.flags?.story_arc_id ||
+        sceneContext.flags?.identity_thread_id ||
+        categoryText.includes("dramatic") ||
+        categoryText.includes("drama") ||
+        categoryText.includes("stage") ||
+        categoryText.includes("spotlight") ||
+        categoryText.includes("cinematic")
+            ? "drama"
+            : categoryText.includes("bikini") ||
+                categoryText.includes("swimwear") ||
+                categoryText.includes("bodycon") ||
+                categoryText.includes("sport") ||
+                categoryText.includes("tight") ||
+                categoryText.includes("curve") ||
+                targetTier >= 4
+                ? "curve"
+                : "lifestyle";
+
     const prompt = `
 你是一位高級數位內容編導與靈魂敘事者（Creative Director & Soul Narrator）。
 你的任務是為 IP 角色 ${model.name} 生成一篇極具「台灣體溫」且「去 AI 化」的生活紀錄。
@@ -1125,6 +1158,7 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
             mood: data.mood,
             visualPrompt: sanitizedVisualPrompt,
             visualPromptZH: sanitizedVisualPromptZH,
+            contentCategory,
             meta: {
                 ...data.meta,
                 petNote,
@@ -1141,7 +1175,8 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
             content: "（視線漫無目的地掃過城市的皺摺，那些瑣碎的聲音與氣味在空氣中凝結。此刻的真實，往往藏在那些最不起眼的雜訊裡...）",
             mood: "沉浸",
             visualPrompt: finalVisualPrompt,
-            visualPromptZH: "基本的視覺提示詞備援"
+            visualPromptZH: "基本的視覺提示詞備援",
+            contentCategory
         };
     }
 };

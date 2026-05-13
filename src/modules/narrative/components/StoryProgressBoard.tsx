@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import type { Model, StoryArc, IdentityThread } from '../../../shared/types/types';
+import type { Model, StoryArc, IdentityThread, ContentCategory } from '../../../shared/types/types';
 import { STORY_ARCS, IDENTITY_THREADS } from '../constants/storyElements';
 
 interface StoryProgressBoardProps {
@@ -22,8 +22,67 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
     const activeArc = allArcs.find(a => a.arc_id === activeArcId);
     const arcPhaseIdx = model.preferences?.active_arc_phase_index || 0;
 
+    const galleryEntries = model.gallery || [];
+    const contentCategories: ContentCategory[] = ['lifestyle', 'curve', 'drama'];
+    const categoryMeta: Record<ContentCategory, { label: string; target: number; color: string; glow: string }> = {
+        lifestyle: { label: '生活感', target: 50, color: 'bg-sky-400', glow: 'shadow-[0_0_12px_rgba(56,189,248,0.35)]' },
+        curve: { label: '曲線感', target: 30, color: 'bg-rose-400', glow: 'shadow-[0_0_12px_rgba(251,113,133,0.35)]' },
+        drama: { label: '戲劇張力', target: 20, color: 'bg-violet-400', glow: 'shadow-[0_0_12px_rgba(167,139,250,0.35)]' }
+    };
+    const categorizedTotal = galleryEntries.filter(item => Boolean(item.contentCategory)).length;
+    const uncategorizedTotal = Math.max(galleryEntries.length - categorizedTotal, 0);
+    const categoryRows = contentCategories.map(category => {
+        const count = galleryEntries.filter(item => item.contentCategory === category).length;
+        const percent = categorizedTotal > 0 ? Math.round((count / categorizedTotal) * 100) : 0;
+        return {
+            category,
+            count,
+            percent,
+            ...categoryMeta[category]
+        };
+    });
+
     return (
         <div className="space-y-8">
+            <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-[2.5rem] p-6 space-y-5 relative overflow-hidden"
+            >
+                <div className="absolute -top-12 -left-12 w-36 h-36 bg-sky-400/[0.04] rounded-full blur-[70px]"></div>
+                <div className="relative z-10 flex items-center justify-between gap-4">
+                    <div className="space-y-1">
+                        <h4 className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.35em] italic">內容比例 // 50 / 30 / 20</h4>
+                        <p className="text-[10px] text-gray-500 font-bold tracking-wider">已分類 {categorizedTotal} 張，未分類 {uncategorizedTotal} 張</p>
+                    </div>
+                    <div className="px-3 py-1 bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-full">
+                        <span className="text-[9px] text-gray-400 font-black uppercase tracking-widest">GALLERY MIX</span>
+                    </div>
+                </div>
+
+                <div className="relative z-10 space-y-4">
+                    {categoryRows.map(row => (
+                        <div key={row.category} className="space-y-2">
+                            <div className="flex items-center justify-between gap-3">
+                                <div className="flex items-center gap-2">
+                                    <span className={`w-2 h-2 rounded-full ${row.color} ${row.glow}`}></span>
+                                    <span className="text-[10px] text-[var(--color-text-title)] font-black tracking-[0.2em] uppercase">{row.label}</span>
+                                </div>
+                                <span className="text-[10px] text-gray-400 font-black tabular-nums">{row.percent}% / 目標 {row.target}%</span>
+                            </div>
+                            <div className="h-1.5 w-full bg-[var(--color-bg-input)] rounded-full overflow-hidden">
+                                <motion.div
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${Math.min(row.percent, 100)}%` }}
+                                    transition={{ duration: 0.8, ease: "easeOut" }}
+                                    className={`h-full rounded-full ${row.color}`}
+                                />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </motion.div>
+
             {/* Story Arc Section */}
             {!isArcEnabled ? (
                 <div className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-[2rem] p-6 text-center opacity-40 group hover:opacity-60 transition-all">
