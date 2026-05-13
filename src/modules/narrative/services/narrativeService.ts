@@ -433,6 +433,50 @@ const buildFinalVisualPromptV11 = (
     const forcedAction = facialActions[Math.floor(Math.random() * facialActions.length)];
 
     // Layer 7_5_BODY: 肢體姿勢池(獨立於表情,提供身體動作維度)
+    const inferBodyPoseBlockers = (sceneText: string, options?: { isPOV?: boolean }): string[] => {
+        const blockers: string[] = [];
+        const combinedText = (sceneText || "").toLowerCase();
+        
+        if (/捷運|車站|高鐵|台鐵|公車|通勤|機場|電扶梯|mrt|train|station|escalator|airport/i.test(combinedText)) {
+            blockers.push('lying', 'bed', 'floor', 'grass', 'kneeling', 'crouching', 'squatting', 'cross-legged', 'arms wrapped around knees');
+        }
+        if (/超商|便利|7-11|全家|商場|百貨|逛街|shopping|store|mall|convenience/i.test(combinedText)) {
+            blockers.push('lying', 'bed', 'grass', 'motorcycle', 'scooter', 'vehicle');
+        }
+        if (/咖啡|咖啡廳|cafe|茶|甜點|brunch|慶|小吃|餐廳|食物|市場|food|restaurant|snack/i.test(combinedText)) {
+            blockers.push('bed', 'grass', 'motorcycle', 'scooter', 'vehicle');
+        }
+        if (/辦公|公司|會議|工作|coworking|office/i.test(combinedText)) {
+            blockers.push('bed', 'grass', 'motorcycle', 'scooter', 'vehicle');
+        }
+        if (/海|山|湖|步道|公園|戶外|草地|河|beach|park|trail|outdoor|nature/i.test(combinedText)) {
+            blockers.push('bed');
+        }
+        
+        if (options?.isPOV === true) {
+            blockers.push('both hands', 'full body', 'lying', 'kneeling', 'crouching', 'squatting', 'cross-legged', 'leaning against motorcycle', 'scooter', 'vehicle');
+        }
+        
+        return blockers;
+    };
+
+    const isBodyPoseAllowed = (pose: string, blockers: string[]): boolean => {
+        const lowerPose = pose.toLowerCase();
+        return !blockers.some(blocker => lowerPose.includes(blocker));
+    };
+
+    const pickSceneSafeBodyPose = (poses: string[], sceneText: string, options?: { isPOV?: boolean }): string => {
+        const blockers = inferBodyPoseBlockers(sceneText, options);
+        const candidates = poses.filter(p => isBodyPoseAllowed(p, blockers));
+        
+        if (candidates.length > 0) {
+            return candidates[Math.floor(Math.random() * candidates.length)];
+        }
+        
+        // Fallback safety pose
+        return "BODY POSE REQUIRED: relaxed upper-body candid posture with shoulders slightly angled, natural hands within frame, NOT lying, NOT kneeling, NOT full-body floor pose";
+    };
+
     const bodyPoses = [
         // 坐姿類 (5 個)
         "BODY POSE REQUIRED: sitting cross-legged on floor with one hand resting on knee, relaxed casual posture, NOT standing straight",
@@ -468,7 +512,7 @@ const buildFinalVisualPromptV11 = (
         "BODY POSE REQUIRED: leaning against motorcycle, scooter, or vehicle with hand on it, urban prop interaction, NOT empty-space pose",
         "BODY POSE REQUIRED: arms wrapped around self in slight chill or shy gesture, body language inward, NOT open-arms confidence pose"
     ];
-    const forcedBodyPose = bodyPoses[Math.floor(Math.random() * bodyPoses.length)];
+    const forcedBodyPose = pickSceneSafeBodyPose(bodyPoses, layer4, options);
     
     layer7_5 = layer7_5 
         ? `${layer7_5}. ${forcedAction}. ${forcedBodyPose}` 
@@ -1715,7 +1759,9 @@ export const generateRandomEventWithScene = (model: Model): { text: string; scen
     ];
 
     const isLikelyNonPlace = (label: string) => {
-        return nonPlaceTerms.some(term => label.includes(term));
+        if (!label) return true;
+        const suspiciousWords = ["等待", "滴到", "燒焦", "初學", "外送", "Uber", "Eats", "饅頭", "發票", "充電線", "紙巾", "手機殼", "包包拉鍊", "髮圈"];
+        return nonPlaceTerms.some(term => label.includes(term)) || suspiciousWords.some(word => label.includes(word));
     };
 
     const placeLabel = rawSceneLabel && !isLikelyNonPlace(rawSceneLabel)
