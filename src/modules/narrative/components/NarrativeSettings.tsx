@@ -156,6 +156,31 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
     const genderPresets = VISUAL_PRESETS.filter(
         p => p.gender === model.gender?.charAt(0).toUpperCase() || p.gender === 'U'
     );
+    const styleBible = model.styleBible || {};
+    const styleTargets = styleBible.contentTargets || {};
+    const contentTargetInputs: { key: 'lifestyle' | 'curve' | 'drama'; label: string; fallback: number }[] = [
+        { key: 'lifestyle', label: '生活感 // LIFESTYLE', fallback: 50 },
+        { key: 'curve', label: '曲線感 // CURVE', fallback: 30 },
+        { key: 'drama', label: '戲劇張力 // DRAMA', fallback: 20 }
+    ];
+
+    const handleUpdateStyleTarget = (category: 'lifestyle' | 'curve' | 'drama', value: string) => {
+        const numericValue = Number(value);
+        if (Number.isNaN(numericValue)) return;
+
+        onUpdate({
+            styleBible: {
+                ...styleBible,
+                contentTargets: {
+                    lifestyle: styleTargets.lifestyle ?? 50,
+                    curve: styleTargets.curve ?? 30,
+                    drama: styleTargets.drama ?? 20,
+                    [category]: Math.max(0, Math.min(100, numericValue))
+                },
+                updatedAt: Date.now()
+            }
+        });
+    };
 
     return (
         <div className="space-y-12 p-10 bg-black/5 dark:bg-black/40 border border-black/5 dark:border-white/10 rounded-[3rem] backdrop-blur-xl">
@@ -231,6 +256,39 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                         <div className="pt-1 text-[8px] italic opacity-50 italic">此預設已優化層次：Layer 1, 7.5, 8.5, 9</div>
                     </motion.div>
                 )}
+            </motion.div>
+
+            <hr className="border-white/5" />
+
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-6 text-left"
+            >
+                <div className="flex items-center gap-3">
+                    <div className="w-1.5 h-4 bg-[var(--color-gold)] rounded-full shadow-[0_0_12px_rgba(var(--color-gold-rgb),0.4)]"></div>
+                    <h4 className="text-[11px] font-black text-[var(--color-gold)] uppercase tracking-[0.3em]">IP 風格聖經 // STYLE BIBLE</h4>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {contentTargetInputs.map((item) => (
+                        <div key={item.key} className="space-y-2 group">
+                            <label className="text-[10px] text-gray-500 font-bold uppercase tracking-widest group-focus-within:text-[var(--color-gold)] transition-colors inline-block">{item.label}</label>
+                            <input
+                                type="number"
+                                min="0"
+                                max="100"
+                                value={styleTargets[item.key] ?? item.fallback}
+                                onChange={e => handleUpdateStyleTarget(item.key, e.target.value)}
+                                className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-4 py-3 text-sm text-[var(--color-text-main)] focus:border-[var(--color-gold)] outline-none transition-all"
+                            />
+                        </div>
+                    ))}
+                </div>
+
+                <div className="p-4 rounded-2xl bg-[var(--color-gold)]/5 border border-[var(--color-gold)]/20 text-[9px] text-gray-400 leading-relaxed">
+                    目前目標比例：生活感 {styleTargets.lifestyle ?? 50}% / 曲線感 {styleTargets.curve ?? 30}% / 戲劇張力 {styleTargets.drama ?? 20}%
+                </div>
             </motion.div>
 
             <hr className="border-white/5" />

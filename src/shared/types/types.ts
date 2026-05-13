@@ -169,6 +169,22 @@ export interface IPLifeCircuit {
 
 export type ContentCategory = 'lifestyle' | 'curve' | 'drama';
 
+export interface IPStyleBible {
+    referenceId?: string;
+    contentTargets?: Record<ContentCategory, number>;
+    visualKeywords?: string[];
+    signatureScenes?: string[];
+    signatureOutfits?: string[];
+    signaturePoses?: string[];
+    expressionPalette?: string[];
+    cameraLanguage?: string[];
+    colorPalette?: string[];
+    captionTone?: string[];
+    avoid?: string[];
+    notes?: string;
+    updatedAt?: number;
+}
+
 export interface DiaryEntry {
     id: string;
     modelId: string;
@@ -351,6 +367,7 @@ export interface Model {
     visualConstants?: IPVisualConstants;
     lifeCircuit?: IPLifeCircuit;
     worldAnchors?: WorldAnchors;
+    styleBible?: IPStyleBible;
     stats?: ModelData['stats'];
     advancedStats?: AdvancedPhysiqueStats;
     gender?: string;
