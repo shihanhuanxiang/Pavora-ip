@@ -5,6 +5,7 @@ import Loader from '../../shared/components/common/Loader';
 import { generateIPDiary, generateRandomEvent, syncPrompts, generateDynamicEvent, extractNewMemories, generateRandomEventWithScene, generateDynamicEventWithScene } from './services/narrativeService';
 import { OrchestratorService } from './services/orchestratorService';
 import { transformImage } from '../../shared/services/geminiService';
+import { validatePromptText } from '../../shared/services/promptSanitizer';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNotification } from '../../shared/context/NotificationContext';
 import { useModelStore } from '../../shared/stores/useModelStore';
@@ -186,6 +187,45 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         if (aspectRatio === '1:1') return '社群貼文 / Post';
         if (aspectRatio === '4:5') return 'IG 直式貼文';
         return '自訂素材';
+    };
+
+    const buildPromptDebugHash = (value: string): string => {
+        let hash = 5381;
+        for (let i = 0; i < value.length; i += 1) {
+            hash = ((hash << 5) + hash) + value.charCodeAt(i);
+            hash = hash >>> 0;
+        }
+        return hash.toString(16).padStart(8, '0').slice(-10);
+    };
+
+    const writeActualImagePromptDebugSnapshot = (
+        finalImagePrompt: string,
+        details: {
+            faceReferenceCount: number;
+            additionalReferenceCount: number;
+            hasPetNote: boolean;
+            hasSecondaryRefNote: boolean;
+        }
+    ) => {
+        if (typeof window === 'undefined' || !window.localStorage || window.localStorage.getItem('PAVORA_DEBUG_PROMPT') !== '1') {
+            return;
+        }
+
+        const debugSnapshot = {
+            source: 'NarrativeWorkflow.handleGenerateImage',
+            timestamp: new Date().toISOString(),
+            promptHash: buildPromptDebugHash(finalImagePrompt),
+            finalLength: finalImagePrompt.length,
+            sanitizerReport: validatePromptText(finalImagePrompt),
+            finalPrompt: finalImagePrompt,
+            aspectRatio,
+            quality,
+            isPOV,
+            ...details
+        };
+
+        window.localStorage.setItem('PAVORA_LAST_FINAL_PROMPT_DEBUG', JSON.stringify(debugSnapshot));
+        console.info('[PAVORA_DEBUG_PROMPT]', debugSnapshot);
     };
 
     const faceReferenceCount = (model.preferences?.face_reference_urls || []).filter(Boolean).length;
@@ -450,9 +490,17 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             imageConfig.imageSize = resolutionTier;
 
             // PRO 模式啟動「身份強化」flag,由 transformImage 內部處理
+            const finalImagePrompt = editablePrompt + (diary?.meta?.petNote || '') + secondaryRefNote;
+            writeActualImagePromptDebugSnapshot(finalImagePrompt, {
+                faceReferenceCount: faceRefs.length,
+                additionalReferenceCount: additionalRefs.length,
+                hasPetNote: Boolean(diary?.meta?.petNote),
+                hasSecondaryRefNote: Boolean(secondaryRefNote)
+            });
+
             const url = await transformImage(
                 sourceImageData,
-                editablePrompt + (diary?.meta?.petNote || '') + secondaryRefNote,
+                finalImagePrompt,
                 additionalRefs,
                 undefined,
                 { 

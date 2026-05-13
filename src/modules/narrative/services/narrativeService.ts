@@ -274,6 +274,15 @@ const buildPersonaVisualLayer = (model: Model): string => {
     return rules.join('. ');
 };
 
+const buildPromptDebugHash = (value: string): string => {
+    let hash = 5381;
+    for (let i = 0; i < value.length; i += 1) {
+        hash = ((hash << 5) + hash) + value.charCodeAt(i);
+        hash = hash >>> 0;
+    }
+    return hash.toString(16).padStart(8, '0').slice(-10);
+};
+
 /**
  * Builds the final prompt structure based on v1.1 10-layer拼接規點.
  */
@@ -587,12 +596,19 @@ const buildFinalVisualPromptV11 = (
     const sanitized = sanitizeFinalPrompt(rawPrompt);
 
     if (typeof window !== 'undefined' && window.localStorage && window.localStorage.getItem('PAVORA_DEBUG_PROMPT') === '1') {
-        console.info('[PAVORA_DEBUG_PROMPT]', {
+        const debugSnapshot = {
             source: 'buildFinalVisualPromptV11',
-            rawPrompt,
+            timestamp: new Date().toISOString(),
+            promptHash: buildPromptDebugHash(sanitized.prompt),
+            rawLength: rawPrompt.length,
+            finalLength: sanitized.prompt.length,
+            sanitizerReport: sanitized.report,
             finalPrompt: sanitized.prompt,
-            sanitizerReport: sanitized.report
-        });
+            rawPrompt
+        };
+
+        window.localStorage.setItem('PAVORA_LAST_FINAL_PROMPT_DEBUG', JSON.stringify(debugSnapshot));
+        console.info('[PAVORA_DEBUG_PROMPT]', debugSnapshot);
     }
 
     return sanitized.prompt;
