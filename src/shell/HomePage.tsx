@@ -38,35 +38,69 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     [models, activeModelId]
   );
 
-  const hubs = [
-    { 
-      id: 'brand_identity_hub', 
-      zh: '品牌形象中心', 
-      en: 'Brand Identity Hub', 
-      desc: '管理品牌專屬模特兒、妝造與身份鎖定',
-      icon: <ModelIcon />, 
-      color: 'from-amber-500/20 to-transparent',
-      size: 'large' 
-    },
-    { 
-      id: 'marketing_factory', 
-      zh: '行銷素材工廠', 
-      en: 'Marketing Factory', 
-      desc: '批次產出電商海報、精品廣告與社群素材',
-      icon: <PosterEngineIcon />, 
-      color: 'from-blue-500/20 to-transparent',
-      size: 'large' 
-    },
-    { 
-      id: 'motion_hub', 
-      zh: '動態視覺中心', 
-      en: 'Motion & Cinematic', 
-      desc: '產出 Reels/TikTok 適用之產品動態特寫',
-      icon: <DirectorModeIcon />, 
-      color: 'from-purple-500/20 to-transparent',
-      size: 'large' 
-    },
-  ];
+  const hubs = useMemo(() => {
+    if (projectMode === 'ip_creator') {
+      return [
+        { 
+          id: 'lounge', 
+          zh: 'IP 休息室', 
+          en: 'IP Lounge', 
+          desc: '管理目前 IP 的身份鎖定、基準圖、作品集與靈魂敘事入口',
+          icon: <ModelLoungeIcon />, 
+          color: 'from-amber-500/20 to-transparent',
+          size: 'large' 
+        },
+        { 
+          id: 'model_setup', 
+          zh: '建立或更新 IP', 
+          en: 'Create / Refine IP', 
+          desc: '建立新角色，或延伸既有 IP 的臉部方向、妝髮與視覺身份',
+          icon: <ModelIcon />, 
+          color: 'from-rose-500/20 to-transparent',
+          size: 'large' 
+        },
+        { 
+          id: 'portfolio', 
+          zh: '作品與內容庫', 
+          en: 'Content Gallery', 
+          desc: '整理 IP 已產出的日常、曲線與戲劇張力內容素材',
+          icon: <PortfolioGalleryIcon />, 
+          color: 'from-purple-500/20 to-transparent',
+          size: 'large' 
+        },
+      ];
+    }
+
+    return [
+      { 
+        id: 'brand_identity_hub', 
+        zh: '品牌形象中心', 
+        en: 'Brand Identity Hub', 
+        desc: '管理品牌專屬模特兒、妝造與身份鎖定',
+        icon: <ModelIcon />, 
+        color: 'from-amber-500/20 to-transparent',
+        size: 'large' 
+      },
+      { 
+        id: 'marketing_factory', 
+        zh: '行銷素材工廠', 
+        en: 'Marketing Factory', 
+        desc: '批次產出電商海報、精品廣告與社群素材',
+        icon: <PosterEngineIcon />, 
+        color: 'from-blue-500/20 to-transparent',
+        size: 'large' 
+      },
+      { 
+        id: 'motion_hub', 
+        zh: '動態視覺中心', 
+        en: 'Motion & Cinematic', 
+        desc: '產出 Reels/TikTok 適用之產品動態特寫',
+        icon: <DirectorModeIcon />, 
+        color: 'from-purple-500/20 to-transparent',
+        size: 'large' 
+      },
+    ];
+  }, [projectMode]);
 
   const advancedTools = useMemo(() => {
     const allTools = [
@@ -94,7 +128,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           Pavora
         </h1>
         <p className="text-[var(--color-text-dim)] text-xs tracking-[0.4em] font-light uppercase">
-          Enterprise AI Fashion Engine
+          {projectMode === 'commerce' ? 'Enterprise AI Fashion Engine' : 'Virtual IP Operating Studio'}
         </p>
 
         {/* Project Mode Toggle */}
@@ -121,7 +155,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       {/* Mode Description Tip */}
       <div className="mb-12 text-center animate-fade-in">
           <p className="text-[10px] font-bold text-[var(--color-gold)] uppercase tracking-[0.2em] mb-1">
-              {projectMode === 'commerce' ? '⚡ 專注於快速產出、試衣與大規模自動化行銷' : '🎬 專注於 IP 人設孵化、靈魂敘事與長篇內容創作'}
+              {projectMode === 'commerce' ? '專注於快速產出、試衣與大規模自動化行銷' : '從身份、作品集到日常內容，接續經營同一個虛擬 IP'}
           </p>
           <div className="w-12 h-0.5 bg-[var(--color-gold)]/30 mx-auto"></div>
       </div>
