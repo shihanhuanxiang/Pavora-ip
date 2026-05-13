@@ -111,6 +111,7 @@ The body proportions are extreme (Bust:${params.bust}, Waist:${params.waist}). Y
                     gender: params.gender,
                     age: params.age,
                     persona: params.persona,
+                    visualIdentityHint: params.visualIdentityHint,
                     lifeCircuit: params.lifeCircuit,
                     stats: {
                         height: params.height,

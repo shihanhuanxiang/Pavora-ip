@@ -17,7 +17,7 @@ export const EXTENDED_SCENES_PART2: ExtendedScene[] = [
     "outfit_hint": "the new dress on hanger + casual home wear",
     "spicy_level": 1,
     "pov_modes": ["mirror_self", "top_down_28"],
-    "promptSkeleton": "Asian woman holding new dress on hanger in bedroom mirror, price tag still attached visible, slight excited smile, hand smoothing fabric, late afternoon warm --no perfect skin",
+    "promptSkeleton": "{subject} holding new dress on hanger in bedroom mirror, price tag still attached visible, slight excited smile, hand smoothing fabric, late afternoon warm --no perfect skin",
     "negative_prompt": "plastic skin, doll-like face, perfect symmetry, airbrushed, oversaturated, HDR, fake bokeh, instagram filter, watermark, text, logo, deformed hand, extra fingers, no phone visible in frame, no second phone in mirror, no selfie stick, no studio lighting, no model pose",
     "emotions": ["期待"],
     "flags": {
@@ -50,7 +50,7 @@ export const EXTENDED_SCENES_PART2: ExtendedScene[] = [
     "outfit_hint": "the new dress + bare feet",
     "spicy_level": 2,
     "pov_modes": ["mirror_self", "selfie_front"],
-    "promptSkeleton": "Asian woman trying on the new dress in bedroom mirror late evening, hand smoothing skirt, half-uncertain face deciding, dim warm light, single flyaway hair --no airbrushed",
+    "promptSkeleton": "{subject} trying on the new dress in bedroom mirror late evening, hand smoothing skirt, half-uncertain face deciding, dim warm light, single flyaway hair --no airbrushed",
     "negative_prompt": "plastic skin, doll-like face, perfect symmetry, airbrushed, oversaturated, HDR, fake bokeh, instagram filter, watermark, text, logo, deformed hand, extra fingers, no phone visible in frame, no second phone in mirror, no selfie stick, no studio lighting, no model pose",
     "emotions": ["期待", "沉浸"],
     "flags": {
@@ -83,7 +83,7 @@ export const EXTENDED_SCENES_PART2: ExtendedScene[] = [
     "outfit_hint": "THE dress + sandals + woven bag",
     "spicy_level": 2,
     "pov_modes": ["friend_pov_35", "top_down_28"],
-    "promptSkeleton": "Asian woman wearing the new dress at cafe, golden afternoon light, friend Kiki's 35mm candid, faint excited glance down at outfit, hand smoothing skirt --no studio light",
+    "promptSkeleton": "{subject} wearing the new dress at cafe, golden afternoon light, friend Kiki's 35mm candid, faint excited glance down at outfit, hand smoothing skirt --no studio light",
     "negative_prompt": "plastic skin, doll-like face, perfect symmetry, airbrushed, oversaturated, HDR, fake bokeh, instagram filter, watermark, text, logo, deformed hand, extra fingers, no phone visible in frame, no second phone in mirror, no selfie stick, no studio lighting, no model pose",
     "emotions": ["日常", "釋然"],
     "flags": {
@@ -149,7 +149,7 @@ export const EXTENDED_SCENES_PART2: ExtendedScene[] = [
     "outfit_hint": "oversized t-shirt",
     "spicy_level": 2,
     "pov_modes": ["selfie_front", "mirror_self"],
-    "promptSkeleton": "Asian woman in bed at 11pm scrolling phone, blue phone glow on face, hair messy on pillow, slight zoned-out gaze, mouth half-open, faint streetlamp through curtain --no plastic skin",
+    "promptSkeleton": "{subject} in bed at 11pm scrolling phone, blue phone glow on face, hair messy on pillow, slight zoned-out gaze, mouth half-open, faint streetlamp through curtain --no plastic skin",
     "negative_prompt": "plastic skin, doll-like face, perfect symmetry, airbrushed, oversaturated, HDR, fake bokeh, instagram filter, watermark, text, logo, deformed hand, extra fingers, no phone visible in frame, no second phone in mirror, no selfie stick, no studio lighting, no model pose",
     "emotions": ["沉浸", "日常"],
     "flags": {

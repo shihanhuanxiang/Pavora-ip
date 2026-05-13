@@ -330,6 +330,13 @@ export interface WeeklyPlanBrief {
     isThreadScene?: boolean;
 }
 
+export interface VisualIdentityHint {
+  subjectDescriptor: string;
+  facialLineageHint: string;
+  styleReferenceHint: string;
+  hairMakeupHint: string;
+}
+
 export interface Model { 
     id: string; 
     name: string; 
@@ -337,6 +344,7 @@ export interface Model {
     type: 'standard' | 'custom'; 
     schemaVersion?: string; 
     persona?: IPPersona;
+    visualIdentityHint?: VisualIdentityHint;
     visualConstants?: IPVisualConstants;
     lifeCircuit?: IPLifeCircuit;
     worldAnchors?: WorldAnchors;

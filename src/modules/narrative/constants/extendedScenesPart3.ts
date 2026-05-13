@@ -17,7 +17,7 @@ export const EXTENDED_SCENES_PART3: ExtendedScene[] = [
     "outfit_hint": "down jacket + scarf + beanie + boots",
     "spicy_level": 1,
     "pov_modes": ["selfie_front", "friend_pov_35"],
-    "promptSkeleton": "Asian woman in down jacket scarf and beanie standing outside convenience store on 7-degree cold day, red nose tip, breath visible, hand wrapped on hot drink, slight tired smile --no plastic skin",
+    "promptSkeleton": "{subject} in down jacket scarf and beanie standing outside convenience store on 7-degree cold day, red nose tip, breath visible, hand wrapped on hot drink, slight tired smile --no plastic skin",
     "negative_prompt": "plastic skin, doll-like face, perfect symmetry, airbrushed, oversaturated, HDR, fake bokeh, instagram filter, watermark, text, logo, deformed hand, extra fingers, no phone visible in frame, no second phone in mirror, no selfie stick, no studio lighting, no model pose",
     "emotions": ["日常", "脆弱"],
     "flags": {
@@ -50,7 +50,7 @@ export const EXTENDED_SCENES_PART3: ExtendedScene[] = [
     "outfit_hint": "apron + casual home",
     "spicy_level": 1,
     "pov_modes": ["top_down_28", "candid_50"],
-    "promptSkeleton": "Asian woman in kitchen attempting first pour-over, V60 dripper, over-extracted dark coffee, slight frustrated frown, scattered coffee grounds on counter, faint burnt-bitter smell --no airbrushed",
+    "promptSkeleton": "{subject} in kitchen attempting first pour-over, V60 dripper, over-extracted dark coffee, slight frustrated frown, scattered coffee grounds on counter, faint burnt-bitter smell --no airbrushed",
     "negative_prompt": "plastic skin, doll-like face, perfect symmetry, airbrushed, oversaturated, HDR, fake bokeh, instagram filter, watermark, text, logo, deformed hand, extra fingers, no phone visible in frame, no second phone in mirror, no selfie stick, no studio lighting, no model pose",
     "emotions": ["日常", "沉浸"],
     "flags": {
@@ -83,7 +83,7 @@ export const EXTENDED_SCENES_PART3: ExtendedScene[] = [
     "outfit_hint": "towel wrap (chest covered)",
     "spicy_level": 4,
     "pov_modes": ["mirror_self"],
-    "promptSkeleton": "Asian woman half-visible through fogged bathroom mirror, just-out-of-shower, towel wrapped at chest, hair wet pushed back, hand wiping circle of clarity in steam, soft eye contact through mirror --no nudity --no nipple --no plastic skin",
+    "promptSkeleton": "{subject} half-visible through fogged bathroom mirror, just-out-of-shower, towel wrapped at chest, hair wet pushed back, hand wiping circle of clarity in steam, soft eye contact through mirror --no nudity --no nipple --no plastic skin",
     "negative_prompt": "plastic skin, doll-like face, perfect symmetry, airbrushed, oversaturated, HDR, fake bokeh, instagram filter, watermark, text, logo, deformed hand, extra fingers, no phone visible in frame, no second phone in mirror, no selfie stick, no studio lighting, no model pose",
     "emotions": ["沉浸", "脆弱"],
     "flags": {

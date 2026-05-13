@@ -31,6 +31,11 @@ export const FORBIDDEN_FACIAL_MARK_TERMS = [
   '臉部標記'
 ] as const;
 
+// Stage 19B note:
+// These terms are detector signatures for hardcoded subject residue.
+// They must not be used as prompt generation sources.
+// Do not remove them just to make project-wide grep return zero;
+// sanitizer coverage must continue to catch legacy polluted prompts.
 export const HARDCODED_SUBJECT_TERMS = [
   'Asian woman',
   'Asian man',

@@ -210,6 +210,39 @@ const getFabricSafeguard = (outfit: OutfitV2): string => {
 };
 
 /**
+ * Builds a robust subject token for visual prompts.
+ */
+const buildSubjectToken = (model: Model): string => {
+    const locked = model.persona?.locked_descriptor?.trim();
+    if (locked) {
+        return locked;
+    }
+
+    const hint = model.visualIdentityHint;
+    if (hint) {
+        return [
+            model.name,
+            hint.subjectDescriptor,
+            hint.facialLineageHint,
+            hint.styleReferenceHint,
+            hint.hairMakeupHint,
+            `${model.age}yo`
+        ]
+            .filter(part => typeof part === 'string' && part.trim().length > 0)
+            .join(', ');
+    }
+
+    const genderLabel =
+        model.gender === 'M' || model.gender === 'male'
+            ? 'male virtual IP model'
+            : 'female virtual IP model';
+
+    return [model.name, genderLabel, `${model.age}yo`]
+        .filter(part => typeof part === 'string' && part.trim().length > 0)
+        .join(', ');
+};
+
+/**
  * Builds the final prompt structure based on v1.1 10-layer拼接規點.
  */
 const buildFinalVisualPromptV11 = (
@@ -225,12 +258,12 @@ const buildFinalVisualPromptV11 = (
     const professionDesc = model.persona?.profession 
         ? `, works as ${model.persona.profession}` 
         : '';
-    const layer1 = model.persona?.locked_descriptor 
-        ? `${model.persona.locked_descriptor}${professionDesc}${facialDesc}`
-        : `${model.name}, ${model.gender === 'M' ? 'Asian man' : 'Asian woman'}, ${model.age}yo, ${model.persona?.coreVibe || ''}${professionDesc}${facialDesc}`;
+    const layer1 = `${buildSubjectToken(model)}${professionDesc}${facialDesc}`;
     
     // Layer 2: depth_module_scene (if extended)
-    const layer2 = (scene && scene.depth_module_id) ? scene.event : "";
+    const layer2 = (scene && scene.depth_module_id)
+        ? scene.event.replace(/\{subject\}/g, buildSubjectToken(model))
+        : "";
     
     // Layer 3: outfit_token
     // POV 模式下跳過 hand_occupation 注入，避免與 Layer 8 衝突
@@ -270,7 +303,8 @@ const buildFinalVisualPromptV11 = (
     const layer3 = `${outfit.prompt_skeleton}, ${wearStateText}, ${handAction}${fabricSafe}${interestProp}${iconicSuffix}`;
     
     // Layer 4: scene_token
-    const layer4 = scene.promptSkeleton || scene.prompt_skeleton || "";
+    const layer4 = (scene.promptSkeleton || scene.prompt_skeleton || "")
+        .replace(/\{subject\}/g, buildSubjectToken(model));
     
     // Layer 5: festival_layer (stub for now or check category)
     const layer5 = scene.category === "節慶儀式" ? `traditional festival atmosphere` : "";
@@ -320,7 +354,7 @@ const buildFinalVisualPromptV11 = (
         "FACIAL ACTION REQUIRED: pouty kiss face with lips pushed forward gently, soft eyes, NOT neutral expression",
         "FACIAL ACTION REQUIRED: small puffed cheeks puffed-out playfully, lips closed, cute aegyo energy, NOT relaxed face",
         "FACIAL ACTION REQUIRED: head tilted to one side with soft smile, gentle eye contact, NOT straight-on pose",
-        "FACIAL ACTION REQUIRED: peace sign V held near cheek with playful smile, classic Asian girl pose, NOT plain standing",
+        "FACIAL ACTION REQUIRED: peace sign V held near cheek with playful smile, classic playful cheek pose, NOT plain standing",
         "FACIAL ACTION REQUIRED: cheek-to-palm with one hand, head leaning into palm, dreamy soft expression, NOT hands at sides",
         "FACIAL ACTION REQUIRED: looking up at camera from slightly lowered head, doe-eyed soft expression, NOT direct level gaze",
         "FACIAL ACTION REQUIRED: subtle finger heart gesture near face with soft smile, K-pop influenced cute pose, NOT bare-handed pose",

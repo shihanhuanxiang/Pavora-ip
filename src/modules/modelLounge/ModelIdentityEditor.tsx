@@ -222,7 +222,7 @@ const ModelIdentityEditor: React.FC<ModelIdentityEditorProps> = ({ model, onClos
                                         </span>
                                     </label>
                                     <textarea 
-                                        placeholder="例如: Asian woman, 25 years old, dark brown hair with darker roots, large expressive brown eyes with double eyelids, soft round face with defined jawline, natural minimal makeup with dewy skin, small lips with natural glossy color"
+                                        placeholder="例如: female virtual IP model, 25 years old, dark brown hair with darker roots, large expressive brown eyes with double eyelids, soft round face with defined jawline, natural minimal makeup with dewy skin, small lips with natural glossy color"
                                         rows={4}
                                         className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[var(--color-gold)] outline-none resize-none leading-relaxed"
                                         value={formData.persona.locked_descriptor}

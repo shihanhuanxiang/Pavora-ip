@@ -57,6 +57,20 @@ interface ModelSetupProps {
 
 type QualityLevel = 'standard' | 'high' | 'ultra';
 
+const getDefaultVisualIdentityHint = (gender: string) => {
+    const isMale = gender === 'M' || gender === 'male';
+    return {
+        subjectDescriptor: isMale ? 'male virtual IP model' : 'female virtual IP model',
+        facialLineageHint: 'East Asian facial features',
+        styleReferenceHint: isMale
+            ? 'Korean Instagram lifestyle style'
+            : 'Korean Instagram lifestyle beauty',
+        hairMakeupHint: isMale
+            ? 'clean natural grooming, black hair'
+            : 'soft natural makeup, clean black hair'
+    };
+};
+
 const ModelSetup: React.FC<ModelSetupProps> = ({ 
     onModelSelect, onGoHome, onGoBack, 
     inheritedModel, initialNarrativeData, onClearNarrative 
@@ -80,6 +94,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
       netRedLevel: 2,
       customOutfitPrompt: '',
       lockToAmbassador: false,
+      visualIdentityHint: getDefaultVisualIdentityHint(ModelGenerationDefaults.gender || 'female'),
       persona: {
           coreVibe: '優雅時尚',
           mbti: '',
@@ -142,6 +157,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                 ...prev.lifeCircuit,
                 ...inheritedModel.lifeCircuit
             },
+            visualIdentityHint: inheritedModel.visualIdentityHint || prev.visualIdentityHint,
             preferredArchetypes: inheritedModel.preferred_archetypes || prev.preferredArchetypes,
             height: inheritedModel.stats?.height ? Number(inheritedModel.stats.height) : prev.height,
             bust: inheritedModel.stats?.bust ? Number(inheritedModel.stats.bust) : prev.bust,
@@ -175,6 +191,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
             gender: model.gender || 'female',
             persona: model.persona || prev.persona,
             lifeCircuit: model.lifeCircuit || prev.lifeCircuit,
+            visualIdentityHint: model.visualIdentityHint || prev.visualIdentityHint,
             preferredArchetypes: model.preferred_archetypes || prev.preferredArchetypes,
             lightingPreset: diaryParams.recommendedLighting || prev.lightingPreset,
             customOutfitPrompt: diaryParams.suggestedOutfit ? `Wearing ${diaryParams.suggestedOutfit}` : prev.customOutfitPrompt,
@@ -306,6 +323,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
     const randomState = {
         name: randomName,
         gender: currentGender,
+        visualIdentityHint: getDefaultVisualIdentityHint(currentGender),
         aestheticStyle: randomStyle,
         archetype: randomArchetype,
         outfitItems: randomOutfit,
@@ -416,6 +434,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
         ...prev,
         name: randomName,
         gender: value,
+        visualIdentityHint: getDefaultVisualIdentityHint(value),
         outfitItems: [presets[0]?.id || ''],
         archetype: 'standard',
         hairLength: isMale ? 'short' : 'long',

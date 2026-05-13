@@ -90,12 +90,12 @@ You are a forensic portrait analyst. Analyze the provided face photo and produce
 
 Subject metadata:
 - Name: ${seed.name}
-- Gender: ${seed.gender === 'M' ? 'Asian man' : 'Asian woman'}
+- Gender: ${seed.gender === 'M' ? 'male virtual IP model' : 'female virtual IP model'}
 - Age: ${seed.age || 25} years old
 
 Output requirements:
 1. Single-line English string (no line breaks, no markdown).
-2. Start with: "${seed.name}, ${seed.gender === 'M' ? 'Asian man' : 'Asian woman'}, ${seed.age || 25} years old, "
+2. Start with: "${seed.name}, ${seed.gender === 'M' ? 'male virtual IP model' : 'female virtual IP model'}, ${seed.age || 25} years old, "
 3. Then describe ONLY observable distinguishing features in this order:
    - Hair: color, length, texture, bangs style (if any), root color contrast (if visible)
    - Eyes: shape, double/single eyelid, size, expression character
@@ -150,5 +150,5 @@ Output the string directly, nothing else.
     }
 
     // 失敗時回傳通用 fallback
-    return `${seed.name}, ${seed.gender === 'M' ? 'Asian man' : 'Asian woman'}, ${seed.age || 25} years old, natural Asian features, expressive eyes with double eyelids, balanced facial proportions, healthy dewy skin, natural lip color`;
+    return `${seed.name}, ${seed.gender === 'M' ? 'male virtual IP model' : 'female virtual IP model'}, ${seed.age || 25} years old, East Asian facial features, expressive eyes with double eyelids, balanced facial proportions, healthy dewy skin, natural lip color`;
 };
