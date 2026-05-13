@@ -242,6 +242,38 @@ const buildSubjectToken = (model: Model): string => {
         .join(', ');
 };
 
+const getAsciiPromptFragment = (value?: string): string | undefined => {
+    const trimmed = value?.trim();
+    if (!trimmed) return undefined;
+    return /^[\x20-\x7E]+$/.test(trimmed) ? trimmed : undefined;
+};
+
+const buildPersonaVisualLayer = (model: Model): string => {
+    const persona = model.persona;
+    if (!persona) return "";
+
+    const rules: string[] = [];
+    const coreVibe = getAsciiPromptFragment(persona.coreVibe);
+    const toneOfVoice = getAsciiPromptFragment(persona.toneOfVoice);
+    const mbti = getAsciiPromptFragment(persona.mbti);
+    const postingHabit = getAsciiPromptFragment(persona.postingHabit);
+
+    if (coreVibe) {
+        rules.push(`PERSONA VISUAL VIBE: ${coreVibe}`);
+    }
+    if (toneOfVoice) {
+        rules.push(`EXPRESSION ENERGY: ${toneOfVoice}`);
+    }
+    if (mbti) {
+        rules.push(`SOCIAL PRESENCE: ${mbti} inspired interpersonal energy`);
+    }
+    if (postingHabit) {
+        rules.push(`CONTENT BEHAVIOR: ${postingHabit}`);
+    }
+
+    return rules.join('. ');
+};
+
 /**
  * Builds the final prompt structure based on v1.1 10-layer拼接規點.
  */
@@ -319,6 +351,7 @@ const buildFinalVisualPromptV11 = (
     // Layer 7_5: visual_dna（IP 視覺 DNA 注入，強制約束語氣）
     let layer7_5 = "";
     const vc7 = model.visualConstants;
+    const personaVisualLayer = buildPersonaVisualLayer(model);
     if (vc7) {
         const rules: string[] = [];
         if (vc7.expressionStyle) 
@@ -326,16 +359,16 @@ const buildFinalVisualPromptV11 = (
         if (vc7.poseEnergy) 
             rules.push(`POSE ENERGY MUST BE: ${vc7.poseEnergy}`);
         if (vc7.colorTone) 
-            rules.push(`COLOR TONE MUST BE: ${vc7.colorTone}`);
+            rules.push(`COLOR TONE: ${vc7.colorTone}`);
         if (vc7.catchlightPreference) 
             rules.push(`LIGHTING STYLE: ${vc7.catchlightPreference}`);
 
-        // 從 persona.toneOfVoice 補充表情能量
-        const toneOfVoice = model.persona?.toneOfVoice;
-        if (toneOfVoice && !vc7.expressionStyle) {
-            rules.push(`EXPRESSION ENERGY: ${toneOfVoice}`);
+        if (personaVisualLayer) {
+            rules.push(personaVisualLayer);
         }
         if (rules.length > 0) layer7_5 = rules.join('. ');
+    } else if (personaVisualLayer) {
+        layer7_5 = personaVisualLayer;
     }
 
     // Layer 7_5_BOOST: 強制具體表情動作（避免「無表情看鏡頭」預設值）

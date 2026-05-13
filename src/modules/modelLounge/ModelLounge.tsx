@@ -79,6 +79,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
   const { removeFromModelGallery } = useModelStore();
 
   const portfolioModel = viewingPortfolioModelId ? models.find(m => m.id === viewingPortfolioModelId) : null;
+  const faceReferenceCount = (portfolioModel?.preferences?.face_reference_urls || []).filter(Boolean).length;
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -546,6 +547,30 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                                 {portfolioModel.stats?.bust}-{portfolioModel.stats?.waist}-{portfolioModel.stats?.hip} // {portfolioModel.stats?.height}cm
                                             </p>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="rounded-3xl border border-[var(--color-gold)]/15 bg-[var(--color-gold)]/5 p-5 md:p-6">
+                                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                                    <div className="space-y-2">
+                                        <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[var(--color-gold)]">
+                                            Identity Reference Setup
+                                        </p>
+                                        <h3 className="text-xl font-bold text-white">
+                                            臉部基準圖：{faceReferenceCount}/4 已設定
+                                        </h3>
+                                        <p className="text-sm text-gray-400 leading-relaxed max-w-3xl">
+                                            下方 2x2 Face Reference 會作為靈魂敘事生圖的身份參考。建議補齊 FRONT / SIDE / 45° / BACK，讓同一個 IP 在不同日常場景中維持臉型、髮型與辨識度。
+                                        </p>
+                                    </div>
+                                    <div className="flex flex-col items-start md:items-end gap-2 text-[10px] font-bold uppercase tracking-widest">
+                                        <span className={`px-3 py-1 rounded-full border ${faceReferenceCount >= 2 ? 'border-emerald-400/30 bg-emerald-400/10 text-emerald-300' : 'border-white/10 bg-white/5 text-gray-400'}`}>
+                                            {faceReferenceCount >= 2 ? 'Reference Ready' : 'Add Face References'}
+                                        </span>
+                                        <span className="text-gray-500">
+                                            點擊下方格子單張上傳，或使用自動裁切
+                                        </span>
                                     </div>
                                 </div>
                             </div>

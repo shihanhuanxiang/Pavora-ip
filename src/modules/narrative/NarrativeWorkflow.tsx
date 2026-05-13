@@ -188,6 +188,14 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         return '自訂素材';
     };
 
+    const faceReferenceCount = (model.preferences?.face_reference_urls || []).filter(Boolean).length;
+    const getFaceReferenceStatusLabel = () => {
+        if (faceReferenceCount >= 4) return '4-angle identity lock';
+        if (faceReferenceCount >= 2) return `${faceReferenceCount}-angle identity reference`;
+        if (faceReferenceCount === 1) return 'single face reference';
+        return 'model cover image fallback';
+    };
+
     const FinalShootCard = () => (
         <div className="bg-white/[0.03] border border-[var(--color-border)] rounded-[2rem] p-6 space-y-6 shadow-xl backdrop-blur-md relative overflow-hidden group">
             {/* Subtle Shooting Order Accents */}
@@ -229,6 +237,17 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                 <span className="text-[10px] text-white font-mono">{aspectRatio}</span>
                                 <span className="text-[10px] text-white/30">/</span>
                                 <span className="text-[10px] text-white font-mono">{quality}</span>
+                            </div>
+                        </div>
+                        <div className="space-y-1 col-span-2">
+                            <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest">臉部基準圖</p>
+                            <div className="flex flex-wrap items-center gap-2">
+                                <span className={`px-2 py-0.5 rounded-full border text-[8px] font-black uppercase tracking-widest ${faceReferenceCount > 0 ? 'border-emerald-400/30 bg-emerald-400/10 text-emerald-300' : 'border-white/10 bg-white/5 text-gray-500'}`}>
+                                    {faceReferenceCount}/4
+                                </span>
+                                <span className={`text-[9px] font-medium ${faceReferenceCount > 0 ? 'text-white' : 'text-gray-500'}`}>
+                                    {getFaceReferenceStatusLabel()}
+                                </span>
                             </div>
                         </div>
                     </div>
