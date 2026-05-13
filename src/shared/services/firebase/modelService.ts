@@ -71,8 +71,8 @@ export const saveModelToCloud = async (model: Model) => {
 
     const path = `${COLLECTION_NAME}/${model.id}`;
     try {
-        // We exclude the gallery for now as it can be large, or save it separately
-        const { ...modelData } = model;
+        // Exclude gallery from Firestore model documents because generated images can exceed document size limits.
+        const { gallery, ...modelData } = model;
         
         await setDoc(doc(db, COLLECTION_NAME, model.id), {
             ...modelData,

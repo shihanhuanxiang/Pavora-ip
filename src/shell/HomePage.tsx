@@ -21,6 +21,7 @@ import MacroCraftIcon from '../shared/assets/icons/MacroCraftIcon';
 import StyleAnchorIcon from '../shared/assets/icons/StyleAnchorIcon';
 import EGenIcon from '../shared/assets/icons/EGenIcon';
 import { useAppStore } from '../shared/stores/useAppStore';
+import { useModelStore } from '../shared/stores/useModelStore';
 
 interface HomePageProps {
   onNavigate: (destination: string) => void;
@@ -30,6 +31,12 @@ type Category = 'all' | 'core' | 'assets' | 'creative' | 'professional';
 
 const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const { projectMode, setProjectMode } = useAppStore();
+  const { models, activeModelId, setActiveModel } = useModelStore();
+
+  const activeModel = useMemo(
+    () => models.find(model => model.id === activeModelId) || null,
+    [models, activeModelId]
+  );
 
   const hubs = [
     { 
@@ -118,6 +125,38 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </p>
           <div className="w-12 h-0.5 bg-[var(--color-gold)]/30 mx-auto"></div>
       </div>
+
+      {projectMode === 'ip_creator' && activeModel && (
+        <div className="w-full max-w-7xl mb-10 animate-fade-in">
+          <button
+            onClick={() => {
+              setActiveModel(activeModel.id);
+              onNavigate('lounge');
+            }}
+            className="group w-full glass-panel rounded-2xl p-5 md:p-6 flex items-center justify-between gap-5 text-left transition-all duration-500 hover:-translate-y-1 hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)]/5"
+          >
+            <div className="flex items-center gap-4 min-w-0">
+              <div className="w-14 h-14 rounded-2xl bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/20 flex items-center justify-center text-[var(--color-gold)] flex-shrink-0 [&_svg]:w-8 [&_svg]:h-8">
+                <ModelLoungeIcon />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--color-gold)] mb-1">
+                  Continue Current IP
+                </p>
+                <h3 className="text-lg md:text-2xl font-bold text-[var(--color-text-main)] truncate">
+                  繼續我的 IP：{activeModel.name}
+                </h3>
+                <p className="text-xs md:text-sm text-[var(--color-text-dim)] mt-1">
+                  回到模特兒休息室，接續身份、作品集與靈魂敘事流程
+                </p>
+              </div>
+            </div>
+            <div className="w-9 h-9 rounded-full border border-[var(--color-gold)]/40 flex items-center justify-center text-[var(--color-gold)] flex-shrink-0 transition-transform duration-500 group-hover:translate-x-1">
+              →
+            </div>
+          </button>
+        </div>
+      )}
 
       {/* Main Hubs */}
       <div className="w-full max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">

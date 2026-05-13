@@ -3,6 +3,8 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import type { Model } from '../types/types';
 import { imageDB, base64ToBlob } from '../services/imageDB';
 import { saveModelToCloud, getMyCloudModels, deleteModelFromCloud } from '../services/firebase/modelService';
+import { checkGoogleDriveStatus, syncToGoogleDrive } from '../services/googleDriveService';
+import { getDriveSettings } from '../services/storageService';
 import { embedMetadata } from '../utils/metadataUtils';
 
 interface ModelState {
@@ -122,17 +124,53 @@ export const useModelStore = create<ModelState>()(
             }
         }
 
+        const galleryItemTimestamp = Date.now();
+        let driveFileId: string | undefined;
+        let driveLink: string | undefined;
+        let driveSyncedAt: string | undefined;
+
+        try {
+            const isDriveConnected = await checkGoogleDriveStatus();
+            if (isDriveConnected) {
+                let syncData = finalImageUrl;
+                if (imageDB.isIdbUrl(syncData)) {
+                    const blob = await imageDB.get(syncData);
+                    if (blob) syncData = await imageDB.blobToBase64(blob);
+                }
+
+                const settings = getDriveSettings();
+                const driveResult = await syncToGoogleDrive(
+                    `ModelGallery_${modelId}_${galleryItemTimestamp}.png`,
+                    syncData,
+                    'image/png',
+                    'Pavora_Model_Gallery',
+                    settings.modelsFolderId
+                );
+
+                if (driveResult.success && driveResult.fileId) {
+                    driveFileId = driveResult.fileId;
+                    driveLink = driveResult.link;
+                    driveSyncedAt = new Date().toISOString();
+                }
+            }
+        } catch (e) {
+            console.error("Gallery auto-sync to Google Drive failed", e);
+        }
+
         set((state) => ({
           models: state.models.map(m => {
             if (m.id === modelId) {
                 const gallery = m.gallery || [];
                 const newItem = { 
-                    id: `gal-${Date.now()}`, 
+                    id: `gal-${galleryItemTimestamp}`, 
                     url: finalImageUrl, 
-                    timestamp: Date.now(), 
+                    timestamp: galleryItemTimestamp, 
                     narrativeContent: item.narrativeContent,
                     visualPrompt: item.visualPrompt,
-                    visualPromptZH: item.visualPromptZH
+                    visualPromptZH: item.visualPromptZH,
+                    driveFileId,
+                    driveLink,
+                    driveSyncedAt
                 };
                 return {
                     ...m,
@@ -243,7 +281,10 @@ export const useModelStore = create<ModelState>()(
             timestamp: item.timestamp,
             narrativeContent: item.narrativeContent ? item.narrativeContent.slice(0, 300) : undefined,
             visualPrompt: item.visualPrompt ? item.visualPrompt.slice(0, 1200) : undefined,
-            visualPromptZH: item.visualPromptZH ? item.visualPromptZH.slice(0, 800) : undefined
+            visualPromptZH: item.visualPromptZH ? item.visualPromptZH.slice(0, 800) : undefined,
+            driveFileId: item.driveFileId,
+            driveLink: item.driveLink,
+            driveSyncedAt: item.driveSyncedAt
           }))
         }))
       }),

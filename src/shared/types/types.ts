@@ -385,6 +385,9 @@ export interface Model {
         narrativeContent?: string;
         visualPrompt?: string;
         visualPromptZH?: string;
+        driveFileId?: string;
+        driveLink?: string;
+        driveSyncedAt?: string;
     }[];
 }
 
