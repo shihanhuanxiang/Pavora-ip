@@ -834,21 +834,55 @@ export const processTasksInParallel = async <T>(
     return results;
 };
 
-const CLEAN_SHOT_PROMPT = "Generate a clean, professional e-commerce product shot of THIS exact item on a pure white background. Ensure the subject is extracted perfectly.";
-const MACRO_SHOT_PROMPT = "Simulate a macro lens zoom into the details. Maintain strict texture fidelity and realistic lighting.";
-const REFINE_BODY_PROMPT = (notes: string) => `Refine this image into a high-end editorial fashion portrait. Preserve outfit and identity. Style Notes: ${notes}.`;
-const LAYOUT_ANALYSIS_PROMPT = `Analyze these images for a professional fashion layout. 
-The first image is the main subject (person). The following images are individual fashion items.
-Return JSON: { 
-  backgroundColor, 
-  fontColor, 
-  accentColor, 
-  layoutStyle, 
-  lighting: { direction, temperature },
-  colorPalette: [ { hex, name } ],
-  itemAnchors: [ { partName, x, y } ]
-}. 
-'itemAnchors' should contain suggested connection points on the main subject's body for each of the provided fashion items (in order). 
-x and y are percentages (0-100) relative to the main subject image. 
-'direction' should be like 'top-left', 'right', etc. 
-'temperature' should be like 'warm', 'cool', 'neutral'.`;
+const CLEAN_SHOT_PROMPT = `[TASK: PROFESSIONAL E-COMMERCE PRODUCT EXTRACTION]
+You are a senior commercial product photographer. Transform the provided fashion item into a flawless e-commerce catalog image.
+
+Requirements:
+- BACKGROUND: Pure, seamless white (#FFFFFF). Zero shadows bleeding onto background. Zero remnants of original scene.
+- SUBJECT EXTRACTION: Clean, precise edges with no fringing, haloing, or background artifacts. Hair fibers, mesh, and lace must be perfectly extracted.
+- MATERIAL FIDELITY: Preserve 100% of the original fabric texture, color, sheen, and construction details. Silk stays lustrous. Denim stays structured. Knitwear retains its dimensional texture.
+- LIGHTING: Soft, even studio lighting. Subtle directional light from top-left to create gentle depth.
+- OUTPUT STANDARD: Indistinguishable from a professional studio product shot suitable for luxury e-commerce listings.`;
+
+const MACRO_SHOT_PROMPT = `[TASK: HIGH-FIDELITY MACRO DETAIL CAPTURE]
+You are a specialist in fashion textile photography. Produce an extreme close-up detail shot of the provided fashion item.
+
+Requirements:
+- FOCUS ZONE: Zoom into the most visually distinctive detail — signature pattern, stitching, embroidery, hardware, fabric weave, or surface texture.
+- TEXTURE RENDERING: Reproduce micro-level material properties with maximum fidelity. Thread count, weave structure, surface nap, and grain must be clearly visible.
+- LIGHTING: Raking light from a low angle to accentuate surface texture and three-dimensionality.
+- OUTPUT STANDARD: Museum-quality material documentation suitable for luxury product detail pages.`;
+
+const REFINE_BODY_PROMPT = (notes: string) => `[TASK: EDITORIAL FASHION PORTRAIT REFINEMENT]
+You are a senior fashion retoucher working on a high-end editorial campaign.
+
+Directives:
+- IDENTITY PRESERVATION: Model's face, skin tone, hair, and features must remain identical. Zero drift permitted.
+- GARMENT INTEGRITY: Preserve every detail of the existing outfit — color, texture, fit. Do not alter garments.
+- SKIN: Subtle, natural retouching. Maintain skin texture. Avoid over-smoothing.
+- LIGHTING: Even out harsh shadows while maintaining original lighting direction.
+- COMPOSITION: Maintain exact pose, framing, and background. Do not reframe or crop.
+- Style Notes: ${notes}
+
+OUTPUT STANDARD: Ready for magazine publication or premium lookbook.`;
+
+const LAYOUT_ANALYSIS_PROMPT = `[TASK: FASHION LAYOUT INTELLIGENCE ANALYSIS]
+You are a creative director analyzing a fashion shoot composition.
+
+Input: First image = main subject (person). Subsequent images = fashion items to place in layout.
+
+Return JSON with this exact structure:
+{
+  "backgroundColor": "hex color that complements the subject palette",
+  "fontColor": "hex color for typography legibility on the background",
+  "accentColor": "hex color for highlight elements",
+  "layoutStyle": "editorial | flat-lay | lookbook | street | studio",
+  "lighting": {
+    "direction": "top-left | top-right | left | right | overhead | front",
+    "temperature": "warm | cool | neutral | dramatic"
+  },
+  "colorPalette": [{ "hex": "#XXXXXX", "name": "color name" }],
+  "itemAnchors": [{ "partName": "body part e.g. torso, waist, feet", "x": 0, "y": 0 }]
+}
+
+Notes: x and y are percentages (0–100) relative to main subject image. One anchor per fashion item in input order. colorPalette: 3–5 dominant colors from all images.`;

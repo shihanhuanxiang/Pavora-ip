@@ -247,6 +247,20 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
     let successCount = 0;
     let updatedGallery = model.gallery;
 
+    const rootFolder = await getOrCreateDriveFolder('Pavora_Model_Gallery');
+    if (!rootFolder) {
+      addNotification({ type: 'error', message: '無法取得或建立 Drive 根資料夾' });
+      setIsDriveSyncing(false);
+      return;
+    }
+    const modelFolderName = model.name?.trim() || viewingPortfolioModelId;
+    const modelFolder = await getOrCreateDriveFolder(modelFolderName, rootFolder.id);
+    if (!modelFolder) {
+      addNotification({ type: 'error', message: '無法取得或建立模特兒 Drive 資料夾' });
+      setIsDriveSyncing(false);
+      return;
+    }
+
     for (const item of unsynced) {
       try {
         let fileData = item.url;
@@ -260,7 +274,8 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
           `ModelGallery_${viewingPortfolioModelId}_${item.timestamp}.png`,
           fileData,
           'image/png',
-          'Pavora_Model_Gallery'
+          modelFolderName,
+          modelFolder.id
         );
 
         if (result.success && result.fileId) {

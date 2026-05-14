@@ -1,1 +1,0 @@
-// This module has been deprecated and replaced by Director Mode.

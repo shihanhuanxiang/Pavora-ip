@@ -27,6 +27,16 @@ interface ModelState {
   removeFromModelGallery: (modelId: string, itemIds: string[]) => Promise<void>;
 }
 
+const toGalleryMeta = (item: any) => ({
+  id: item.id,
+  timestamp: item.timestamp,
+  driveFileId: item.driveFileId ?? null,
+  driveLink: item.driveLink ?? null,
+  driveSyncedAt: item.driveSyncedAt ?? null,
+  contentCategory: item.contentCategory ?? null,
+  styleTags: item.styleTags ?? null,
+});
+
 export const useModelStore = create<ModelState>()(
   persist(
     (set, get) => ({
@@ -61,7 +71,7 @@ export const useModelStore = create<ModelState>()(
                 const { doc, updateDoc } = await import('firebase/firestore');
                 const { db } = await import('../services/firebase/firebaseConfig');
                 const modelRef = doc(db, `users/${user.uid}/models`, modelId);
-                await updateDoc(modelRef, { gallery: updatedGallery });
+                await updateDoc(modelRef, { gallery: updatedGallery.map(toGalleryMeta) });
             }
         } catch (e) {
             console.error("Cloud gallery update failed", e);
@@ -214,7 +224,7 @@ export const useModelStore = create<ModelState>()(
                 const modelRef = doc(db, `users/${user.uid}/models`, modelId);
                 const updatedModel = get().models.find(m => m.id === modelId);
                 if (updatedModel && updatedModel.gallery) {
-                    await updateDoc(modelRef, { gallery: updatedModel.gallery });
+                    await updateDoc(modelRef, { gallery: updatedModel.gallery.map(toGalleryMeta) });
                 }
             }
         } catch (e) {
