@@ -1,6 +1,7 @@
 import { getGeminiClient } from "../../../shared/services/core/geminiClient";
 import { sanitizeFinalPrompt } from "../../../shared/services/promptSanitizer";
 import type { Model, DiaryEntry, OutfitV2, ExtendedScene, NonVisualPersona } from "../../../shared/types/types";
+import { useModelStore } from "../../../shared/stores/useModelStore";
 import { LOCALIZED_SCENES, getScenesByCity } from "../constants/localizedScenes";
 
 import { OUTFIT_SEEDS_V2 } from "../constants/outfitSeeds";
@@ -947,13 +948,20 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
     const outfit = pickOutfit(model, contextCandidates, targetTier);
     
     // Update recent_outfit_ids cooldown (keep last 5)
-    if (!model.preferences) (model as any).preferences = {};
     const recentIds = model.preferences?.recent_outfit_ids || [];
     const updatedRecent = [
         outfit.outfit_id,
         ...recentIds.filter((id: string) => id !== outfit.outfit_id)
     ].slice(0, 5);
-    if (model.preferences) model.preferences.recent_outfit_ids = updatedRecent;
+    
+    // P1-1 修正：改用 updateModel 正式寫回 store，確保 React 感知並同步至雲端
+    const { updateModel } = useModelStore.getState();
+    await updateModel(model.id, {
+        preferences: {
+            ...model.preferences,
+            recent_outfit_ids: updatedRecent
+        }
+    });
     
     // 3. V1.1 Layered Prompt Composition
     const finalVisualPrompt = buildFinalVisualPromptV11(model, sceneContext, outfit, targetTier, options);

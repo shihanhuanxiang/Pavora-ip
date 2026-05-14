@@ -853,11 +853,28 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             initial={{ opacity: 0, y: 15 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: 0.1 }}
+                                            className="space-y-6"
                                         >
-                                            <StoryProgressBoard 
-                                                model={model} 
-                                                onInitializeThread={() => setShowSettings(true)}
-                                            />
+                                            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                                                <StoryProgressBoard 
+                                                    model={model} 
+                                                    onInitializeThread={() => setShowSettings(true)}
+                                                />
+                                                <motion.button 
+                                                    whileHover={{ scale: 1.02 }}
+                                                    whileTap={{ scale: 0.98 }}
+                                                    onClick={handleGeneratePlan}
+                                                    disabled={isGeneratingPlan}
+                                                    className="shrink-0 px-8 py-3.5 bg-white/5 hover:bg-[var(--color-gold)] border border-[var(--color-gold)]/30 text-[var(--color-gold)] hover:text-black rounded-2xl text-[11px] font-black uppercase tracking-[0.25em] transition-all flex items-center gap-3 backdrop-blur-xl shadow-xl hover:shadow-[var(--color-gold)]/20 disabled:opacity-50"
+                                                >
+                                                    {isGeneratingPlan ? (
+                                                        <div className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                                                    ) : (
+                                                        <span>📋</span>
+                                                    )}
+                                                    {isGeneratingPlan ? '計畫編撰中...' : '生成本週內容計畫 // WEEKLY PLAN'}
+                                                </motion.button>
+                                            </div>
                                         </motion.div>
                                         
                                         <motion.div 

@@ -219,7 +219,7 @@ export const useModelStore = create<ModelState>()(
             const { auth } = await import('../services/firebase/firebaseConfig');
             const user = auth.currentUser;
             if (user) {
-                const { doc, updateDoc, arrayUnion } = await import('firebase/firestore');
+                const { doc, updateDoc } = await import('firebase/firestore');
                 const { db } = await import('../services/firebase/firebaseConfig');
                 const modelRef = doc(db, `users/${user.uid}/models`, modelId);
                 const updatedModel = get().models.find(m => m.id === modelId);

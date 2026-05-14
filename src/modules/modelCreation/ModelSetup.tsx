@@ -8,6 +8,7 @@ import Loader from '../../shared/components/common/Loader';
 import { generateModels } from './services/modelCreationService';
 import { generatePersonaTraits } from './services/personaService';
 import { getFriendlyErrorMessage, fileToBase64 } from '../../shared/services/geminiService';
+import { getGeminiClient } from '../../shared/services/core/geminiClient';
 import { downloadImage, imageUrlToimageData } from '../../shared/utils/imageUtils';
 import PhotoIcon from '../../shared/assets/icons/PhotoIcon';
 import ImagePreviewModal from '../../shared/components/common/ImagePreviewModal';
@@ -82,6 +83,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [previewingModelIndex, setPreviewingModelIndex] = useState<number | null>(null);
+  const [savedModelIds, setSavedModelIds] = useState<Set<string>>(new Set());
   
   const { addModel, updateModelGallery } = useModelStore();
   const { addAmbassador, ambassadors, activeAmbassadorId } = useBrandStore();
@@ -104,6 +106,10 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
           toneOfVoice: '',
           locked_descriptor: ''
       },
+      worldAnchors: {
+          pet: '',
+          iconicItem: ''
+      },
       lifeCircuit: {
           primaryCity: '台北市',
           primaryDistrict: '大安區',
@@ -116,6 +122,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
   });
 
   const [isGeneratingPersona, setIsGeneratingPersona] = useState(false);
+  const [isGeneratingDescriptor, setIsGeneratingDescriptor] = useState(false);
   const [isExpertMode, setIsExpertMode] = useState(false);
   const [selectedPresetId, setSelectedPresetId] = useState('custom');
   const [faceReferences, setFaceReferences] = useState<File[]>([]);
@@ -232,6 +239,13 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
     }));
   };
 
+  const handleWorldAnchorUpdate = (field: string, value: any) => {
+    setFormState(prev => ({
+        ...prev,
+        worldAnchors: { ...prev.worldAnchors, [field]: value }
+    }));
+  };
+
   const handleCircuitUpdate = (field: string, value: any) => {
     setFormState(prev => {
         const newCircuit = { ...prev.lifeCircuit, [field]: value };
@@ -301,6 +315,62 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
         addNotification({ type: 'error', message: '人設生成失敗' });
     } finally { setIsGeneratingPersona(false); }
   }, [addNotification]);
+
+  const handleGenerateLockedDescriptor = async () => {
+    setIsGeneratingDescriptor(true);
+    try {
+      const client = await getGeminiClient(false) as any;
+      
+      const { profession, coreVibe, mbti, toneOfVoice } = formState.persona;
+      const { visualIdentityHint } = formState;
+      const { primaryCity, interests } = formState.lifeCircuit;
+
+      const prompt = `
+        You are a digital identity architect for PAVORA (high-end fashion IP agency). 
+        Based on the character profile below, draft a 2nd/3rd-person English "Identity Locked Descriptor". 
+        This string will be used as a master prompt anchor to ensure facial and structural consistency in AI image generation.
+
+        Character Profile:
+        - Profession: ${profession || 'Virtual Model'}
+        - Core Vibe: ${coreVibe}
+        - Personality (MBTI): ${mbti || 'N/A'}
+        - Tone of Voice: ${toneOfVoice || 'N/A'}
+        - Visual Identity Hints: ${JSON.stringify(visualIdentityHint)}
+        - Location Base: ${primaryCity}
+        - Personal Interests: ${interests.join(', ')}
+
+        Requirements for Output:
+        1. Length: Exactly 2-3 sentences.
+        2. Content: Focus on precise facial architecture (e.g., eye shape, bone structure), specific gaze aura (e.g., distant, sharp, warm), and a signature style anchor.
+        3. Language: PURE ENGLISH. No headers, no JSON, no Markdown.
+        4. Quality: Sophisticated, editorial, and technical for AI image synthesis.
+      `;
+
+      const response = await client.models.generateContent({
+        model: "gemini-1.5-flash",
+        contents: prompt
+      });
+      
+      const text = (response.text || "").trim().replace(/^["']|["']$/g, '');
+      
+      if (text) {
+        handlePersonaUpdate('locked_descriptor', text);
+        addNotification({ 
+            type: 'success', 
+            message: '✨ 身份鎖定描述已草擬於身分盒',
+            description: '核心視覺特徵已根據當前設定完成鎖定。'
+        });
+      }
+    } catch (e) {
+      addNotification({ 
+        type: 'error', 
+        message: '身份鎖定描述生成失敗',
+        description: getFriendlyErrorMessage(e)
+      });
+    } finally {
+      setIsGeneratingDescriptor(false);
+    }
+  };
 
   const handleRandomize = useCallback(() => {
     // 鎖定當前性別
@@ -498,6 +568,11 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
 
   const handleSaveToLounge = async (model: Model) => {
       await addModel(model);
+      setSavedModelIds(prev => {
+          const next = new Set(prev);
+          next.add(model.id);
+          return next;
+      });
       addNotification({
           type: 'success',
           message: '身份存檔成功',
@@ -635,6 +710,38 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                     <div className="flex items-end justify-center pb-1">
                         <p className="text-[9px] text-gray-500 italic opacity-60">人設細節將隨「隨機靈感」自動生成 (Persona details auto-generated)</p>
                     </div>
+                </div>
+
+                {/* 身份鎖定描述 - 靈魂核心 */}
+                <div className="pt-4 border-t border-white/5 space-y-3">
+                    <div className="flex justify-between items-center">
+                        <label className="block text-[11px] font-bold text-gray-500 uppercase font-display tracking-[0.2em] leading-tight text-left">
+                            <span className="block text-white mb-0.5">身份鎖定描述</span>
+                            <span className="block text-[9px] opacity-40 font-normal normal-case tracking-normal">(Locked Descriptor)</span>
+                        </label>
+                        <motion.button 
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={handleGenerateLockedDescriptor}
+                            disabled={isGeneratingDescriptor}
+                            className="text-[10px] text-[var(--color-gold)] font-bold flex items-center gap-2 hover:opacity-80 transition-all disabled:opacity-30"
+                        >
+                            {isGeneratingDescriptor ? (
+                                <div className="w-3 h-3 border-2 border-[var(--color-gold)] border-t-transparent rounded-full animate-spin"></div>
+                            ) : (
+                                <span className="flex items-center gap-1.5 underline decoration-[0.5px] underline-offset-4">✨ AI 草擬身分盒 (Draft Identity)</span>
+                            )}
+                        </motion.button>
+                    </div>
+                    <textarea 
+                        className="w-full h-24 bg-black/40 border border-white/10 rounded-xl p-3 text-[11px] text-gray-300 focus:border-[var(--color-gold)] focus:outline-none transition-all resize-none leading-relaxed placeholder:text-gray-700 font-mono scrollbar-none"
+                        placeholder="描述這個 IP 的核心視覺特徵（英文），例如面部細節、骨架神韻等，這是維持生圖一致性的關鍵。"
+                        value={formState.persona.locked_descriptor}
+                        onChange={e => handlePersonaUpdate('locked_descriptor', e.target.value)}
+                    />
+                    <p className="text-[9px] text-gray-600 italic leading-relaxed">
+                        * 身份鎖定 (Identity Lock) 是維護 IP 視覺一致性的最高級位字串。建議使用 AI 根據目前設定草擬後，再進行手動精煉。
+                    </p>
                 </div>
 
                 {/* Style Archetypes (矩陣 v2.0) */}
@@ -861,6 +968,49 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                         <input type="text" className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm focus:border-[var(--color-gold)] focus:outline-none transition-all" placeholder="如: 藝術家 (e.g. Creator)" value={formState.persona.profession} onChange={e => handlePersonaUpdate('profession', e.target.value)} />
                     </div>
                     <Select label="核心興趣 (INTERESTS)" options={INTEREST_OPTIONS} value={formState.lifeCircuit.interests?.[0] || ''} onChange={e => handleCircuitUpdate('interests', [e.target.value])} />
+                </div>
+              </div>
+            </Card>
+
+            {/* 生活細節 (Life Details) - 選填 */}
+            <Card className="p-0 overflow-hidden border-none bg-white/[0.03] backdrop-blur-xl">
+              <div className="p-5 border-b border-white/5 bg-gradient-to-r from-[var(--color-gold)]/5 to-transparent group">
+                <h3 className="text-sm font-bold text-white tracking-[0.2em] uppercase flex items-center gap-3">
+                  <div className="w-1 h-4 bg-[var(--color-gold)] shadow-[0_0_10px_rgba(var(--color-gold-rgb),0.5)]"></div>
+                  <div className="flex flex-col items-start leading-tight">
+                    <span className="group-hover:text-[var(--color-gold)] transition-colors">生活細節</span>
+                    <span className="text-[9px] opacity-40 font-normal normal-case tracking-normal">(Life Details) - 選填</span>
+                  </div>
+                </h3>
+              </div>
+              <div className="p-6 space-y-6">
+                <div className="grid grid-cols-2 gap-5">
+                    <div className={getFieldClass('pet')}>
+                        <label className="block text-[11px] font-bold text-gray-500 uppercase mb-3 min-h-[2.5rem] font-display tracking-[0.2em] leading-tight text-left">
+                            <span className="block text-white mb-0.5">寵物</span>
+                            <span className="block text-[9px] opacity-40 font-normal normal-case tracking-normal">(Pet)</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm focus:border-[var(--color-gold)] focus:outline-none transition-all placeholder:text-gray-700" 
+                            placeholder="例：橘貓 Mochi、柴犬 Koko" 
+                            value={formState.worldAnchors?.pet || ''} 
+                            onChange={e => handleWorldAnchorUpdate('pet', e.target.value)} 
+                        />
+                    </div>
+                    <div className={getFieldClass('iconicItem')}>
+                        <label className="block text-[11px] font-bold text-gray-500 uppercase mb-3 min-h-[2.5rem] font-display tracking-[0.2em] leading-tight text-left">
+                            <span className="block text-white mb-0.5">標誌性物品</span>
+                            <span className="block text-[9px] opacity-40 font-normal normal-case tracking-normal">(Iconic Item)</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm focus:border-[var(--color-gold)] focus:outline-none transition-all placeholder:text-gray-700" 
+                            placeholder="例：總是帶著的底片相機、特定款式耳環" 
+                            value={formState.worldAnchors?.iconicItem || ''} 
+                            onChange={e => handleWorldAnchorUpdate('iconicItem', e.target.value)} 
+                        />
+                    </div>
                 </div>
               </div>
             </Card>
@@ -1100,7 +1250,26 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                                    <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-white/5 bg-black/40">
                                        <AsyncImage src={model.imageUrl} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex flex-col justify-end gap-3 translate-y-4 group-hover:translate-y-0 transition-transform">
-                                          <Button onClick={() => handleSaveToLounge(model)} variant="primary" className="w-full py-2 text-[10px] font-bold">儲存休息室 (Save to Lounge)</Button>
+                                          <Button 
+                                            onClick={() => handleSaveToLounge(model)} 
+                                            variant="primary" 
+                                            className="w-full py-2 text-[10px] font-bold"
+                                            disabled={savedModelIds.has(model.id)}
+                                          >
+                                            {savedModelIds.has(model.id) ? '已儲存 ✓ (Saved)' : '儲存休息室 (Save to Lounge)'}
+                                          </Button>
+                                          
+                                          {savedModelIds.has(model.id) && (
+                                            <motion.button 
+                                                initial={{ opacity: 0, y: 5 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                onClick={onGoHome}
+                                                className="w-full py-2 bg-white/10 hover:bg-[var(--color-gold)] text-[10px] font-bold text-[var(--color-gold)] hover:text-black rounded-lg border border-[var(--color-gold)]/20 transition-all"
+                                            >
+                                                前往 IP 休息室 (Go to Lounge)
+                                            </motion.button>
+                                          )}
+
                                           <div className="flex gap-2">
                                               <button onClick={() => setPreviewingModelIndex(idx)} className="flex-1 bg-white/10 hover:bg-white/20 py-2 rounded-lg text-[10px] font-bold text-white transition-colors">放大 (Zoom)</button>
                                               <button onClick={() => handleDownload(model)} className="px-3 bg-white/10 hover:bg-white/20 rounded-lg text-white"><DownloadIcon className="w-3 h-3" /></button>
