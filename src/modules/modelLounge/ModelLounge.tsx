@@ -73,6 +73,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
   } | null>(null);
   const [selectedGalleryItems, setSelectedGalleryItems] = useState<Set<string>>(new Set());
   const [isPortfolioDeleteMode, setIsPortfolioDeleteMode] = useState(false);
+  const [isConsistencyView, setIsConsistencyView] = useState(false);
   const [isDriveSyncing, setIsDriveSyncing] = useState(false);
   const [isDriveImporting, setIsDriveImporting] = useState(false);
   const [showDriveFilePicker, setShowDriveFilePicker] = useState(false);
@@ -666,6 +667,12 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                                 </>
                                             ) : (
                                                 <>
+                                                    <button
+                                                        onClick={() => setIsConsistencyView(v => !v)}
+                                                        className={`px-6 py-3 border rounded-xl text-[10px] font-bold tracking-widest transition-all ${isConsistencyView ? 'bg-purple-500/20 border-purple-500/50 text-purple-300' : 'bg-white/5 border-white/10 text-gray-400 hover:text-white hover:border-purple-500/50'}`}
+                                                    >
+                                                        🎯 {isConsistencyView ? '離開一致性預覽' : '一致性預覽'}
+                                                    </button>
                                                     <button 
                                                         onClick={() => setIsPortfolioDeleteMode(true)}
                                                         className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl text-[10px] font-bold tracking-widest text-gray-400 hover:text-white transition-all hover:border-red-500/50"
@@ -918,9 +925,50 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
 
                             {/* Assets Grid */}
                             <div className="space-y-6">
-                                <h3 className="text-[11px] font-bold text-white uppercase tracking-[0.4em] border-b border-white/5 pb-4">
-                                    模特兒作品集與衍生資產 (Portfolio & Assets)
-                                </h3>
+                                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                                    <h3 className="text-[11px] font-bold text-white uppercase tracking-[0.4em]">
+                                        {isConsistencyView ? '臉部一致性預覽 / Consistency Check' : '模特兒作品集與衍生資產 (Portfolio & Assets)'}
+                                    </h3>
+                                    {isConsistencyView && (
+                                        <span className="text-[9px] text-purple-400 font-bold uppercase tracking-widest">
+                                            最近 {Math.min((portfolioModel.gallery || []).length, 6)} 張並排 · 確認臉型辨識度
+                                        </span>
+                                    )}
+                                </div>
+
+                                {/* 一致性預覽模式 */}
+                                {isConsistencyView ? (
+                                    (() => {
+                                        const last6 = (portfolioModel.gallery || []).slice(0, 6);
+                                        if (last6.length === 0) return (
+                                            <p className="text-[10px] text-gray-500 text-center py-12">作品集尚無內容，請先生成靈魂敘事圖片</p>
+                                        );
+                                        return (
+                                            <div className="space-y-4">
+                                                <div className="grid grid-cols-3 gap-3">
+                                                    {last6.map((item, idx) => (
+                                                        <div key={item.id} className="relative rounded-2xl overflow-hidden border border-white/10 hover:border-purple-400/40 transition-all group/ci">
+                                                            <div
+                                                                className="aspect-square cursor-pointer"
+                                                                onClick={() => setPreviewingImage({ images: last6.map((g: any) => g.url), startIndex: idx })}
+                                                            >
+                                                                <AsyncImage
+                                                                    src={item.url}
+                                                                    className="w-full h-full object-cover object-top group-hover/ci:scale-105 transition-transform duration-500"
+                                                                />
+                                                            </div>
+                                                            <div className="absolute bottom-0 inset-x-0 px-2 py-1.5 bg-black/70 text-[8px] text-gray-400 text-center font-mono">
+                                                                #{(portfolioModel.gallery?.length || 0) - idx}
+                                                                {item.narrativeContent && <span className="ml-1 text-purple-300">📖</span>}
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <p className="text-[9px] text-gray-600 text-center">點擊可放大 · 並排比對臉型、髮型、膚色是否飄移</p>
+                                            </div>
+                                        );
+                                    })()
+                                ) : (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                                     {/* Original Image */}
                                     <div className="group relative glass-panel rounded-2xl overflow-hidden border border-[var(--color-gold)] shadow-lg">
@@ -1145,6 +1193,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                         </div>
                                     ))}
                                 </div>
+                                )}
                             </div>
                         </motion.div>
                     ) : (

@@ -41,6 +41,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     const [isGeneratingImage, setIsGeneratingImage] = useState(false);
     const [isSyncing, setIsSyncing] = useState(false);
     const [isExtractingMem, setIsExtractingMem] = useState(false);
+    const [narrativeStep, setNarrativeStep] = useState<1|2|3>(1);
     const [diary, setDiary] = useState<Partial<DiaryEntry> | null>(null);
     const [currentSceneId, setCurrentSceneId] = useState<string | null>(null);
     const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
@@ -463,6 +464,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             } as any);
             
             setCurrentSceneId(sceneIdToUse || null);
+            setNarrativeStep(2);
             setSelectedBrief(null); // Reset after use
             setRandomSceneId(null); // Reset after use
             // Handle new direct prompt structure
@@ -565,6 +567,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             const finalImageWithMetadata = wrapImageWithIdentity(fullDataUrl, model);
 
             setGeneratedImageUrl(finalImageWithMetadata);
+            setNarrativeStep(3);
             addNotification({ type: 'success', message: '靈魂視覺化成功 (Visualization Success)', description: '影像已生成並包含身分內碼 (Image generated with identity metadata).' });
         } catch (e) {
             console.error(e);
@@ -624,6 +627,18 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         
         setCurrentSceneId(nextScene.scene_id);
         handleGenerateDiary(nextScene.scene_id);
+    };
+
+    const handleResetToStep1 = () => {
+        setDiary(null);
+        setGeneratedImageUrl(null);
+        setEventInput('');
+        setCurrentSceneId(null);
+        setSelectedBrief(null);
+        setRandomSceneId(null);
+        setEditablePrompt('');
+        setEditablePromptZH('');
+        setNarrativeStep(1);
     };
 
     const handleGeneratePlan = async () => {
@@ -983,7 +998,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             </div>
                                         </motion.div>
 
-                                        <div className="grid grid-cols-1 xl:grid-cols-2 gap-16 pt-4">
+                                        <div className={`grid grid-cols-1 gap-16 pt-4 ${narrativeStep >= 2 ? 'xl:grid-cols-2' : 'max-w-2xl mx-auto w-full'}`}>
                                             {/* Left: Narrative Decision 敘事決策區 */}
                                             <div className="space-y-10">
                                                 <motion.div 
@@ -1127,12 +1142,42 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             </div>
 
                                             {/* Right: Visual Production 生成控制區 */}
+                                            {narrativeStep >= 2 && (
                                             <motion.div 
                                                 initial={{ opacity: 0, x: 10 }}
                                                 animate={{ opacity: 1, x: 0 }}
                                                 transition={{ delay: 0.4 }}
                                                 className="space-y-8 lg:border-l lg:border-white/5 lg:pl-10"
                                             >
+                                                {/* P3-3: Step 3 CTA — 影像就緒行動區 */}
+                                                {narrativeStep === 3 && generatedImageUrl && (
+                                                    <div className="p-5 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl space-y-3">
+                                                        <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest text-center">✨ 影像就緒 // IMAGE READY</p>
+                                                        <Button
+                                                            onClick={handleFinish}
+                                                            disabled={isExtractingMem}
+                                                            isLoading={isExtractingMem}
+                                                            className="w-full py-4 text-[10px] font-black tracking-widest uppercase"
+                                                        >
+                                                            完成並前往 IP 休息室 →
+                                                        </Button>
+                                                        <div className="grid grid-cols-2 gap-2">
+                                                            <button
+                                                                onClick={handleGenerateImage}
+                                                                disabled={isGeneratingImage}
+                                                                className="py-3 text-[9px] font-bold rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-white/30 transition-all disabled:opacity-30"
+                                                            >
+                                                                🔄 再生一張
+                                                            </button>
+                                                            <button
+                                                                onClick={handleResetToStep1}
+                                                                className="py-3 text-[9px] font-bold rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-white/30 transition-all"
+                                                            >
+                                                                📝 繼續敘事
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                )}
                                                 <div className="space-y-6">
                                 <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em]">視覺轉化控制 (Visual Control)</h3>
                                 
@@ -1384,6 +1429,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                 </AnimatePresence>
                                             </div>
                                         </motion.div>
+                                        )}
                                     </div>
                                 </div>
                             </motion.div>

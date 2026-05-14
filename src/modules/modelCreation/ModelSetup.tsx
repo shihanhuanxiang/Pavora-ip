@@ -130,6 +130,8 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
   const [highlightedFields, setHighlightedFields] = useState<Set<string>>(new Set());
   const [generationQuality, setGenerationQuality] = useState<QualityLevel>('standard');
   const [mobileTab, setMobileTab] = useState<'settings' | 'preview'>('settings');
+  const [wizardMode, setWizardMode] = useState(true);
+  const [wizardStep, setWizardStep] = useState<1|2|3|4>(1);
   const [activeApparelCat, setActiveApparelCat] = useState('full_set');
 
   // A7: Use a ref to track the latest formState to avoid stale closures in async callbacks (like setTimeout)
@@ -613,6 +615,12 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
             <p className="text-[10px] text-[var(--color-gold)] tracking-[0.4em] uppercase opacity-70">Model Creation Studio</p>
           </div>
           <div className="flex gap-3">
+              <button
+                onClick={() => setWizardMode(v => !v)}
+                className={`px-4 py-1.5 rounded-full border text-[10px] font-bold transition-all ${wizardMode ? 'bg-white/10 border-white/20 text-white' : 'border-[var(--color-border)] text-gray-400 hover:border-white/20'}`}
+              >
+                {wizardMode ? '🪄 精靈模式' : '📋 完整表單'}
+              </button>
               <button 
                 onClick={() => setIsExpertMode(!isExpertMode)}
                 className={`px-4 py-1.5 rounded-full border text-[10px] font-bold transition-all ${isExpertMode ? 'bg-[var(--color-gold)] text-black border-[var(--color-gold)]' : 'border-[var(--color-border)] text-gray-400 hover:border-[var(--color-gold)]'}`}
@@ -644,6 +652,177 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
         {/* Left Column: Settings */}
         <div className={`lg:col-span-5 xl:col-span-4 space-y-6 ${mobileTab === 'settings' ? 'block' : 'hidden lg:block'}`}>
             
+            
+            {/* P3-1: Wizard Mode — Progress Indicator */}
+            {wizardMode && (
+                <div className="flex items-center gap-2 mb-1">
+                    {([
+                        { n: 1 as const, label: '基本設定' },
+                        { n: 2 as const, label: '外觀建立' },
+                        { n: 3 as const, label: 'AI 人設' },
+                        { n: 4 as const, label: '身份鎖定' }
+                    ]).map(({ n, label }, i) => (
+                        <React.Fragment key={n}>
+                            <button onClick={() => setWizardStep(n)} className={`flex flex-col items-center gap-1 ${wizardStep >= n ? 'text-[var(--color-gold)]' : 'text-gray-600'}`}>
+                                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-black border transition-all ${wizardStep === n ? 'bg-[var(--color-gold)] text-black border-[var(--color-gold)]' : wizardStep > n ? 'bg-[var(--color-gold)]/20 border-[var(--color-gold)]/40 text-[var(--color-gold)]' : 'bg-white/5 border-white/10 text-gray-500'}`}>
+                                    {wizardStep > n ? '✓' : n}
+                                </div>
+                                <span className="text-[8px] font-bold uppercase tracking-widest hidden sm:block">{label}</span>
+                            </button>
+                            {i < 3 && <div className={`flex-1 h-px transition-all ${wizardStep > n ? 'bg-[var(--color-gold)]/40' : 'bg-white/10'}`} />}
+                        </React.Fragment>
+                    ))}
+                </div>
+            )}
+
+            {/* P3-1: Wizard Mode — Step Content */}
+            {wizardMode && (
+                <div className="space-y-5">
+                    {/* STEP 1: 基本設定 */}
+                    {wizardStep === 1 && (
+                        <Card className="p-0 overflow-hidden border-none bg-white/[0.03] backdrop-blur-xl">
+                            <div className="p-5 border-b border-white/5 bg-gradient-to-r from-[var(--color-gold)]/5 to-transparent">
+                                <h3 className="text-sm font-bold text-white tracking-[0.2em] uppercase flex items-center gap-3">
+                                    <div className="w-1 h-4 bg-[var(--color-gold)]"></div>
+                                    <div className="flex flex-col items-start leading-tight">
+                                        <span>基本設定</span>
+                                        <span className="text-[9px] opacity-40 font-normal normal-case">Step 1 — 不到 1 分鐘</span>
+                                    </div>
+                                </h3>
+                            </div>
+                            <div className="p-6 space-y-5">
+                                <div>
+                                    <label className="block text-[11px] font-bold text-gray-500 uppercase mb-2 tracking-widest">IP 姓名 (Name)</label>
+                                    <div className="flex gap-2">
+                                        <input type="text" className="flex-1 bg-black/40 border border-white/10 rounded-xl p-3 text-sm focus:border-[var(--color-gold)] focus:outline-none transition-all placeholder:text-gray-700" placeholder="輸入 IP 角色姓名" value={formState.name} onChange={e => handleFormChange('name', e.target.value)} />
+                                        <button onClick={() => { const p = formState.gender === 'male' ? IP_NAME_POOL.male : IP_NAME_POOL.female; handleFormChange('name', p[Math.floor(Math.random() * p.length)]); }} className="px-3 bg-white/5 border border-white/10 rounded-xl text-gray-400 hover:text-white hover:border-white/20 transition-all">🎲</button>
+                                    </div>
+                                </div>
+                                <Select label="生理性別 (GENDER)" options={GENDER_PRESETS} value={formState.gender} onChange={e => handleGenderChange(e.target.value)} />
+                                <Slider label="年齡 (AGE)" min={18} max={45} unit="歲" value={formState.age} onChange={e => handleFormChange('age', Number(e.target.value))} />
+                                <div>
+                                    <label className="block text-[11px] font-bold text-gray-500 uppercase mb-2 tracking-widest">職業 (Profession)</label>
+                                    <input type="text" className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm focus:border-[var(--color-gold)] focus:outline-none transition-all placeholder:text-gray-700" placeholder="例：攝影師、咖啡師、設計師..." value={formState.persona.profession} onChange={e => handlePersonaUpdate('profession', e.target.value)} />
+                                </div>
+                                <Select label="主力城市 (City)" options={TAIWAN_COUNTIES} value={formState.lifeCircuit.primaryCity} onChange={e => handleCircuitUpdate('primaryCity', e.target.value)} />
+                            </div>
+                        </Card>
+                    )}
+                    {/* STEP 2: 外觀建立 */}
+                    {wizardStep === 2 && (
+                        <Card className="p-0 overflow-hidden border-none bg-white/[0.03] backdrop-blur-xl">
+                            <div className="p-5 border-b border-white/5 bg-gradient-to-r from-[var(--color-gold)]/5 to-transparent">
+                                <h3 className="text-sm font-bold text-white tracking-[0.2em] uppercase flex items-center gap-3">
+                                    <div className="w-1 h-4 bg-[var(--color-gold)]"></div>
+                                    <div className="flex flex-col items-start leading-tight">
+                                        <span>外觀建立</span>
+                                        <span className="text-[9px] opacity-40 font-normal normal-case">Step 2 — 選臉型與外觀方向</span>
+                                    </div>
+                                </h3>
+                            </div>
+                            <div className="p-6 space-y-6">
+                                <div>
+                                    <label className="block text-[11px] font-bold text-gray-500 uppercase mb-3 tracking-widest">臉型風格 (Face Style)</label>
+                                    <div className="grid grid-cols-3 gap-2">
+                                        {STYLE_ARCHETYPES.filter(a => a.gender.includes(formState.gender as any) || a.gender.includes('unisex')).slice(0, 6).map(a => (
+                                            <button key={a.value} onClick={() => handleFormChange('archetype', a.value)} className={`py-2.5 px-2 rounded-xl border text-[9px] font-bold transition-all text-center ${formState.archetype === a.value ? 'bg-[var(--color-gold)]/20 border-[var(--color-gold)] text-[var(--color-gold)]' : 'border-white/10 text-gray-400 hover:border-white/20'}`}>{a.label}</button>
+                                        ))}
+                                    </div>
+                                </div>
+                                <Select label="膚色 (Skin Tone)" options={SKIN_TONE_OPTIONS} value={formState.skinTone} onChange={e => handleFormChange('skinTone', e.target.value)} />
+                                <div>
+                                    <label className="block text-[11px] font-bold text-gray-500 uppercase mb-2 tracking-widest">髮色 (Hair Color)</label>
+                                    <input type="text" className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm focus:border-[var(--color-gold)] focus:outline-none transition-all placeholder:text-gray-700" placeholder="例：黑色直髮、棕色捲髮..." value={formState.hairColor} onChange={e => handleFormChange('hairColor', e.target.value)} />
+                                </div>
+                                <div className="pt-2 border-t border-white/5 space-y-3">
+                                    <p className="text-[9px] text-gray-600 uppercase tracking-widest">生活細節（選填）</p>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label className="block text-[10px] font-bold text-gray-500 mb-1.5">🐾 寵物</label>
+                                            <input type="text" className="w-full bg-black/40 border border-white/10 rounded-xl p-2.5 text-xs focus:border-[var(--color-gold)] focus:outline-none transition-all placeholder:text-gray-700" placeholder="品種/名字" value={formState.worldAnchors.pet} onChange={e => handleWorldAnchorUpdate('pet', e.target.value)} />
+                                        </div>
+                                        <div>
+                                            <label className="block text-[10px] font-bold text-gray-500 mb-1.5">✨ 標誌物品</label>
+                                            <input type="text" className="w-full bg-black/40 border border-white/10 rounded-xl p-2.5 text-xs focus:border-[var(--color-gold)] focus:outline-none transition-all placeholder:text-gray-700" placeholder="例：相機、特定飾品" value={formState.worldAnchors.iconicItem} onChange={e => handleWorldAnchorUpdate('iconicItem', e.target.value)} />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </Card>
+                    )}
+                    {/* STEP 3: AI 人設生成 */}
+                    {wizardStep === 3 && (
+                        <Card className="p-0 overflow-hidden border-none bg-white/[0.03] backdrop-blur-xl">
+                            <div className="p-5 border-b border-white/5 bg-gradient-to-r from-[var(--color-gold)]/5 to-transparent">
+                                <h3 className="text-sm font-bold text-white tracking-[0.2em] uppercase flex items-center gap-3">
+                                    <div className="w-1 h-4 bg-[var(--color-gold)]"></div>
+                                    <div className="flex flex-col items-start leading-tight">
+                                        <span>AI 人設生成</span>
+                                        <span className="text-[9px] opacity-40 font-normal normal-case">Step 3 — 一鍵 AI 或手動填入</span>
+                                    </div>
+                                </h3>
+                            </div>
+                            <div className="p-6 space-y-5">
+                                <button onClick={handleAutoGeneratePersona} disabled={isGeneratingPersona} className={`w-full py-3.5 rounded-2xl border text-[11px] font-black uppercase tracking-widest transition-all ${isGeneratingPersona ? 'opacity-50 cursor-not-allowed border-white/10 text-gray-500' : 'border-[var(--color-gold)]/40 text-[var(--color-gold)] hover:bg-[var(--color-gold)]/10'}`}>
+                                    {isGeneratingPersona ? '⏳ AI 人設生成中...' : '🤖 AI 一鍵生成人設'}
+                                </button>
+                                <Select label="核心氛圍 (VIBE)" options={CORE_VIBE_OPTIONS} value={formState.persona.coreVibe} onChange={e => handlePersonaUpdate('coreVibe', e.target.value)} />
+                                <Select label="MBTI (PERSONALITY)" options={MBTI_OPTIONS} value={formState.persona.mbti} onChange={e => handlePersonaUpdate('mbti', e.target.value)} />
+                                <Select label="主力語氣 (TONE OF VOICE)" options={TONE_OPTIONS} value={formState.persona.toneOfVoice} onChange={e => handlePersonaUpdate('toneOfVoice', e.target.value)} />
+                            </div>
+                        </Card>
+                    )}
+                    {/* STEP 4: 身份鎖定 */}
+                    {wizardStep === 4 && (
+                        <Card className="p-0 overflow-hidden border-none bg-white/[0.03] backdrop-blur-xl">
+                            <div className="p-5 border-b border-white/5 bg-gradient-to-r from-[var(--color-gold)]/5 to-transparent">
+                                <h3 className="text-sm font-bold text-white tracking-[0.2em] uppercase flex items-center gap-3">
+                                    <div className="w-1 h-4 bg-[var(--color-gold)]"></div>
+                                    <div className="flex flex-col items-start leading-tight">
+                                        <span>身份鎖定</span>
+                                        <span className="text-[9px] opacity-40 font-normal normal-case">Step 4 — AI 草擬後確認生成</span>
+                                    </div>
+                                </h3>
+                            </div>
+                            <div className="p-6 space-y-5">
+                                <button onClick={handleGenerateLockedDescriptor} disabled={isGeneratingDescriptor} className={`w-full py-3.5 rounded-2xl border text-[11px] font-black uppercase tracking-widest transition-all ${isGeneratingDescriptor ? 'opacity-50 cursor-not-allowed border-white/10 text-gray-500' : 'border-[var(--color-gold)]/40 text-[var(--color-gold)] hover:bg-[var(--color-gold)]/10'}`}>
+                                    {isGeneratingDescriptor ? '⏳ 草擬中...' : '✨ AI 草擬身份鎖定 (Locked Descriptor)'}
+                                </button>
+                                <div>
+                                    <label className="block text-[11px] font-bold text-gray-500 uppercase mb-2 tracking-widest">身份鎖定描述</label>
+                                    <textarea className="w-full h-28 bg-black/40 border border-white/10 rounded-xl p-3 text-xs font-mono focus:border-[var(--color-gold)] focus:outline-none transition-all resize-none placeholder:text-gray-700" placeholder="AI 草擬後在此確認或微調..." value={formState.persona.locked_descriptor} onChange={e => handlePersonaUpdate('locked_descriptor', e.target.value)} />
+                                </div>
+                                <div>
+                                    <label className="block text-[11px] font-bold text-gray-500 uppercase mb-2 tracking-widest">生成品質 (Quality)</label>
+                                    <div className="grid grid-cols-3 gap-2">
+                                        {([
+                                            { id: 'standard' as const, label: '標準' },
+                                            { id: 'high' as const, label: '高品質' },
+                                            { id: 'ultra' as const, label: 'Ultra' }
+                                        ]).map(q => (
+                                            <button key={q.id} onClick={() => setGenerationQuality(q.id)} className={`py-2.5 rounded-xl border text-[9px] font-bold transition-all ${generationQuality === q.id ? 'bg-[var(--color-gold)]/20 border-[var(--color-gold)] text-[var(--color-gold)]' : 'border-white/10 text-gray-500 hover:border-white/20'}`}>{q.label}</button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </Card>
+                    )}
+                    {/* Step Navigation */}
+                    <div className="flex items-center justify-between gap-3">
+                        <button onClick={() => setWizardStep(s => Math.max(1, s - 1) as 1|2|3|4)} disabled={wizardStep === 1} className="px-5 py-3 border border-white/10 rounded-xl text-[10px] font-bold text-gray-400 hover:text-white hover:border-white/30 transition-all disabled:opacity-20 disabled:cursor-not-allowed">← 上一步</button>
+                        <span className="text-[9px] text-gray-600 uppercase tracking-widest">{wizardStep} / 4</span>
+                        {wizardStep < 4 ? (
+                            <button onClick={() => setWizardStep(s => Math.min(4, s + 1) as 1|2|3|4)} className="px-5 py-3 bg-white/10 border border-white/20 rounded-xl text-[10px] font-bold text-white hover:bg-[var(--color-gold)]/20 hover:border-[var(--color-gold)]/40 hover:text-[var(--color-gold)] transition-all">下一步 →</button>
+                        ) : (
+                            <Button onClick={handleGenerate} isLoading={isLoading} disabled={isLoading} className="px-6 py-3 text-[10px] font-black tracking-widest uppercase">🚀 生成 IP</Button>
+                        )}
+                    </div>
+                </div>
+            )}
+
+            {/* Existing full form — hidden in wizard mode */}
+            {!wizardMode && (<>
+
             {/* 1. 靈魂藍圖 */}
             <Card className="p-0 overflow-hidden border-none bg-white/[0.03] backdrop-blur-xl group/card">
               <div className="p-5 border-b border-white/5 flex justify-between items-center bg-gradient-to-r from-[var(--color-gold)]/5 to-transparent transition-all group-hover/card:from-[var(--color-gold)]/10">
@@ -1206,6 +1385,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                    />
                 )}
             </motion.button>
+            </>)}
         </div>
 
         {/* Right Column: Preview */}
