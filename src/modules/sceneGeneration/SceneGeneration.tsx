@@ -49,6 +49,7 @@ import ChevronRightIcon from '../../shared/assets/icons/ChevronRightIcon';
 import ExpandIcon from '../../shared/assets/icons/ExpandIcon';
 
 import { useBrandStore } from '../../shared/stores/useBrandStore';
+import { useModelStore } from '../../shared/stores/useModelStore';
 import AsyncImage from '../../shared/components/common/AsyncImage';
 import { useNotification } from '../../shared/context/NotificationContext';
 
@@ -379,10 +380,17 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
 
         setIsRegenerating(angleId);
         try {
+            // IP 模特兒身份注入邏輯
+            const activeModel = useModelStore.getState().getActiveModel?.() || useModelStore.getState().models.find(m => m.id === useModelStore.getState().activeModelId);
+            const modelIdentityHint = activeModel?.persona?.locked_descriptor 
+                ? `Subject identity: ${activeModel.persona.locked_descriptor}` 
+                : undefined;
+
             const config = { 
                 usePro: quality !== 'standard', 
                 resolution: quality === 'ultra' ? '4K' : '2K' as '2K' | '4K',
-                imageConfig: { aspectRatio }
+                imageConfig: { aspectRatio },
+                customInstruction: modelIdentityHint
             };
             const options = {
                 poseExpression: {
@@ -480,10 +488,17 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
         setLoadingMessage("正在初始化 Pavora 渲染引擎...");
 
         try {
+            // IP 模特兒身份注入邏輯
+            const activeModel = useModelStore.getState().getActiveModel?.() || useModelStore.getState().models.find(m => m.id === useModelStore.getState().activeModelId);
+            const modelIdentityHint = activeModel?.persona?.locked_descriptor 
+                ? `Subject identity: ${activeModel.persona.locked_descriptor}` 
+                : undefined;
+
             const config = { 
                 usePro: quality !== 'standard', 
                 resolution: quality === 'ultra' ? '4K' : '2K' as '2K' | '4K',
-                imageConfig: { aspectRatio }
+                imageConfig: { aspectRatio },
+                customInstruction: modelIdentityHint
             };
             const options = {
                 poseExpression: {

@@ -341,6 +341,12 @@ ${ugcProtocol}
 - If SNOW/FROST is active: Ensure physical snow/ice particles are visible on hair, shoulders, and garment folds. 
 - Render realistic sub-surface scattering for skin in cold conditions.
 
+### [INTEGRATION QUALITY PROTOCOL]
+- Edge treatment: soft natural edge integration, avoid cutout or compositing artifacts
+- Lighting sync: environmental ambient light must wrap subject naturally, matching scene's primary light source direction and color temperature
+- Shadow grounding: subject must cast natural shadow consistent with scene lighting angle
+- Atmosphere bleed: scene atmosphere (haze, particles, color cast) should subtly affect subject edges
+
 [NEGATIVE PROMPT]
 (smooth skin:1.5), (plastic:1.5), CGI, 3d render, cartoon, floating, blurry face, distorted limbs, (bad hand:1.5), text, watermarks.
 `.trim();
