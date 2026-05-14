@@ -3,13 +3,9 @@ import {
     collection, 
     doc, 
     setDoc, 
-    getDoc, 
     getDocs, 
-    query, 
-    where, 
     deleteDoc, 
     serverTimestamp,
-    Timestamp
 } from 'firebase/firestore';
 import { db, auth } from './firebaseConfig';
 import type { Model } from '../../types/types';
@@ -61,7 +57,7 @@ function handleFirestoreError(error: unknown, operationType: OperationType, path
   throw new Error(JSON.stringify(errInfo));
 }
 
-const COLLECTION_NAME = 'models';
+const getUserModelsCollectionPath = (uid: string) => `users/${uid}/models`;
 
 /**
  * Save a model configuration to the cloud.
@@ -69,14 +65,16 @@ const COLLECTION_NAME = 'models';
 export const saveModelToCloud = async (model: Model) => {
     if (!auth.currentUser) throw new Error("User not authenticated");
 
-    const path = `${COLLECTION_NAME}/${model.id}`;
+    const userId = auth.currentUser.uid;
+    const collectionPath = getUserModelsCollectionPath(userId);
+    const path = `${collectionPath}/${model.id}`;
     try {
         // Exclude gallery from Firestore model documents because generated images can exceed document size limits.
         const { gallery, ...modelData } = model;
         
-        await setDoc(doc(db, COLLECTION_NAME, model.id), {
+        await setDoc(doc(db, collectionPath, model.id), {
             ...modelData,
-            createdBy: auth.currentUser.uid,
+            createdBy: userId,
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
         });
@@ -91,10 +89,10 @@ export const saveModelToCloud = async (model: Model) => {
 export const getMyCloudModels = async (): Promise<Model[]> => {
     if (!auth.currentUser) return [];
 
-    const path = COLLECTION_NAME;
+    const userId = auth.currentUser.uid;
+    const path = getUserModelsCollectionPath(userId);
     try {
-        const q = query(collection(db, COLLECTION_NAME), where("createdBy", "==", auth.currentUser.uid));
-        const querySnapshot = await getDocs(q);
+        const querySnapshot = await getDocs(collection(db, path));
         
         return querySnapshot.docs.map(doc => {
             const data = doc.data();
@@ -115,9 +113,11 @@ export const getMyCloudModels = async (): Promise<Model[]> => {
 export const deleteModelFromCloud = async (modelId: string) => {
     if (!auth.currentUser) return;
 
-    const path = `${COLLECTION_NAME}/${modelId}`;
+    const userId = auth.currentUser.uid;
+    const collectionPath = getUserModelsCollectionPath(userId);
+    const path = `${collectionPath}/${modelId}`;
     try {
-        await deleteDoc(doc(db, COLLECTION_NAME, modelId));
+        await deleteDoc(doc(db, collectionPath, modelId));
     } catch (error) {
         handleFirestoreError(error, OperationType.DELETE, path);
     }

@@ -3,7 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import type { Model, ContentCategory } from '../types/types';
 import { imageDB, base64ToBlob } from '../services/imageDB';
 import { saveModelToCloud, getMyCloudModels, deleteModelFromCloud } from '../services/firebase/modelService';
-import { checkGoogleDriveStatus, syncToGoogleDrive } from '../services/googleDriveService';
+import { checkGoogleDriveStatus, syncToGoogleDrive, listDriveFolders, createDriveFolder } from '../services/googleDriveService';
 import { getDriveSettings } from '../services/storageService';
 import { embedMetadata } from '../utils/metadataUtils';
 
@@ -100,7 +100,8 @@ export const useModelStore = create<ModelState>()(
             const { doc, updateDoc } = await import('firebase/firestore');
             const { db } = await import('../services/firebase/firebaseConfig');
             const modelRef = doc(db, `users/${user.uid}/models`, modelId);
-            await updateDoc(modelRef, updates);
+            const { gallery: _gallery, ...safeUpdates } = updates as any;
+            await updateDoc(modelRef, safeUpdates);
           }
         } catch (e) {
           console.error("Cloud update failed", e);
@@ -141,12 +142,30 @@ export const useModelStore = create<ModelState>()(
                 }
 
                 const settings = getDriveSettings();
+                
+                let rootFolderId = settings.modelsFolderId;
+                if (!rootFolderId) {
+                    const rootFolders = await listDriveFolders({ parentId: 'root' });
+                    const existingRootFolder = rootFolders.folders.find(folder => folder.name === 'Pavora_Model_Gallery');
+                    const rootFolder = existingRootFolder || await createDriveFolder('Pavora_Model_Gallery');
+                    rootFolderId = rootFolder?.id;
+                }
+
+                let modelFolderId = rootFolderId;
+                if (rootFolderId && currentModel?.name) {
+                    const modelFolderName = currentModel.name.trim() || modelId;
+                    const modelFolders = await listDriveFolders({ parentId: rootFolderId });
+                    const existingModelFolder = modelFolders.folders.find(folder => folder.name === modelFolderName);
+                    const modelFolder = existingModelFolder || await createDriveFolder(modelFolderName, rootFolderId);
+                    modelFolderId = modelFolder?.id || rootFolderId;
+                }
+
                 const driveResult = await syncToGoogleDrive(
                     `ModelGallery_${modelId}_${galleryItemTimestamp}.png`,
                     syncData,
                     'image/png',
                     'Pavora_Model_Gallery',
-                    settings.modelsFolderId
+                    modelFolderId
                 );
 
                 if (driveResult.success && driveResult.fileId) {

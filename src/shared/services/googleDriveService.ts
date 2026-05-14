@@ -71,20 +71,39 @@ export const listDriveFolders = async (options: { search?: string; parentId?: st
   }
 };
 
-export const createDriveFolder = async (name: string): Promise<{ id: string; name: string } | null> => {
+export const createDriveFolder = async (
+  name: string,
+  parentId?: string
+): Promise<{ id: string; name: string } | null> => {
   try {
     const response = await fetch('/api/drive/folders', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name }),
+      body: JSON.stringify({ name, parentId }),
     });
     if (!response.ok) return null;
     const data = await response.json();
     return data.folder;
   } catch (error) {
     console.error('Error creating Drive folder:', error);
+    return null;
+  }
+};
+
+export const getOrCreateDriveFolder = async (
+  name: string,
+  parentId?: string
+): Promise<{ id: string; name: string } | null> => {
+  try {
+    const result = await listDriveFolders({ parentId: parentId || 'root' });
+    const existingFolder = result.folders.find(folder => folder.name === name);
+    if (existingFolder) return existingFolder;
+
+    return await createDriveFolder(name, parentId);
+  } catch (error) {
+    console.error('Error getting or creating Drive folder:', error);
     return null;
   }
 };

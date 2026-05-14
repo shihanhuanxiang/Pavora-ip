@@ -17,7 +17,8 @@ import ManualCropModal from '../../shared/components/business/ManualCropModal';
 import { detectMultiAngleLayout } from '../../shared/services/geminiService';
 import { useNotification } from '../../shared/context/NotificationContext';
 import Loader from '../../shared/components/common/Loader';
-import { checkGoogleDriveStatus, syncToGoogleDrive } from '../../shared/services/googleDriveService';
+import { checkGoogleDriveStatus, syncToGoogleDrive, getOrCreateDriveFolder } from '../../shared/services/googleDriveService';
+import DriveFilePickerModal from '../../components/DriveFilePickerModal';
 
 import ModelIdentityEditor from './ModelIdentityEditor';
 import ModelActionMenu from './components/ModelActionMenu';
@@ -72,6 +73,9 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
   const [selectedGalleryItems, setSelectedGalleryItems] = useState<Set<string>>(new Set());
   const [isPortfolioDeleteMode, setIsPortfolioDeleteMode] = useState(false);
   const [isDriveSyncing, setIsDriveSyncing] = useState(false);
+  const [isDriveImporting, setIsDriveImporting] = useState(false);
+  const [showDriveFilePicker, setShowDriveFilePicker] = useState(false);
+  const [driveImportFolder, setDriveImportFolder] = useState<{ id: string; name: string } | null>(null);
   const [driveConnected, setDriveConnected] = useState(false);
 
   const [isFaceCropModalOpen, setIsFaceCropModalOpen] = useState(false);
@@ -283,6 +287,74 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
       message: successCount > 0
         ? `已同步 ${successCount} 張圖片至 Google Drive`
         : '同步失敗，請確認 Google Drive 已連線'
+    });
+  };
+
+  const handleOpenDriveImport = async () => {
+    if (!portfolioModel) return;
+
+    setIsDriveImporting(true);
+    try {
+      const rootFolder = await getOrCreateDriveFolder('Pavora_Model_Gallery');
+      if (!rootFolder) {
+        addNotification({ type: 'error', message: '無法開啟 Drive 資料夾' });
+        return;
+      }
+
+      const modelFolderName = portfolioModel.name?.trim() || portfolioModel.id;
+      const modelFolder = await getOrCreateDriveFolder(modelFolderName, rootFolder.id);
+      if (!modelFolder) {
+        addNotification({ type: 'error', message: '無法開啟模特兒 Drive 資料夾' });
+        return;
+      }
+
+      setDriveImportFolder(modelFolder);
+      setShowDriveFilePicker(true);
+    } catch (error) {
+      console.error('Open Drive import failed:', error);
+      addNotification({ type: 'error', message: 'Drive 匯入準備失敗' });
+    } finally {
+      setIsDriveImporting(false);
+    }
+  };
+
+  const handleConfirmDriveImport = async (selectedFiles: any[]) => {
+    if (!portfolioModel) return;
+
+    const existingDriveFileIds = new Set(
+      (portfolioModel.gallery || [])
+        .map(item => item.driveFileId)
+        .filter(Boolean)
+    );
+
+    const now = Date.now();
+    const importedItems = selectedFiles
+      .filter(file => file.mimeType?.startsWith('image/'))
+      .filter(file => !existingDriveFileIds.has(file.id))
+      .map((file, index) => ({
+        id: `drive-${file.id}`,
+        url: `/api/drive/image/${file.id}`,
+        timestamp: now + index,
+        driveFileId: file.id,
+        driveLink: file.webViewLink,
+        driveSyncedAt: new Date().toISOString()
+      }));
+
+    if (importedItems.length === 0) {
+      setShowDriveFilePicker(false);
+      addNotification({ type: 'info', message: '沒有新的 Drive 圖片可匯入' });
+      return;
+    }
+
+    await updateModel(portfolioModel.id, {
+      gallery: [...importedItems, ...(portfolioModel.gallery || [])]
+    } as Partial<Model>);
+
+    setShowDriveFilePicker(false);
+    setDriveImportFolder(null);
+    addNotification({
+      type: 'success',
+      message: `已從 Drive 匯入 ${importedItems.length} 張圖片`
     });
   };
 
@@ -585,13 +657,24 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                                         🗑️ 批量刪除模式
                                                     </button>
                                                     {driveConnected && (
-                                                        <button
-                                                            onClick={handleSyncGalleryToDrive}
-                                                            disabled={isDriveSyncing}
-                                                            className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl text-[10px] font-bold tracking-widest text-sky-400 hover:text-white transition-all hover:border-sky-500/50 disabled:opacity-30"
-                                                        >
-                                                            {isDriveSyncing ? '同步中...' : '☁️ 同步圖片到 Drive'}
-                                                        </button>
+                                                        <div className="flex gap-2">
+                                                            <button
+                                                                onClick={handleSyncGalleryToDrive}
+                                                                disabled={isDriveSyncing}
+                                                                className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl text-[10px] font-bold tracking-widest text-sky-400 hover:text-white transition-all hover:border-sky-500/50 disabled:opacity-30"
+                                                            >
+                                                                {isDriveSyncing ? '同步中...' : '☁️ 同步圖片到 Drive'}
+                                                            </button>
+                                                            <Button
+                                                                onClick={handleOpenDriveImport}
+                                                                disabled={isDriveImporting}
+                                                                isLoading={isDriveImporting}
+                                                                variant="secondary"
+                                                                className="text-[10px] font-bold tracking-widest"
+                                                            >
+                                                                從 Drive 匯入
+                                                            </Button>
+                                                        </div>
                                                     )}
                                                 </>
                                             )}
@@ -977,6 +1060,19 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                     </div>
                 )}
             </main>
+
+            {driveImportFolder && (
+                <DriveFilePickerModal
+                    isOpen={showDriveFilePicker}
+                    onClose={() => {
+                        setShowDriveFilePicker(false);
+                        setDriveImportFolder(null);
+                    }}
+                    onConfirm={handleConfirmDriveImport}
+                    folderId={driveImportFolder.id}
+                    folderName={driveImportFolder.name}
+                />
+            )}
         </div>
     );
 

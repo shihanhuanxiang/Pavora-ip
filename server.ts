@@ -271,7 +271,7 @@ app.post('/api/drive/folders', async (req, res) => {
     return res.status(401).json({ error: 'Not connected to Google Drive' });
   }
 
-  const { name } = req.body;
+  const { name, parentId } = req.body;
   if (!name) {
     return res.status(400).json({ error: 'Folder name is required' });
   }
@@ -281,8 +281,9 @@ app.post('/api/drive/folders', async (req, res) => {
     const drive = google.drive({ version: 'v3', auth: oauth2Client });
 
     const folderMetadata = {
-      name: name,
-      mimeType: 'application/vnd.google-apps.folder'
+      name,
+      mimeType: 'application/vnd.google-apps.folder',
+      ...(parentId ? { parents: [parentId] } : {})
     };
     
     const folder = await drive.files.create({
@@ -414,6 +415,45 @@ app.get('/api/drive/file/:fileId', async (req, res) => {
     console.error('Drive download file error:', error?.response?.data || error.message);
     const status = error?.response?.status || 500;
     res.status(status).json({ error: `Failed to download file: ${error.message}` });
+  }
+});
+
+app.get('/api/drive/image/:fileId', async (req, res) => {
+  console.log('GET /api/drive/image/:fileId');
+  const refreshToken = req.cookies.google_refresh_token;
+  if (!refreshToken) {
+    return res.status(401).json({ error: 'Not connected to Google Drive' });
+  }
+
+  const { fileId } = req.params;
+
+  try {
+    oauth2Client.setCredentials({ refresh_token: refreshToken });
+    const drive = google.drive({ version: 'v3', auth: oauth2Client });
+
+    const metadata = await drive.files.get({
+      fileId,
+      fields: 'name, mimeType, size'
+    });
+
+    const mimeType = metadata.data.mimeType || 'application/octet-stream';
+    if (!mimeType.startsWith('image/')) {
+      return res.status(415).json({ error: 'Drive file is not an image' });
+    }
+
+    const response = await drive.files.get(
+      { fileId, alt: 'media' },
+      { responseType: 'arraybuffer' }
+    );
+
+    const buffer = Buffer.from(response.data as ArrayBuffer);
+    res.setHeader('Content-Type', mimeType);
+    res.setHeader('Cache-Control', 'private, max-age=3600');
+    res.send(buffer);
+  } catch (error: any) {
+    console.error('Drive image proxy error:', error?.response?.data || error.message || error);
+    const status = error?.response?.status || 500;
+    res.status(status).json({ error: `Failed to proxy Drive image: ${error.message}` });
   }
 });
 
