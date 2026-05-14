@@ -6,6 +6,7 @@ import Card from '../../shared/components/common/Card';
 import ImagePreviewModal from '../../shared/components/common/ImagePreviewModal';
 import { useModelStore } from '../../shared/stores/useModelStore';
 import { useBrandStore } from '../../shared/stores/useBrandStore';
+import { STORY_ARCS } from '../narrative/constants/storyElements';
 import AsyncImage from '../../shared/components/common/AsyncImage';
 import PortfolioSelectModal from '../../components/PortfolioSelectModal';
 import NarrativeWorkflow from '../narrative/NarrativeWorkflow';
@@ -751,6 +752,75 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                                     </div>
                                                 );
                                             })}
+                                        </div>
+                                    </div>
+                                );
+                            })()}
+
+                            {/* P2-5: 故事進度小卡 */}
+                            {(() => {
+                                const isArcEnabled = portfolioModel.preferences?.enable_story_arcs !== false;
+                                if (!isArcEnabled) return null;
+
+                                const allArcs = [...STORY_ARCS, ...(portfolioModel.preferences?.custom_story_arcs || [])];
+                                const activeArcId = portfolioModel.preferences?.active_arc_id;
+                                const activeArc = allArcs.find(a => a.arc_id === activeArcId);
+                                
+                                if (!activeArc) {
+                                    return (
+                                        <div className="p-6 bg-white/5 rounded-2xl border border-white/10 border-dashed flex items-center justify-between">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-gray-600"></div>
+                                                <p className="text-[10px] text-gray-500 uppercase tracking-widest font-black">尚無進行中的故事線 // NO ACTIVE STORY ARC</p>
+                                            </div>
+                                            <button 
+                                                onClick={() => setSelectedModelForNarrative(portfolioModel)}
+                                                className="text-[9px] text-[var(--color-gold)] font-bold uppercase tracking-widest hover:underline"
+                                            >
+                                                前往靈魂敘事開啟新篇章 →
+                                            </button>
+                                        </div>
+                                    );
+                                }
+
+                                const currentPhaseIdx = portfolioModel.preferences?.active_arc_phase_index || 0;
+                                const totalPhases = activeArc.phases.length;
+                                const progress = ((currentPhaseIdx + 1) / totalPhases) * 100;
+
+                                return (
+                                    <div className="p-6 bg-[var(--color-bg-surface)] rounded-3xl border border-[var(--color-gold)]/20 shadow-xl space-y-5 relative overflow-hidden group/arc">
+                                        <div className="absolute -top-12 -right-12 w-32 h-32 bg-[var(--color-gold)]/5 blur-3xl rounded-full group-hover/arc:bg-[var(--color-gold)]/10 transition-all duration-700"></div>
+                                        
+                                        <div className="flex justify-between items-center relative z-10">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-gold)] animate-pulse shadow-[0_0_10px_rgba(212,175,55,1)]"></div>
+                                                <h4 className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.4em] italic">核心故事進度 // STORY PROGRESS</h4>
+                                            </div>
+                                            <div className="px-3 py-1 bg-white/5 border border-white/10 rounded-full">
+                                                <span className="text-[9px] text-gray-400 font-black uppercase tracking-tighter mr-2">里程碑</span>
+                                                <span className="text-[9px] text-white font-black">{currentPhaseIdx + 1} / {totalPhases}</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-10">
+                                            <div className="flex-1 space-y-3">
+                                                <div className="space-y-1">
+                                                    <h5 className="text-xl font-black text-white tracking-tight uppercase leading-none">{activeArc.name_zh}</h5>
+                                                    <p className="text-[9px] text-gray-500 font-bold tracking-widest uppercase opacity-60 italic">{activeArc.arc_id}</p>
+                                                </div>
+                                                <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+                                                    <div 
+                                                        className="h-full bg-gradient-to-r from-[var(--color-gold)] to-[#FFD700] transition-all duration-1000 ease-out" 
+                                                        style={{ width: `${progress}%` }} 
+                                                    />
+                                                </div>
+                                            </div>
+                                            <Button 
+                                                onClick={() => setSelectedModelForNarrative(portfolioModel)}
+                                                className="px-8 py-3 text-[10px] font-black tracking-[0.2em] shadow-lg shadow-[var(--color-gold)]/10"
+                                            >
+                                                繼續故事線 (CONTINUE STORY)
+                                            </Button>
                                         </div>
                                     </div>
                                 );

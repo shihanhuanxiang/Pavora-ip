@@ -991,7 +991,8 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
         .join(" ")
         .toLowerCase();
 
-    const contentCategory: DiaryEntry['contentCategory'] =
+    // P2-2: 更新分類判斷邏輯（將舊邏輯作為 fallback）
+    const fallbackCategory: DiaryEntry['contentCategory'] =
         sceneContext.flags?.intimacy_emotional ||
         sceneContext.flags?.story_arc_id ||
         sceneContext.flags?.identity_thread_id ||
@@ -1054,6 +1055,7 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
 請直接回傳一個符合以下格式的 JSON 字串，不要有任何 Markdown 標籤：
 {
   "content": "第一人稱的生活碎念（繁體中文），約 150-200 字，充滿生活雜訊與微情緒",
+  "contentCategory": "根據本次內容從 [lifestyle, curve, drama] 中選一個：lifestyle(咖啡/逛街/日常), curve(性感/運動/強調身材), drama(故事感/情緒/戲劇性)",
   "mood": "一個精確的情緒關鍵字",
   "visualPrompt": "[Subject]: ...\\n[Apparel]: ...\\n[Environment]: ...\\n[Lighting]: ...\\n[Camera]: ...",
   "visualPromptZH": "[主體]: ...\\n[穿搭]: ...\\n[環境]: ...\\n[光影]: ...\\n[鏡頭]: ...",
@@ -1085,6 +1087,12 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
         }
 
         const data = JSON.parse(jsonStr.replace(/^[^{]*/, "").replace(/[^}]*$/, ""));
+
+        // P2-2: 解析並驗證 AI 給出的 contentCategory
+        const finalContentCategory: DiaryEntry['contentCategory'] = 
+            ["lifestyle", "curve", "drama"].includes(data.contentCategory) 
+                ? data.contentCategory 
+                : fallbackCategory;
 
         const ensurePromptSection = (
             promptValue: unknown,
@@ -1166,7 +1174,7 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
             mood: data.mood,
             visualPrompt: sanitizedVisualPrompt,
             visualPromptZH: sanitizedVisualPromptZH,
-            contentCategory,
+            contentCategory: finalContentCategory,
             meta: {
                 ...data.meta,
                 petNote,
@@ -1184,7 +1192,7 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
             mood: "沉浸",
             visualPrompt: finalVisualPrompt,
             visualPromptZH: "基本的視覺提示詞備援",
-            contentCategory
+            contentCategory: fallbackCategory
         };
     }
 };

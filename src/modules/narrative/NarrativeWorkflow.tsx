@@ -3,6 +3,7 @@ import type { Model, DiaryEntry } from '../../shared/types/types';
 import Button from '../../shared/components/common/Button';
 import Loader from '../../shared/components/common/Loader';
 import { generateIPDiary, generateRandomEvent, syncPrompts, generateDynamicEvent, extractNewMemories, generateRandomEventWithScene, generateDynamicEventWithScene } from './services/narrativeService';
+import { ALL_EXTENDED_SCENES } from './constants/extendedScenes';
 import { OrchestratorService } from './services/orchestratorService';
 import { transformImage } from '../../shared/services/geminiService';
 import { validatePromptText } from '../../shared/services/promptSanitizer';
@@ -41,6 +42,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     const [isSyncing, setIsSyncing] = useState(false);
     const [isExtractingMem, setIsExtractingMem] = useState(false);
     const [diary, setDiary] = useState<Partial<DiaryEntry> | null>(null);
+    const [currentSceneId, setCurrentSceneId] = useState<string | null>(null);
     const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
     const [newMemories, setNewMemories] = useState<string[]>([]);
     const [showMemoryConfirm, setShowMemoryConfirm] = useState(false);
@@ -64,6 +66,31 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     const [editablePromptZH, setEditablePromptZH] = useState('');
     const [activePromptLang, setActivePromptLang] = useState<'ZH' | 'EN'>('ZH');
     const [eventSource, setEventSource] = useState<EventSource>('none');
+
+    // P2-3: 內容比例建議邏輯
+    const contentSuggestion = (() => {
+        if (!model.gallery || model.gallery.length === 0) return null;
+        
+        const counts = { lifestyle: 0, curve: 0, drama: 0 };
+        model.gallery.forEach(item => {
+            if (item.contentCategory === 'lifestyle') counts.lifestyle++;
+            else if (item.contentCategory === 'curve') counts.curve++;
+            else if (item.contentCategory === 'drama') counts.drama++;
+        });
+
+        const total = model.gallery.length;
+        const targets = { lifestyle: 0.5, curve: 0.3, drama: 0.2 };
+        
+        const deviations = [
+            { key: 'lifestyle', label: '生活日常', gap: (counts.lifestyle / total) - targets.lifestyle },
+            { key: 'curve', label: '曲線魅力', gap: (counts.curve / total) - targets.curve },
+            { key: 'drama', label: '戲劇張力', gap: (counts.drama / total) - targets.drama },
+        ];
+
+        // 找出「實際佔比 - 目標佔比」差距最大 (最負) 的類別
+        const mostNeeded = deviations.reduce((prev, curr) => prev.gap < curr.gap ? prev : curr);
+        return `📊 內容建議：目前 ${mostNeeded.key} 偏少，建議本次選擇${mostNeeded.label}場景`;
+    })();
 
     type PromptSection = {
         label: string;
@@ -399,7 +426,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         </motion.button>
     );
 
-    const handleGenerateDiary = async () => {
+    const handleGenerateDiary = async (forcedId?: string) => {
         if (!eventInput.trim()) return;
         setIsGenerating(true);
         setGeneratedImageUrl(null);
@@ -408,13 +435,34 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         const lastEntry = model.gallery?.[0];
         const context = lastEntry ? { content: lastEntry.narrativeContent, mood: lastEntry.mood } : undefined;
 
+        // Determine which scene to use
+        let sceneIdToUse = forcedId || selectedBrief?.sceneId || randomSceneId || currentSceneId || undefined;
+        
+        // If still undefined (manual input case), pick a random one to ensure transparency
+        if (!sceneIdToUse) {
+            const city = model.lifeCircuit?.primaryCity || '台北市';
+            const pool = ALL_EXTENDED_SCENES.filter(s => s.city === city || s.city === 'any');
+            const targetPool = pool.length > 0 ? pool : ALL_EXTENDED_SCENES;
+            sceneIdToUse = targetPool[Math.floor(Math.random() * targetPool.length)].scene_id;
+        }
+
         try {
             const result = await generateIPDiary(model, eventInput, { 
                 isPOV, 
                 lastEntry: context,
-                forcedSceneId: selectedBrief?.sceneId || randomSceneId || undefined
+                forcedSceneId: sceneIdToUse
             });
-            setDiary(result);
+            
+            // P2-4: 獲取最新的服裝 ID (可能由 service 更新至 store)
+            // 由於 generateIPDiary 會更新 model.preferences.recent_outfit_ids，
+            // 且 React 會重新渲染，因此當我們設置 diary 時，理論上可以獲取最新值。
+            setDiary({
+                ...result,
+                sceneId: sceneIdToUse,
+                outfitId: model.preferences?.active_outfit_id || model.preferences?.recent_outfit_ids?.[0]
+            } as any);
+            
+            setCurrentSceneId(sceneIdToUse || null);
             setSelectedBrief(null); // Reset after use
             setRandomSceneId(null); // Reset after use
             // Handle new direct prompt structure
@@ -530,6 +578,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         const randomEvent = generateRandomEventWithScene(model);
         setEventInput(randomEvent.text);
         setRandomSceneId(randomEvent.sceneId || null);
+        setCurrentSceneId(randomEvent.sceneId || null);
         setSelectedBrief(null);
         setEventSource('random');
     };
@@ -550,6 +599,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             const result = await generateDynamicEventWithScene(model, context);
             setEventInput(result.text);
             setRandomSceneId(result.sceneId || null);
+            setCurrentSceneId(result.sceneId || null);
             setSelectedBrief(null);
             setEventSource('ai');
 
@@ -559,6 +609,21 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         } finally {
             setIsGeneratingDynamicEvent(false);
         }
+    };
+
+    const handleChangeScene = () => {
+        const city = model.lifeCircuit?.primaryCity || '台北市';
+        const pool = ALL_EXTENDED_SCENES.filter(s => s.city === city || s.city === 'any');
+        const targetPool = pool.length > 0 ? pool : ALL_EXTENDED_SCENES;
+        
+        // 排除目前的場景，除非池子只有一個
+        let nextScene = targetPool[Math.floor(Math.random() * targetPool.length)];
+        if (targetPool.length > 1 && nextScene.scene_id === currentSceneId) {
+            nextScene = targetPool.find(s => s.scene_id !== currentSceneId) || nextScene;
+        }
+        
+        setCurrentSceneId(nextScene.scene_id);
+        handleGenerateDiary(nextScene.scene_id);
     };
 
     const handleGeneratePlan = async () => {
@@ -594,8 +659,11 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                     visualPrompt: editablePrompt,
                     visualPromptZH: editablePromptZH,
                     contentCategory: diary.contentCategory,
-                    styleTags: diary.contentCategory ? [diary.contentCategory] : undefined
-                });
+                    styleTags: diary.contentCategory ? [diary.contentCategory] : undefined,
+                    // P2-4: 存入院線場景與穿搭 ID 以供分析
+                    sceneId: (diary as any).sceneId || currentSceneId,
+                    outfitId: (diary as any).outfitId || model.preferences?.active_outfit_id || model.preferences?.recent_outfit_ids?.[0]
+                } as any);
                 addNotification({ type: 'success', message: `作品已加入 ${model.name} 的作品集`, description: diary.contentCategory ? `類別：${diary.contentCategory === 'lifestyle' ? '生活日常' : diary.contentCategory === 'curve' ? '曲線魅力' : '戲劇張力'} · 返回 IP 休息室可查看內容比例` : '返回 IP 休息室可查看最新作品與內容比例' });
 
                 // 2. Extract potential memories
@@ -856,10 +924,21 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             className="space-y-6"
                                         >
                                             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                                                <StoryProgressBoard 
-                                                    model={model} 
-                                                    onInitializeThread={() => setShowSettings(true)}
-                                                />
+                                                <div className="flex flex-col gap-2">
+                                                    <StoryProgressBoard 
+                                                        model={model} 
+                                                        onInitializeThread={() => setShowSettings(true)}
+                                                    />
+                                                    {contentSuggestion && (
+                                                        <motion.p 
+                                                            initial={{ opacity: 0, x: -10 }}
+                                                            animate={{ opacity: 1, x: 0 }}
+                                                            className="text-[10px] text-[var(--color-gold)] font-medium italic pl-4 border-l border-[var(--color-gold)]/30"
+                                                        >
+                                                            {contentSuggestion}
+                                                        </motion.p>
+                                                    )}
+                                                </div>
                                                 <motion.button 
                                                     whileHover={{ scale: 1.02 }}
                                                     whileTap={{ scale: 0.98 }}
@@ -1009,6 +1088,25 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                     <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-gold)] animate-pulse"></div>
                                                                     <span className="text-[10px] font-bold text-[var(--color-gold)] uppercase tracking-[0.3em]">{model.name} 的敘事日記 (Narrative Diary)</span>
                                                                 </div>
+                                                                
+                                                                {currentSceneId && (
+                                                                    <div className="flex items-center justify-between px-4 py-2 bg-white/5 border border-white/10 rounded-xl">
+                                                                        <div className="flex items-center gap-2">
+                                                                            <span className="text-[11px] text-white/90">
+                                                                                🎬 今日場景：{ALL_EXTENDED_SCENES.find(s => s.scene_id === currentSceneId)?.name_zh || currentSceneId}
+                                                                                <span className="text-gray-500 ml-1">（{ALL_EXTENDED_SCENES.find(s => s.scene_id === currentSceneId)?.category || '一般'}）</span>
+                                                                            </span>
+                                                                        </div>
+                                                                        <button 
+                                                                            onClick={handleChangeScene}
+                                                                            disabled={isGenerating}
+                                                                            className="text-[9px] text-[var(--color-gold)] font-bold uppercase tracking-widest hover:underline flex items-center gap-1 disabled:opacity-30"
+                                                                        >
+                                                                            {isGenerating ? '切換中...' : '🔄 換一個場景'}
+                                                                        </button>
+                                                                    </div>
+                                                                )}
+
                                                                 <div className="bg-[var(--color-bg-input)] p-8 rounded-[2.5rem] border border-[var(--color-border)] font-serif italic text-[var(--color-text-main)] leading-relaxed text-base whitespace-pre-wrap shadow-xl">
                                                                     「{diary.content}」
                                                                 </div>
