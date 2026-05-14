@@ -405,7 +405,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         setGeneratedImageUrl(null);
         
         // Get context from last gallery entry
-        const lastEntry = model.gallery?.[model.gallery.length - 1];
+        const lastEntry = model.gallery?.[0];
         const context = lastEntry ? { content: lastEntry.narrativeContent, mood: lastEntry.mood } : undefined;
 
         try {
@@ -544,7 +544,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             }
 
             // Get context from last gallery entry
-            const lastEntry = model.gallery?.[model.gallery.length - 1];
+            const lastEntry = model.gallery?.[0];
             const context = lastEntry ? { content: lastEntry.narrativeContent, mood: lastEntry.mood } : undefined;
 
             const result = await generateDynamicEventWithScene(model, context);

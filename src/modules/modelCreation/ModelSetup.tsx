@@ -1,5 +1,5 @@
 
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import type { Model, OutfitPreset } from '../../shared/types/types';
 import Button from '../../shared/components/common/Button';
 import Card from '../../shared/components/common/Card';
@@ -124,6 +124,12 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
   const [generationQuality, setGenerationQuality] = useState<QualityLevel>('standard');
   const [mobileTab, setMobileTab] = useState<'settings' | 'preview'>('settings');
   const [activeApparelCat, setActiveApparelCat] = useState('full_set');
+
+  // A7: Use a ref to track the latest formState to avoid stale closures in async callbacks (like setTimeout)
+  const formStateRef = useRef(formState);
+  useEffect(() => {
+    formStateRef.current = formState;
+  }, [formState]);
 
   // Safety Matrix for Parameters
   const getSafetyStatus = useCallback((field: string, value: number): 'safe' | 'warning' | 'risky' => {
@@ -266,13 +272,14 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
   
   const handleAutoGeneratePersona = useCallback(async () => {
     setIsGeneratingPersona(true);
+    const currentForm = formStateRef.current;
     try {
         const traits = await generatePersonaTraits({
-            name: formState.name || '未命名',
-            gender: formState.gender,
-            coreVibe: formState.persona.coreVibe,
-            profession: formState.persona.profession,
-            location: `${formState.lifeCircuit.primaryCity}${formState.lifeCircuit.primaryDistrict}`
+            name: currentForm.name || '未命名',
+            gender: currentForm.gender,
+            coreVibe: currentForm.persona.coreVibe,
+            profession: currentForm.persona.profession,
+            location: `${currentForm.lifeCircuit.primaryCity}${currentForm.lifeCircuit.primaryDistrict}`
         });
 
         setFormState(prev => ({
@@ -293,7 +300,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
     } catch (e) {
         addNotification({ type: 'error', message: '人設生成失敗' });
     } finally { setIsGeneratingPersona(false); }
-  }, [formState.name, formState.gender, formState.persona, formState.lifeCircuit, addNotification]);
+  }, [addNotification]);
 
   const handleRandomize = useCallback(() => {
     // 鎖定當前性別
@@ -478,6 +485,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
       
       const models = await generateModels({
         ...formState,
+        isExpertMode,
         generationQuality,
         outfitItems: selectedItems,
         faceReferences: finalFaceRefs,
@@ -486,7 +494,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
       setGeneratedModels(prev => [...models, ...prev]);
     } catch (err) { setError(getFriendlyErrorMessage(err)); } 
     finally { setIsLoading(false); }
-  }, [formState, faceReferences, generationQuality]);
+  }, [formState, faceReferences, generationQuality, isExpertMode]);
 
   const handleSaveToLounge = async (model: Model) => {
       await addModel(model);
