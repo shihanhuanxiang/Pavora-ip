@@ -33,6 +33,10 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const { projectMode, setProjectMode } = useAppStore();
   const { models, activeModelId, setActiveModel } = useModelStore();
 
+  const [commerceGuideVisible, setCommerceGuideVisible] = useState<boolean>(
+    () => !localStorage.getItem('PAVORA_COMMERCE_STARTED')
+  );
+
   const activeModel = useMemo(
     () => models.find(model => model.id === activeModelId) || null,
     [models, activeModelId]
@@ -159,6 +163,76 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </p>
           <div className="w-12 h-0.5 bg-[var(--color-gold)]/30 mx-auto"></div>
       </div>
+
+      {/* First Step Guide */}
+      {projectMode === 'commerce' && commerceGuideVisible && (
+        <div className="w-full max-w-7xl mb-10 animate-fade-in">
+          <div className="glass-panel rounded-2xl p-5 md:p-6 border border-[var(--color-gold)]/20 bg-[var(--color-gold)]/3 relative">
+            <button
+              onClick={() => {
+                localStorage.setItem('PAVORA_COMMERCE_STARTED', '1');
+                setCommerceGuideVisible(false);
+              }}
+              className="absolute top-4 right-4 w-6 h-6 flex items-center justify-center text-[var(--color-text-dim)] hover:text-[var(--color-text-main)] transition-colors text-lg leading-none"
+              aria-label="關閉引導"
+            >
+              ✕
+            </button>
+            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--color-gold)] mb-3">✦ 建議起點 / Start Here</p>
+            <p className="text-sm text-[var(--color-text-main)] font-medium mb-4">
+              第一次使用？先上傳商品圖，用 AI 快速生成電商圖或試衣效果。
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <button
+                onClick={() => onNavigate('fitting_room')}
+                className="px-4 py-2 rounded-xl bg-[var(--color-gold)] text-black text-[10px] font-bold uppercase tracking-widest transition-all hover:opacity-90"
+              >
+                虛擬試衣 →
+              </button>
+              <button
+                onClick={() => onNavigate('marketing_factory')}
+                className="px-4 py-2 rounded-xl border border-[var(--color-gold)]/40 text-[var(--color-gold)] text-[10px] font-bold uppercase tracking-widest transition-all hover:bg-[var(--color-gold)]/10"
+              >
+                行銷素材工廠 →
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {projectMode === 'ip_creator' && models.length > 0 && !activeModel && (
+        <div className="w-full max-w-7xl mb-10 animate-fade-in">
+          <div className="glass-panel rounded-2xl p-5 md:p-6 border border-[var(--color-gold)]/20 bg-[var(--color-gold)]/3">
+            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--color-gold)] mb-3">✦ 選擇你的 IP / Pick Your IP</p>
+            <p className="text-sm text-[var(--color-text-main)] font-medium mb-4">
+              你已建立 {models.length} 個虛擬 IP。前往 IP 休息室選擇一個開始工作。
+            </p>
+            <button
+              onClick={() => onNavigate('lounge')}
+              className="px-4 py-2 rounded-xl bg-[var(--color-gold)] text-black text-[10px] font-bold uppercase tracking-widest transition-all hover:opacity-90"
+            >
+              前往 IP 休息室 →
+            </button>
+          </div>
+        </div>
+      )}
+
+      {projectMode === 'ip_creator' && models.length === 0 && (
+        <div className="w-full max-w-7xl mb-10 animate-fade-in">
+          <div className="glass-panel rounded-2xl p-5 md:p-6 border border-[var(--color-gold)]/20 bg-[var(--color-gold)]/3">
+            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--color-gold)] mb-3">✦ 建議起點 / Start Here</p>
+            <p className="text-sm text-[var(--color-text-main)] font-medium mb-4">
+              還沒有虛擬 IP？從建立第一個角色開始——設定外貌、身份鎖定，再用靈魂敘事產出內容。
+            </p>
+            <button
+              onClick={() => onNavigate('model_setup')}
+              className="px-4 py-2 rounded-xl bg-[var(--color-gold)] text-black text-[10px] font-bold uppercase tracking-widest transition-all hover:opacity-90"
+            >
+              建立我的第一個 IP →
+            </button>
+          </div>
+        </div>
+      )}
 
       {projectMode === 'ip_creator' && activeModel && (
         <div className="w-full max-w-7xl mb-10 animate-fade-in">
