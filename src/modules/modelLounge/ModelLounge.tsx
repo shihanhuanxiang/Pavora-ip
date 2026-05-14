@@ -757,6 +757,72 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                 );
                             })()}
 
+                            {/* IP 完整度 (Completeness) */}
+                            <div className="p-5 bg-white/5 rounded-2xl border border-white/5 mb-0 mt-4">
+                                <p className="text-[9px] text-gray-500 uppercase font-bold tracking-widest mb-4">IP 完整度 / Completeness</p>
+                                <div className="grid grid-cols-2 gap-y-4 gap-x-8">
+                                    {/* 1. locked_descriptor */}
+                                    <div className="flex items-center gap-3">
+                                        {(() => {
+                                            const desc = portfolioModel.persona?.locked_descriptor || "";
+                                            if (desc.length > 20) return <span className="text-emerald-400">✅</span>;
+                                            if (desc.length > 0) return <span className="text-amber-400">⚠️</span>;
+                                            return <span className="text-rose-500">❌</span>;
+                                        })()}
+                                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tight">人格描述 (Descriptor)</span>
+                                    </div>
+
+                                    {/* 2. face_reference_urls */}
+                                    <div className="flex items-center gap-3">
+                                        {(() => {
+                                            const count = (portfolioModel.preferences?.face_reference_urls || []).filter(Boolean).length;
+                                            if (count >= 4) return <span className="text-emerald-400">✅</span>;
+                                            if (count > 0) return <span className="text-amber-400">⚠️</span>;
+                                            return <span className="text-rose-500">❌</span>;
+                                        })()}
+                                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tight">臉部參考圖 (Face Ref)</span>
+                                    </div>
+
+                                    {/* 3. worldAnchors.pet */}
+                                    <div className="flex items-center gap-3">
+                                        {portfolioModel.worldAnchors?.pet ? <span className="text-emerald-400">✅</span> : <span className="text-gray-600">—</span>}
+                                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tight">寵物設定 (Pet)</span>
+                                    </div>
+
+                                    {/* 4. worldAnchors.iconicItems */}
+                                    <div className="flex items-center gap-3">
+                                        {portfolioModel.worldAnchors?.iconicItems?.length ? <span className="text-emerald-400">✅</span> : <span className="text-gray-600">—</span>}
+                                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tight">標誌物品 (Iconic Item)</span>
+                                    </div>
+
+                                    {/* 5. contentCategory 分佈 */}
+                                    <div className="flex items-center gap-3">
+                                        {(() => {
+                                            const gallery = portfolioModel.gallery || [];
+                                            if (gallery.length === 0) return <span className="text-gray-600">—</span>;
+                                            const total = gallery.length;
+                                            const lifestyle = gallery.filter(i => i.contentCategory === 'lifestyle').length;
+                                            const curve = gallery.filter(i => i.contentCategory === 'curve').length;
+                                            const drama = gallery.filter(i => i.contentCategory === 'drama').length;
+                                            const pcts = [
+                                                { actual: (lifestyle / total) * 100, target: 50 },
+                                                { actual: (curve / total) * 100, target: 30 },
+                                                { actual: (drama / total) * 100, target: 20 }
+                                            ];
+                                            const isDrifting = pcts.some(p => Math.abs(p.actual - p.target) >= 15);
+                                            return isDrifting ? <span className="text-amber-400">⚠️</span> : <span className="text-emerald-400">✅</span>;
+                                        })()}
+                                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tight">內容比例 (Ratio)</span>
+                                    </div>
+
+                                    {/* 6. storyArcs */}
+                                    <div className="flex items-center gap-3">
+                                        {portfolioModel.preferences?.active_arc_id ? <span className="text-emerald-400">✅</span> : <span className="text-gray-600">—</span>}
+                                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tight">故事線 (Story Arc)</span>
+                                    </div>
+                                </div>
+                            </div>
+
                             {/* P2-5: 故事進度小卡 */}
                             {(() => {
                                 const isArcEnabled = portfolioModel.preferences?.enable_story_arcs !== false;
