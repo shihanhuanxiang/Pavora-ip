@@ -931,12 +931,12 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                         />
                                     </div>
 
-                                    <div className="relative z-10 space-y-12 pb-16 text-left">
+                                    <div className="relative z-10 flex flex-col gap-8 pb-16 text-left">
                                         <motion.div
                                             initial={{ opacity: 0, y: 15 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: 0.1 }}
-                                            className="space-y-6"
+                                            className="order-2 space-y-6"
                                         >
                                             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                                                 <div className="flex flex-col gap-2">
@@ -975,7 +975,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             initial={{ opacity: 0, scale: 0.98 }}
                                             animate={{ opacity: 1, scale: 1 }}
                                             transition={{ delay: 0.2 }}
-                                            className="grid grid-cols-2 lg:grid-cols-4 gap-8 p-8 bg-[var(--color-bg-card)]/40 rounded-[3rem] border border-[var(--color-border)] backdrop-blur-xl shadow-2xl"
+                                            className="order-3 grid grid-cols-2 lg:grid-cols-4 gap-4 p-4 bg-[var(--color-bg-card)]/40 rounded-[2rem] border border-[var(--color-border)] backdrop-blur-xl shadow-xl"
                                         >
                                             <div className="space-y-1.5 border-r border-[var(--color-border)] pr-6">
                                                 <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black">人格內核 // MBTI</p>
@@ -998,7 +998,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             </div>
                                         </motion.div>
 
-                                        <div className={`grid grid-cols-1 gap-16 pt-4 ${narrativeStep >= 2 ? 'xl:grid-cols-2' : 'max-w-2xl mx-auto w-full'}`}>
+                                        <div className="order-1 grid grid-cols-1 xl:grid-cols-2 gap-8 pt-0">
                                             {/* Left: Narrative Decision 敘事決策區 */}
                                             <div className="space-y-10">
                                                 <motion.div 
@@ -1142,7 +1142,6 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             </div>
 
                                             {/* Right: Visual Production 生成控制區 */}
-                                            {narrativeStep >= 2 && (
                                             <motion.div 
                                                 initial={{ opacity: 0, x: 10 }}
                                                 animate={{ opacity: 1, x: 0 }}
@@ -1429,7 +1428,6 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                 </AnimatePresence>
                                             </div>
                                         </motion.div>
-                                        )}
                                     </div>
                                 </div>
                             </motion.div>
