@@ -25,11 +25,8 @@ import ImageDeconstructionStudio from '../modules/imageDeconstruction/ImageDecon
 import ProductPosterEngine from '../modules/pcpe/ProductPosterEngine';
 import DirectorMode from '../modules/directorMode/DirectorMode';
 import CharacterLab from '../modules/characterLab/CharacterLab';
-import FashionArchitect from '../modules/fashionArchitect/FashionArchitect';
-import LuxuryVisualStudio from '../modules/luxuryVisual/LuxuryVisualStudio';
 import MacroCraftStudio from '../modules/macroCraft/MacroCraftStudio';
 import StyleAnchorStudio from '../modules/styleAnchor/StyleAnchorStudio';
-import EGenStudio from '../modules/eGen/EGenStudio';
 
 import BrandIdentityHub from '../modules/brandIdentity/BrandIdentityHub';
 import MarketingFactory from '../modules/marketing/MarketingFactory';
@@ -160,11 +157,8 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
         case 'architect': setWorkflowStep(WorkflowStep.MARKETING_FACTORY_ARCHITECT); break;
         case 'director_mode': setWorkflowStep(WorkflowStep.DIRECTOR_MODE); break;
         case 'character_lab': setWorkflowStep(WorkflowStep.CHARACTER_LAB); break;
-        case 'fashion_architect': setWorkflowStep(WorkflowStep.FASHION_ARCHITECT); break;
-        case 'luxury_visual': setWorkflowStep(WorkflowStep.LUXURY_VISUAL_GEN); break;
         case 'macro_craft': setWorkflowStep(WorkflowStep.MACRO_CRAFT); break;
         case 'style_anchor': setWorkflowStep(WorkflowStep.STYLE_ANCHOR); break;
-        case 'e_gen': setWorkflowStep(WorkflowStep.E_GEN); break;
         default: setWorkflowStep(WorkflowStep.HOMEPAGE); break;
     }
   }, []);
@@ -231,11 +225,8 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
       case WorkflowStep.PCPE: return <ProductPosterEngine {...navProps} />;
       case WorkflowStep.DIRECTOR_MODE: return <DirectorMode onGoHome={handleGoHome} initialImage={editingImage} />;
       case WorkflowStep.CHARACTER_LAB: return <CharacterLab onGoHome={handleGoHome} initialImage={editingImage} />;
-      case WorkflowStep.FASHION_ARCHITECT: return <FashionArchitect onGoHome={handleGoHome} />;
-      case WorkflowStep.LUXURY_VISUAL_GEN: return <MarketingFactory onGoHome={handleGoHome} initialView="LUXURY" initialImage={editingImage} />;
       case WorkflowStep.MACRO_CRAFT: return <MacroCraftStudio onGoHome={handleGoHome} />;
       case WorkflowStep.STYLE_ANCHOR: return <StyleAnchorStudio onGoHome={handleGoHome} />;
-      case WorkflowStep.E_GEN: return <MarketingFactory onGoHome={handleGoHome} initialView="EGEN" initialImage={editingImage} />;
       default: return <div>錯誤的流程步驟</div>;
     }
   };

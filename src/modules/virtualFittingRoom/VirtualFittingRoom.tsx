@@ -10,6 +10,7 @@ import {
     detectMultiAngleLayout
 } from '../../shared/services/geminiService';
 import { downloadImage, cropImage, stitchImages } from '../../shared/utils/imageUtils';
+import { useModelStore } from '../../shared/stores/useModelStore';
 import ManualCropModal from '../../shared/components/business/ManualCropModal';
 import type { StoredApparelItem, TaxonomyEntry, ApparelMainCategory } from '../../shared/types/types';
 import Button from '../../shared/components/common/Button';
@@ -535,6 +536,12 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
         
         try {
             const onProgress = (message: string) => setLoadingMessage(message);
+            const { models, activeModelId } = useModelStore.getState();
+            const activeModel = models.find((m: any) => m.id === activeModelId);
+            const modelIdentityHint = activeModel?.persona?.locked_descriptor?.trim()
+                ? `[MODEL IDENTITY CONTEXT]: The model in this session is "${activeModel.name}". Their locked visual identity is: "${activeModel.persona.locked_descriptor}". Maintain this specific identity consistently in all generated results.`
+                : undefined;
+
             const config = {
                 usePro: quality !== 'standard',
                 resolution: quality === 'ultra' ? '4K' : '2K' as '2K' | '4K',
@@ -542,7 +549,8 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
                 isFirstTime,
                 tuckStatus: category.toLowerCase().includes('上衣') || category.toLowerCase().includes('top') ? tuckStatus : undefined,
                 lightingPreset,
-                isGhostMode
+                isGhostMode,
+                customInstruction: modelIdentityHint
             };
             const resultUrl = await applyApparel(
                 currentLookUrl, 

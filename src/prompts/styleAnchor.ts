@@ -21,30 +21,42 @@ export const buildStyleAnchorPrompt = (params: any) => {
         : "all clones wear the same base identity but one specific item (like outerwear or shoes) varies between them";
 
     return `
-[TASK: STYLE ANCHOR VISUAL GENERATION]
-You are a high-end fashion photographer and spatial artist. 
-Generate a single high-fashion image featuring multiple instances of the same model.
+[TASK: STYLE ANCHOR — MULTI-INSTANCE IDENTITY CONSISTENCY]
+You are a world-class fashion photographer and spatial composition artist specializing in identity-consistent multi-figure fashion editorials.
 
-[CORE IDENTITY LOCK]
-Maintain consistent identity from Input 1 (Reference Image). Use the same face, hair, and body proportions for all instances.
+Generate a single, cohesive high-fashion image featuring exactly ${cloneCount} instances of the same model, arranged according to the specified layout.
+
+[IDENTITY ANCHOR — ZERO DRIFT PROTOCOL]
+- The provided reference image (Input 1) is the ground-truth identity. Treat it as an absolute lock.
+- Every instance must share identical: facial structure, skin tone, hair color, hair texture, eye characteristics, and body proportions.
+- Cross-instance identity drift is NOT acceptable. A viewer should immediately recognize all instances as the same person.
+- If facial details are ambiguous across instances, defer to Input 1 as the tiebreaker.
 
 [VISUAL ANCHOR & STRUCTURE]
-- Basic Concept: ${anchor}
-- Layout: ${layout}
-- Instances: Show exactly ${cloneCount} repeated instances of the same model.
+- Core Concept: ${anchor}
+- Spatial Layout: ${layout}
+- Instance Count: Exactly ${cloneCount} — no more, no fewer.
 
-[VISUAL HOOK & NARRATIVE]
-- Hook Strategy: ${hookPrompt}
-- Poses: ${poses}
-- Atmosphere: ${mood}
-- Outfit Rule: ${outfitPrompt}
+[VISUAL HOOK & NARRATIVE TENSION]
+- Compositional Hook: ${hookPrompt}
+- Pose Choreography: ${poses}
+- Emotional Atmosphere: ${mood}
+- Outfit Consistency Rule: ${outfitPrompt}
 
-[TECHNICAL SPEC]
-- Style: ${style}
-- Quality: 8k resolution, raw photo, realistic skin texture, professional lighting, photorealistic.
-- Visual Protocols: Physically believable shadows at all contact points. No artifacts.
+[PRODUCTION QUALITY STANDARD]
+- Photography Style: ${style}
+- Resolution: 8K equivalent output. Razor-sharp focus on key subject areas.
+- Skin rendering: Natural skin texture with visible pores, subtle subsurface scattering. No over-smoothing or plastic appearance.
+- Lighting: Consistent light source direction across ALL instances. Shadows must be physically coherent — no floating elements.
+- Contact shadows: Precise contact shadows at every ground or surface interaction point.
+- Garment: Fabric texture, drape, and detail must be consistent across instances.
+- Background integration: Seamless depth of field. Instances feel grounded in the same physical space.
 
-[NEGATIVE PROMPT]
-no text, no logos, no watermarks, no platform UI frames, no extra people besides the repeated instances of the same subject, no cartoon, no illustration, distorted limbs.
+[ABSOLUTE CONSTRAINTS]
+- No text, logos, watermarks, or platform UI elements.
+- No extra people beyond the ${cloneCount} repeated instances of the subject.
+- No cartoon, illustration, or CGI rendering style.
+- No distorted limbs, unnatural joint angles, or anatomical errors.
+- No identity drift between instances.
 `.trim();
 };

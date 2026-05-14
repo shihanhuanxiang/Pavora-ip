@@ -596,6 +596,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                     contentCategory: diary.contentCategory,
                     styleTags: diary.contentCategory ? [diary.contentCategory] : undefined
                 });
+                addNotification({ type: 'success', message: `作品已加入 ${model.name} 的作品集`, description: diary.contentCategory ? `類別：${diary.contentCategory === 'lifestyle' ? '生活日常' : diary.contentCategory === 'curve' ? '曲線魅力' : '戲劇張力'} · 返回 IP 休息室可查看內容比例` : '返回 IP 休息室可查看最新作品與內容比例' });
 
                 // 2. Extract potential memories
                 setIsExtractingMem(true);

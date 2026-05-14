@@ -721,6 +721,41 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                 </div>
                             </div>
 
+                            {/* Content Category Ratio */}
+                            {(() => {
+                                const gallery = portfolioModel.gallery || [];
+                                const lifestyle = gallery.filter((i: any) => i.contentCategory === 'lifestyle').length;
+                                const curve = gallery.filter((i: any) => i.contentCategory === 'curve').length;
+                                const drama = gallery.filter((i: any) => i.contentCategory === 'drama').length;
+                                const total = lifestyle + curve + drama;
+                                if (total === 0) return null;
+                                return (
+                                    <div className="p-5 bg-white/5 rounded-2xl border border-white/5 mb-0">
+                                        <p className="text-[9px] text-gray-500 uppercase font-bold tracking-widest mb-3">內容比例 / Content Ratio</p>
+                                        <div className="space-y-2.5">
+                                            {[
+                                                { label: '生活日常 Lifestyle', count: lifestyle, color: 'bg-blue-400', target: 50 },
+                                                { label: '曲線魅力 Curve', count: curve, color: 'bg-rose-400', target: 30 },
+                                                { label: '戲劇張力 Drama', count: drama, color: 'bg-purple-400', target: 20 },
+                                            ].map(({ label, count, color, target }) => {
+                                                const pct = Math.round((count / total) * 100);
+                                                return (
+                                                    <div key={label}>
+                                                        <div className="flex justify-between text-[9px] text-gray-400 mb-1">
+                                                            <span>{label}</span>
+                                                            <span>{count} 張 · {pct}% <span className="text-gray-600">（目標 {target}%）</span></span>
+                                                        </div>
+                                                        <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                                                            <div className={`h-full ${color} rounded-full transition-all duration-700`} style={{ width: `${pct}%` }} />
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                );
+                            })()}
+
                             <div className="rounded-3xl border border-[var(--color-gold)]/15 bg-[var(--color-gold)]/5 p-5 md:p-6">
                                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                                     <div className="space-y-2">
