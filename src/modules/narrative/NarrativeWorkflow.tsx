@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import type { Model, DiaryEntry } from '../../shared/types/types';
 import Button from '../../shared/components/common/Button';
 import Loader from '../../shared/components/common/Loader';
-import { generateIPDiary, generateRandomEvent, syncPrompts, generateDynamicEvent, extractNewMemories, generateRandomEventWithScene, generateDynamicEventWithScene } from './services/narrativeService';
+import { generateIPDiary, generateRandomEvent, syncPrompts, generateDynamicEvent, extractNewMemories, generateRandomEventWithScene, generateDynamicEventWithScene, previewShootConfig } from './services/narrativeService';
+import { buildStructuredOutfitLabel, STYLE_ARCHETYPE_MAP } from './components/WardrobeManager';
 import { ALL_EXTENDED_SCENES } from './constants/extendedScenes';
 import { OrchestratorService } from './services/orchestratorService';
 import { transformImage } from '../../shared/services/geminiService';
@@ -67,6 +68,33 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     const [editablePromptZH, setEditablePromptZH] = useState('');
     const [activePromptLang, setActivePromptLang] = useState<'ZH' | 'EN'>('ZH');
     const [eventSource, setEventSource] = useState<EventSource>('none');
+    const [previewScene, setPreviewScene] = useState<any>(null);
+    const [previewOutfit, setPreviewOutfit] = useState<any>(null);
+
+    // Preview: debounced update on eventInput change
+    React.useEffect(() => {
+        if (!eventInput.trim()) {
+            setPreviewScene(null);
+            setPreviewOutfit(null);
+            return;
+        }
+        const timer = setTimeout(() => {
+            const forcedId = randomSceneId || currentSceneId || undefined;
+            const config = previewShootConfig(model, eventInput, forcedId);
+            setPreviewScene(config.scene);
+            setPreviewOutfit(config.outfit);
+        }, 400);
+        return () => clearTimeout(timer);
+    }, [eventInput, model.id]);
+
+    // Preview: immediate update when randomSceneId is set
+    React.useEffect(() => {
+        if (randomSceneId && eventInput.trim()) {
+            const config = previewShootConfig(model, eventInput, randomSceneId);
+            setPreviewScene(config.scene);
+            setPreviewOutfit(config.outfit);
+        }
+    }, [randomSceneId]);
 
     // P2-3: 內容比例建議邏輯
     const contentSuggestion = (() => {
@@ -431,8 +459,9 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         </motion.button>
     );
 
-    const handleGenerateDiary = async (forcedId?: string) => {
-        if (!eventInput.trim()) return;
+    const handleGenerateDiary = async (forcedId?: string, forcedEventText?: string, forcedOutfitId?: string) => {
+        const effectiveEvent = forcedEventText || eventInput;
+        if (!effectiveEvent.trim()) return;
         setIsGenerating(true);
         setGeneratedImageUrl(null);
         
@@ -452,10 +481,11 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         }
 
         try {
-            const result = await generateIPDiary(model, eventInput, { 
+            const result = await generateIPDiary(model, effectiveEvent, { 
                 isPOV, 
                 lastEntry: context,
-                forcedSceneId: sceneIdToUse
+                forcedSceneId: sceneIdToUse,
+                forcedOutfitId
             });
             
             // P2-4: 獲取最新的服裝 ID (可能由 service 更新至 store)
@@ -622,15 +652,46 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         const city = model.lifeCircuit?.primaryCity || '台北市';
         const pool = ALL_EXTENDED_SCENES.filter(s => s.city === city || s.city === 'any');
         const targetPool = pool.length > 0 ? pool : ALL_EXTENDED_SCENES;
-        
-        // 排除目前的場景，除非池子只有一個
-        let nextScene = targetPool[Math.floor(Math.random() * targetPool.length)];
-        if (targetPool.length > 1 && nextScene.scene_id === currentSceneId) {
-            nextScene = targetPool.find(s => s.scene_id !== currentSceneId) || nextScene;
-        }
-        
+
+        // 排除目前場景，優先換不同 category
+        const currentCategory = ALL_EXTENDED_SCENES.find(s => s.scene_id === currentSceneId)?.category;
+        let nextScene = targetPool.find(s => s.scene_id !== currentSceneId && s.category !== currentCategory)
+            || targetPool.find(s => s.scene_id !== currentSceneId)
+            || targetPool[Math.floor(Math.random() * targetPool.length)];
+
+        // 用新場景的名稱作為敘事起點，確保日記內容真正更換
+        const newEventText = nextScene.name_zh || nextScene.event || '新的場景';
+
         setCurrentSceneId(nextScene.scene_id);
-        handleGenerateDiary(nextScene.scene_id);
+        setEventInput(newEventText);
+        setDiary(null);
+        setEditablePrompt('');
+        setEditablePromptZH('');
+        setGeneratedImageUrl(null);
+        setNarrativeStep(1);
+        handleGenerateDiary(nextScene.scene_id, newEventText);
+    };
+
+    const handleSwapScene = () => {
+        const city = model.lifeCircuit?.primaryCity || '台北市';
+        const pool = ALL_EXTENDED_SCENES.filter(s => s.city === city || s.city === 'any');
+        const targetPool = pool.length > 0 ? pool : ALL_EXTENDED_SCENES;
+        const currentCat = previewScene?.category;
+        const nextScene =
+            targetPool.find(s => s.scene_id !== previewScene?.scene_id && s.category !== currentCat) ||
+            targetPool.find(s => s.scene_id !== previewScene?.scene_id) ||
+            targetPool[Math.floor(Math.random() * targetPool.length)];
+        setPreviewScene(nextScene);
+        setRandomSceneId(nextScene.scene_id);
+        setCurrentSceneId(nextScene.scene_id);
+        setEventSource('random');
+        const newConfig = previewShootConfig(model, eventInput, nextScene.scene_id, previewOutfit?.outfit_id);
+        setPreviewOutfit(newConfig.outfit);
+    };
+
+    const handleSwapOutfit = () => {
+        const config = previewShootConfig(model, eventInput, previewScene?.scene_id, previewOutfit?.outfit_id);
+        setPreviewOutfit(config.outfit);
     };
 
     const handleResetToStep1 = () => {
@@ -718,6 +779,68 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         setShowMemoryConfirm(false);
         if (diary) onConfirm(diary, generatedImageUrl || undefined);
     };
+
+    const isConfigLocked = Boolean(randomSceneId) || Boolean(selectedBrief?.sceneId);
+    const isOutfitCooling = (model.preferences?.recent_outfit_ids || []).includes(previewOutfit?.outfit_id || '');
+    
+    // 直接使用 WardrobeManager 的統一對照表，確保全站一致
+    
+    const ShootConfigCard = () => (
+        <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            className={`rounded-2xl border px-4 py-3 space-y-2.5 transition-all ${
+                isConfigLocked
+                    ? 'border-[var(--color-gold)]/30 bg-[var(--color-gold)]/[0.03]'
+                    : 'border-white/5 bg-white/[0.02]'
+            }`}
+        >
+            <p className="text-[10px] font-black uppercase tracking-[0.35em] text-gray-600">今日拍攝配置 // SHOOT CONFIG</p>
+            <div className="flex items-center justify-between">
+                <div className="space-y-0.5 min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                        <span className="text-[10px] text-gray-600 uppercase tracking-wider shrink-0">場景</span>
+                        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${isConfigLocked ? 'bg-[var(--color-gold)] shadow-[0_0_6px_rgba(212,175,55,0.4)]' : 'bg-white/20'}`} />
+                        <span className="text-[12px] font-bold text-white truncate">{previewScene?.name_zh || previewScene?.scene_id || '—'}</span>
+                    </div>
+                    <p className="text-[10px] text-gray-600 pl-6 truncate">
+                        {previewScene?.city && previewScene.city !== 'any' ? previewScene.city : (model.lifeCircuit?.primaryCity || '台北市')}
+                        {previewScene?.category ? ` · ${previewScene.category}` : ''}{' · '}{isConfigLocked ? '已鎖定' : '推測'}
+                    </p>
+                </div>
+                <button onClick={handleSwapScene} className="shrink-0 ml-3 flex items-center gap-1 text-[11px] text-gray-500 hover:text-[var(--color-gold)] transition-colors group">
+                    <svg className="w-3 h-3 group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                    換
+                </button>
+            </div>
+            <div className="border-t border-white/5" />
+            <div className="flex items-center justify-between">
+                <div className="space-y-1 min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                        <span className="text-[10px] text-gray-600 uppercase tracking-wider shrink-0">服裝</span>
+                        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${isOutfitCooling ? 'bg-amber-400' : 'bg-emerald-500'}`} />
+                        <span className="text-[12px] font-bold text-white truncate">{STYLE_ARCHETYPE_MAP[previewOutfit?.style_archetype || ''] || previewOutfit?.style_archetype || '—'}</span>
+                    </div>
+                    {previewOutfit?.pillars && (() => {
+                        const parts = [
+                            buildStructuredOutfitLabel(previewOutfit.pillars.top || '', 'top'),
+                            buildStructuredOutfitLabel(previewOutfit.pillars.bottom || '', 'bottom'),
+                            buildStructuredOutfitLabel(previewOutfit.pillars.shoes || '', 'shoes'),
+                        ].filter(s => s && s.trim());
+                        return parts.length > 0 ? (
+                            <p className="text-[10px] text-gray-400 pl-6 line-clamp-2">{parts.join('・')}</p>
+                        ) : null;
+                    })()}
+                    <p className="text-[10px] text-gray-600 pl-6">Tier {previewOutfit?.aesthetic_tier ?? '—'}{' · '}{isOutfitCooling ? '冷卻中（最近使用）' : '可用'}</p>
+                </div>
+                <button onClick={handleSwapOutfit} className="shrink-0 ml-3 flex items-center gap-1 text-[11px] text-gray-500 hover:text-[var(--color-gold)] transition-colors group">
+                    <svg className="w-3 h-3 group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                    換
+                </button>
+            </div>
+        </motion.div>
+    );
 
     return (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
@@ -1006,12 +1129,17 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                 }}
                                                             />
                                                             <div className="absolute bottom-6 right-6 w-12 h-0.5 bg-gradient-to-r from-transparent to-[var(--color-gold)]/20 opacity-0 group-focus-within:opacity-100 transition-opacity"></div>
-                                                        </div>
-                                                        <motion.button 
-                                                            whileHover={!eventInput.trim() || isGenerating ? {} : { scale: 1.02 }}
-                                                            whileTap={!eventInput.trim() || isGenerating ? {} : { scale: 0.98 }}
-                                                            onClick={(e) => { e.stopPropagation(); handleGenerateDiary(currentSceneId || randomSceneId || undefined); }} 
-                                                            disabled={!eventInput.trim() || isGenerating}
+                                        </div>
+                                        <AnimatePresence>
+                                            {eventInput.trim() && previewScene && previewOutfit && !diary && (
+                                                <ShootConfigCard />
+                                            )}
+                                        </AnimatePresence>
+                                        <motion.button 
+                                            whileHover={!eventInput.trim() || isGenerating ? {} : { scale: 1.02 }}
+                                            whileTap={!eventInput.trim() || isGenerating ? {} : { scale: 0.98 }}
+                                            onClick={() => handleGenerateDiary(previewScene?.scene_id, undefined, previewOutfit?.outfit_id)} 
+                                            disabled={!eventInput.trim() || isGenerating}
                                                             className={`w-full py-5 text-[12px] font-black tracking-[0.5em] uppercase rounded-3xl transition-all duration-300 ${
                                                                 !eventInput.trim() || isGenerating
                                                                     ? 'bg-white/5 text-gray-600 border border-white/5 cursor-not-allowed opacity-50'

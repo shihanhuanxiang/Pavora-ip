@@ -87,7 +87,7 @@ const TERM_DICT: Record<string, string> = {
 /**
  * 結構化解析與拼裝
  */
-const buildStructuredOutfitLabel = (value: string, type: string): string => {
+export const buildStructuredOutfitLabel = (value: string, type: string): string => {
     const raw = value.toLowerCase().trim();
     if (!raw || raw === "---") return "";
 
@@ -158,7 +158,7 @@ const buildStructuredOutfitLabel = (value: string, type: string): string => {
 
 
 
-const STYLE_ARCHETYPE_MAP: Record<string, string> = {
+export const STYLE_ARCHETYPE_MAP: Record<string, string> = {
     'feminine_sweet': '甜美少女風格 // SWEET',
     'feminine_mature': '成熟御姐風格 // MATURE',
     'korean_chic': '韓系時髦風格 // KOREAN CHIC',

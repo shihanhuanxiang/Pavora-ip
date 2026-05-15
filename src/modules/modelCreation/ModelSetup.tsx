@@ -321,7 +321,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
   const handleGenerateLockedDescriptor = async () => {
     setIsGeneratingDescriptor(true);
     try {
-      const client = await getGeminiClient(false) as any;
+      const client = await getGeminiClient(true) as any;
       
       const { profession, coreVibe, mbti, toneOfVoice } = formState.persona;
       const { visualIdentityHint } = formState;
@@ -349,7 +349,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
       `;
 
       const response = await client.models.generateContent({
-        model: "gemini-1.5-flash",
+        model: "gemini-3-flash-preview",
         contents: prompt
       });
       
@@ -412,13 +412,13 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
         lifeCircuit: {
             ...formState.lifeCircuit,
             primaryCity: randomCity,
-            primaryDistrict: randomDistrict
+            primaryDistrict: randomDistrict,
+            interests: [randomInterest]
         },
         persona: {
             ...formState.persona,
             coreVibe: randomVibe,
             mbti: randomMBTI,
-            interests: [randomInterest],
             toneOfVoice: randomTone,
             postingHabit: randomHabit
         }

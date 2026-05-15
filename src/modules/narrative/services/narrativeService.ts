@@ -523,7 +523,7 @@ const buildFinalVisualPromptV11 = (
     let layer8: string;
     if (options?.isPOV === true) {
         // 第一人稱：強制手機外伸自拍構圖
-        layer8 = "phone-held-out selfie taken by the subject herself, subject's face and upper body fill the frame, single arm extending from subject's body holding the phone toward camera, exactly two hands total in entire image (both belonging to the subject), close-up to medium shot framing, subject is the only person in the photo, no second pair of hands, no mirror, no reflection, no third-person observer angle, no full body shot, no other people";
+        layer8 = "phone-held-out selfie by the subject herself, face and upper body fill the frame, one arm extending toward camera holding the phone — FREE HAND RULE: the other hand holds AT MOST ONE item or rests naturally near face or body, NEVER depict both hands holding two different objects simultaneously, NEVER three or more hands in frame, no hands from other people, no mirror, no reflection, no third-person angle, no full body shot, no other people";
     } else if (options?.isPOV === false) {
         // 第三人稱：強制注入旁觀視角
         layer8 = "third-person observer perspective, full or half body shot of subject, candid documentary framing, captured by another person, MUST NOT show subject's own arms reaching toward camera, MUST NOT be mirror selfie or phone-held-out angle";
@@ -784,7 +784,7 @@ export const generateDynamicEventWithScene = async (model: Model, lastEntry?: { 
 /**
  * Generates a deeply immersive narrative diary and visual prompt based on the persona base.
  */
-export const generateIPDiary = async (model: Model, event: string, options?: { isPOV?: boolean, lastEntry?: { content?: string, mood?: string }, forcedSceneId?: string }): Promise<Partial<DiaryEntry>> => {
+export const generateIPDiary = async (model: Model, event: string, options?: { isPOV?: boolean, lastEntry?: { content?: string, mood?: string }, forcedSceneId?: string, forcedOutfitId?: string }): Promise<Partial<DiaryEntry>> => {
     const client = await getGeminiClient(true) as any;
 
     // 1. Context and Scene Selection
@@ -927,12 +927,51 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
         lowerEvent.includes("登機") || lowerEvent.includes("抵達")
     ) contextId = "travel_journey";
     else if (
+        lowerEvent.includes("咖啡廳") || lowerEvent.includes("咖啡店") ||
+        lowerEvent.includes("咖啡") || lowerEvent.includes("下午茶") ||
+        lowerEvent.includes("brunch") || lowerEvent.includes("甜點店")
+    ) contextId = "cafe_aesthetic";
+    else if (
+        lowerEvent.includes("夜市") || lowerEvent.includes("攤販") ||
+        lowerEvent.includes("小吃") || lowerEvent.includes("滷味") ||
+        lowerEvent.includes("珍珠奶茶") || lowerEvent.includes("臭豆腐")
+    ) contextId = "night_market";
+    else if (
+        lowerEvent.includes("海邊") || lowerEvent.includes("海灘") ||
+        lowerEvent.includes("沙灘") || lowerEvent.includes("海水") ||
+        lowerEvent.includes("海島") || lowerEvent.includes("離島") ||
+        lowerEvent.includes("墾丁") || lowerEvent.includes("澎湖") ||
+        lowerEvent.includes("綠島") || lowerEvent.includes("蘭嶼")
+    ) contextId = "beach_island";
+    else if (
+        lowerEvent.includes("廟") || lowerEvent.includes("老街") ||
+        lowerEvent.includes("古蹟") || lowerEvent.includes("大稻埕") ||
+        lowerEvent.includes("九份") || lowerEvent.includes("迪化街") ||
+        lowerEvent.includes("鶯歌") || lowerEvent.includes("三峽")
+    ) contextId = "temple_old_town";
+    else if (
+        lowerEvent.includes("爬山") || lowerEvent.includes("登山") ||
+        lowerEvent.includes("步道") || lowerEvent.includes("山上") ||
+        lowerEvent.includes("陽明山") || lowerEvent.includes("合歡山") ||
+        lowerEvent.includes("太平山")
+    ) contextId = "mountain_outdoor";
+    else if (
+        lowerEvent.includes("稻田") || lowerEvent.includes("田間") ||
+        lowerEvent.includes("農場") || lowerEvent.includes("鄉間") ||
+        lowerEvent.includes("花東") || lowerEvent.includes("池上") ||
+        lowerEvent.includes("縱谷")
+    ) contextId = "rural_field";
+    else if (
+        lowerEvent.includes("音樂祭") || lowerEvent.includes("市集") ||
+        lowerEvent.includes("藝術節") || lowerEvent.includes("演唱會") ||
+        lowerEvent.includes("跨年") || lowerEvent.includes("廟會")
+    ) contextId = "festival_event";
+    else if (
         lowerEvent.includes("捷運") || lowerEvent.includes("公車") ||
         lowerEvent.includes("等") || lowerEvent.includes("街") ||
         lowerEvent.includes("路上") || lowerEvent.includes("外出") ||
         lowerEvent.includes("散步") || lowerEvent.includes("走路") ||
         lowerEvent.includes("騎車") || lowerEvent.includes("開車") ||
-        lowerEvent.includes("咖啡廳") || lowerEvent.includes("咖啡店") ||
         lowerEvent.includes("餐廳") || lowerEvent.includes("公園")
     ) contextId = "urban_street";
 
@@ -945,7 +984,11 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
             : [contextId];
     contextId = contextCandidates[0] || contextId;
 
-    const outfit = pickOutfit(model, contextCandidates, targetTier);
+    const userOutfits = WardrobeService.getUserOutfits();
+    const forcedOutfit = options?.forcedOutfitId
+        ? [...OUTFIT_SEEDS_V2, ...userOutfits].find(o => o.outfit_id === options.forcedOutfitId)
+        : undefined;
+    const outfit = forcedOutfit || pickOutfit(model, contextCandidates, targetTier);
     
     // Update recent_outfit_ids cooldown (keep last 5)
     const recentIds = model.preferences?.recent_outfit_ids || [];
@@ -1038,7 +1081,7 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
    - 下身: ${outfit.pillars.bottom}
    - 鞋履: ${outfit.pillars.shoes}
    - 配件: ${(outfit.pillars.accessories ?? []).join(', ')}
-   - 道具/手部狀態: ${(outfit.pillars.props ?? []).join(', ')} (左手: ${outfit.hand_occupation.left_hand}, 右手: ${outfit.hand_occupation.right_hand})
+   - 道具/手部狀態: ${options?.isPOV ? `POV 自拍模式 — 持機手臂延伸出鏡不入鏡：空閒手最多持一樣物品：${outfit.hand_occupation.left_hand || outfit.hand_occupation.right_hand || '自然放鬆，不持物'}。嚴禁描述雙手同時持物的畫面。` : `${(outfit.pillars.props ?? []).join(', ')} (左手: ${outfit.hand_occupation.left_hand}, 右手: ${outfit.hand_occupation.right_hand})`}
 2. 生理寫實協議 v2.2 (去除「痣」):
    - 強調微觀皮膚質地 (Micro-pores)、細微的不對稱性 (Asymmetry)。
    - 髮絲必須有散亂感 (Flyaways)，拒絕完美的 AI 頭盔感。
@@ -1141,7 +1184,7 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
             if (outfitParts.length === 0) return promptText;
 
             const lines = promptText.split('\n');
-            const apparelIndex = lines.findIndex(line => /^\s*(\[Apparel\]|【Apparel】|Apparel)\s*[:：]/i.test(line.trim()));
+            const apparelIndex = lines.findIndex(line => /^\s*(\[Apparel\]|【Apparel】|Apparel|\[穿搭\]|【穿搭】|穿搭)\s*[:：]/i.test(line.trim()));
             const apparelLine = apparelIndex >= 0 ? lines[apparelIndex] : '';
 
             const missingParts = outfitParts.filter(part => !apparelLine.toLowerCase().includes(part.toLowerCase()));
@@ -1154,7 +1197,7 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
                 return lines.join('\n');
             }
 
-            const environmentIndex = lines.findIndex(line => /^\s*(\[Environment\]|【Environment】|Environment)\s*[:：]/i.test(line.trim()));
+            const environmentIndex = lines.findIndex(line => /^\s*(\[Environment\]|【Environment】|Environment|\[環境\]|【環境】|環境)\s*[:：]/i.test(line.trim()));
             const apparelFallbackLine = `[Apparel]: ${missingText}`;
 
             if (environmentIndex >= 0) {
@@ -1870,4 +1913,59 @@ export const generateRandomEventWithScene = (model: Model): { text: string; scen
  */
 export const generateRandomEvent = (model: Model): string => {
     return generateRandomEventWithScene(model).text;
+};
+
+export const previewShootConfig = (
+    model: Model,
+    eventText: string,
+    forcedSceneId?: string,
+    excludeOutfitId?: string
+): { scene: any; outfit: OutfitV2 } => {
+    const primaryCity = model.lifeCircuit?.primaryCity || '台北市';
+
+    // Scene selection
+    let scene: any = null;
+    if (forcedSceneId) {
+        scene = ALL_EXTENDED_SCENES.find(s => s.scene_id === forcedSceneId) || null;
+    }
+    if (!scene) {
+        const candidates = ALL_EXTENDED_SCENES.filter(s =>
+            s.city === primaryCity || s.city === 'any' ||
+            primaryCity.includes(s.city || '') || (s.city || '').includes(primaryCity)
+        );
+        const pool = candidates.length > 0 ? candidates : ALL_EXTENDED_SCENES;
+        scene = pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    // Context inference from eventText
+    const lower = eventText.toLowerCase();
+    let contextId = 'urban_street';
+    if (scene.depth_module_id === 1 || /家|宅|房間|沙發|床|廚房|陽台|窩/.test(lower)) contextId = 'home_cozy';
+    else if (/上班|公司|會議|辦公|開會|工作/.test(lower)) contextId = 'office_pro';
+    else if (/逛|買|購物|超商|便利|百貨/.test(lower)) contextId = 'shopping_random';
+    else if (/咖啡廳|咖啡店|咖啡|下午茶|brunch|甜點店/.test(lower)) contextId = 'cafe_aesthetic';
+    else if (/夜市|攤販|小吃|滷味|珍珠奶茶|臭豆腐/.test(lower)) contextId = 'night_market';
+    else if (/海邊|海灘|沙灘|海水|海島|離島|墾丁|澎湖|綠島|蘭嶼/.test(lower)) contextId = 'beach_island';
+    else if (/廟|老街|古蹟|大稻埕|九份|迪化街|鶯歌|三峽/.test(lower)) contextId = 'temple_old_town';
+    else if (/爬山|登山|步道|山上|陽明山|合歡山|太平山/.test(lower)) contextId = 'mountain_outdoor';
+    else if (/稻田|田間|農場|鄉間|花東|池上|縱谷/.test(lower)) contextId = 'rural_field';
+    else if (/音樂祭|市集|藝術節|演唱會|跨年|廟會/.test(lower)) contextId = 'festival_event';
+    else if (/捷運|公車|通勤|機場|火車|高鐵/.test(lower)) contextId = 'travel_journey';
+
+    const sceneFilters = (scene as any).outfit_filter as string[] | undefined;
+    const contextCandidates = sceneFilters?.length ? sceneFilters : [contextId];
+
+    const rawMin = model.preferences?.aesthetic_tier_min || 1;
+    const rawMax = model.preferences?.aesthetic_tier_max || 2;
+    const targetTier = Math.round((rawMin + rawMax) / 2) || 1;
+
+    let outfit = pickOutfit(model, contextCandidates, targetTier);
+    if (excludeOutfitId) {
+        for (let i = 0; i < 5; i++) {
+            if (outfit.outfit_id !== excludeOutfitId) break;
+            outfit = pickOutfit(model, contextCandidates, targetTier);
+        }
+    }
+
+    return { scene, outfit };
 };
