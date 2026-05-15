@@ -584,12 +584,12 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                     <div className="w-2.5 h-2.5 bg-[var(--color-gold)] rounded-sm"></div>
                                 )}
                             </div>
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-dim)] group-hover:text-[var(--color-text-main)] transition-colors">全選</span>
+                            <span className="text-[12px] font-bold uppercase tracking-widest text-[var(--color-text-dim)] group-hover:text-[var(--color-text-main)] transition-colors">全選</span>
                         </label>
                         
                         <div className="h-4 w-px bg-[var(--color-border)]"></div>
                         
-                        <span className="text-[10px] font-mono tracking-widest text-[var(--color-gold)]">
+                        <span className="text-[12px] font-mono tracking-widest text-[var(--color-gold)]">
                             {selectedModels.size} / {models.length} 已選擇
                         </span>
                     </div>
@@ -597,7 +597,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                     <div className="flex gap-4">
                         <label className="cursor-pointer">
                             <input type="file" className="hidden" accept="image/*" onChange={handleManualUpload} />
-                            <div className="px-6 py-2 bg-white/5 border border-white/10 rounded-xl text-[10px] font-bold tracking-widest text-white hover:bg-white/10 hover:border-[var(--color-gold)] transition-all flex items-center gap-2">
+                            <div className="px-6 py-2 bg-white/5 border border-white/10 rounded-xl text-[12px] font-bold tracking-widest text-white hover:bg-white/10 hover:border-[var(--color-gold)] transition-all flex items-center gap-2">
                                 📤 手動上傳舊照片 (自動讀取)
                             </div>
                         </label>
@@ -625,312 +625,237 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                         <motion.div 
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            className="space-y-12"
+                            className="space-y-5"
                         >
                             {/* Portfolio Header */}
                             <div className="flex flex-col md:flex-row gap-8 items-start">
                                 <div className="w-1/4 aspect-[3/4] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
                                     <AsyncImage src={portfolioModel.imageUrl} className="w-full h-full object-cover" />
                                 </div>
-                                <div className="flex-1 space-y-6 pt-4">
-                                    <div className="flex justify-between items-start">
+                                    <div className="flex-1 space-y-5 pt-2">
                                         <div>
                                             <button 
                                                 onClick={() => setViewingPortfolioModelId(null)}
-                                                className="text-[10px] text-[var(--color-gold)] font-bold tracking-widest uppercase mb-4 flex items-center gap-2 hover:underline"
+                                                className="text-[12px] text-[var(--color-gold)] font-bold tracking-widest uppercase mb-3 flex items-center gap-2 hover:underline"
                                             >
                                                 ← 返回模特兒清單
                                             </button>
                                             <h1 className="text-4xl font-display font-bold tracking-widest text-white uppercase">{portfolioModel.name}</h1>
-                                            <div className="flex gap-3 mt-4">
-                                                <span className="px-4 py-1.5 bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/20 rounded-full text-[10px] font-bold text-[var(--color-gold)] uppercase">
-                                                    MBTI: {portfolioModel.persona?.mbti || 'N/A'}
-                                                </span>
-                                                <span className="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold text-gray-400 uppercase">
-                                                    Vibe: {portfolioModel.persona?.coreVibe || 'Professional'}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div className="flex gap-4">
-                                            {isPortfolioDeleteMode ? (
-                                                <>
-                                                    <Button 
-                                                        onClick={handleDeleteGalleryItems} 
-                                                        disabled={selectedGalleryItems.size === 0}
-                                                        className="px-6 py-3 bg-red-500 hover:bg-red-600 text-white border-0 text-[10px] tracking-widest disabled:opacity-30"
-                                                    >
-                                                        確定刪除 ({selectedGalleryItems.size})
-                                                    </Button>
-                                                    <Button onClick={() => { setIsPortfolioDeleteMode(false); setSelectedGalleryItems(new Set()); }} variant="secondary" className="px-6 py-3 border-white/10 text-[10px] tracking-widest">
-                                                        取消
-                                                    </Button>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <button
-                                                        onClick={() => setIsConsistencyView(v => !v)}
-                                                        className={`px-6 py-3 border rounded-xl text-[10px] font-bold tracking-widest transition-all ${isConsistencyView ? 'bg-purple-500/20 border-purple-500/50 text-purple-300' : 'bg-white/5 border-white/10 text-gray-400 hover:text-white hover:border-purple-500/50'}`}
-                                                    >
-                                                        🎯 {isConsistencyView ? '離開一致性預覽' : '一致性預覽'}
-                                                    </button>
-                                                    <button 
-                                                        onClick={() => setIsPortfolioDeleteMode(true)}
-                                                        className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl text-[10px] font-bold tracking-widest text-gray-400 hover:text-white transition-all hover:border-red-500/50"
-                                                    >
-                                                        🗑️ 批量刪除模式
-                                                    </button>
-                                                    {driveConnected && (
-                                                        <div className="flex gap-2">
+                                            <div className="flex items-center justify-between mt-4 gap-4 flex-wrap">
+                                                <div className="flex gap-3">
+                                                    <span className="px-4 py-1.5 bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/20 rounded-full text-[12px] font-bold text-[var(--color-gold)] uppercase">
+                                                        MBTI: {portfolioModel.persona?.mbti || 'N/A'}
+                                                    </span>
+                                                    <span className="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-[12px] font-bold text-gray-400 uppercase">
+                                                        Vibe: {portfolioModel.persona?.coreVibe || 'Professional'}
+                                                    </span>
+                                                </div>
+                                                <div className="flex items-center gap-2 flex-wrap">
+                                                    {isPortfolioDeleteMode ? (
+                                                        <>
+                                                            <Button 
+                                                                onClick={handleDeleteGalleryItems} 
+                                                                disabled={selectedGalleryItems.size === 0}
+                                                                className="px-6 py-3 bg-red-500 hover:bg-red-600 text-white border-0 text-[10px] tracking-widest disabled:opacity-30"
+                                                            >
+                                                                確定刪除 ({selectedGalleryItems.size})
+                                                            </Button>
+                                                            <Button onClick={() => { setIsPortfolioDeleteMode(false); setSelectedGalleryItems(new Set()); }} variant="secondary" className="px-6 py-3 border-white/10 text-[10px] tracking-widest">
+                                                                取消
+                                                            </Button>
+                                                        </>
+                                                    ) : (
+                                                        <div className="flex items-center gap-2 flex-wrap">
                                                             <button
-                                                                onClick={handleSyncGalleryToDrive}
-                                                                disabled={isDriveSyncing}
-                                                                className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl text-[10px] font-bold tracking-widest text-sky-400 hover:text-white transition-all hover:border-sky-500/50 disabled:opacity-30"
+                                                                onClick={() => setIsConsistencyView(v => !v)}
+                                                                title={isConsistencyView ? '離開一致性預覽' : '一致性預覽'}
+                                                                className={`h-10 px-3 rounded-lg border text-[11px] font-bold whitespace-nowrap transition-all ${isConsistencyView ? 'bg-purple-500/20 border-purple-500/40 text-purple-300' : 'bg-white/5 border-white/10 text-gray-400 hover:text-white hover:border-purple-400/40'}`}
                                                             >
-                                                                {isDriveSyncing ? '同步中...' : '☁️ 同步圖片到 Drive'}
+                                                                {isConsistencyView ? '離開預覽' : '一致性預覽'}
                                                             </button>
-                                                            <Button
-                                                                onClick={handleOpenDriveImport}
-                                                                disabled={isDriveImporting}
-                                                                isLoading={isDriveImporting}
-                                                                variant="secondary"
-                                                                className="text-[10px] font-bold tracking-widest"
+                                                            <button
+                                                                onClick={() => setIsPortfolioDeleteMode(true)}
+                                                                className="h-10 px-3 rounded-lg border bg-white/5 border-white/10 text-[11px] font-bold whitespace-nowrap text-gray-400 hover:text-white hover:border-red-400/40 transition-all"
                                                             >
-                                                                從 Drive 匯入
+                                                                批量刪除
+                                                            </button>
+                                                            {driveConnected && (
+                                                                <>
+                                                                    <button
+                                                                        onClick={handleSyncGalleryToDrive}
+                                                                        disabled={isDriveSyncing}
+                                                                        className="h-10 px-3 rounded-lg border bg-white/5 border-white/10 text-[11px] font-bold whitespace-nowrap text-sky-400 hover:text-white hover:border-sky-400/40 transition-all disabled:opacity-30"
+                                                                    >
+                                                                        {isDriveSyncing ? '同步中...' : '同步到 Drive'}
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={handleOpenDriveImport}
+                                                                        disabled={isDriveImporting}
+                                                                        className="h-10 px-3 rounded-lg border bg-white/5 border-white/10 text-[11px] font-bold whitespace-nowrap text-gray-400 hover:text-white transition-all disabled:opacity-30"
+                                                                    >
+                                                                        {isDriveImporting ? '匯入中...' : '從 Drive 匯入'}
+                                                                    </button>
+                                                                </>
+                                                            )}
+                                                            <Button onClick={() => setEditingModel(portfolioModel)} variant="secondary" className="h-10 px-3 text-[9px] font-bold whitespace-nowrap tracking-normal border-white/10">
+                                                                編輯身份
+                                                            </Button>
+                                                            <Button onClick={() => setSelectedModelForNarrative(portfolioModel)} className="h-10 px-4 text-[9px] font-bold whitespace-nowrap tracking-normal">
+                                                                啟動靈魂敘事
                                                             </Button>
                                                         </div>
                                                     )}
-                                                </>
-                                            )}
-                                            <Button onClick={() => setEditingModel(portfolioModel)} variant="secondary" className="px-6 py-3 border-white/10 text-[10px] tracking-widest">
-                                                編輯身份 (Edit Identity)
-                                            </Button>
-                                            <Button onClick={() => setSelectedModelForNarrative(portfolioModel)} className="px-8 py-3 text-[10px] tracking-[0.2em]">
-                                                啟動靈魂敘事 (START NARRATIVE)
-                                            </Button>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
                                     
-                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-white/5 rounded-3xl border border-white/5">
-                                        <div>
-                                            <p className="text-[9px] text-gray-500 uppercase font-bold tracking-widest mb-1">作品數量</p>
-                                            <p className="text-xl text-white font-mono">{(portfolioModel.gallery?.length || 0) + 1}</p>
+                                        <div className="flex items-start p-4 bg-white/5 rounded-xl border border-white/5 divide-x divide-white/5">
+                                            <div className="pr-4 shrink-0 text-center min-w-[56px]">
+                                                <p className="text-[12px] text-gray-500 uppercase font-bold tracking-widest mb-1">作品數量</p>
+                                                <p className="text-[26px] text-white font-mono">{(portfolioModel.gallery?.length || 0) + 1}</p>
+                                            </div>
+                                            <div className="flex-1 px-4">
+                                                <p className="text-[12px] text-gray-500 uppercase font-bold tracking-widest mb-1.5">主體情緒</p>
+                                                <p className="text-[15px] text-gray-300 leading-relaxed">{portfolioModel.persona?.toneOfVoice || '自然'}</p>
+                                            </div>
+                                            <div className="pl-4 shrink-0 text-right min-w-[120px]">
+                                                <p className="text-[12px] text-gray-500 uppercase font-bold tracking-widest mb-1">三圍 / 身高</p>
+                                                <p className="text-[14px] text-gray-400 font-mono whitespace-nowrap">
+                                                    {portfolioModel.stats?.bust}-{portfolioModel.stats?.waist}-{portfolioModel.stats?.hip} // {portfolioModel.stats?.height}cm
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p className="text-[9px] text-gray-500 uppercase font-bold tracking-widest mb-1">主導情緒</p>
-                                            <p className="text-xl text-white font-mono">{portfolioModel.persona?.toneOfVoice || '自然'}</p>
-                                        </div>
-                                        <div className="col-span-2">
-                                            <p className="text-[9px] text-gray-500 uppercase font-bold tracking-widest mb-1">物理參數 (Stats)</p>
-                                            <p className="text-xs text-gray-400 font-mono">
-                                                {portfolioModel.stats?.bust}-{portfolioModel.stats?.waist}-{portfolioModel.stats?.hip} // {portfolioModel.stats?.height}cm
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            {/* Content Category Ratio */}
-                            {(() => {
-                                const gallery = portfolioModel.gallery || [];
-                                const lifestyle = gallery.filter((i: any) => i.contentCategory === 'lifestyle').length;
-                                const curve = gallery.filter((i: any) => i.contentCategory === 'curve').length;
-                                const drama = gallery.filter((i: any) => i.contentCategory === 'drama').length;
-                                const total = lifestyle + curve + drama;
-                                if (total === 0) return null;
-                                return (
-                                    <div className="p-5 bg-white/5 rounded-2xl border border-white/5 mb-0">
-                                        <p className="text-[9px] text-gray-500 uppercase font-bold tracking-widest mb-3">內容比例 / Content Ratio</p>
-                                        <div className="space-y-2.5">
-                                            {[
-                                                { label: '生活日常 Lifestyle', count: lifestyle, color: 'bg-blue-400', target: 50 },
-                                                { label: '曲線魅力 Curve', count: curve, color: 'bg-rose-400', target: 30 },
-                                                { label: '戲劇張力 Drama', count: drama, color: 'bg-purple-400', target: 20 },
-                                            ].map(({ label, count, color, target }) => {
-                                                const pct = Math.round((count / total) * 100);
+                                        <div className="flex items-stretch gap-2">
+                                            {/* UX-INLINE: 內容比例 + IP完整度 → 單行摘要 */}
+                                            {(() => {
+                                            const gallery = portfolioModel.gallery || [];
+                                            const lifestyle = gallery.filter((i: any) => i.contentCategory === 'lifestyle').length;
+                                            const curve = gallery.filter((i: any) => i.contentCategory === 'curve').length;
+                                            const drama = gallery.filter((i: any) => i.contentCategory === 'drama').length;
+                                            const total = lifestyle + curve + drama;
+                                            const desc = portfolioModel.persona?.locked_descriptor || '';
+                                            const faceCount = (portfolioModel.preferences?.face_reference_urls || []).filter(Boolean).length;
+                                            const hasArc = !!portfolioModel.preferences?.active_arc_id;
+                                            const ratioOk = total === 0 ? null : (() => {
+                                                const pcts = [lifestyle/total*100, curve/total*100, drama/total*100];
+                                                const targets = [50, 30, 20];
+                                                return pcts.every((p, i) => Math.abs(p - targets[i]) < 15);
+                                            })();
+                                            return (
+                                                <div className="flex-1 min-w-0 flex flex-wrap items-center gap-x-4 gap-y-1 px-3 py-2 bg-white/5 rounded-lg border border-white/5 text-[11px]">
+                                                    {total > 0 && (
+                                                        <div className="flex items-center gap-2 shrink-0">
+                                                            <span className="text-gray-500 uppercase tracking-wider font-bold">比例</span>
+                                                            {[{label:'生活', count:lifestyle, color:'bg-sky-400'},{label:'曲線', count:curve, color:'bg-rose-400'},{label:'戲劇', count:drama, color:'bg-violet-400'}].map(({label, count, color}) => (
+                                                                <div key={label} className="flex items-center gap-1">
+                                                                    <span className={`w-1.5 h-1.5 rounded-full ${color} shrink-0`}></span>
+                                                                    <span className="text-gray-400">{label} <span className="text-white font-bold">{Math.round(count/total*100)}%</span></span>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                    <div className="flex items-center gap-2 shrink-0">
+                                                        <span className="text-gray-500 uppercase tracking-wider font-bold">IP</span>
+                                                        <span title="人格描述">{desc.length > 20 ? '✅' : desc.length > 0 ? '⚠️' : '❌'}</span>
+                                                        <span title="臉部參考圖">{faceCount >= 4 ? '✅' : faceCount > 0 ? '⚠️' : '❌'} Face</span>
+                                                        {ratioOk !== null && <span title="內容比例">{ratioOk ? '✅' : '⚠️'} Ratio</span>}
+                                                        <span title="故事線">{hasArc ? '✅' : '—'} Arc</span>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })() }
+                                        </div>
+
+                                        {/* P2-5: 故事進度小卡 */}
+                                        {(() => {
+                                            const isArcEnabled = portfolioModel.preferences?.enable_story_arcs !== false;
+                                            if (!isArcEnabled) return null;
+
+                                            const allArcs = [...STORY_ARCS, ...(portfolioModel.preferences?.custom_story_arcs || [])];
+                                            const activeArcId = portfolioModel.preferences?.active_arc_id;
+                                            const activeArc = allArcs.find(a => a.arc_id === activeArcId);
+                                            
+                                            if (!activeArc) {
                                                 return (
-                                                    <div key={label}>
-                                                        <div className="flex justify-between text-[9px] text-gray-400 mb-1">
-                                                            <span>{label}</span>
-                                                            <span>{count} 張 · {pct}% <span className="text-gray-600">（目標 {target}%）</span></span>
+                                                    <div className="shrink-0 p-6 bg-white/5 rounded-2xl border border-white/10 border-dashed flex items-center justify-between">
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="w-1.5 h-1.5 rounded-full bg-gray-600"></div>
+                                                            <p className="text-[12px] text-gray-500 uppercase tracking-widest font-black">尚無進行中的故事線 // NO ACTIVE STORY ARC</p>
                                                         </div>
-                                                        <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
-                                                            <div className={`h-full ${color} rounded-full transition-all duration-700`} style={{ width: `${pct}%` }} />
-                                                        </div>
+                                                        <button 
+                                                            onClick={() => setSelectedModelForNarrative(portfolioModel)}
+                                                            className="text-[11px] text-[var(--color-gold)] font-bold uppercase tracking-widest hover:underline"
+                                                        >
+                                                            前往靈魂敘事開啟新篇章 →
+                                                        </button>
                                                     </div>
                                                 );
-                                            })}
+                                            }
+
+                                            const currentPhaseIdx = portfolioModel.preferences?.active_arc_phase_index || 0;
+                                            const totalPhases = activeArc.phases.length;
+                                            const progress = ((currentPhaseIdx + 1) / totalPhases) * 100;
+
+                                            return (
+                                                <div className="shrink-0 p-6 bg-[var(--color-bg-surface)] rounded-3xl border border-[var(--color-gold)]/20 shadow-xl space-y-5 relative overflow-hidden group/arc">
+                                                    <div className="absolute -top-12 -right-12 w-32 h-32 bg-[var(--color-gold)]/5 blur-3xl rounded-full group-hover/arc:bg-[var(--color-gold)]/10 transition-all duration-700"></div>
+                                                    
+                                                    <div className="flex justify-between items-center relative z-10">
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-gold)] animate-pulse shadow-[0_0_10px_rgba(212,175,55,1)]"></div>
+                                                            <h4 className="text-[12px] font-black text-[var(--color-gold)] uppercase tracking-[0.4em] italic">核心故事進度 // STORY PROGRESS</h4>
+                                                        </div>
+                                                        <div className="px-3 py-1 bg-white/5 border border-white/10 rounded-full">
+                                                            <span className="text-[11px] text-gray-400 font-black uppercase tracking-tighter mr-2">里程碑</span>
+                                                            <span className="text-[11px] text-white font-black">{currentPhaseIdx + 1} / {totalPhases}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-10">
+                                                        <div className="flex-1 space-y-3">
+                                                            <div className="space-y-1">
+                                                                <h5 className="text-[22px] font-black text-white tracking-tight uppercase leading-none">{activeArc.name_zh}</h5>
+                                                                <p className="text-[11px] text-gray-500 font-bold tracking-widest uppercase opacity-60 italic">{activeArc.arc_id}</p>
+                                                            </div>
+                                                            <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+                                                                <div 
+                                                                    className="h-full bg-gradient-to-r from-[var(--color-gold)] to-[#FFD700] transition-all duration-1000 ease-out" 
+                                                                    style={{ width: `${progress}%` }} 
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <Button 
+                                                            onClick={() => setSelectedModelForNarrative(portfolioModel)}
+                                                            className="px-8 py-3 text-[12px] font-black tracking-[0.2em] shadow-lg shadow-[var(--color-gold)]/10"
+                                                        >
+                                                            繼續故事線 (CONTINUE STORY)
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })()}
+
+                                        <div className="shrink-0 flex items-center justify-between px-4 py-3 rounded-2xl border border-[var(--color-gold)]/15 bg-[var(--color-gold)]/5">
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-gold)]">臉部基準圖</span>
+                                                <span className="text-[11px] text-gray-400">{faceReferenceCount}/4 已設定</span>
+                                            </div>
+                                            <span className={`px-2.5 py-1 rounded-full border text-[10px] font-bold uppercase tracking-widest ${faceReferenceCount >= 2 ? 'border-emerald-400/30 bg-emerald-400/10 text-emerald-300' : 'border-white/10 bg-white/5 text-gray-400'}`}>
+                                                {faceReferenceCount >= 2 ? 'Ready' : '尚未設定'}
+                                            </span>
                                         </div>
-                                    </div>
-                                );
-                            })()}
-
-                            {/* IP 完整度 (Completeness) */}
-                            <div className="p-5 bg-white/5 rounded-2xl border border-white/5 mb-0 mt-4">
-                                <p className="text-[9px] text-gray-500 uppercase font-bold tracking-widest mb-4">IP 完整度 / Completeness</p>
-                                <div className="grid grid-cols-2 gap-y-4 gap-x-8">
-                                    {/* 1. locked_descriptor */}
-                                    <div className="flex items-center gap-3">
-                                        {(() => {
-                                            const desc = portfolioModel.persona?.locked_descriptor || "";
-                                            if (desc.length > 20) return <span className="text-emerald-400">✅</span>;
-                                            if (desc.length > 0) return <span className="text-amber-400">⚠️</span>;
-                                            return <span className="text-rose-500">❌</span>;
-                                        })()}
-                                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tight">人格描述 (Descriptor)</span>
-                                    </div>
-
-                                    {/* 2. face_reference_urls */}
-                                    <div className="flex items-center gap-3">
-                                        {(() => {
-                                            const count = (portfolioModel.preferences?.face_reference_urls || []).filter(Boolean).length;
-                                            if (count >= 4) return <span className="text-emerald-400">✅</span>;
-                                            if (count > 0) return <span className="text-amber-400">⚠️</span>;
-                                            return <span className="text-rose-500">❌</span>;
-                                        })()}
-                                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tight">臉部參考圖 (Face Ref)</span>
-                                    </div>
-
-                                    {/* 3. worldAnchors.pet */}
-                                    <div className="flex items-center gap-3">
-                                        {portfolioModel.worldAnchors?.pet ? <span className="text-emerald-400">✅</span> : <span className="text-gray-600">—</span>}
-                                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tight">寵物設定 (Pet)</span>
-                                    </div>
-
-                                    {/* 4. worldAnchors.iconicItems */}
-                                    <div className="flex items-center gap-3">
-                                        {portfolioModel.worldAnchors?.iconicItems?.length ? <span className="text-emerald-400">✅</span> : <span className="text-gray-600">—</span>}
-                                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tight">標誌物品 (Iconic Item)</span>
-                                    </div>
-
-                                    {/* 5. contentCategory 分佈 */}
-                                    <div className="flex items-center gap-3">
-                                        {(() => {
-                                            const gallery = portfolioModel.gallery || [];
-                                            if (gallery.length === 0) return <span className="text-gray-600">—</span>;
-                                            const total = gallery.length;
-                                            const lifestyle = gallery.filter(i => i.contentCategory === 'lifestyle').length;
-                                            const curve = gallery.filter(i => i.contentCategory === 'curve').length;
-                                            const drama = gallery.filter(i => i.contentCategory === 'drama').length;
-                                            const pcts = [
-                                                { actual: (lifestyle / total) * 100, target: 50 },
-                                                { actual: (curve / total) * 100, target: 30 },
-                                                { actual: (drama / total) * 100, target: 20 }
-                                            ];
-                                            const isDrifting = pcts.some(p => Math.abs(p.actual - p.target) >= 15);
-                                            return isDrifting ? <span className="text-amber-400">⚠️</span> : <span className="text-emerald-400">✅</span>;
-                                        })()}
-                                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tight">內容比例 (Ratio)</span>
-                                    </div>
-
-                                    {/* 6. storyArcs */}
-                                    <div className="flex items-center gap-3">
-                                        {portfolioModel.preferences?.active_arc_id ? <span className="text-emerald-400">✅</span> : <span className="text-gray-600">—</span>}
-                                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tight">故事線 (Story Arc)</span>
                                     </div>
                                 </div>
-                            </div>
-
-                            {/* P2-5: 故事進度小卡 */}
-                            {(() => {
-                                const isArcEnabled = portfolioModel.preferences?.enable_story_arcs !== false;
-                                if (!isArcEnabled) return null;
-
-                                const allArcs = [...STORY_ARCS, ...(portfolioModel.preferences?.custom_story_arcs || [])];
-                                const activeArcId = portfolioModel.preferences?.active_arc_id;
-                                const activeArc = allArcs.find(a => a.arc_id === activeArcId);
-                                
-                                if (!activeArc) {
-                                    return (
-                                        <div className="p-6 bg-white/5 rounded-2xl border border-white/10 border-dashed flex items-center justify-between">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-gray-600"></div>
-                                                <p className="text-[10px] text-gray-500 uppercase tracking-widest font-black">尚無進行中的故事線 // NO ACTIVE STORY ARC</p>
-                                            </div>
-                                            <button 
-                                                onClick={() => setSelectedModelForNarrative(portfolioModel)}
-                                                className="text-[9px] text-[var(--color-gold)] font-bold uppercase tracking-widest hover:underline"
-                                            >
-                                                前往靈魂敘事開啟新篇章 →
-                                            </button>
-                                        </div>
-                                    );
-                                }
-
-                                const currentPhaseIdx = portfolioModel.preferences?.active_arc_phase_index || 0;
-                                const totalPhases = activeArc.phases.length;
-                                const progress = ((currentPhaseIdx + 1) / totalPhases) * 100;
-
-                                return (
-                                    <div className="p-6 bg-[var(--color-bg-surface)] rounded-3xl border border-[var(--color-gold)]/20 shadow-xl space-y-5 relative overflow-hidden group/arc">
-                                        <div className="absolute -top-12 -right-12 w-32 h-32 bg-[var(--color-gold)]/5 blur-3xl rounded-full group-hover/arc:bg-[var(--color-gold)]/10 transition-all duration-700"></div>
-                                        
-                                        <div className="flex justify-between items-center relative z-10">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-gold)] animate-pulse shadow-[0_0_10px_rgba(212,175,55,1)]"></div>
-                                                <h4 className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.4em] italic">核心故事進度 // STORY PROGRESS</h4>
-                                            </div>
-                                            <div className="px-3 py-1 bg-white/5 border border-white/10 rounded-full">
-                                                <span className="text-[9px] text-gray-400 font-black uppercase tracking-tighter mr-2">里程碑</span>
-                                                <span className="text-[9px] text-white font-black">{currentPhaseIdx + 1} / {totalPhases}</span>
-                                            </div>
-                                        </div>
-
-                                        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-10">
-                                            <div className="flex-1 space-y-3">
-                                                <div className="space-y-1">
-                                                    <h5 className="text-xl font-black text-white tracking-tight uppercase leading-none">{activeArc.name_zh}</h5>
-                                                    <p className="text-[9px] text-gray-500 font-bold tracking-widest uppercase opacity-60 italic">{activeArc.arc_id}</p>
-                                                </div>
-                                                <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
-                                                    <div 
-                                                        className="h-full bg-gradient-to-r from-[var(--color-gold)] to-[#FFD700] transition-all duration-1000 ease-out" 
-                                                        style={{ width: `${progress}%` }} 
-                                                    />
-                                                </div>
-                                            </div>
-                                            <Button 
-                                                onClick={() => setSelectedModelForNarrative(portfolioModel)}
-                                                className="px-8 py-3 text-[10px] font-black tracking-[0.2em] shadow-lg shadow-[var(--color-gold)]/10"
-                                            >
-                                                繼續故事線 (CONTINUE STORY)
-                                            </Button>
-                                        </div>
-                                    </div>
-                                );
-                            })()}
-
-                            <div className="rounded-3xl border border-[var(--color-gold)]/15 bg-[var(--color-gold)]/5 p-5 md:p-6">
-                                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                                    <div className="space-y-2">
-                                        <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[var(--color-gold)]">
-                                            Identity Reference Setup
-                                        </p>
-                                        <h3 className="text-xl font-bold text-white">
-                                            臉部基準圖：{faceReferenceCount}/4 已設定
-                                        </h3>
-                                        <p className="text-sm text-gray-400 leading-relaxed max-w-3xl">
-                                            下方 2x2 Face Reference 會作為靈魂敘事生圖的身份參考。建議補齊 FRONT / SIDE / 45° / BACK，讓同一個 IP 在不同日常場景中維持臉型、髮型與辨識度。
-                                        </p>
-                                    </div>
-                                    <div className="flex flex-col items-start md:items-end gap-2 text-[10px] font-bold uppercase tracking-widest">
-                                        <span className={`px-3 py-1 rounded-full border ${faceReferenceCount >= 2 ? 'border-emerald-400/30 bg-emerald-400/10 text-emerald-300' : 'border-white/10 bg-white/5 text-gray-400'}`}>
-                                            {faceReferenceCount >= 2 ? 'Reference Ready' : 'Add Face References'}
-                                        </span>
-                                        <span className="text-gray-500">
-                                            點擊下方格子單張上傳，或使用自動裁切
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
 
                             {/* Assets Grid */}
                             <div className="space-y-6">
                                 <div className="flex items-center justify-between border-b border-white/5 pb-4">
-                                    <h3 className="text-[11px] font-bold text-white uppercase tracking-[0.4em]">
+                                    <h3 className="text-[13px] font-bold text-white uppercase tracking-[0.4em]">
                                         {isConsistencyView ? '臉部一致性預覽 / Consistency Check' : '模特兒作品集與衍生資產 (Portfolio & Assets)'}
                                     </h3>
                                     {isConsistencyView && (
-                                        <span className="text-[9px] text-purple-400 font-bold uppercase tracking-widest">
+                                        <span className="text-[11px] text-purple-400 font-bold uppercase tracking-widest">
                                             最近 {Math.min((portfolioModel.gallery || []).length, 6)} 張並排 · 確認臉型辨識度
                                         </span>
                                     )}
@@ -941,7 +866,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                     (() => {
                                         const last6 = (portfolioModel.gallery || []).slice(0, 6);
                                         if (last6.length === 0) return (
-                                            <p className="text-[10px] text-gray-500 text-center py-12">作品集尚無內容，請先生成靈魂敘事圖片</p>
+                                            <p className="text-[12px] text-gray-500 text-center py-12">作品集尚無內容，請先生成靈魂敘事圖片</p>
                                         );
                                         return (
                                             <div className="space-y-4">
@@ -957,14 +882,14 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                                                     className="w-full h-full object-cover object-top group-hover/ci:scale-105 transition-transform duration-500"
                                                                 />
                                                             </div>
-                                                            <div className="absolute bottom-0 inset-x-0 px-2 py-1.5 bg-black/70 text-[8px] text-gray-400 text-center font-mono">
+                                                            <div className="absolute bottom-0 inset-x-0 px-2 py-1.5 bg-black/70 text-[10px] text-gray-400 text-center font-mono">
                                                                 #{(portfolioModel.gallery?.length || 0) - idx}
                                                                 {item.narrativeContent && <span className="ml-1 text-purple-300">📖</span>}
                                                             </div>
                                                         </div>
                                                     ))}
                                                 </div>
-                                                <p className="text-[9px] text-gray-600 text-center">點擊可放大 · 並排比對臉型、髮型、膚色是否飄移</p>
+                                                <p className="text-[11px] text-gray-600 text-center">點擊可放大 · 並排比對臉型、髮型、膚色是否飄移</p>
                                             </div>
                                         );
                                     })()
@@ -1143,7 +1068,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
 
                                                 {!isPortfolioDeleteMode && item.narrativeContent && (
                                                     <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/90 to-transparent group/diary">
-                                                        <p className="text-[10px] text-gray-300 line-clamp-1 italic font-serif mb-2">「{item.narrativeContent}」</p>
+                                                        <p className="text-[12px] text-gray-300 line-clamp-1 italic font-serif mb-2">「{item.narrativeContent}」</p>
                                                         <button 
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
@@ -1154,7 +1079,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                                                     visualPromptZH: item.visualPromptZH
                                                                 });
                                                             }}
-                                                            className="text-[9px] text-[var(--color-gold)] font-bold uppercase tracking-widest opacity-0 group-hover/diary:opacity-100 transition-opacity bg-black/40 px-3 py-1 rounded-full border border-[var(--color-gold)]/30 hover:bg-[var(--color-gold)] hover:text-black"
+                                                            className="text-[11px] text-[var(--color-gold)] font-bold uppercase tracking-widest opacity-0 group-hover/diary:opacity-100 transition-opacity bg-black/40 px-3 py-1 rounded-full border border-[var(--color-gold)]/30 hover:bg-[var(--color-gold)] hover:text-black"
                                                         >
                                                             📖 閱讀完整日記 (READ DIARY)
                                                         </button>

@@ -45,26 +45,21 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
     });
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-3">
             <motion.div
-                initial={{ opacity: 0, y: 16 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-[2.5rem] p-6 space-y-5 relative overflow-hidden"
+                className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-4 space-y-3 relative overflow-hidden"
             >
-                <div className="absolute -top-12 -left-12 w-36 h-36 bg-sky-400/[0.04] rounded-full blur-[70px]"></div>
-                <div className="relative z-10 flex items-center justify-between gap-4">
-                    <div className="space-y-1">
-                        <h4 className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.35em] italic">內容比例 // {targetLabel}</h4>
-                        <p className="text-[10px] text-gray-500 font-bold tracking-wider">已分類 {categorizedTotal} 張，未分類 {uncategorizedTotal} 張</p>
-                    </div>
-                    <div className="px-3 py-1 bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-full">
-                        <span className="text-[9px] text-gray-400 font-black uppercase tracking-widest">GALLERY MIX</span>
-                    </div>
+                <div className="absolute -top-8 -left-8 w-24 h-24 bg-sky-400/[0.03] rounded-full blur-[50px]"></div>
+                <div className="relative z-10 flex items-center justify-between gap-2">
+                    <h4 className="text-[9px] font-black text-[var(--color-gold)] uppercase tracking-[0.3em]">內容比例 // {targetLabel}</h4>
+                    <span className="text-[8px] text-gray-600 font-bold">{categorizedTotal} 張已分類</span>
                 </div>
 
-                <div className="relative z-10 space-y-4">
+                <div className="relative z-10 space-y-2">
                     {categoryRows.map(row => (
-                        <div key={row.category} className="space-y-2">
+                        <div key={row.category} className="space-y-1">
                             <div className="flex items-center justify-between gap-3">
                                 <div className="flex items-center gap-2">
                                     <span className={`w-2 h-2 rounded-full ${row.color} ${row.glow}`}></span>
@@ -92,9 +87,9 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                 </div>
             ) : activeArc && (
                 <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="relative bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-[2.5rem] p-8 space-y-6 shadow-2xl overflow-hidden group"
+                    className="relative bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-4 space-y-3 overflow-hidden"
                 >
                     {/* Background glow accent */}
                     <div className="absolute -top-10 -right-10 w-32 h-32 bg-[var(--color-gold)]/5 rounded-full blur-[60px] group-hover:bg-[var(--color-gold)]/10 transition-all duration-700"></div>
@@ -155,7 +150,7 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                     <p className="text-[10px] text-gray-500 uppercase tracking-[0.4em] font-black italic">身分線程引擎 // IDENTITY THREADS DISABLED</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {activeThreads.map((threadState, idx) => {
                         const thread = allThreads.find(t => t.thread_id === threadState.thread_id);
                         if (!thread) return null;
@@ -168,7 +163,7 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: idx * 0.1 }}
-                                className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-[2.5rem] p-6 space-y-6 relative group overflow-hidden"
+                                className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-3 space-y-3 relative group overflow-hidden"
                             >
                                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                 
@@ -209,15 +204,10 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                             whileHover={{ scale: 1.02, backgroundColor: 'var(--color-bg-input)' }}
                             whileTap={{ scale: 0.98 }}
                             onClick={onInitializeThread}
-                            className="bg-[var(--color-bg-card)] border border-dashed border-[var(--color-border)] rounded-[2.5rem] p-8 flex flex-col items-center justify-center space-y-4 opacity-70 hover:opacity-100 transition-all cursor-pointer group"
+                            className="bg-[var(--color-bg-card)] border border-dashed border-[var(--color-border)] rounded-xl p-3 flex items-center gap-2.5 opacity-50 hover:opacity-90 transition-all cursor-pointer group"
                         >
-                            <div className="w-12 h-12 rounded-2xl bg-[var(--color-bg-input)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-title)] text-xl font-black group-hover:bg-[var(--color-gold)] group-hover:text-black transition-all shadow-xl">
-                                <span className="transform group-hover:rotate-90 transition-transform">+</span>
-                            </div>
-                            <div className="text-center space-y-1">
-                                <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.3em] group-hover:text-gray-900 dark:group-hover:text-white transition-colors">啟動新的身份線</span>
-                                <p className="text-[8px] text-gray-400 dark:text-gray-600 font-bold uppercase tracking-widest">INITIALIZE IP MATRIX</p>
-                            </div>
+                            <div className="w-6 h-6 rounded-md bg-[var(--color-bg-input)] border border-[var(--color-border)] flex items-center justify-center font-black group-hover:bg-[var(--color-gold)] group-hover:text-black transition-all shrink-0 text-sm text-gray-400">+</div>
+                            <span className="text-[9px] font-black text-gray-500 uppercase tracking-[0.2em] group-hover:text-white transition-colors">啟動新的身份線</span>
                         </motion.div>
                     )}
                 </div>

@@ -264,22 +264,23 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         return 'model cover image fallback';
     };
 
-    const FinalShootCard = () => (
-        <div className="bg-white/[0.03] border border-[var(--color-border)] rounded-[2rem] p-6 space-y-6 shadow-xl backdrop-blur-md relative overflow-hidden group">
-            {/* Subtle Shooting Order Accents */}
-            <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-[var(--color-gold)]/20 rounded-tl-[2rem] pointer-events-none"></div>
-            <div className="absolute top-4 right-4 text-[8px] font-mono text-white/10 select-none">PAVORA_SHT_ORDER_2026</div>
-
-            <div className="flex justify-between items-center border-b border-white/5 pb-3">
-                <div className="flex items-center gap-3">
+    const FinalShootCard = () => {
+        const [isExpanded, setIsExpanded] = React.useState(false);
+        return (
+        <div className="bg-white/[0.03] border border-[var(--color-border)] rounded-[1.5rem] backdrop-blur-md overflow-hidden">
+            <button onClick={() => setIsExpanded(v => !v)} className="w-full flex justify-between items-center px-5 py-3 hover:bg-white/5 transition-colors">
+                <div className="flex items-center gap-2.5">
                     <div className="w-1 h-3 bg-[var(--color-gold)] rounded-full"></div>
-                    <h4 className="text-[10px] font-black text-[var(--color-gold)] tracking-[0.3em] uppercase">
-                        最終拍攝卡 // SHOOT BRIEF
-                    </h4>
+                    <span className="text-[9px] font-black text-[var(--color-gold)] tracking-[0.3em] uppercase">拍攝卡 // BRIEF</span>
+                    {diary && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_6px_rgba(16,185,129,0.5)]"></span>}
                 </div>
-                <div className={`w-1.5 h-1.5 rounded-full shadow-[0_0_8px_rgba(212,175,55,0.5)] ${diary ? 'bg-emerald-500 animate-pulse' : 'bg-[var(--color-gold)]'}`}></div>
-            </div>
-
+                <div className="flex items-center gap-2">
+                    {!isExpanded && diary && <span className="text-[8px] text-gray-500 font-mono">{aspectRatio} · {quality} · {isPOV ? 'POV' : '3RD'}</span>}
+                    <svg className={`w-3.5 h-3.5 text-gray-500 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+            </button>
+            {isExpanded && (
+            <div className="px-5 pb-5 pt-2 space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
                 {/* 1. MATERIAL */}
                 <div className="space-y-4">
@@ -403,8 +404,11 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                     </div>
                 </div>
             </div>
+            </div>
+            )}
         </div>
-    );
+        );
+    };
 
     // UI Helper Components
     const NavIconButton = ({ active, onClick, icon, label, isLoading }: { active: boolean, onClick: () => void, icon: React.ReactNode, label: string, isLoading?: boolean }) => (
@@ -732,53 +736,18 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                 exit={{ opacity: 0, x: 20 }}
                 className="relative w-full max-w-6xl h-[90vh] bg-[var(--color-bg-surface)]/80 backdrop-blur-3xl border border-[var(--color-border)] rounded-[3rem] overflow-hidden shadow-2xl flex"
             >
-                {/* Lateral Navigation - Phase 3 Optimization */}
+                {/* Lateral Navigation */}
                 <div className="w-20 border-r border-[var(--color-border)] flex flex-col items-center py-10 gap-8 bg-black/5 dark:bg-black/20">
                     <div className="w-8 h-8 rounded-full bg-[var(--color-gold)] flex items-center justify-center mb-10 shadow-[0_0_20px_rgba(212,175,55,0.4)]">
                        <span className="text-black text-[8px] font-black italic">AV</span>
                     </div>
-                    
-                    <NavIconButton 
-                        active={!showWardrobe && !showSettings && !showPlan} 
-                        onClick={() => { setShowWardrobe(false); setShowSettings(false); setShowPlan(false); }}
-                        icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>}
-                        label="敘事首頁 // HOME"
-                    />
-                    
-                    <NavIconButton 
-                        active={showPlan} 
-                        onClick={() => handleGeneratePlan()}
-                        isLoading={isGeneratingPlan}
-                        icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>}
-                        label="週計畫 // PLAN"
-                    />
-
-                    <NavIconButton 
-                        active={showWardrobe} 
-                        onClick={() => { setShowWardrobe(true); setShowSettings(false); setShowPlan(false); }}
-                        icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>}
-                        label="劇組衣櫃 // WARDROBE"
-                    />
-
-                    <NavIconButton 
-                        active={showSettings} 
-                        onClick={() => { setShowSettings(true); setShowWardrobe(false); setShowPlan(false); }}
-                        icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.754 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37a1.724 1.724 0 002.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>}
-                        label="系統設定 // SETTINGS"
-                    />
-
+                    <NavIconButton active={!showWardrobe && !showSettings && !showPlan} onClick={() => { setShowWardrobe(false); setShowSettings(false); setShowPlan(false); }} icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>} label="敘事首頁 // HOME" />
+                    <NavIconButton active={showPlan} onClick={() => handleGeneratePlan()} isLoading={isGeneratingPlan} icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>} label="週計畫 // PLAN" />
+                    <NavIconButton active={showWardrobe} onClick={() => { setShowWardrobe(true); setShowSettings(false); setShowPlan(false); }} icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>} label="劇組衣櫃 // WARDROBE" />
+                    <NavIconButton active={showSettings} onClick={() => { setShowSettings(true); setShowWardrobe(false); setShowPlan(false); }} icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.754 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-.94-1.543.826-3.31 2.37-2.37a1.724 1.724 0 001.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37a1.724 1.724 0 002.572-1.065z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>} label="系統設定 // SETTINGS" />
                     <div className="mt-auto pb-8">
-                        <button 
-                            onClick={() => { if (!isAnyTaskRunning) onClose(); }}
-                            disabled={isAnyTaskRunning}
-                            title={isAnyTaskRunning ? "生圖進行中，請稍候..." : "關閉"}
-                            className={`p-3 transition-colors rounded-full group ${
-                                isAnyTaskRunning 
-                                    ? "opacity-30 cursor-not-allowed bg-white/5 text-gray-600" 
-                                    : "text-gray-600 hover:text-white bg-white/5 hover:bg-red-500/20"
-                            }`}
-                        >
-                            <svg className="w-5 h-5 group-hover:rotate-90 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        <button onClick={() => { if (!isAnyTaskRunning) onClose(); }} disabled={isAnyTaskRunning} title={isAnyTaskRunning ? "生圖進行中，請稍候..." : "關閉"} className={`p-3 transition-colors rounded-full group ${isAnyTaskRunning ? "opacity-30 cursor-not-allowed bg-white/5 text-gray-600" : "text-gray-600 hover:text-white bg-white/5 hover:bg-red-500/20"}`}>
+                            <svg className="w-5 h-5 group-hover:rotate-90 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
                         </button>
                     </div>
                 </div>
@@ -933,49 +902,10 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
 
                                     <div className="relative z-10 flex flex-col gap-8 pb-16 text-left">
                                         <motion.div
-                                            initial={{ opacity: 0, y: 15 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: 0.1 }}
-                                            className="order-3 space-y-6"
-                                        >
-                                            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                                                <div className="flex flex-col gap-2">
-                                                    <StoryProgressBoard 
-                                                        model={model} 
-                                                        onInitializeThread={() => setShowSettings(true)}
-                                                    />
-                                                    {contentSuggestion && (
-                                                        <motion.p 
-                                                            initial={{ opacity: 0, x: -10 }}
-                                                            animate={{ opacity: 1, x: 0 }}
-                                                            className="text-[10px] text-[var(--color-gold)] font-medium italic pl-4 border-l border-[var(--color-gold)]/30"
-                                                        >
-                                                            {contentSuggestion}
-                                                        </motion.p>
-                                                    )}
-                                                </div>
-                                                <motion.button 
-                                                    whileHover={{ scale: 1.02 }}
-                                                    whileTap={{ scale: 0.98 }}
-                                                    onClick={() => handleGeneratePlan()}
-                                                    disabled={isGeneratingPlan}
-                                                    className="shrink-0 px-8 py-3.5 bg-white/5 hover:bg-[var(--color-gold)] border border-[var(--color-gold)]/30 text-[var(--color-gold)] hover:text-black rounded-2xl text-[11px] font-black uppercase tracking-[0.25em] transition-all flex items-center gap-3 backdrop-blur-xl shadow-xl hover:shadow-[var(--color-gold)]/20 disabled:opacity-50"
-                                                >
-                                                    {isGeneratingPlan ? (
-                                                        <div className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                                                    ) : (
-                                                        <span>📋</span>
-                                                    )}
-                                                    {isGeneratingPlan ? '計畫編撰中...' : '生成本週內容計畫 // WEEKLY PLAN'}
-                                                </motion.button>
-                                            </div>
-                                        </motion.div>
-                                        
-                                        <motion.div 
                                             initial={{ opacity: 0, scale: 0.98 }}
                                             animate={{ opacity: 1, scale: 1 }}
                                             transition={{ delay: 0.2 }}
-                                            className="order-4 grid grid-cols-2 lg:grid-cols-4 gap-4 p-4 bg-[var(--color-bg-card)]/40 rounded-[2rem] border border-[var(--color-border)] backdrop-blur-xl shadow-xl"
+                                            className="grid grid-cols-2 lg:grid-cols-4 gap-8 p-8 bg-[var(--color-bg-card)]/40 rounded-[3rem] border border-[var(--color-border)] backdrop-blur-xl shadow-2xl"
                                         >
                                             <div className="space-y-1.5 border-r border-[var(--color-border)] pr-6">
                                                 <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black">人格內核 // MBTI</p>
@@ -997,6 +927,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                 </p>
                                             </div>
                                         </motion.div>
+
 
                                         <div className="order-1 grid grid-cols-1 xl:grid-cols-2 gap-8 pt-0">
                                             {/* Left: Narrative Decision 敘事決策區 */}
