@@ -747,7 +747,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                     
                     <NavIconButton 
                         active={showPlan} 
-                        onClick={handleGeneratePlan}
+                        onClick={() => handleGeneratePlan()}
                         isLoading={isGeneratingPlan}
                         icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>}
                         label="週計畫 // PLAN"
@@ -936,7 +936,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             initial={{ opacity: 0, y: 15 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: 0.1 }}
-                                            className="order-2 space-y-6"
+                                            className="order-3 space-y-6"
                                         >
                                             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                                                 <div className="flex flex-col gap-2">
@@ -957,7 +957,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                 <motion.button 
                                                     whileHover={{ scale: 1.02 }}
                                                     whileTap={{ scale: 0.98 }}
-                                                    onClick={handleGeneratePlan}
+                                                    onClick={() => handleGeneratePlan()}
                                                     disabled={isGeneratingPlan}
                                                     className="shrink-0 px-8 py-3.5 bg-white/5 hover:bg-[var(--color-gold)] border border-[var(--color-gold)]/30 text-[var(--color-gold)] hover:text-black rounded-2xl text-[11px] font-black uppercase tracking-[0.25em] transition-all flex items-center gap-3 backdrop-blur-xl shadow-xl hover:shadow-[var(--color-gold)]/20 disabled:opacity-50"
                                                 >
@@ -975,7 +975,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             initial={{ opacity: 0, scale: 0.98 }}
                                             animate={{ opacity: 1, scale: 1 }}
                                             transition={{ delay: 0.2 }}
-                                            className="order-3 grid grid-cols-2 lg:grid-cols-4 gap-4 p-4 bg-[var(--color-bg-card)]/40 rounded-[2rem] border border-[var(--color-border)] backdrop-blur-xl shadow-xl"
+                                            className="order-4 grid grid-cols-2 lg:grid-cols-4 gap-4 p-4 bg-[var(--color-bg-card)]/40 rounded-[2rem] border border-[var(--color-border)] backdrop-blur-xl shadow-xl"
                                         >
                                             <div className="space-y-1.5 border-r border-[var(--color-border)] pr-6">
                                                 <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black">人格內核 // MBTI</p>
@@ -1021,7 +1021,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                 <motion.button 
                                                                     whileHover={{ scale: 1.05, y: -2 }}
                                                                     whileTap={{ scale: 0.95 }}
-                                                                    onClick={handleAIGenerateEvent}
+                                                                    onClick={() => handleAIGenerateEvent()}
                                                                     disabled={isGeneratingDynamicEvent}
                                                                     className="text-[10px] text-[var(--color-gold)] font-black uppercase tracking-[0.2em] border-b border-[var(--color-gold)]/30 hover:border-[var(--color-gold)] transition-all flex items-center gap-2 disabled:opacity-30"
                                                                 >
@@ -1031,7 +1031,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                 <motion.button 
                                                                     whileHover={{ scale: 1.05, y: -2 }}
                                                                     whileTap={{ scale: 0.95 }}
-                                                                    onClick={handleRandomEvent}
+                                                                    onClick={() => handleRandomEvent()}
                                                                     className="text-[10px] text-gray-500 font-black uppercase tracking-[0.2em] border-b border-white/10 hover:text-white transition-all flex items-center gap-2"
                                                                 >
                                                                     <span>🎲</span> 隨機場景 
@@ -1079,8 +1079,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         <motion.button 
                                                             whileHover={!eventInput.trim() || isGenerating ? {} : { scale: 1.02 }}
                                                             whileTap={!eventInput.trim() || isGenerating ? {} : { scale: 0.98 }}
-                                                            onClick={handleGenerateDiary} 
-                                                            isLoading={isGenerating} 
+                                                            onClick={(e) => { e.stopPropagation(); handleGenerateDiary(currentSceneId || randomSceneId || undefined); }} 
                                                             disabled={!eventInput.trim() || isGenerating}
                                                             className={`w-full py-5 text-[12px] font-black tracking-[0.5em] uppercase rounded-3xl transition-all duration-300 ${
                                                                 !eventInput.trim() || isGenerating
@@ -1113,7 +1112,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                             </span>
                                                                         </div>
                                                                         <button 
-                                                                            onClick={handleChangeScene}
+                                                                            onClick={() => handleChangeScene()}
                                                                             disabled={isGenerating}
                                                                             className="text-[9px] text-[var(--color-gold)] font-bold uppercase tracking-widest hover:underline flex items-center gap-1 disabled:opacity-30"
                                                                         >
@@ -1153,7 +1152,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                     <div className="p-5 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl space-y-3">
                                                         <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest text-center">✨ 影像就緒 // IMAGE READY</p>
                                                         <Button
-                                                            onClick={handleFinish}
+                                                            onClick={() => handleFinish()}
                                                             disabled={isExtractingMem}
                                                             isLoading={isExtractingMem}
                                                             className="w-full py-4 text-[10px] font-black tracking-widest uppercase"
@@ -1162,14 +1161,14 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         </Button>
                                                         <div className="grid grid-cols-2 gap-2">
                                                             <button
-                                                                onClick={handleGenerateImage}
+                                                                onClick={() => handleGenerateImage()}
                                                                 disabled={isGeneratingImage}
                                                                 className="py-3 text-[9px] font-bold rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-white/30 transition-all disabled:opacity-30"
                                                             >
                                                                 🔄 再生一張
                                                             </button>
                                                             <button
-                                                                onClick={handleResetToStep1}
+                                                                onClick={() => handleResetToStep1()}
                                                                 className="py-3 text-[9px] font-bold rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-white/30 transition-all"
                                                             >
                                                                 📝 繼續敘事
@@ -1263,7 +1262,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             </button>
                                         </div>
                                         <button 
-                                            onClick={handleSyncPrompt}
+                                            onClick={() => handleSyncPrompt()}
                                             disabled={isSyncing || !diary}
                                             className="text-[9px] font-bold text-[var(--color-gold)] uppercase tracking-widest flex items-center gap-2 hover:opacity-80 disabled:opacity-30"
                                         >
@@ -1361,8 +1360,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                 <motion.button 
                                     whileHover={!diary || isGeneratingImage ? {} : { scale: 1.02 }}
                                     whileTap={!diary || isGeneratingImage ? {} : { scale: 0.98 }}
-                                    onClick={handleGenerateImage} 
-                                    isLoading={isGeneratingImage} 
+                                    onClick={() => handleGenerateImage()} 
                                     disabled={!diary || isGeneratingImage}
                                     className={`w-full py-5 text-[12px] font-black tracking-[0.5em] uppercase rounded-3xl transition-all duration-300 ${
                                         !diary || isGeneratingImage
@@ -1385,7 +1383,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                             exit={{ opacity: 0 }}
                                                             className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-[var(--color-bg-input)]"
                                                         >
-                                                            <Loader className="mb-4" />
+                                                            <Loader message="正在生成視覺影像..." />
                                                             <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] animate-pulse">正在物化意識與光影...</p>
                                                         </motion.div>
                                                     ) : generatedImageUrl ? (
@@ -1453,7 +1451,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                             取消 // CANCEL
                         </Button>
                         <Button 
-                            onClick={handleFinish} 
+                            onClick={() => handleFinish()} 
                             disabled={!diary || isExtractingMem}
                             isLoading={isExtractingMem}
                             className="px-10 text-[11px] font-bold tracking-[0.4em] uppercase italic"

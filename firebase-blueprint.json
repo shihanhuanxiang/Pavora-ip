@@ -97,12 +97,34 @@
         },
         "prompt_skeleton": { "type": "string" }
       }
+    },
+    "GalleryItem": {
+      "title": "Gallery Item",
+      "description": "An image item in the model's gallery",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "url": { "type": "string" },
+        "timestamp": { "type": "number" },
+        "narrativeContent": { "type": "string" },
+        "visualPrompt": { "type": "string" },
+        "visualPromptZH": { "type": "string" },
+        "contentCategory": { "type": "string" },
+        "styleTags": { "type": "array", "items": { "type": "string" } },
+        "driveFileId": { "type": "string" },
+        "driveLink": { "type": "string" },
+        "driveSyncedAt": { "type": "string" }
+      }
     }
   },
   "firestore": {
     "models": {
       "schema": "ModelConfig",
       "description": "Archived digital models"
+    },
+    "models/{modelId}/gallery": {
+      "schema": "GalleryItem",
+      "description": "Gallery items for a specific model"
     },
     "outfits_v2": {
       "schema": "OutfitV2",

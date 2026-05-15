@@ -1522,7 +1522,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                         </div>
                     </Card>
 
-                    <Button onClick={handleGenerate} isLoading={isLoading} disabled={!originalBaseImage} className="w-full text-xl py-5 shadow-2xl tracking-widest uppercase btn-primary">
+                    <Button onClick={() => handleGenerate()} isLoading={isLoading} disabled={!originalBaseImage} className="w-full text-xl py-5 shadow-2xl tracking-widest uppercase btn-primary">
                         <SparklesIcon className="w-6 h-6 mr-2" /> 執行場景融合
                     </Button>
                 </div>
@@ -1578,7 +1578,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
 
                                                     {isRegenerating === angle.id && (
                                                         <div className="absolute inset-0 flex items-center justify-center z-20">
-                                                            <Loader className="w-8 h-8 text-[var(--color-gold)]" />
+                                                            <Loader message="正在重新生成此角度..." />
                                                         </div>
                                                     )}
                                                     <div className="absolute top-3 left-3 px-2 py-1 bg-black/60 backdrop-blur-md border border-white/10 rounded text-[9px] font-bold text-white uppercase tracking-widest z-10">
@@ -1626,7 +1626,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                 {/* 歷史紀錄 (左側) */}
                                 <div className="flex items-center bg-black/40 p-1 rounded-xl border border-white/10 shrink-0 shadow-inner">
                                     <Button 
-                                        onClick={undo} 
+                                        onClick={() => undo()} 
                                         disabled={!canUndo} 
                                         variant="secondary" 
                                         className="px-4 h-10 border-transparent hover:bg-white/5 disabled:opacity-20 transition-all whitespace-nowrap"
@@ -1635,7 +1635,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                     </Button>
                                     <div className="w-[1px] h-4 bg-white/15 mx-1"></div>
                                     <Button 
-                                        onClick={redo} 
+                                        onClick={() => redo()} 
                                         disabled={!canRedo} 
                                         variant="secondary" 
                                         className="px-4 h-10 border-transparent hover:bg-white/5 disabled:opacity-20 transition-all whitespace-nowrap"

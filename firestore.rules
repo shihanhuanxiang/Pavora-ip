@@ -17,23 +17,43 @@ service cloud.firestore {
     }
 
     function isValidModel(data) {
-      return data.keys().hasAll(['id', 'name', 'imageUrl', 'createdBy', 'createdAt']) &&
-             data.id is string &&
+      return data.id is string &&
              data.name is string && data.name.size() <= 100 &&
              data.imageUrl is string &&
-             data.createdBy == request.auth.uid &&
-             data.createdAt is timestamp;
+             data.createdBy == request.auth.uid;
     }
 
-    // Models collection
+    function isValidGalleryItem(data) {
+      return data.id is string &&
+             data.url is string &&
+             data.timestamp is number;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      
+      // Models collection under user
+      match /models/{modelId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidModel(request.resource.data) && request.resource.data.createdAt == request.time;
+        allow update: if isOwner(userId) && 
+                         isValidModel(request.resource.data) &&
+                         request.resource.data.createdBy == resource.data.createdBy;
+        allow delete: if isOwner(userId);
+
+        // Gallery subcollection
+        match /gallery/{galleryId} {
+          allow read: if isOwner(userId);
+          allow create, update: if isOwner(userId) && isValidGalleryItem(request.resource.data);
+          allow delete: if isOwner(userId);
+        }
+      }
+    }
+
+    // Legacy Models collection (optional, keeping for compatibility if any data exists)
     match /models/{modelId} {
-      allow read: if isSignedIn() && resource.data.createdBy == request.auth.uid;
-      allow create: if isSignedIn() && isValidModel(request.resource.data) && request.resource.data.createdAt == request.time;
-      allow update: if isSignedIn() && resource.data.createdBy == request.auth.uid && 
-                       isValidModel(request.resource.data) &&
-                       request.resource.data.createdAt == resource.data.createdAt &&
-                       request.resource.data.createdBy == resource.data.createdBy;
-      allow delete: if isSignedIn() && resource.data.createdBy == request.auth.uid;
+      allow read, write: if false; // Deny all to force migration or focus on user-based path
     }
   }
 }

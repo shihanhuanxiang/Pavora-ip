@@ -2,7 +2,13 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import type { Model, ContentCategory } from '../types/types';
 import { imageDB, base64ToBlob } from '../services/imageDB';
-import { saveModelToCloud, getMyCloudModels, deleteModelFromCloud } from '../services/firebase/modelService';
+import { 
+    saveModelToCloud, 
+    getMyCloudModels, 
+    deleteModelFromCloud,
+    saveGalleryItemToCloud,
+    deleteGalleryItemFromCloud
+} from '../services/firebase/modelService';
 import { checkGoogleDriveStatus, syncToGoogleDrive, listDriveFolders, createDriveFolder } from '../services/googleDriveService';
 import { getDriveSettings } from '../services/storageService';
 import { embedMetadata } from '../utils/metadataUtils';
@@ -66,15 +72,13 @@ export const useModelStore = create<ModelState>()(
         // Update cloud if needed
         try {
             const { auth } = await import('../services/firebase/firebaseConfig');
-            const user = auth.currentUser;
-            if (user) {
-                const { doc, updateDoc } = await import('firebase/firestore');
-                const { db } = await import('../services/firebase/firebaseConfig');
-                const modelRef = doc(db, `users/${user.uid}/models`, modelId);
-                await updateDoc(modelRef, { gallery: updatedGallery.map(toGalleryMeta) });
+            if (auth.currentUser) {
+                for (const itemId of itemIds) {
+                    await deleteGalleryItemFromCloud(modelId, itemId);
+                }
             }
         } catch (e) {
-            console.error("Cloud gallery update failed", e);
+            console.error("Cloud gallery item deletion failed", e);
         }
       },
 
@@ -110,8 +114,16 @@ export const useModelStore = create<ModelState>()(
             const { doc, updateDoc } = await import('firebase/firestore');
             const { db } = await import('../services/firebase/firebaseConfig');
             const modelRef = doc(db, `users/${user.uid}/models`, modelId);
-            const { gallery: _gallery, ...safeUpdates } = updates as any;
-            await updateDoc(modelRef, safeUpdates);
+            
+            // CRITICAL: Explicitly exclude gallery and other large fields from the main document update
+            // to prevent "exceeds maximum allowed size" errors.
+            const { gallery, ...safeUpdates } = updates as any;
+            
+            // Only update if there are fields left
+            if (Object.keys(safeUpdates).length > 0) {
+              // Ensure we don't accidentally update with an empty object causing issues if no other fields changed
+              await updateDoc(modelRef, safeUpdates);
+            }
           }
         } catch (e) {
           console.error("Cloud update failed", e);
@@ -217,18 +229,15 @@ export const useModelStore = create<ModelState>()(
         // Cloud sync for gallery (if user logged in)
         try {
             const { auth } = await import('../services/firebase/firebaseConfig');
-            const user = auth.currentUser;
-            if (user) {
-                const { doc, updateDoc } = await import('firebase/firestore');
-                const { db } = await import('../services/firebase/firebaseConfig');
-                const modelRef = doc(db, `users/${user.uid}/models`, modelId);
+            if (auth.currentUser) {
                 const updatedModel = get().models.find(m => m.id === modelId);
-                if (updatedModel && updatedModel.gallery) {
-                    await updateDoc(modelRef, { gallery: updatedModel.gallery.map(toGalleryMeta) });
+                const newItem = updatedModel?.gallery?.find(i => i.id === `gal-${galleryItemTimestamp}`);
+                if (newItem) {
+                    await saveGalleryItemToCloud(modelId, newItem);
                 }
             }
         } catch (e) {
-            console.error("Cloud gallery sync failed", e);
+            console.error("Cloud gallery item sync failed", e);
         }
       },
 

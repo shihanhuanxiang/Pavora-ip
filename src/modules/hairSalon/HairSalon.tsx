@@ -1297,7 +1297,7 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                                                     )}
                                                     {isRegenerating === angle.id && (
                                                         <div className="absolute inset-0 flex items-center justify-center z-20 bg-black/20 backdrop-blur-[2px]">
-                                                            <Loader className="w-8 h-8 text-[var(--color-gold)]" />
+                                                            <Loader message="正在重新生成此角度..." />
                                                         </div>
                                                     )}
                                                     <div className="absolute top-3 left-3 px-2 py-1 bg-black/60 backdrop-blur-md border border-white/10 rounded text-[9px] font-bold text-white uppercase tracking-widest z-10">
@@ -1420,7 +1420,7 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                                     <div className="flex items-center gap-1 justify-start w-full">
                                         <div className="flex items-center bg-white/5 p-1 rounded-xl border border-white/5 mr-2">
                                             <button 
-                                                onClick={undo} 
+                                                onClick={() => undo()} 
                                                 disabled={!canUndo}
                                                 className="p-2.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 disabled:opacity-20 transition-all"
                                                 title="上一步"
@@ -1429,7 +1429,7 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                                             </button>
                                             <div className="w-px h-4 bg-white/10 mx-1"></div>
                                             <button 
-                                                onClick={redo} 
+                                                onClick={() => redo()} 
                                                 disabled={!canRedo}
                                                 className="p-2.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 disabled:opacity-20 transition-all"
                                                 title="下一步"

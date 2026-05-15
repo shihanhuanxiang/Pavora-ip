@@ -87,7 +87,7 @@ const AsyncImage: React.FC<AsyncImageProps> = ({ src, fallback, className, isLoa
     );
   }
 
-  return <img src={imageSrc} className={className} {...props} />;
+  return <img src={imageSrc} className={className} {...props} loading="lazy" />;
 };
 
 export default AsyncImage;
