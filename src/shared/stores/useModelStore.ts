@@ -103,6 +103,42 @@ export const useModelStore = create<ModelState>()(
       },
 
       updateModel: async (modelId, updates) => {
+        // 自動上傳 base64 臉部基準圖到 Drive
+        if (updates.preferences?.face_reference_urls) {
+            try {
+                const driveConnected = await checkGoogleDriveStatus();
+                if (driveConnected) {
+                    const model = get().models.find(m => m.id === modelId);
+                    const modelName = (model?.name || modelId).replace(/[^a-zA-Z0-9_\u4e00-\u9fff]/g, '_');
+                    const uploadedUrls = await Promise.all(
+                        updates.preferences.face_reference_urls.map(async (url, i) => {
+                            if (!url || !url.startsWith('data:')) return url || '';
+                            const match = url.match(/^data:([^;]+);base64,(.+)$/);
+                            if (!match) return url;
+                            const result = await syncToGoogleDrive(
+                                `FaceRef_${modelName}_${i}_${Date.now()}.jpg`,
+                                match[2],
+                                match[1],
+                                'Pavora_Face_References'
+                            );
+                            return result.success && result.fileId
+                                ? `drive://${result.fileId}`
+                                : url; // 上傳失敗保留原始 base64（session 用）
+                        })
+                    );
+                    updates = {
+                        ...updates,
+                        preferences: {
+                            ...updates.preferences,
+                            face_reference_urls: uploadedUrls
+                        }
+                    };
+                }
+            } catch (e) {
+                console.warn('Face reference Drive upload failed, using in-memory fallback', e);
+            }
+        }
+
         set((state) => ({
           models: state.models.map((m) => (m.id === modelId ? { ...m, ...updates } : m)),
         }));
@@ -317,6 +353,12 @@ export const useModelStore = create<ModelState>()(
         activeModelId: state.activeModelId,
         models: state.models.map((model) => ({
           ...model,
+          preferences: model.preferences ? {
+            ...model.preferences,
+            // 只保留 drive:// 小字串，過濾掉 base64 大圖（避免 localStorage 配額超出）
+            face_reference_urls: (model.preferences.face_reference_urls || [])
+                .map(url => (url && !url.startsWith('data:')) ? url : '')
+          } : model.preferences,
           gallery: (model.gallery || []).slice(0, 20).map((item) => ({
             id: item.id,
             url: item.url,

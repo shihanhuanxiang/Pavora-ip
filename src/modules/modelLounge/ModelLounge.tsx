@@ -917,7 +917,11 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                                         >
                                                             {url ? (
                                                                 <>
-                                                                    <img src={url} className="w-full h-full object-cover" alt={slot.label} />
+                                                                    <img
+                                                                        src={url.startsWith('drive://') ? `/api/drive/image/${url.replace('drive://', '')}` : url}
+                                                                        className="w-full h-full object-cover"
+                                                                        alt={slot.label}
+                                                                    />
                                                                     <div className="absolute inset-0 bg-black/60 opacity-0 
                                                                         group-hover/slot:opacity-100 flex items-center justify-center 
                                                                         transition-opacity">

@@ -60,6 +60,25 @@ export const imageUrlToimageData = async (url: string): Promise<{ data: string; 
       });
   }
 
+  // Case 1.5: Google Drive URL（drive://FILE_ID → /api/drive/image/FILE_ID）
+  if (url.startsWith('drive://')) {
+      const fileId = url.replace('drive://', '');
+      const response = await fetch(`/api/drive/image/${fileId}`);
+      if (!response.ok) throw new Error(`Drive image fetch failed: ${response.status}`);
+      const blob = await response.blob();
+      return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+              const base64data = reader.result as string;
+              const match = base64data.match(/^data:(.+);base64,(.*)$/);
+              if (match) resolve({ mimeType: match[1], data: match[2] });
+              else reject(new Error("Drive image conversion failed"));
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+      });
+  }
+
   // Case 2: Data URL
   if (url.startsWith('data:')) {
       const match = url.match(/^data:(.+);base64,(.*)$/);

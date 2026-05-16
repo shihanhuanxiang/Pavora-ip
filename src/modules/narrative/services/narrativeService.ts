@@ -74,8 +74,21 @@ const pickOutfit = (model: Model, contextInput: string | string[], targetTier: n
         contextIds.some(contextId => o.compatible_contexts.includes(contextId))
     );
 
-    // Fallback：場景篩選後無結果，放寬到性別篩選
-    const candidatePool = contextFiltered.length > 0 ? contextFiltered : genderFiltered;
+    // 4. 最小池子保護：情境池太小時，補入 urban_street 通用服裝避免老是同幾套
+    const MIN_POOL_SIZE = 12;
+    let candidatePool: OutfitV2[];
+    if (contextFiltered.length >= MIN_POOL_SIZE) {
+        candidatePool = contextFiltered;
+    } else if (contextFiltered.length > 0) {
+        const urbanSupp = genderFiltered.filter(o =>
+            o.compatible_contexts.includes('urban_street') &&
+            !contextFiltered.some(c => c.outfit_id === o.outfit_id)
+        );
+        const merged = [...contextFiltered, ...urbanSupp];
+        candidatePool = merged.length >= MIN_POOL_SIZE ? merged : genderFiltered;
+    } else {
+        candidatePool = genderFiltered;
+    }
 
     // Fallback：候選池仍為空，返回預設
     if (candidatePool.length === 0) return OUTFIT_SEEDS_V2[0];
@@ -95,13 +108,22 @@ const pickOutfit = (model: Model, contextInput: string | string[], targetTier: n
         currentSeason = 'spring_autumn';
     }
 
+    // 預先計算最近使用的風格序列（供連續懲罰用）
+    const recentArchetypes = recentIds
+        .map(id => fullPool.find(x => x.outfit_id === id)?.style_archetype)
+        .filter(Boolean) as string[];
+
     const scored = candidatePool.map(o => {
         let score = 0;
 
-        // 風格吻合（+40分）：style_archetype 在偏好列表裡
+        // 風格吻合（+20分，降低以避免單一風格壟斷）
         if (preferred.length > 0 && preferred.includes(o.style_archetype)) {
-            score += 40;
+            score += 20;
         }
+
+        // 連續同風格懲罰（每多一次 -15）：強制自然輪替
+        const archetypeRepeatCount = recentArchetypes.filter(a => a === o.style_archetype).length;
+        score -= archetypeRepeatCount * 15;
 
         // Tier 吻合（+30分）：完全符合目標 Tier
         if (o.aesthetic_tier === targetTier) {
@@ -127,9 +149,9 @@ const pickOutfit = (model: Model, contextInput: string | string[], targetTier: n
             score -= 30; // 季節不符給懲罰分
         }
 
-        // 新鮮獎勵（+10分）：完全沒在最近使用清單裡
+        // 新鮮獎勵（+15分）：完全沒在最近使用清單裡（提高以平衡風格加分降低）
         if (!recentIds.includes(o.outfit_id)) {
-            score += 10;
+            score += 15;
         }
 
         // 冷卻懲罰（-50分）：最近使用過
@@ -140,11 +162,9 @@ const pickOutfit = (model: Model, contextInput: string | string[], targetTier: n
         return { outfit: o, score };
     });
 
-    // 找最高分
+    // 找最高分，加入 ±5 隨機擾動避免同分永遠選第一套
     const maxScore = Math.max(...scored.map(s => s.score));
-
-    // 從最高分的服裝中隨機抽一套（避免每次都選同一套）
-    const topCandidates = scored.filter(s => s.score === maxScore);
+    const topCandidates = scored.filter(s => s.score >= maxScore - 5);
     const chosen = topCandidates[Math.floor(Math.random() * topCandidates.length)];
 
     return chosen.outfit;
@@ -990,12 +1010,12 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
         : undefined;
     const outfit = forcedOutfit || pickOutfit(model, contextCandidates, targetTier);
     
-    // Update recent_outfit_ids cooldown (keep last 5)
+    // Update recent_outfit_ids cooldown (keep last 10 for better variety)
     const recentIds = model.preferences?.recent_outfit_ids || [];
     const updatedRecent = [
         outfit.outfit_id,
         ...recentIds.filter((id: string) => id !== outfit.outfit_id)
-    ].slice(0, 5);
+    ].slice(0, 10);
     
     // P1-1 修正：改用 updateModel 正式寫回 store，確保 React 感知並同步至雲端
     const { updateModel } = useModelStore.getState();

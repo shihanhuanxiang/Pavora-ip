@@ -53,7 +53,14 @@ const ATOM_DICT = {
         "running sneakers": "運動跑鞋", "sneakers": "休閒鞋", "ankle boots": "短靴", "boots": "靴",
         "high-top": "高筒鞋", "low-top": "低筒鞋", "heels": "高跟鞋", "loafers": "樂福鞋",
         "oxfords": "牛津鞋", "brogues": "雕花鞋", "derbies": "德比鞋", "slides": "拖鞋",
-        "slippers": "室內拖", "sandals": "涼鞋", "socks": "襪", "barefoot": "赤腳"
+        "slippers": "室內拖", "sandals": "涼鞋", "socks": "襪", "barefoot": "赤腳",
+        "board shorts": "衝浪褲", "swim shorts": "游泳短褲", "swim trunks": "泳褲", "trunks": "泳褲",
+        "swim crop top": "泳裝短版上衣", "swim bralette": "泳裝背心", "swim top": "泳裝上衣",
+        "bandeau": "平口抹胸", "swim skirt": "泳裝短裙", "sarong": "紗籠裙",
+        "cover-up": "海灘罩衫", "rash guard": "防曬衣",
+        "muscle tee": "肌肉背心", "polo": "Polo 衫",
+        "mules": "穆勒鞋", "pool slides": "泳池拖鞋", "aqua shoes": "兩棲鞋", "water sandals": "水陸涼鞋",
+        "kitten heel": "低跟", "platform sandals": "厚底涼鞋"
     },
     // 特徵 / 細節
     details: {
@@ -67,7 +74,11 @@ const ATOM_DICT = {
         "print": "印花", "vintage": "復古", "faded": "褪色", "performance": "機能性", "halfway": "半開",
         "sleeveless": "無袖", "sleeves rolled": "捲袖", "backless": "露背", "low-back": "露背",
         "platform": "厚底", "chunky": "厚底", "polished": "拋光", "suede": "麂皮",
-        "opaque": "不透膚", "sheer": "透膚", "double-breasted": "雙排扣"
+        "opaque": "不透膚", "sheer": "透膚", "double-breasted": "雙排扣",
+        "ruched": "抓褶", "racerback": "交叉背", "gradient": "漸層",
+        "tropical print": "熱帶印花", "UV protection": "防紫外線",
+        "wrap": "裹身", "tie-front": "前綁帶", "mesh layer": "網紗疊層",
+        "built-in briefs": "內附底褲", "side split": "側開叉"
     }
 };
 
