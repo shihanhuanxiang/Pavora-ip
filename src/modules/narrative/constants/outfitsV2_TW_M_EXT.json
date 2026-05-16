@@ -1068,5 +1068,76 @@
     "compatible_contexts": ["beach_island"],
     "hand_occupation": {"left_hand": "natural", "right_hand": "adjusting cap", "both_busy": false},
     "prompt_skeleton": "black cropped muscle tee, bold tropical print board shorts, chunky sandals, backwards black cap, multiple chains, bold street pool party energy"
+  },
+  {
+    "outfit_id": "M-TW-HOME-001",
+    "season": "summer",
+    "gender": "M",
+    "style_archetype": "masculine_clean",
+    "context_id": "home_cozy",
+    "aesthetic_tier": 2,
+    "pillars": {
+      "layer_inner": null,
+      "top": "clean white oversized cotton tee with dropped shoulders",
+      "layer_outer": null,
+      "bottom": "light grey drawstring lounge shorts with clean hem",
+      "shoes": "white low-top canvas sneakers worn indoors",
+      "accessories": [
+        "thin silver bracelet",
+        "clean square-face watch"
+      ],
+      "props": [
+        "iced black coffee",
+        "phone face-down on table"
+      ]
+    },
+    "fabric_difficulty": "safe",
+    "wear_state": "styled_daily",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "home_cozy"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding iced black coffee",
+      "right_hand": "natural or touching hair",
+      "both_busy": false
+    },
+    "prompt_skeleton": "white oversized cotton tee, light grey drawstring lounge shorts, white low-top sneakers worn indoors, thin silver bracelet, clean square watch, relaxed summer morning home light, --korean clean casual"
+  },
+  {
+    "outfit_id": "M-TW-OFFICE-001",
+    "season": "spring_autumn",
+    "gender": "M",
+    "style_archetype": "minimalist",
+    "context_id": "office_pro",
+    "aesthetic_tier": 3,
+    "pillars": {
+      "layer_inner": null,
+      "top": "ivory fine-knit mock-neck long-sleeve top tucked in",
+      "layer_outer": null,
+      "bottom": "charcoal slim-cut tailored trousers with front crease",
+      "shoes": "white clean leather Oxford shoes",
+      "accessories": [
+        "ultra-thin silver watch",
+        "single matte silver ring"
+      ],
+      "props": [
+        "black slim notebook",
+        "flat white coffee"
+      ]
+    },
+    "fabric_difficulty": "medium",
+    "wear_state": "barely_worn",
+    "layering_count": 1,
+    "compatible_contexts": [
+      "office_pro",
+      "urban_street"
+    ],
+    "hand_occupation": {
+      "left_hand": "holding flat white coffee cup",
+      "right_hand": "holding slim notebook",
+      "both_busy": true
+    },
+    "prompt_skeleton": "ivory fine-knit mock-neck top tucked, charcoal slim tailored trousers, white leather Oxfords, ultra-thin silver watch, matte ring, clean cool office light, --minimalist editorial professional"
   }
 ]

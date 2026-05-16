@@ -162,12 +162,112 @@ const pickOutfit = (model: Model, contextInput: string | string[], targetTier: n
         return { outfit: o, score };
     });
 
-    // 找最高分，加入 ±5 隨機擾動避免同分永遠選第一套
+    // 找最高分，以 60% 百分比門檻取樣（確保多樣性，避免 style 偏好壟斷選項）
     const maxScore = Math.max(...scored.map(s => s.score));
-    const topCandidates = scored.filter(s => s.score >= maxScore - 5);
+    const SCORE_THRESHOLD_RATIO = 0.60;
+    const scoreThreshold = Math.max(maxScore * SCORE_THRESHOLD_RATIO, maxScore - 35);
+    const topCandidates = scored.filter(s => s.score >= scoreThreshold && s.score >= 0);
     const chosen = topCandidates[Math.floor(Math.random() * topCandidates.length)];
 
     return chosen.outfit;
+};
+
+/**
+ * getOutfitOptionsForScene: Returns outfit options for a given scene, for use in the card-picker UI Layer 2.
+ * topPick: the highest-scored outfit for this scene + model.
+ * alternatives: up to 3 randomly sampled outfits from the 60% threshold pool (excluding topPick).
+ */
+export const getOutfitOptionsForScene = (
+    model: Model,
+    sceneId: string
+): { topPick: OutfitV2; alternatives: OutfitV2[] } => {
+    // 1. 取得場景的 outfit_filter contexts
+    const scene = ALL_EXTENDED_SCENES.find(s => s.scene_id === sceneId);
+    const contextIds: string[] = (scene as any)?.outfit_filter?.length
+        ? (scene as any).outfit_filter
+        : ['urban_street'];
+
+    // 2. 建立候選池（與 pickOutfit 邏輯一致）
+    const userOutfits = WardrobeService.getUserOutfits();
+    const fullPool = [...OUTFIT_SEEDS_V2, ...userOutfits];
+    const genderFiltered = fullPool.filter(o =>
+        o.gender === model.gender?.charAt(0).toUpperCase() || o.gender === 'U'
+    );
+    const contextFiltered = genderFiltered.filter(o =>
+        contextIds.some(ctx => o.compatible_contexts.includes(ctx))
+    );
+
+    const MIN_POOL_SIZE = 12;
+    let candidatePool: OutfitV2[];
+    if (contextFiltered.length >= MIN_POOL_SIZE) {
+        candidatePool = contextFiltered;
+    } else if (contextFiltered.length > 0) {
+        const urbanSupp = genderFiltered.filter(o =>
+            o.compatible_contexts.includes('urban_street') &&
+            !contextFiltered.some(c => c.outfit_id === o.outfit_id)
+        );
+        const merged = [...contextFiltered, ...urbanSupp];
+        candidatePool = merged.length >= MIN_POOL_SIZE ? merged : genderFiltered;
+    } else {
+        candidatePool = genderFiltered;
+    }
+    if (candidatePool.length === 0) {
+        const fallback = OUTFIT_SEEDS_V2[0];
+        return { topPick: fallback, alternatives: [] };
+    }
+
+    // 3. 評分（與 pickOutfit 完全一致）
+    const preferred = model.preferences?.preferred_archetypes || [];
+    const recentIds = model.preferences?.recent_outfit_ids || [];
+    const targetTier = Math.round(
+        ((model.preferences?.aesthetic_tier_min ?? 1) +
+         (model.preferences?.aesthetic_tier_max ?? 3)) / 2
+    );
+    const currentMonth = new Date().getMonth() + 1;
+    const currentSeason =
+        currentMonth >= 5 && currentMonth <= 10 ? 'summer' :
+        currentMonth >= 12 || currentMonth <= 2 ? 'winter' : 'spring_autumn';
+    const recentArchetypes = recentIds
+        .map(id => fullPool.find(x => x.outfit_id === id)?.style_archetype)
+        .filter(Boolean) as string[];
+
+    const scored = candidatePool.map(o => {
+        let score = 0;
+        if (preferred.length > 0 && preferred.includes(o.style_archetype)) score += 20;
+        score -= recentArchetypes.filter(a => a === o.style_archetype).length * 15;
+        if (o.aesthetic_tier === targetTier) score += 30;
+        else if (Math.abs(o.aesthetic_tier - targetTier) === 1) score += 15;
+        const season = (o as any).season || 'all';
+        if (season === 'all') score += 15;
+        else if (season === currentSeason) score += 25;
+        else if (
+            (season === 'spring_autumn' && currentSeason !== 'winter') ||
+            (season === 'summer' && currentSeason === 'spring_autumn')
+        ) score += 5;
+        else score -= 30;
+        if (!recentIds.includes(o.outfit_id)) score += 15;
+        else score -= 50;
+        return { outfit: o, score };
+    });
+
+    // 4. 60% 門檻取樣
+    const maxScore = Math.max(...scored.map(s => s.score));
+    const threshold = Math.max(maxScore * 0.60, maxScore - 35);
+    const pool60 = scored
+        .filter(s => s.score >= threshold && s.score >= 0)
+        .sort((a, b) => b.score - a.score);
+
+    const topPick = pool60[0]?.outfit ?? candidatePool[0];
+    const alternativePool = pool60.slice(1).map(s => s.outfit);
+
+    // 隨機取最多 3 套 alternatives（Fisher-Yates shuffle）
+    for (let i = alternativePool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [alternativePool[i], alternativePool[j]] = [alternativePool[j], alternativePool[i]];
+    }
+    const alternatives = alternativePool.slice(0, 3);
+
+    return { topPick, alternatives };
 };
 
 /**

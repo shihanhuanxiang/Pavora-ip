@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { Model, DiaryEntry } from '../../shared/types/types';
 import Button from '../../shared/components/common/Button';
 import Loader from '../../shared/components/common/Loader';
-import { generateIPDiary, generateRandomEvent, syncPrompts, generateDynamicEvent, extractNewMemories, generateRandomEventWithScene, generateDynamicEventWithScene, previewShootConfig } from './services/narrativeService';
+import { generateIPDiary, generateRandomEvent, syncPrompts, generateDynamicEvent, extractNewMemories, generateRandomEventWithScene, generateDynamicEventWithScene, previewShootConfig, getOutfitOptionsForScene } from './services/narrativeService';
 import { buildStructuredOutfitLabel, STYLE_ARCHETYPE_MAP } from './components/WardrobeManager';
 import { ALL_EXTENDED_SCENES } from './constants/extendedScenes';
 import { OrchestratorService } from './services/orchestratorService';
@@ -70,6 +70,33 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     const [eventSource, setEventSource] = useState<EventSource>('none');
     const [previewScene, setPreviewScene] = useState<any>(null);
     const [previewOutfit, setPreviewOutfit] = useState<any>(null);
+
+    // ── Scene Picker Modal ────────────────────────────────────────
+    const [showScenePicker, setShowScenePicker] = useState(false);
+    const [pickerRegion, setPickerRegion] = useState<string | null>(null);
+    const [pickerCategory, setPickerCategory] = useState<string | null>(null);
+    const [pickerSceneCards, setPickerSceneCards] = useState<Array<{scene: any; eventText: string}>>([]);
+    const [pickerAICard, setPickerAICard] = useState<{scene: any; eventText: string} | null>(null);
+    const [isLoadingAICard, setIsLoadingAICard] = useState(false);
+    const [pickerSelectedScene, setPickerSelectedScene] = useState<any | null>(null);
+    const [pickerOutfitOptions, setPickerOutfitOptions] = useState<{topPick: any; alternatives: any[]} | null>(null);
+
+    const SCENE_PICKER_REGIONS: Array<{label: string; value: string | null}> = [
+        { label: '全台', value: null },
+        { label: '北部', value: 'north' },
+        { label: '中部', value: 'central' },
+        { label: '南部', value: 'south' },
+        { label: '東部', value: 'east' },
+        { label: '外島', value: 'islands' },
+    ];
+    const SCENE_PICKER_CATEGORIES: Array<{label: string; value: string | null; contexts: string[]}> = [
+        { label: '全部', value: null, contexts: [] },
+        { label: '城市街頭', value: 'urban', contexts: ['urban_street','shopping_random','night_market'] },
+        { label: '咖啡日常', value: 'cafe', contexts: ['cafe_aesthetic','home_cozy','office_pro','travel_journey'] },
+        { label: '海岸泳池', value: 'beach', contexts: ['beach_island'] },
+        { label: '山林田野', value: 'mountain', contexts: ['mountain_outdoor','rural_field'] },
+        { label: '文化廟町', value: 'culture', contexts: ['temple_old_town','festival_event'] },
+    ];
 
     // Preview: debounced update on eventInput change
     React.useEffect(() => {
@@ -218,7 +245,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             none: '尚未設定',
             manual: '手動輸入',
             random: '隨機場景',
-            ai: 'AI 劇本啟發',
+            ai: 'AI 推薦',
             weekly: '週計畫任務'
         };
         return labels[source];
@@ -648,6 +675,82 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         }
     };
 
+    // ── Scene Picker helpers ──────────────────────────────────────
+
+    // 服裝選項：當選定場景時自動載入（同步運算，無 API 呼叫）
+    React.useEffect(() => {
+        if (!pickerSelectedScene) {
+            setPickerOutfitOptions(null);
+            return;
+        }
+        const options = getOutfitOptionsForScene(model, pickerSelectedScene.scene_id);
+        setPickerOutfitOptions(options);
+    }, [pickerSelectedScene, model.id]);
+
+    // 確認場景 + 服裝，填入 eventInput 並關閉 Modal
+    const confirmSceneOutfit = async (scene: any, outfit: any | null) => {
+        const sceneCard = pickerSceneCards.find(c => c.scene.scene_id === scene.scene_id);
+        const isAICard = pickerAICard?.scene.scene_id === scene.scene_id;
+        const eventText = sceneCard?.eventText
+            || (isAICard ? pickerAICard!.eventText : null)
+            || (scene as any).event
+            || scene.name_zh
+            || '';
+        setEventInput(eventText);
+        setRandomSceneId(scene.scene_id);
+        setCurrentSceneId(scene.scene_id);
+        setEventSource(isAICard ? 'ai' : 'random');
+        setSelectedBrief(null);
+        setDiary(null);
+        setNarrativeStep(1);
+        if (outfit) {
+            await updateModel(model.id, {
+                preferences: { ...model.preferences, active_outfit_id: outfit.outfit_id }
+            });
+        }
+        setPickerSelectedScene(null);
+        setPickerOutfitOptions(null);
+        setShowScenePicker(false);
+    };
+
+    const drawPickerSceneCards = async (
+        overrideRegion?: string | null,
+        overrideCategory?: string | null
+    ) => {
+        const effectiveRegion = overrideRegion !== undefined ? overrideRegion : pickerRegion;
+        const effectiveCategory = overrideCategory !== undefined ? overrideCategory : pickerCategory;
+        const pool = ALL_EXTENDED_SCENES.filter(s => {
+            const of = (s as any).outfit_filter as string[] | undefined;
+            if (!of?.length) return false;
+            const sceneRegion = (s as any).region as string;
+            if (effectiveRegion && sceneRegion !== effectiveRegion && sceneRegion !== 'all') return false;
+            if (effectiveCategory) {
+                const catDef = SCENE_PICKER_CATEGORIES.find(c => c.value === effectiveCategory);
+                if (catDef && catDef.contexts.length > 0) {
+                    const nonUrban = of.filter((ctx: string) => ctx !== 'urban_street');
+                    const effective = nonUrban.length > 0 ? nonUrban : of;
+                    if (!effective.some((ctx: string) => catDef.contexts.includes(ctx))) return false;
+                }
+            }
+            return true;
+        });
+        const shuffled = [...pool].sort(() => Math.random() - 0.5);
+        setPickerSceneCards(shuffled.slice(0, 3).map(scene => ({
+            scene,
+            eventText: (scene as any).event || scene.name_zh || '',
+        })));
+        setIsLoadingAICard(true);
+        setPickerAICard(null);
+        try {
+            const result = await generateDynamicEventWithScene(model);
+            if (result?.sceneId) {
+                const aiScene = ALL_EXTENDED_SCENES.find(s => s.scene_id === result.sceneId);
+                if (aiScene) setPickerAICard({ scene: aiScene, eventText: result.text });
+            }
+        } catch { setPickerAICard(null); }
+        finally { setIsLoadingAICard(false); }
+    };
+
     const handleChangeScene = () => {
         const city = model.lifeCircuit?.primaryCity || '台北市';
         const pool = ALL_EXTENDED_SCENES.filter(s => s.city === city || s.city === 'any');
@@ -1072,23 +1175,13 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                 </div>
                                                             </div>
                                                             <div className="flex gap-6 pb-1">
-                                                                <motion.button 
+                                                                <motion.button
                                                                     whileHover={{ scale: 1.05, y: -2 }}
                                                                     whileTap={{ scale: 0.95 }}
-                                                                    onClick={() => handleAIGenerateEvent()}
-                                                                    disabled={isGeneratingDynamicEvent}
-                                                                    className="text-[10px] text-[var(--color-gold)] font-black uppercase tracking-[0.2em] border-b border-[var(--color-gold)]/30 hover:border-[var(--color-gold)] transition-all flex items-center gap-2 disabled:opacity-30"
+                                                                    onClick={() => { setShowScenePicker(true); void drawPickerSceneCards(); }}
+                                                                    className="text-[10px] text-[var(--color-gold)] font-black uppercase tracking-[0.2em] border-b border-[var(--color-gold)]/40 hover:border-[var(--color-gold)] transition-all flex items-center gap-2"
                                                                 >
-                                                                    <span className="animate-pulse">{isGeneratingDynamicEvent ? '○' : '✨'}</span>
-                                                                    {isGeneratingDynamicEvent ? '感應靈魂中...' : 'AI 劇本啟發'}
-                                                                </motion.button>
-                                                                <motion.button 
-                                                                    whileHover={{ scale: 1.05, y: -2 }}
-                                                                    whileTap={{ scale: 0.95 }}
-                                                                    onClick={() => handleRandomEvent()}
-                                                                    className="text-[10px] text-gray-500 font-black uppercase tracking-[0.2em] border-b border-white/10 hover:text-white transition-all flex items-center gap-2"
-                                                                >
-                                                                    <span>🎲</span> 隨機場景 
+                                                                    <span>✨</span> {eventInput.trim() ? '更換場景' : '選場景'}
                                                                 </motion.button>
                                                             </div>
                                                         </div>
@@ -1108,7 +1201,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                 </p>
                                                                 <p className="text-[9px] font-medium text-gray-500 truncate italic">
                                                                     {!eventInput.trim() 
-                                                                        ? "輸入今日情境，或使用 AI 劇本啟發建立拍攝方向" 
+                                                                        ? "輸入今日情境，或使用選場景建立拍攝方向" 
                                                                         : !diary 
                                                                             ? "敘事靈感已到位，下一步建立拍攝劇本以整理場景細節" 
                                                                             : "劇本已編織完成，確認右側視覺參數後可開始生成"}
@@ -1558,6 +1651,172 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                     )}
                 </AnimatePresence>
             </motion.div>
+
+            {/* ── Scene Picker Modal ─────────────────────────────── */}
+            {showScenePicker && (
+                <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex flex-col">
+                    {/* Header */}
+                    <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 shrink-0">
+                        <div>
+                            <p className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">選場景 // SCENE SELECT</p>
+                            <p className="text-[8px] text-gray-500 uppercase tracking-widest mt-0.5">選擇今日拍攝場景</p>
+                        </div>
+                        <button onClick={() => setShowScenePicker(false)} className="text-gray-500 hover:text-white text-lg font-light transition-colors w-8 h-8 flex items-center justify-center">✕</button>
+                    </div>
+
+                    {/* Filters */}
+                    <div className="px-6 py-3 border-b border-white/5 space-y-2 shrink-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-[8px] text-gray-600 uppercase tracking-widest w-8 shrink-0">地區</span>
+                            {SCENE_PICKER_REGIONS.map(r => (
+                                <button key={String(r.value)} onClick={() => { setPickerRegion(r.value); void drawPickerSceneCards(r.value, pickerCategory); }}
+                                    className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wide transition-all ${pickerRegion === r.value ? 'bg-[var(--color-gold)] text-black' : 'bg-white/5 text-gray-400 hover:text-white'}`}>
+                                    {r.label}
+                                </button>
+                            ))}
+                        </div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-[8px] text-gray-600 uppercase tracking-widest w-8 shrink-0">類別</span>
+                            {SCENE_PICKER_CATEGORIES.map(c => (
+                                <button key={String(c.value)} onClick={() => { setPickerCategory(c.value); void drawPickerSceneCards(pickerRegion, c.value); }}
+                                    className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wide transition-all ${pickerCategory === c.value ? 'bg-[var(--color-gold)] text-black' : 'bg-white/5 text-gray-400 hover:text-white'}`}>
+                                    {c.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Scene Cards */}
+                    <div className="flex-1 overflow-y-auto p-6">
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                            {pickerSceneCards.map((card) => {
+                                const of = (card.scene as any).outfit_filter as string[] || [];
+                                const nonUrban = of.filter((x: string) => x !== 'urban_street');
+                                const primaryCtx = nonUrban[0] || of[0] || '';
+                                const ctxLabel: Record<string,string> = {
+                                    beach_island:'海岸泳池', mountain_outdoor:'山林田野', rural_field:'田野',
+                                    cafe_aesthetic:'咖啡日常', temple_old_town:'文化廟町', festival_event:'節慶',
+                                    urban_street:'城市街頭', shopping_random:'購物', night_market:'夜市',
+                                    travel_journey:'旅途移動', home_cozy:'居家', office_pro:'職場',
+                                };
+                                const regionLabel: Record<string,string> = { north:'北部', central:'中部', south:'南部', east:'東部', islands:'外島', all:'全台' };
+                                return (
+                                    <div key={card.scene.scene_id}
+                                        onClick={() => setPickerSelectedScene(card.scene)}
+                                        className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-4 flex flex-col gap-2 cursor-pointer hover:border-[var(--color-gold)]/40 hover:bg-white/5 transition-all active:scale-[0.98]">
+                                        <div className="flex items-start justify-between gap-1">
+                                            <p className="text-[11px] font-black text-white leading-tight">{card.scene.name_zh}</p>
+                                            <span className="text-[7px] font-bold text-gray-500 bg-white/5 px-2 py-0.5 rounded-full shrink-0">{regionLabel[(card.scene as any).region] || '全台'}</span>
+                                        </div>
+                                        <p className="text-[9px] text-gray-400 leading-relaxed line-clamp-3">{card.eventText.slice(0,60)}{card.eventText.length>60?'…':''}</p>
+                                        <p className="text-[8px] text-gray-600 font-bold uppercase tracking-widest mt-auto">{ctxLabel[primaryCtx] || primaryCtx}</p>
+                                    </div>
+                                );
+                            })}
+                            {/* AI Card */}
+                            <div className="bg-[var(--color-bg-card)] border border-[var(--color-gold)]/30 rounded-xl p-4 flex flex-col gap-2 cursor-pointer hover:border-[var(--color-gold)]/60 hover:bg-white/5 transition-all active:scale-[0.98]"
+                                onClick={() => pickerAICard && setPickerSelectedScene(pickerAICard.scene)}>
+                                <div className="flex items-center gap-1.5">
+                                    <span className="text-[8px] font-black text-[var(--color-gold)] uppercase tracking-widest">✨ AI 推薦</span>
+                                </div>
+                                {isLoadingAICard ? (
+                                    <div className="space-y-2 animate-pulse flex-1">
+                                        <div className="h-2.5 bg-white/10 rounded-full w-3/4"/>
+                                        <div className="h-2 bg-white/5 rounded-full w-full"/>
+                                        <div className="h-2 bg-white/5 rounded-full w-2/3"/>
+                                    </div>
+                                ) : pickerAICard ? (
+                                    <>
+                                        <p className="text-[11px] font-black text-white leading-tight">{pickerAICard.scene.name_zh}</p>
+                                        <p className="text-[9px] text-gray-400 leading-relaxed line-clamp-3">{pickerAICard.eventText.slice(0,60)}{pickerAICard.eventText.length>60?'…':''}</p>
+                                    </>
+                                ) : (
+                                    <p className="text-[9px] text-gray-600 italic">感應中...</p>
+                                )}
+                            </div>
+                        </div>
+                        {/* Refresh */}
+                        <div className="flex justify-end mt-4">
+                            <button onClick={() => void drawPickerSceneCards()}
+                                className="text-[9px] text-gray-500 hover:text-white font-black uppercase tracking-widest flex items-center gap-1.5 transition-colors">
+                                <span>↺</span> 換一批
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* ── Layer 2: Outfit Selection ───────────────── */}
+                    {pickerSelectedScene && (
+                        <div className="absolute inset-0 z-10 bg-black/95 flex flex-col">
+                            {/* Layer 2 Header */}
+                            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 shrink-0">
+                                <div className="flex items-center gap-4">
+                                    <button
+                                        onClick={() => { setPickerSelectedScene(null); setPickerOutfitOptions(null); }}
+                                        className="text-[9px] text-gray-400 hover:text-white font-black uppercase tracking-widest flex items-center gap-1.5 transition-colors">
+                                        ← 返回場景
+                                    </button>
+                                    <div className="w-px h-4 bg-white/20"/>
+                                    <div>
+                                        <p className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">選服裝 // OUTFIT SELECT</p>
+                                        <p className="text-[8px] text-gray-500 mt-0.5 truncate max-w-48">{pickerSelectedScene?.name_zh}</p>
+                                    </div>
+                                </div>
+                                <button onClick={() => setShowScenePicker(false)} className="text-gray-500 hover:text-white text-lg font-light transition-colors w-8 h-8 flex items-center justify-center">✕</button>
+                            </div>
+
+                            {/* Outfit Cards */}
+                            <div className="flex-1 overflow-y-auto p-6">
+                                {!pickerOutfitOptions ? (
+                                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 animate-pulse">
+                                        {[0,1,2,3].map(i => (
+                                            <div key={i} className="bg-white/5 rounded-xl h-32"/>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                                        {pickerOutfitOptions.alternatives.map((outfit: any) => (
+                                            <div key={outfit.outfit_id}
+                                                onClick={() => void confirmSceneOutfit(pickerSelectedScene, outfit)}
+                                                className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-4 flex flex-col gap-2 cursor-pointer hover:border-[var(--color-gold)]/40 hover:bg-white/5 transition-all active:scale-[0.98]">
+                                                <p className="text-[11px] font-black text-white leading-tight">
+                                                    {STYLE_ARCHETYPE_MAP[outfit.style_archetype] || outfit.style_archetype}
+                                                </p>
+                                                <p className="text-[9px] text-gray-400 leading-relaxed line-clamp-2">
+                                                    {buildStructuredOutfitLabel(outfit.pillars?.top || '', 'top')}
+                                                    {outfit.pillars?.bottom ? ` · ${buildStructuredOutfitLabel(outfit.pillars.bottom, 'bottom')}` : ''}
+                                                </p>
+                                                <p className="text-[8px] text-gray-600 font-bold uppercase tracking-widest mt-auto">Tier {outfit.aesthetic_tier}</p>
+                                            </div>
+                                        ))}
+                                        {/* AI Recommended (topPick) */}
+                                        <div
+                                            onClick={() => void confirmSceneOutfit(pickerSelectedScene, pickerOutfitOptions.topPick)}
+                                            className="bg-[var(--color-bg-card)] border border-[var(--color-gold)]/30 rounded-xl p-4 flex flex-col gap-2 cursor-pointer hover:border-[var(--color-gold)]/60 hover:bg-white/5 transition-all active:scale-[0.98]">
+                                            <span className="text-[8px] font-black text-[var(--color-gold)] uppercase tracking-widest">✨ AI 推薦</span>
+                                            <p className="text-[11px] font-black text-white leading-tight">
+                                                {STYLE_ARCHETYPE_MAP[pickerOutfitOptions.topPick.style_archetype] || pickerOutfitOptions.topPick.style_archetype}
+                                            </p>
+                                            <p className="text-[9px] text-gray-400 leading-relaxed line-clamp-2">
+                                                {buildStructuredOutfitLabel(pickerOutfitOptions.topPick.pillars?.top || '', 'top')}
+                                                {pickerOutfitOptions.topPick.pillars?.bottom ? ` · ${buildStructuredOutfitLabel(pickerOutfitOptions.topPick.pillars.bottom, 'bottom')}` : ''}
+                                            </p>
+                                            <p className="text-[8px] text-gray-600 font-bold uppercase tracking-widest mt-auto">Tier {pickerOutfitOptions.topPick.aesthetic_tier}</p>
+                                        </div>
+                                    </div>
+                                )}
+                                {/* Skip */}
+                                <div className="flex justify-center mt-6">
+                                    <button
+                                        onClick={() => void confirmSceneOutfit(pickerSelectedScene, null)}
+                                        className="text-[9px] text-gray-600 hover:text-gray-400 transition-colors underline-offset-2 hover:underline">
+                                        略過，自動搭配
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 };
