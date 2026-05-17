@@ -27,6 +27,26 @@ interface NarrativeWorkflowProps {
 
 type EventSource = 'manual' | 'random' | 'ai' | 'weekly' | 'none';
 
+// IP coreVibe 英文 → 繁體中文對照（處理舊 IP 或 AI 生成的英文值）
+const CORE_VIBE_EN_TO_ZH: Record<string, string> = {
+    'elegant fashion': '優雅時尚',
+    'vibrant street': '活力街頭',
+    'pure & sweet': '清純鄰家',
+    'pure sweet': '清純鄰家',
+    'high cold': '高冷超模',
+    'retro artsy': '文藝復古',
+    'tech future': '機能未來',
+    'bookish softness': '文藝書卷',
+    'gentle witty tone': '溫柔機智',
+    'soft editorial': '柔焦編輯',
+    'dark romantic': '暗調浪漫',
+};
+const getCoreVibeZH = (raw: string): string => {
+    if (!raw) return '';
+    if (/[\u4e00-\u9fff]/.test(raw)) return raw;           // 已是中文，直接回傳
+    return CORE_VIBE_EN_TO_ZH[raw.toLowerCase()] || raw;  // 查表，查不到保留原文
+};
+
 const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel, onClose, onConfirm }) => {
     const { addNotification } = useNotification();
     const { updateModelGallery, updateModel, models } = useModelStore();
@@ -1062,7 +1082,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                             <p className="text-[10px] text-gray-400 pl-6 line-clamp-2">{parts.join('・')}</p>
                         ) : null;
                     })()}
-                    <p className="text-[10px] text-gray-600 pl-6">Tier {previewOutfit?.aesthetic_tier ?? '—'}{' · '}{isOutfitCooling ? '冷卻中（最近使用）' : '可用'}</p>
+                    <p className="text-[10px] text-gray-600 pl-6">{isOutfitCooling ? '冷卻中（最近使用）' : '可用'}</p>
                 </div>
                 <button onClick={handleSwapOutfit} className="shrink-0 ml-3 flex items-center gap-1 text-[11px] text-gray-500 hover:text-[var(--color-gold)] transition-colors group">
                     <svg className="w-3 h-3 group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
@@ -1245,16 +1265,16 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                 >
                                     {/* ── Step 1：選場景 ─────────────────────────────── */}
                                     {narrativeStep === 1 && (
-                                        <div className="absolute inset-0 bg-[var(--color-bg-surface)]/98 backdrop-blur-sm overflow-y-auto z-10 flex flex-col">
+                                        <div className="absolute inset-0 bg-[var(--color-bg-surface)]/98 backdrop-blur-sm overflow-y-auto z-20 flex flex-col">
                                             {/* Header */}
                                             <div className="px-8 py-5 border-b border-white/10 shrink-0">
-                                                <p className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">選場景 // SCENE SELECT</p>
-                                                <p className="text-[8px] text-gray-500 uppercase tracking-widest mt-0.5">選擇今日拍攝場景，點擊場景卡進入服裝搭配</p>
+                                                <p className="text-[12px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">選場景 // SCENE SELECT</p>
+                                                <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">選擇今日拍攝場景，點擊場景卡進入服裝搭配</p>
                                             </div>
                                             {/* Filters */}
                                             <div className="px-8 py-4 border-b border-white/5 space-y-3 shrink-0">
                                                 <div className="flex items-center gap-2 flex-wrap">
-                                                    <span className="text-[8px] text-gray-600 uppercase tracking-widest w-8 shrink-0">地區</span>
+                                                    <span className="text-[10px] text-gray-600 uppercase tracking-widest w-8 shrink-0">地區</span>
                                                     {([
                                                         { label: '全台', value: null },
                                                         { label: '北部', value: 'north' },
@@ -1265,13 +1285,13 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                     ] as Array<{label: string; value: string | null}>).map(r => (
                                                         <button key={String(r.value)}
                                                             onClick={() => setPickerRegion(r.value)}
-                                                            className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wide transition-all ${pickerRegion === r.value ? 'bg-[var(--color-gold)] text-black' : 'bg-white/5 text-gray-400 hover:text-white'}`}>
+                                                            className={`px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wide transition-all ${pickerRegion === r.value ? 'bg-[var(--color-gold)] text-black' : 'bg-white/5 text-gray-400 hover:text-white'}`}>
                                                             {r.label}
                                                         </button>
                                                     ))}
                                                 </div>
                                                 <div className="flex items-center gap-2 flex-wrap">
-                                                    <span className="text-[8px] text-gray-600 uppercase tracking-widest w-8 shrink-0">類別</span>
+                                                    <span className="text-[10px] text-gray-600 uppercase tracking-widest w-8 shrink-0">類別</span>
                                                     {([
                                                         { label: '全部',   value: null },
                                                         { label: '城市街頭', value: 'urban' },
@@ -1282,7 +1302,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                     ] as Array<{label: string; value: string | null}>).map(c => (
                                                         <button key={String(c.value)}
                                                             onClick={() => setPickerCategory(c.value)}
-                                                            className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wide transition-all ${pickerCategory === c.value ? 'bg-[var(--color-gold)] text-black' : 'bg-white/5 text-gray-400 hover:text-white'}`}>
+                                                            className={`px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wide transition-all ${pickerCategory === c.value ? 'bg-[var(--color-gold)] text-black' : 'bg-white/5 text-gray-400 hover:text-white'}`}>
                                                             {c.label}
                                                         </button>
                                                     ))}
@@ -1305,36 +1325,53 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         return (
                                                             <div key={card.scene.scene_id}
                                                                 onClick={() => confirmScene(card.scene)}
-                                                                className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-4 flex flex-col gap-2 cursor-pointer hover:border-[var(--color-gold)]/40 hover:bg-white/5 transition-all active:scale-[0.98]">
-                                                                <div className="flex items-start justify-between gap-1">
-                                                                    <p className="text-[11px] font-black text-white leading-tight">{card.scene.name_zh}</p>
-                                                                    <span className="text-[7px] font-bold text-gray-500 bg-white/5 px-2 py-0.5 rounded-full shrink-0">{regionLabel[(card.scene as any).region] || '全台'}</span>
+                                                                className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-[14px] p-3.5 flex flex-col cursor-pointer hover:border-[var(--color-gold)]/40 hover:bg-white/5 transition-all active:scale-[0.98] min-h-[240px]">
+                                                                {/* 頂部 badge 區 */}
+                                                                <div className="flex gap-1.5 flex-wrap mb-3">
+                                                                    <span className="text-[9px] font-bold text-gray-500 bg-white/5 px-2 py-0.5 rounded-full">{regionLabel[(card.scene as any).region] || '全台'}</span>
+                                                                    {ctxLabel[primaryCtx] && <span className="text-[9px] font-bold text-gray-500 bg-white/5 px-2 py-0.5 rounded-full">{ctxLabel[primaryCtx]}</span>}
                                                                 </div>
-                                                                <p className="text-[9px] text-gray-400 leading-relaxed line-clamp-3">{card.eventText.slice(0,60)}{card.eventText.length>60?'…':''}</p>
-                                                                <p className="text-[8px] text-gray-600 font-bold uppercase tracking-widest mt-auto">{ctxLabel[primaryCtx] || primaryCtx}</p>
+                                                                {/* 場景名稱（靠上，推底部往下） */}
+                                                                <p className="text-[16px] font-black text-white leading-tight mb-auto">{card.scene.name_zh}</p>
+                                                                {/* 分隔線 + 事件描述（完整內容） */}
+                                                                <div className="mt-4">
+                                                                    <div className="border-t border-[var(--color-gold)]/10 mb-3" />
+                                                                    <p className="text-[11px] text-gray-400 leading-relaxed mb-3">{card.eventText}</p>
+                                                                    <p className="text-[9px] text-[var(--color-gold)]/50 font-bold uppercase tracking-widest">{ctxLabel[primaryCtx] || primaryCtx}</p>
+                                                                </div>
                                                             </div>
                                                         );
                                                     })}
                                                     {/* AI Card（懶載入，點擊才呼叫 API） */}
-                                                    <div className="bg-[var(--color-bg-card)] border border-[var(--color-gold)]/30 rounded-xl p-4 flex flex-col gap-2 cursor-pointer hover:border-[var(--color-gold)]/60 hover:bg-white/5 transition-all active:scale-[0.98]"
+                                                    <div className="bg-[var(--color-bg-card)] border border-[var(--color-gold)]/30 rounded-[14px] p-3.5 flex flex-col cursor-pointer hover:border-[var(--color-gold)]/60 hover:bg-white/5 transition-all active:scale-[0.98] min-h-[240px]"
                                                         onClick={() => {
                                                             if (pickerAICardScene) confirmScene(pickerAICardScene);
                                                             else if (!isAICardLoading) void handleLoadAICard();
                                                         }}>
-                                                        <span className="text-[8px] font-black text-[var(--color-gold)] uppercase tracking-widest">✦ AI 感應</span>
+                                                        <span className="text-[9px] font-black text-[var(--color-gold)] uppercase tracking-widest mb-3">✦ AI 感應</span>
                                                         {isAICardLoading ? (
-                                                            <div className="space-y-2 animate-pulse flex-1">
+                                                            <div className="flex-1 space-y-2 animate-pulse">
                                                                 <div className="h-2.5 bg-white/10 rounded-full w-3/4"/>
                                                                 <div className="h-2 bg-white/5 rounded-full w-full"/>
                                                                 <div className="h-2 bg-white/5 rounded-full w-2/3"/>
                                                             </div>
                                                         ) : pickerAICardScene ? (
                                                             <>
-                                                                <p className="text-[11px] font-black text-white leading-tight">{pickerAICardScene.name_zh}</p>
-                                                                <p className="text-[9px] text-gray-400 leading-relaxed line-clamp-3">{pickerAICardText.slice(0,60)}{pickerAICardText.length>60?'…':''}</p>
+                                                                <p className="text-[16px] font-black text-white leading-tight mb-auto">{pickerAICardScene.name_zh}</p>
+                                                                <div className="mt-4">
+                                                                    <div className="border-t border-[var(--color-gold)]/10 mb-3" />
+                                                                    <p className="text-[11px] text-gray-400 leading-relaxed mb-3">{pickerAICardText}</p>
+                                                                    <p className="text-[9px] text-[var(--color-gold)]/50 font-bold uppercase tracking-widest">靈魂導向</p>
+                                                                </div>
                                                             </>
                                                         ) : (
-                                                            <p className="text-[9px] text-gray-500 italic leading-relaxed">✦ 點擊讓 AI 感應</p>
+                                                            <>
+                                                                <div className="flex-1 flex flex-col items-center justify-center text-center gap-2">
+                                                                    <span className="text-[28px] text-[var(--color-gold)]/15">✦</span>
+                                                                    <p className="text-[11px] text-gray-500 italic leading-relaxed">點擊讓<br/>AI 感應</p>
+                                                                </div>
+                                                                <p className="text-[9px] text-[var(--color-gold)]/30 font-bold uppercase tracking-widest">靈魂導向</p>
+                                                            </>
                                                         )}
                                                     </div>
                                                 </div>
@@ -1351,7 +1388,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
 
                                     {/* ── Step 2：選服裝 ─────────────────────────────── */}
                                     {narrativeStep === 2 && pickerOutfitOptions && (
-                                        <div className="absolute inset-0 bg-[var(--color-bg-surface)]/98 backdrop-blur-sm overflow-y-auto z-10 flex flex-col">
+                                        <div className="absolute inset-0 bg-[var(--color-bg-surface)]/98 backdrop-blur-sm overflow-y-auto z-20 flex flex-col">
                                             {/* Header */}
                                             <div className="px-8 py-5 border-b border-white/10 shrink-0 flex items-center justify-between">
                                                 <div>
@@ -1414,7 +1451,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
 
                                     {/* ── Step 4：劇本審閱 ─────────────────────────────── */}
                                     {narrativeStep === 4 && diary && (
-                                        <div className="absolute inset-0 bg-[var(--color-bg-surface)]/98 backdrop-blur-sm overflow-y-auto z-10 flex flex-col">
+                                        <div className="absolute inset-0 bg-[var(--color-bg-surface)]/98 backdrop-blur-sm overflow-y-auto z-20 flex flex-col">
                                             {/* Header */}
                                             <div className="px-8 py-5 border-b border-white/10 shrink-0 flex items-center justify-between">
                                                 <div>
@@ -1534,7 +1571,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
 
                                     {/* ── Step 5：出圖結果 ─────────────────────────────── */}
                                     {narrativeStep === 5 && generatedImageUrl && (
-                                        <div className="absolute inset-0 bg-[var(--color-bg-surface)]/98 backdrop-blur-sm z-10 flex flex-col overflow-hidden">
+                                        <div className="absolute inset-0 bg-[var(--color-bg-surface)]/98 backdrop-blur-sm z-20 flex flex-col overflow-hidden">
                                             {/* Header */}
                                             <div className="px-8 py-4 border-b border-white/10 shrink-0 flex items-center justify-between">
                                                 <p className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">出圖結果 // RESULT</p>
@@ -1568,6 +1605,12 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                 </div>
                                                 {/* Right: info panel */}
                                                 <div className="flex flex-col gap-4 p-6 border-l border-white/5 overflow-y-auto">
+                                                    {/* IP vibe badge */}
+                                                    {(model.persona?.coreVibe || model.persona?.mbti) && (
+                                                        <p className="text-[9px] font-black text-[var(--color-gold)]/70 uppercase tracking-widest -mb-2">
+                                                            ✦ {[getCoreVibeZH(model.persona?.coreVibe || ''), model.persona?.mbti].filter(Boolean).join(' · ')}
+                                                        </p>
+                                                    )}
                                                     {/* Platform caption tabs */}
                                                     <div className="space-y-2">
                                                         <div className="flex gap-2">
@@ -1756,54 +1799,63 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                             </div>
                                                         </div>
 
-                                                        {/* Step 3 確認摘要：已選場景 + 服裝 */}
+                                                        {/* Step 3 確認卡：場景 + 服裝雙列 */}
                                         {confirmedScene && (
-                                            <div className="flex flex-wrap items-center gap-2 px-1 pb-2">
-                                                <span className="px-3 py-1 bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/30 rounded-full text-[9px] text-[var(--color-gold)] font-black">
-                                                    📍 {confirmedScene.name_zh}
-                                                </span>
-                                                {confirmedOutfitId && (
-                                                    <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[9px] text-gray-300 font-bold">
-                                                        👗 已選服裝
-                                                    </span>
-                                                )}
-                                                <button onClick={() => setNarrativeStep(2)}
-                                                    className="text-[8px] text-gray-600 hover:text-gray-400 transition-colors">
-                                                    ← 換服裝
-                                                </button>
-                                                <button onClick={() => setNarrativeStep(1)}
-                                                    className="text-[8px] text-gray-600 hover:text-gray-400 transition-colors">
-                                                    ← 換場景
-                                                </button>
+                                            <div className="border border-[var(--color-border)] rounded-2xl overflow-hidden mb-2">
+                                                {/* 場景列 */}
+                                                <div className="flex items-stretch border-b border-[var(--color-border)]">
+                                                    <div className="w-12 flex items-center justify-center bg-[var(--color-gold)]/8 border-r border-[var(--color-border)] shrink-0">
+                                                        <span className="text-[8px] font-black text-[var(--color-gold)] uppercase tracking-widest">場景</span>
+                                                    </div>
+                                                    <div className="flex-1 px-4 py-2.5">
+                                                        <p className="text-[13px] font-black text-[var(--color-text-title)] leading-tight">{confirmedScene.name_zh}</p>
+                                                        <p className="text-[10px] text-gray-500 mt-0.5">
+                                                            {(confirmedScene as any).city !== 'any' ? (confirmedScene as any).city : '全台通用'}
+                                                        </p>
+                                                    </div>
+                                                    <button onClick={() => setNarrativeStep(1)}
+                                                        className="px-4 text-[9px] text-gray-600 hover:text-[var(--color-gold)] font-black transition-colors border-l border-[var(--color-border)] shrink-0">
+                                                        ← 換
+                                                    </button>
+                                                </div>
+                                                {/* 服裝列 */}
+                                                <div className="flex items-stretch">
+                                                    <div className="w-12 flex items-center justify-center bg-blue-500/5 border-r border-[var(--color-border)] shrink-0">
+                                                        <span className="text-[8px] font-black text-blue-400 uppercase tracking-widest">服裝</span>
+                                                    </div>
+                                                    <div className="flex-1 px-4 py-2.5">
+                                                        {confirmedOutfitId ? (
+                                                            <>
+                                                                <p className="text-[12px] font-black text-[var(--color-text-title)] leading-tight">
+                                                                    {STYLE_ARCHETYPE_MAP[([...(pickerOutfitOptions?.alternatives || []), pickerOutfitOptions?.topPick].find((o: any) => o?.outfit_id === confirmedOutfitId) as any)?.style_archetype || ''] || '已選服裝'}
+                                                                </p>
+                                                                <div className="flex flex-wrap gap-1 mt-1">
+                                                                    {(() => {
+                                                                        const outfit = [...(pickerOutfitOptions?.alternatives || []), pickerOutfitOptions?.topPick].find((o: any) => o?.outfit_id === confirmedOutfitId) as any;
+                                                                        if (!outfit?.pillars) return null;
+                                                                        const items = [outfit.pillars.top, outfit.pillars.bottom, outfit.pillars.shoes, ...(outfit.pillars.accessories || [])].filter(Boolean).slice(0, 5);
+                                                                        return items.map((item: string, i: number) => (
+                                                                            <span key={i} className="text-[9px] text-gray-500 bg-white/5 border border-white/10 rounded px-1.5 py-0.5">{item}</span>
+                                                                        ));
+                                                                    })()}
+                                                                </div>
+                                                            </>
+                                                        ) : (
+                                                            <p className="text-[12px] text-gray-500 py-0.5">自動搭配</p>
+                                                        )}
+                                                    </div>
+                                                    <button onClick={() => setNarrativeStep(2)}
+                                                        className="px-4 text-[9px] text-gray-600 hover:text-blue-400 font-black transition-colors border-l border-[var(--color-border)] shrink-0">
+                                                        ← 換
+                                                    </button>
+                                                </div>
                                             </div>
                                         )}
 
-                                        {/* Step Indicator & Status Hint */}
-                                                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 px-6 py-4 bg-black/20 rounded-[1.5rem] border border-white/5 backdrop-blur-lg">
-                                                            <div className="flex items-center gap-2 shrink-0">
-                                                                <div className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest ${!eventInput.trim() ? 'bg-gray-600 text-white' : !diary ? 'bg-[var(--color-gold)] text-black' : 'bg-emerald-500 text-black'}`}>
-                                                                    {!eventInput.trim() ? 'STEP 01' : !diary ? 'STEP 02' : 'STEP 03'}
-                                                                </div>
-                                                                <div className={`w-1 h-1 rounded-full animate-pulse ${!eventInput.trim() ? 'bg-gray-500' : !diary ? 'bg-[var(--color-gold)]' : 'bg-emerald-500'}`}></div>
-                                                            </div>
-                                                            
-                                                            <div className="space-y-0.5 min-w-0">
-                                                                <p className="text-[10px] font-black text-white/90 uppercase tracking-[0.2em]">
-                                                                    {!eventInput.trim() ? '等待敘事起點 // IDLE' : !diary ? '敘事起點已建立 // CAPTURED' : '拍攝劇本已就緒 // READY'}
-                                                                </p>
-                                                                <p className="text-[9px] font-medium text-gray-500 truncate italic">
-                                                                    {!eventInput.trim() 
-                                                                        ? "輸入今日情境，或使用選場景建立拍攝方向" 
-                                                                        : !diary 
-                                                                            ? "敘事靈感已到位，下一步建立拍攝劇本以整理場景細節" 
-                                                                            : "劇本已編織完成，確認右側視覺參數後可開始生成"}
-                                                                </p>
-                                                            </div>
-                                                        </div>
-
                                                         <div className="group relative">
+                                                            <label className="text-[9px] font-black text-gray-500 uppercase tracking-widest block mb-2">事件描述（可調整）</label>
                                                             <textarea 
-                                                                className="w-full h-36 bg-black/5 dark:bg-black/40 border border-black/5 dark:border-white/5 rounded-[2.5rem] p-6 text-sm text-gray-800 dark:text-gray-200 focus:border-[var(--color-gold)]/30 focus:shadow-[0_0_40px_rgba(212,175,55,0.05)] transition-all resize-none font-medium leading-relaxed outline-none shadow-inner"
+                                                                className="w-full min-h-[220px] bg-black/5 dark:bg-black/40 border border-black/5 dark:border-white/5 rounded-[2.5rem] p-6 text-sm text-gray-800 dark:text-gray-200 focus:border-[var(--color-gold)]/30 focus:shadow-[0_0_40px_rgba(212,175,55,0.05)] transition-all resize-vertical font-medium leading-relaxed outline-none shadow-inner"
                                                                 placeholder="描繪此刻的情境... 靈魂敘事將以此為軸心展開。"
                                                                 value={eventInput}
                                                                 onChange={(e) => {
@@ -1989,6 +2041,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                     </div>
                                 </div>
 
+                                {diary && (
                                 <div className="space-y-3 group">
                                     <div className="flex justify-between items-center px-1">
                                         <div className="flex gap-4">
@@ -2101,6 +2154,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                     </div>
                                 </div>
 
+                                )}
                                 <motion.button 
                                     whileHover={!diary || isGeneratingImage ? {} : { scale: 1.02 }}
                                     whileTap={!diary || isGeneratingImage ? {} : { scale: 0.98 }}
