@@ -199,6 +199,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             light: 'LIGHTING',
             光線: 'LIGHTING',
             燈光: 'LIGHTING',
+            光影: 'LIGHTING',
             camera: 'CAMERA',
             shot: 'CAMERA',
             composition: 'CAMERA',
@@ -1587,7 +1588,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             {/* 50/50 split */}
                                             <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 overflow-hidden">
                                                 {/* Left: image */}
-                                                <div className="relative flex items-center justify-center bg-black/30 overflow-hidden">
+                                                <div className="relative flex items-center justify-center bg-black/30 overflow-hidden min-h-[300px] lg:min-h-0">
                                                     <img src={generatedImageUrl} alt="generated"
                                                         className="max-w-full max-h-full object-contain" />
                                                     <button onClick={() => setShowLightbox(true)}
@@ -1686,6 +1687,11 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                             {isExtractingMem ? '記憶中...' : '→ IP 休息室'}
                                                         </button>
                                                     </div>
+                                                    {/* 完成佈署 全寬按鈕 */}
+                                                    <button onClick={handleFinish} disabled={isExtractingMem}
+                                                        className="w-full py-3 text-[9px] font-black uppercase tracking-widest rounded-xl bg-[var(--color-gold)] text-black hover:opacity-90 disabled:opacity-40 transition-all">
+                                                        {isExtractingMem ? '記憶中...' : '完成佈署 // FINISH'}
+                                                    </button>
                                                     {/* Carousel variation selector */}
                                                     {carouselMode && (
                                                         <div className="space-y-2">
