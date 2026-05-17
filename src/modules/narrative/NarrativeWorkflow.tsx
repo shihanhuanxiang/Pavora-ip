@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { Model, DiaryEntry } from '../../shared/types/types';
 import Button from '../../shared/components/common/Button';
 import Loader from '../../shared/components/common/Loader';
-import { generateIPDiary, generateRandomEvent, syncPrompts, generateDynamicEvent, extractNewMemories, generateRandomEventWithScene, generateDynamicEventWithScene, previewShootConfig, getOutfitOptionsForScene } from './services/narrativeService';
+import { generateIPDiary, generateRandomEvent, syncPrompts, generateDynamicEvent, extractNewMemories, generateRandomEventWithScene, generateDynamicEventWithScene, previewShootConfig, getOutfitOptionsForScene, generateIPDiaryCaption, generatePlatformCaption, generateCarouselVariation } from './services/narrativeService';
 import { buildStructuredOutfitLabel, STYLE_ARCHETYPE_MAP } from './components/WardrobeManager';
 import { ALL_EXTENDED_SCENES } from './constants/extendedScenes';
 import { OrchestratorService } from './services/orchestratorService';
@@ -42,7 +42,8 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     const [isGeneratingImage, setIsGeneratingImage] = useState(false);
     const [isSyncing, setIsSyncing] = useState(false);
     const [isExtractingMem, setIsExtractingMem] = useState(false);
-    const [narrativeStep, setNarrativeStep] = useState<1|2|3>(1);
+    const [narrativeStep, setNarrativeStep] = useState<1|2|3|4|5>(1);
+    const [showLightbox, setShowLightbox] = useState(false);
     const [diary, setDiary] = useState<Partial<DiaryEntry> | null>(null);
     const [currentSceneId, setCurrentSceneId] = useState<string | null>(null);
     const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
@@ -72,31 +73,29 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     const [previewOutfit, setPreviewOutfit] = useState<any>(null);
 
     // ── Scene Picker Modal ────────────────────────────────────────
-    const [showScenePicker, setShowScenePicker] = useState(false);
+    // Step 1：場景選擇
     const [pickerRegion, setPickerRegion] = useState<string | null>(null);
     const [pickerCategory, setPickerCategory] = useState<string | null>(null);
     const [pickerSceneCards, setPickerSceneCards] = useState<Array<{scene: any; eventText: string}>>([]);
-    const [pickerAICard, setPickerAICard] = useState<{scene: any; eventText: string} | null>(null);
-    const [isLoadingAICard, setIsLoadingAICard] = useState(false);
-    const [pickerSelectedScene, setPickerSelectedScene] = useState<any | null>(null);
+    const [pickerAICardScene, setPickerAICardScene] = useState<any | null>(null);
+    const [pickerAICardText, setPickerAICardText] = useState<string>('');
+    const [isAICardLoading, setIsAICardLoading] = useState(false);
+    // Step 1→2：確認的場景
+    const [confirmedScene, setConfirmedScene] = useState<any | null>(null);
+    // Step 2：服裝選項（getOutfitOptionsForScene 結果）
     const [pickerOutfitOptions, setPickerOutfitOptions] = useState<{topPick: any; alternatives: any[]} | null>(null);
-
-    const SCENE_PICKER_REGIONS: Array<{label: string; value: string | null}> = [
-        { label: '全台', value: null },
-        { label: '北部', value: 'north' },
-        { label: '中部', value: 'central' },
-        { label: '南部', value: 'south' },
-        { label: '東部', value: 'east' },
-        { label: '外島', value: 'islands' },
-    ];
-    const SCENE_PICKER_CATEGORIES: Array<{label: string; value: string | null; contexts: string[]}> = [
-        { label: '全部', value: null, contexts: [] },
-        { label: '城市街頭', value: 'urban', contexts: ['urban_street','shopping_random','night_market'] },
-        { label: '咖啡日常', value: 'cafe', contexts: ['cafe_aesthetic','home_cozy','office_pro','travel_journey'] },
-        { label: '海岸泳池', value: 'beach', contexts: ['beach_island'] },
-        { label: '山林田野', value: 'mountain', contexts: ['mountain_outdoor','rural_field'] },
-        { label: '文化廟町', value: 'culture', contexts: ['temple_old_town','festival_event'] },
-    ];
+    // Step 2→3：確認的服裝 ID（避免 updateModel async stale state）
+    const [confirmedOutfitId, setConfirmedOutfitId] = useState<string | null>(null);
+    // Step 5：平台發文
+    const [igCaption, setIgCaption] = useState<string>('');
+    const [fbCaption, setFbCaption] = useState<string>('');
+    const [threadsCaption, setThreadsCaption] = useState<string>('');
+    const [selectedPlatform, setSelectedPlatform] = useState<'ig' | 'fb' | 'threads'>('ig');
+    const [isLoadingCaption, setIsLoadingCaption] = useState(false);
+    // Step 5：輪播模式
+    const [carouselMode, setCarouselMode] = useState(false);
+    const [carouselImages, setCarouselImages] = useState<string[]>([]);
+    const [isGeneratingVariation, setIsGeneratingVariation] = useState(false);
 
     // Preview: debounced update on eventInput change
     React.useEffect(() => {
@@ -525,7 +524,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             } as any);
             
             setCurrentSceneId(sceneIdToUse || null);
-            setNarrativeStep(2);
+            setNarrativeStep(4);
             setSelectedBrief(null); // Reset after use
             setRandomSceneId(null); // Reset after use
             // Handle new direct prompt structure
@@ -628,7 +627,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             const finalImageWithMetadata = wrapImageWithIdentity(fullDataUrl, model);
 
             setGeneratedImageUrl(finalImageWithMetadata);
-            setNarrativeStep(3);
+            setNarrativeStep(5);
             addNotification({ type: 'success', message: '靈魂視覺化成功 (Visualization Success)', description: '影像已生成並包含身分內碼 (Image generated with identity metadata).' });
         } catch (e) {
             console.error(e);
@@ -677,78 +676,206 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
 
     // ── Scene Picker helpers ──────────────────────────────────────
 
-    // 服裝選項：當選定場景時自動載入（同步運算，無 API 呼叫）
-    React.useEffect(() => {
-        if (!pickerSelectedScene) {
-            setPickerOutfitOptions(null);
-            return;
-        }
-        const options = getOutfitOptionsForScene(model, pickerSelectedScene.scene_id);
-        setPickerOutfitOptions(options);
-    }, [pickerSelectedScene, model.id]);
-
-    // 確認場景 + 服裝，填入 eventInput 並關閉 Modal
-    const confirmSceneOutfit = async (scene: any, outfit: any | null) => {
-        const sceneCard = pickerSceneCards.find(c => c.scene.scene_id === scene.scene_id);
-        const isAICard = pickerAICard?.scene.scene_id === scene.scene_id;
-        const eventText = sceneCard?.eventText
-            || (isAICard ? pickerAICard!.eventText : null)
-            || (scene as any).event
-            || scene.name_zh
-            || '';
+    // 確認場景 + 服裝 ID，跳至 Step 3（不等待 updateModel async）
+    const confirmSceneOutfit = (scene: any, outfitId: string | null) => {
+        const eventText = (scene as any).event || scene.name_zh || '';
+        setConfirmedScene(scene);
+        setConfirmedOutfitId(outfitId);
         setEventInput(eventText);
         setRandomSceneId(scene.scene_id);
         setCurrentSceneId(scene.scene_id);
-        setEventSource(isAICard ? 'ai' : 'random');
+        setEventSource('random');
         setSelectedBrief(null);
         setDiary(null);
-        setNarrativeStep(1);
-        if (outfit) {
-            await updateModel(model.id, {
-                preferences: { ...model.preferences, active_outfit_id: outfit.outfit_id }
+        setNarrativeStep(3);
+        if (outfitId) {
+            updateModel(model.id, {
+                preferences: { ...model.preferences, active_outfit_id: outfitId }
             });
         }
-        setPickerSelectedScene(null);
-        setPickerOutfitOptions(null);
-        setShowScenePicker(false);
     };
 
-    const drawPickerSceneCards = async (
-        overrideRegion?: string | null,
-        overrideCategory?: string | null
-    ) => {
-        const effectiveRegion = overrideRegion !== undefined ? overrideRegion : pickerRegion;
-        const effectiveCategory = overrideCategory !== undefined ? overrideCategory : pickerCategory;
+    // Step 1 → Step 2：確認場景，載入服裝選項
+    const confirmScene = (scene: any) => {
+        setConfirmedScene(scene);
+        const options = getOutfitOptionsForScene(model, scene.scene_id);
+        setPickerOutfitOptions(options);
+        setNarrativeStep(2);
+    };
+
+    // Step 1：隨機 3 張場景卡（篩選變更時重新抽）
+    const STEP1_CATEGORY_CONTEXTS: Record<string, string[]> = {
+        urban:   ['urban_street', 'shopping_random', 'night_market'],
+        cafe:    ['cafe_aesthetic', 'home_cozy', 'office_pro', 'travel_journey'],
+        beach:   ['beach_island'],
+        mountain:['mountain_outdoor', 'rural_field'],
+        culture: ['temple_old_town', 'festival_event'],
+    };
+
+    const refreshRandomCards = React.useCallback(() => {
         const pool = ALL_EXTENDED_SCENES.filter(s => {
-            const of = (s as any).outfit_filter as string[] | undefined;
-            if (!of?.length) return false;
             const sceneRegion = (s as any).region as string;
-            if (effectiveRegion && sceneRegion !== effectiveRegion && sceneRegion !== 'all') return false;
-            if (effectiveCategory) {
-                const catDef = SCENE_PICKER_CATEGORIES.find(c => c.value === effectiveCategory);
-                if (catDef && catDef.contexts.length > 0) {
+            if (pickerRegion && sceneRegion !== pickerRegion && sceneRegion !== 'all') return false;
+            if (pickerCategory) {
+                const of = (s as any).outfit_filter as string[] | undefined;
+                if (!of?.length) return false;
+                const contexts = STEP1_CATEGORY_CONTEXTS[pickerCategory] || [];
+                if (contexts.length > 0) {
                     const nonUrban = of.filter((ctx: string) => ctx !== 'urban_street');
                     const effective = nonUrban.length > 0 ? nonUrban : of;
-                    if (!effective.some((ctx: string) => catDef.contexts.includes(ctx))) return false;
+                    if (!effective.some((ctx: string) => contexts.includes(ctx))) return false;
                 }
             }
             return true;
         });
         const shuffled = [...pool].sort(() => Math.random() - 0.5);
-        setPickerSceneCards(shuffled.slice(0, 3).map(scene => ({
-            scene,
-            eventText: (scene as any).event || scene.name_zh || '',
+        setPickerSceneCards(shuffled.slice(0, 3).map(s => ({
+            scene: s,
+            eventText: (s as any).event || s.name_zh || '',
         })));
-        setIsLoadingAICard(true);
-        setPickerAICard(null);
+    }, [pickerRegion, pickerCategory]);
+
+    // 篩選變更時自動更新隨機卡
+    React.useEffect(() => {
+        refreshRandomCards();
+    }, [refreshRandomCards]);
+
+    // Step 1：AI 卡懶載入（點擊才呼叫 API）
+    const handleLoadAICard = async () => {
+        setIsAICardLoading(true);
+        setPickerAICardScene(null);
+        setPickerAICardText('');
         try {
             const result = await generateDynamicEventWithScene(model);
             if (result?.sceneId) {
                 const aiScene = ALL_EXTENDED_SCENES.find(s => s.scene_id === result.sceneId);
-                if (aiScene) setPickerAICard({ scene: aiScene, eventText: result.text });
+                if (aiScene) {
+                    setPickerAICardScene(aiScene);
+                    setPickerAICardText(result.text);
+                }
             }
-        } catch { setPickerAICard(null); }
-        finally { setIsLoadingAICard(false); }
+        } catch { setPickerAICardScene(null); }
+        finally { setIsAICardLoading(false); }
+    };
+
+    // ── Lightbox refs ──────────────────────────────────────────
+    const lbContainerRef = React.useRef<HTMLDivElement>(null);
+    const lbImgRef = React.useRef<HTMLImageElement>(null);
+    const lbState = React.useRef({ tx: 0, ty: 0, scale: 1, isDragging: false, startX: 0, startY: 0 });
+
+    const applyLightboxTransform = React.useCallback(() => {
+        const img = lbImgRef.current;
+        if (!img) return;
+        const { tx, ty, scale } = lbState.current;
+        img.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+        img.style.transformOrigin = '0 0';
+    }, []);
+
+    const initLightboxCenter = React.useCallback(() => {
+        const c = lbContainerRef.current;
+        const img = lbImgRef.current;
+        if (!c || !img) return;
+        lbState.current.tx = (c.offsetWidth - img.offsetWidth) / 2;
+        lbState.current.ty = (c.offsetHeight - img.offsetHeight) / 2;
+        lbState.current.scale = 1;
+        applyLightboxTransform();
+    }, [applyLightboxTransform]);
+
+    React.useEffect(() => {
+        if (!showLightbox) return;
+        const img = lbImgRef.current;
+        if (img?.complete) initLightboxCenter();
+        else if (img) img.onload = initLightboxCenter;
+        const c = lbContainerRef.current;
+        if (!c) return;
+        const onWheel = (e: WheelEvent) => {
+            e.preventDefault();
+            const s = lbState.current;
+            const rect = c.getBoundingClientRect();
+            const mx = e.clientX - rect.left;
+            const my = e.clientY - rect.top;
+            const ns = Math.min(Math.max(0.3, s.scale * (e.deltaY > 0 ? 0.88 : 1.14)), 8);
+            s.tx = mx - (mx - s.tx) * (ns / s.scale);
+            s.ty = my - (my - s.ty) * (ns / s.scale);
+            s.scale = ns;
+            applyLightboxTransform();
+        };
+        const onMouseDown = (e: MouseEvent) => {
+            const s = lbState.current;
+            s.isDragging = true;
+            s.startX = e.clientX - s.tx;
+            s.startY = e.clientY - s.ty;
+        };
+        const onMouseMove = (e: MouseEvent) => {
+            const s = lbState.current;
+            if (!s.isDragging) return;
+            s.tx = e.clientX - s.startX;
+            s.ty = e.clientY - s.startY;
+            applyLightboxTransform();
+        };
+        const onMouseUp = () => { lbState.current.isDragging = false; };
+        c.addEventListener('wheel', onWheel, { passive: false });
+        c.addEventListener('mousedown', onMouseDown);
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mouseup', onMouseUp);
+        return () => {
+            c.removeEventListener('wheel', onWheel);
+            c.removeEventListener('mousedown', onMouseDown);
+            window.removeEventListener('mousemove', onMouseMove);
+            window.removeEventListener('mouseup', onMouseUp);
+        };
+    }, [showLightbox, initLightboxCenter, applyLightboxTransform]);
+
+    // ── Step 5 handlers ────────────────────────────────────────
+    const handleGenerateIGCaption = React.useCallback(async () => {
+        if (!diary || igCaption) return;
+        setIsLoadingCaption(true);
+        try {
+            const caption = await generateIPDiaryCaption(model, diary);
+            setIgCaption(caption);
+        } catch (e) {
+            console.error('IG caption failed:', e);
+        } finally {
+            setIsLoadingCaption(false);
+        }
+    }, [diary, igCaption, model]);
+
+    React.useEffect(() => {
+        if (narrativeStep === 5 && diary && !igCaption) {
+            void handleGenerateIGCaption();
+        }
+    }, [narrativeStep]);
+
+    const handleCaptionTabClick = async (platform: 'ig' | 'fb' | 'threads') => {
+        setSelectedPlatform(platform);
+        if (platform === 'ig') return;
+        const existing = platform === 'fb' ? fbCaption : threadsCaption;
+        if (existing || !igCaption) return;
+        setIsLoadingCaption(true);
+        try {
+            const caption = await generatePlatformCaption(model, igCaption, platform === 'fb' ? 'facebook' : 'threads');
+            if (platform === 'fb') setFbCaption(caption);
+            else setThreadsCaption(caption);
+        } catch (e) {
+            console.error('Platform caption failed:', e);
+        } finally {
+            setIsLoadingCaption(false);
+        }
+    };
+
+    const handleGenerateCarouselVariation = async (variationType: 'pose' | 'expression' | 'angle' | 'surprise') => {
+        if (!generatedImageUrl || isGeneratingVariation) return;
+        setIsGeneratingVariation(true);
+        try {
+            const newImg = await generateCarouselVariation(model, generatedImageUrl, variationType, editablePrompt);
+            setCarouselImages(prev => [...prev, newImg]);
+            setCarouselMode(true);
+        } catch (e) {
+            console.error('Carousel variation failed:', e);
+            addNotification({ type: 'error', message: '輪播生成失敗，請重試' });
+        } finally {
+            setIsGeneratingVariation(false);
+        }
     };
 
     const handleChangeScene = () => {
@@ -1116,6 +1243,449 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                     exit={{ opacity: 0, filter: 'blur(10px)' }}
                                     className="p-12 space-y-10 relative min-h-full overflow-y-auto custom-scrollbar"
                                 >
+                                    {/* ── Step 1：選場景 ─────────────────────────────── */}
+                                    {narrativeStep === 1 && (
+                                        <div className="absolute inset-0 bg-[var(--color-bg-surface)]/98 backdrop-blur-sm overflow-y-auto z-10 flex flex-col">
+                                            {/* Header */}
+                                            <div className="px-8 py-5 border-b border-white/10 shrink-0">
+                                                <p className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">選場景 // SCENE SELECT</p>
+                                                <p className="text-[8px] text-gray-500 uppercase tracking-widest mt-0.5">選擇今日拍攝場景，點擊場景卡進入服裝搭配</p>
+                                            </div>
+                                            {/* Filters */}
+                                            <div className="px-8 py-4 border-b border-white/5 space-y-3 shrink-0">
+                                                <div className="flex items-center gap-2 flex-wrap">
+                                                    <span className="text-[8px] text-gray-600 uppercase tracking-widest w-8 shrink-0">地區</span>
+                                                    {([
+                                                        { label: '全台', value: null },
+                                                        { label: '北部', value: 'north' },
+                                                        { label: '中部', value: 'central' },
+                                                        { label: '南部', value: 'south' },
+                                                        { label: '東部', value: 'east' },
+                                                        { label: '外島', value: 'islands' },
+                                                    ] as Array<{label: string; value: string | null}>).map(r => (
+                                                        <button key={String(r.value)}
+                                                            onClick={() => setPickerRegion(r.value)}
+                                                            className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wide transition-all ${pickerRegion === r.value ? 'bg-[var(--color-gold)] text-black' : 'bg-white/5 text-gray-400 hover:text-white'}`}>
+                                                            {r.label}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                                <div className="flex items-center gap-2 flex-wrap">
+                                                    <span className="text-[8px] text-gray-600 uppercase tracking-widest w-8 shrink-0">類別</span>
+                                                    {([
+                                                        { label: '全部',   value: null },
+                                                        { label: '城市街頭', value: 'urban' },
+                                                        { label: '咖啡日常', value: 'cafe' },
+                                                        { label: '海岸泳池', value: 'beach' },
+                                                        { label: '山林田野', value: 'mountain' },
+                                                        { label: '文化廟町', value: 'culture' },
+                                                    ] as Array<{label: string; value: string | null}>).map(c => (
+                                                        <button key={String(c.value)}
+                                                            onClick={() => setPickerCategory(c.value)}
+                                                            className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wide transition-all ${pickerCategory === c.value ? 'bg-[var(--color-gold)] text-black' : 'bg-white/5 text-gray-400 hover:text-white'}`}>
+                                                            {c.label}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            {/* Cards */}
+                                            <div className="flex-1 overflow-y-auto px-8 py-6">
+                                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                                                    {pickerSceneCards.map((card) => {
+                                                        const of = (card.scene as any).outfit_filter as string[] || [];
+                                                        const nonUrban = of.filter((x: string) => x !== 'urban_street');
+                                                        const primaryCtx = nonUrban[0] || of[0] || '';
+                                                        const ctxLabel: Record<string,string> = {
+                                                            beach_island:'海岸泳池', mountain_outdoor:'山林田野', rural_field:'田野',
+                                                            cafe_aesthetic:'咖啡日常', temple_old_town:'文化廟町', festival_event:'節慶',
+                                                            urban_street:'城市街頭', shopping_random:'購物', night_market:'夜市',
+                                                            travel_journey:'旅途移動', home_cozy:'居家', office_pro:'職場',
+                                                        };
+                                                        const regionLabel: Record<string,string> = { north:'北部', central:'中部', south:'南部', east:'東部', islands:'外島', all:'全台' };
+                                                        return (
+                                                            <div key={card.scene.scene_id}
+                                                                onClick={() => confirmScene(card.scene)}
+                                                                className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-4 flex flex-col gap-2 cursor-pointer hover:border-[var(--color-gold)]/40 hover:bg-white/5 transition-all active:scale-[0.98]">
+                                                                <div className="flex items-start justify-between gap-1">
+                                                                    <p className="text-[11px] font-black text-white leading-tight">{card.scene.name_zh}</p>
+                                                                    <span className="text-[7px] font-bold text-gray-500 bg-white/5 px-2 py-0.5 rounded-full shrink-0">{regionLabel[(card.scene as any).region] || '全台'}</span>
+                                                                </div>
+                                                                <p className="text-[9px] text-gray-400 leading-relaxed line-clamp-3">{card.eventText.slice(0,60)}{card.eventText.length>60?'…':''}</p>
+                                                                <p className="text-[8px] text-gray-600 font-bold uppercase tracking-widest mt-auto">{ctxLabel[primaryCtx] || primaryCtx}</p>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                    {/* AI Card（懶載入，點擊才呼叫 API） */}
+                                                    <div className="bg-[var(--color-bg-card)] border border-[var(--color-gold)]/30 rounded-xl p-4 flex flex-col gap-2 cursor-pointer hover:border-[var(--color-gold)]/60 hover:bg-white/5 transition-all active:scale-[0.98]"
+                                                        onClick={() => {
+                                                            if (pickerAICardScene) confirmScene(pickerAICardScene);
+                                                            else if (!isAICardLoading) void handleLoadAICard();
+                                                        }}>
+                                                        <span className="text-[8px] font-black text-[var(--color-gold)] uppercase tracking-widest">✦ AI 感應</span>
+                                                        {isAICardLoading ? (
+                                                            <div className="space-y-2 animate-pulse flex-1">
+                                                                <div className="h-2.5 bg-white/10 rounded-full w-3/4"/>
+                                                                <div className="h-2 bg-white/5 rounded-full w-full"/>
+                                                                <div className="h-2 bg-white/5 rounded-full w-2/3"/>
+                                                            </div>
+                                                        ) : pickerAICardScene ? (
+                                                            <>
+                                                                <p className="text-[11px] font-black text-white leading-tight">{pickerAICardScene.name_zh}</p>
+                                                                <p className="text-[9px] text-gray-400 leading-relaxed line-clamp-3">{pickerAICardText.slice(0,60)}{pickerAICardText.length>60?'…':''}</p>
+                                                            </>
+                                                        ) : (
+                                                            <p className="text-[9px] text-gray-500 italic leading-relaxed">✦ 點擊讓 AI 感應</p>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                {/* Refresh random cards */}
+                                                <div className="flex justify-end mt-4">
+                                                    <button onClick={refreshRandomCards}
+                                                        className="text-[9px] text-gray-500 hover:text-white font-black uppercase tracking-widest flex items-center gap-1.5 transition-colors">
+                                                        <span>↺</span> 換一批
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* ── Step 2：選服裝 ─────────────────────────────── */}
+                                    {narrativeStep === 2 && pickerOutfitOptions && (
+                                        <div className="absolute inset-0 bg-[var(--color-bg-surface)]/98 backdrop-blur-sm overflow-y-auto z-10 flex flex-col">
+                                            {/* Header */}
+                                            <div className="px-8 py-5 border-b border-white/10 shrink-0 flex items-center justify-between">
+                                                <div>
+                                                    <p className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">選服裝 // OUTFIT SELECT</p>
+                                                    <p className="text-[9px] text-gray-400 mt-0.5">{confirmedScene?.name_zh}</p>
+                                                </div>
+                                                <button onClick={() => setNarrativeStep(1)}
+                                                    className="text-[9px] text-gray-400 hover:text-white font-black uppercase tracking-widest flex items-center gap-1.5 transition-colors">
+                                                    ← 返回場景
+                                                </button>
+                                            </div>
+                                            {/* Outfit Cards */}
+                                            <div className="flex-1 overflow-y-auto px-8 py-6">
+                                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                                                    {pickerOutfitOptions.alternatives.map((outfit: any) => (
+                                                        <div key={outfit.outfit_id}
+                                                            onClick={() => confirmSceneOutfit(confirmedScene, outfit.outfit_id)}
+                                                            className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-4 flex flex-col gap-2 cursor-pointer hover:border-[var(--color-gold)]/40 hover:bg-white/5 transition-all active:scale-[0.98]">
+                                                            <p className="text-[11px] font-black text-white leading-tight">
+                                                                {STYLE_ARCHETYPE_MAP[outfit.style_archetype] || outfit.style_archetype}
+                                                            </p>
+                                                            <div className="flex flex-wrap gap-1 mt-0.5">
+                                                                {(['top','bottom','shoes','accessories'] as const).map(k =>
+                                                                    outfit.pillars?.[k] ? (
+                                                                        <span key={k} className="text-[8px] text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">{outfit.pillars[k]}</span>
+                                                                    ) : null
+                                                                )}
+                                                            </div>
+                                                            <p className="text-[8px] text-gray-600 font-bold uppercase tracking-widest mt-auto">{outfit.season}</p>
+                                                        </div>
+                                                    ))}
+                                                    {/* AI 推薦（topPick） */}
+                                                    <div
+                                                        onClick={() => confirmSceneOutfit(confirmedScene, pickerOutfitOptions.topPick.outfit_id)}
+                                                        className="bg-[var(--color-bg-card)] border border-[var(--color-gold)]/30 rounded-xl p-4 flex flex-col gap-2 cursor-pointer hover:border-[var(--color-gold)]/60 hover:bg-white/5 transition-all active:scale-[0.98]">
+                                                        <span className="text-[8px] font-black text-[var(--color-gold)] uppercase tracking-widest">✦ AI 推薦</span>
+                                                        <p className="text-[11px] font-black text-white leading-tight">
+                                                            {STYLE_ARCHETYPE_MAP[pickerOutfitOptions.topPick.style_archetype] || pickerOutfitOptions.topPick.style_archetype}
+                                                        </p>
+                                                        <div className="flex flex-wrap gap-1 mt-0.5">
+                                                            {(['top','bottom','shoes','accessories'] as const).map(k =>
+                                                                pickerOutfitOptions.topPick.pillars?.[k] ? (
+                                                                    <span key={k} className="text-[8px] text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">{pickerOutfitOptions.topPick.pillars[k]}</span>
+                                                                ) : null
+                                                            )}
+                                                        </div>
+                                                        <p className="text-[8px] text-gray-600 font-bold uppercase tracking-widest mt-auto">{pickerOutfitOptions.topPick.season}</p>
+                                                    </div>
+                                                </div>
+                                                {/* Skip */}
+                                                <div className="flex justify-center mt-6">
+                                                    <button onClick={() => confirmSceneOutfit(confirmedScene, null)}
+                                                        className="text-[9px] text-gray-600 hover:text-gray-400 transition-colors">
+                                                        略過，自動搭配
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* ── Step 4：劇本審閱 ─────────────────────────────── */}
+                                    {narrativeStep === 4 && diary && (
+                                        <div className="absolute inset-0 bg-[var(--color-bg-surface)]/98 backdrop-blur-sm overflow-y-auto z-10 flex flex-col">
+                                            {/* Header */}
+                                            <div className="px-8 py-5 border-b border-white/10 shrink-0 flex items-center justify-between">
+                                                <div>
+                                                    <p className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">劇本審閱 // SHOOT BRIEF</p>
+                                                    <p className="text-[8px] text-gray-500 uppercase tracking-widest mt-0.5">確認提示詞後生成敘事影像</p>
+                                                </div>
+                                                <div className="flex items-center gap-4">
+                                                    <button
+                                                        onClick={() => handleSyncPrompt()}
+                                                        disabled={isSyncing}
+                                                        className="text-[9px] font-black text-[var(--color-gold)] uppercase tracking-widest flex items-center gap-1.5 hover:opacity-80 disabled:opacity-30 transition-opacity border border-[var(--color-gold)]/30 px-3 py-1.5 rounded-full"
+                                                    >
+                                                        {isSyncing ? '同步中...' : '⇄ 雙向同步'}
+                                                    </button>
+                                                    <button onClick={() => setNarrativeStep(3)}
+                                                        className="text-[9px] text-gray-400 hover:text-white font-black uppercase tracking-widest flex items-center gap-1.5 transition-colors">
+                                                        ← 調整設定
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            {/* Two-column prompts */}
+                                            <div className="flex-1 overflow-y-auto px-8 py-6">
+                                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                                    {/* ZH Column */}
+                                                    <div className="space-y-3">
+                                                        <p className="text-[9px] font-black text-[var(--color-gold)] uppercase tracking-widest">中文提示詞</p>
+                                                        {hasStructuredPromptZH ? (
+                                                            <div className="space-y-2">
+                                                                {promptSectionsZH.map((section) => (
+                                                                    <div key={`zh-${section.label}-${section.lineIndex}`}
+                                                                        className="flex flex-col bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-3 hover:border-[var(--color-gold)]/30 transition-all">
+                                                                        <span className="text-[8px] font-black text-[var(--color-gold)] uppercase tracking-widest mb-1 pl-1">
+                                                                            {getPromptSectionDisplayLabel(section.label, 'ZH')}
+                                                                        </span>
+                                                                        <textarea
+                                                                            className="w-full bg-transparent border-none p-0 text-[11px] text-[var(--color-text-main)] focus:ring-0 resize-none min-h-[36px] outline-none leading-relaxed"
+                                                                            value={section.value}
+                                                                            onChange={(e) => {
+                                                                                const lines = editablePromptZH.split('\n');
+                                                                                lines[section.lineIndex] = `${section.prefix}${section.separator} ${e.target.value}`;
+                                                                                setEditablePromptZH(lines.join('\n'));
+                                                                            }}
+                                                                        />
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        ) : (
+                                                            <textarea
+                                                                className="w-full h-48 bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-2xl p-4 text-[10px] text-[var(--color-text-main)] focus:border-[var(--color-gold)]/50 transition-all resize-none outline-none leading-relaxed"
+                                                                value={editablePromptZH}
+                                                                onChange={(e) => setEditablePromptZH(e.target.value)}
+                                                            />
+                                                        )}
+                                                    </div>
+                                                    {/* EN Column */}
+                                                    <div className="space-y-3">
+                                                        <p className="text-[9px] font-black text-blue-400 uppercase tracking-widest">English Prompt</p>
+                                                        {hasStructuredPromptEN ? (
+                                                            <div className="space-y-2">
+                                                                {promptSectionsEN.map((section) => (
+                                                                    <div key={`en-${section.label}-${section.lineIndex}`}
+                                                                        className="flex flex-col bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-3 hover:border-blue-500/20 transition-all">
+                                                                        <span className="text-[8px] font-mono font-bold text-blue-400/50 uppercase tracking-widest mb-1 pl-1">
+                                                                            {section.label}
+                                                                        </span>
+                                                                        <textarea
+                                                                            className="w-full bg-transparent border-none p-0 text-[10px] font-mono text-gray-400 focus:ring-0 resize-none min-h-[36px] outline-none leading-tight"
+                                                                            value={section.value}
+                                                                            onChange={(e) => {
+                                                                                const lines = editablePrompt.split('\n');
+                                                                                lines[section.lineIndex] = `${section.prefix}${section.separator} ${e.target.value}`;
+                                                                                setEditablePrompt(lines.join('\n'));
+                                                                            }}
+                                                                        />
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        ) : (
+                                                            <textarea
+                                                                className="w-full h-48 bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-2xl p-4 text-[10px] font-mono text-[var(--color-text-main)] focus:border-blue-500/50 transition-all resize-none outline-none leading-relaxed"
+                                                                value={editablePrompt}
+                                                                onChange={(e) => setEditablePrompt(e.target.value)}
+                                                            />
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                {/* Shoot config summary row */}
+                                                <div className="mt-6 grid grid-cols-5 gap-2 p-4 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl">
+                                                    {[
+                                                        { label: '場景', value: confirmedScene?.name_zh || '—' },
+                                                        { label: '服裝', value: confirmedOutfitId ? '已選' : '自動' },
+                                                        { label: '比例', value: aspectRatio },
+                                                        { label: '畫質', value: quality },
+                                                        { label: '視角', value: isPOV ? 'POV' : '3RD' },
+                                                    ].map(cell => (
+                                                        <div key={cell.label} className="flex flex-col items-center gap-1">
+                                                            <span className="text-[7px] text-gray-600 font-black uppercase tracking-widest">{cell.label}</span>
+                                                            <span className="text-[9px] text-white font-bold truncate max-w-full px-1">{cell.value}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                {/* CTA */}
+                                                <button
+                                                    onClick={() => handleGenerateImage()}
+                                                    disabled={!diary || isGeneratingImage}
+                                                    className={`w-full mt-6 py-5 text-[12px] font-black tracking-[0.5em] uppercase rounded-3xl transition-all duration-300 ${
+                                                        !diary || isGeneratingImage
+                                                            ? 'bg-white/5 text-gray-600 border border-white/5 cursor-not-allowed opacity-50'
+                                                            : 'bg-emerald-500 text-black shadow-[0_20px_40px_rgba(16,185,129,0.15)] hover:shadow-[0_25px_50px_rgba(16,185,129,0.25)]'
+                                                    }`}
+                                                >
+                                                    {isGeneratingImage ? '正在捕捉靈魂切片 (RENDERING...)' : '生成敘事影像 // GENERATE IMAGE'}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* ── Step 5：出圖結果 ─────────────────────────────── */}
+                                    {narrativeStep === 5 && generatedImageUrl && (
+                                        <div className="absolute inset-0 bg-[var(--color-bg-surface)]/98 backdrop-blur-sm z-10 flex flex-col overflow-hidden">
+                                            {/* Header */}
+                                            <div className="px-8 py-4 border-b border-white/10 shrink-0 flex items-center justify-between">
+                                                <p className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">出圖結果 // RESULT</p>
+                                                <div className="flex gap-4">
+                                                    <button onClick={() => { setNarrativeStep(1); setDiary(null); setGeneratedImageUrl(null); setIgCaption(''); setFbCaption(''); setThreadsCaption(''); setCarouselImages([]); setCarouselMode(false); }}
+                                                        className="text-[8px] text-gray-600 hover:text-gray-400 transition-colors">← 換場景</button>
+                                                    <button onClick={() => setNarrativeStep(2)}
+                                                        className="text-[8px] text-gray-600 hover:text-gray-400 transition-colors">← 換服裝</button>
+                                                    <button onClick={() => { setNarrativeStep(3); setDiary(null); setIgCaption(''); setFbCaption(''); setThreadsCaption(''); }}
+                                                        className="text-[8px] text-gray-600 hover:text-gray-400 transition-colors">← 換設定</button>
+                                                </div>
+                                            </div>
+                                            {/* 50/50 split */}
+                                            <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 overflow-hidden">
+                                                {/* Left: image */}
+                                                <div className="relative flex items-center justify-center bg-black/30 overflow-hidden">
+                                                    <img src={generatedImageUrl} alt="generated"
+                                                        className="max-w-full max-h-full object-contain" />
+                                                    <button onClick={() => setShowLightbox(true)}
+                                                        className="absolute top-3 right-3 px-3 py-1 bg-black/60 backdrop-blur-sm rounded-full text-[8px] font-black text-white uppercase tracking-widest hover:bg-black/80 transition-colors">
+                                                        ↗ 放大
+                                                    </button>
+                                                    {carouselImages.length > 0 && (
+                                                        <div className="absolute bottom-0 left-0 right-0 flex gap-2 overflow-x-auto px-4 py-3 bg-black/60 backdrop-blur-sm">
+                                                            {carouselImages.map((img, i) => (
+                                                                <img key={i} src={img} alt={`v${i+1}`}
+                                                                    className="h-14 w-10 object-cover rounded-lg border border-white/20 shrink-0 cursor-pointer hover:border-[var(--color-gold)] transition-all" />
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                {/* Right: info panel */}
+                                                <div className="flex flex-col gap-4 p-6 border-l border-white/5 overflow-y-auto">
+                                                    {/* Platform caption tabs */}
+                                                    <div className="space-y-2">
+                                                        <div className="flex gap-2">
+                                                            {(['ig', 'fb', 'threads'] as const).map(p => (
+                                                                <button key={p}
+                                                                    onClick={() => void handleCaptionTabClick(p)}
+                                                                    className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest transition-all ${selectedPlatform === p ? 'bg-[var(--color-gold)] text-black' : 'bg-white/5 text-gray-400 hover:text-white'}`}>
+                                                                    {p === 'ig' ? 'Instagram' : p === 'fb' ? 'Facebook' : 'Threads'}
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                        {isLoadingCaption ? (
+                                                            <div className="space-y-2 animate-pulse p-3 bg-white/5 rounded-xl">
+                                                                <div className="h-2 bg-white/10 rounded w-3/4"/>
+                                                                <div className="h-2 bg-white/10 rounded w-full"/>
+                                                                <div className="h-2 bg-white/10 rounded w-2/3"/>
+                                                            </div>
+                                                        ) : (
+                                                            <textarea
+                                                                value={selectedPlatform === 'ig' ? igCaption : selectedPlatform === 'fb' ? fbCaption : threadsCaption}
+                                                                onChange={(e) => {
+                                                                    if (selectedPlatform === 'ig') setIgCaption(e.target.value);
+                                                                    else if (selectedPlatform === 'fb') setFbCaption(e.target.value);
+                                                                    else setThreadsCaption(e.target.value);
+                                                                }}
+                                                                className="w-full h-32 bg-white/5 border border-white/10 rounded-xl p-3 text-[10px] text-gray-200 resize-none outline-none focus:border-[var(--color-gold)]/50 transition-all leading-relaxed"
+                                                                placeholder={selectedPlatform === 'ig' ? 'IG 文案生成中...' : '點擊上方標籤生成平台文案'}
+                                                            />
+                                                        )}
+                                                    </div>
+                                                    {/* Outfit */}
+                                                    {confirmedOutfitId && (
+                                                        <div className="space-y-1">
+                                                            <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest">服裝造型</p>
+                                                            <p className="text-[10px] font-black text-white">
+                                                                {STYLE_ARCHETYPE_MAP[([...(pickerOutfitOptions?.alternatives || []), pickerOutfitOptions?.topPick].find((o: any) => o?.outfit_id === confirmedOutfitId) as any)?.style_archetype || ''] || '已選服裝'}
+                                                            </p>
+                                                        </div>
+                                                    )}
+                                                    {/* Shoot specs */}
+                                                    <div className="grid grid-cols-4 gap-2 p-3 bg-white/5 rounded-xl">
+                                                        {[
+                                                            { label: '比例', value: aspectRatio },
+                                                            { label: '畫質', value: quality },
+                                                            { label: '視角', value: isPOV ? 'POV' : '3RD' },
+                                                            { label: '場景', value: (confirmedScene?.name_zh || '—').slice(0,5) },
+                                                        ].map(c => (
+                                                            <div key={c.label} className="flex flex-col items-center gap-1">
+                                                                <span className="text-[7px] text-gray-600 font-black uppercase tracking-widest">{c.label}</span>
+                                                                <span className="text-[9px] text-white font-bold truncate w-full text-center">{c.value}</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                    {/* 2×2 action buttons */}
+                                                    <div className="grid grid-cols-2 gap-2">
+                                                        <button onClick={() => { const a = document.createElement('a'); a.href = generatedImageUrl!; a.download = `${model.name || 'pavora'}-${Date.now()}.jpg`; a.click(); }}
+                                                            className="py-3 text-[9px] font-black uppercase tracking-widest rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/30 transition-all">
+                                                            ↓ 儲存影像
+                                                        </button>
+                                                        <button
+                                                            onClick={() => void handleGenerateCarouselVariation('surprise')}
+                                                            disabled={isGeneratingVariation}
+                                                            className="py-3 text-[9px] font-black uppercase tracking-widest rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:border-white/30 disabled:opacity-40 transition-all">
+                                                            {isGeneratingVariation ? '生成中...' : '↺ 再生一張'}
+                                                        </button>
+                                                        <button
+                                                            onClick={() => { setNarrativeStep(3); setDiary(null); setIgCaption(''); setFbCaption(''); setThreadsCaption(''); setCarouselImages([]); setCarouselMode(false); }}
+                                                            className="py-3 text-[9px] font-black uppercase tracking-widest rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:border-white/30 transition-all">
+                                                            ✎ 繼續故事
+                                                        </button>
+                                                        <button onClick={() => handleFinish()} disabled={isExtractingMem}
+                                                            className="py-3 text-[9px] font-black uppercase tracking-widest rounded-xl bg-[var(--color-gold)]/20 border border-[var(--color-gold)]/50 text-[var(--color-gold)] hover:bg-[var(--color-gold)]/30 disabled:opacity-40 transition-all">
+                                                            {isExtractingMem ? '記憶中...' : '→ IP 休息室'}
+                                                        </button>
+                                                    </div>
+                                                    {/* Carousel variation selector */}
+                                                    {carouselMode && (
+                                                        <div className="space-y-2">
+                                                            <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest">輪播變化方向</p>
+                                                            <div className="grid grid-cols-4 gap-1.5">
+                                                                {([
+                                                                    { type: 'pose', label: '換姿勢' },
+                                                                    { type: 'expression', label: '換表情' },
+                                                                    { type: 'angle', label: '換角度' },
+                                                                    { type: 'surprise', label: 'AI 隨機' },
+                                                                ] as const).map(v => (
+                                                                    <button key={v.type}
+                                                                        onClick={() => void handleGenerateCarouselVariation(v.type)}
+                                                                        disabled={isGeneratingVariation}
+                                                                        className="py-2 text-[8px] font-black uppercase rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:border-[var(--color-gold)]/40 hover:text-white disabled:opacity-40 transition-all">
+                                                                        {v.label}
+                                                                    </button>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            {/* Lightbox */}
+                                            {showLightbox && (
+                                                <div className="fixed inset-0 z-50 bg-black/95"
+                                                    onClick={(e) => { if (e.target === e.currentTarget) setShowLightbox(false); }}>
+                                                    <button onClick={() => setShowLightbox(false)}
+                                                        className="absolute top-4 right-4 z-10 text-gray-400 hover:text-white text-2xl font-light w-10 h-10 flex items-center justify-center transition-colors">✕</button>
+                                                    <button onClick={initLightboxCenter}
+                                                        className="absolute bottom-4 right-4 z-10 text-[8px] font-black text-gray-500 hover:text-white uppercase tracking-widest transition-colors">重置</button>
+                                                    <div ref={lbContainerRef}
+                                                        className="relative w-full h-full overflow-hidden cursor-grab active:cursor-grabbing select-none">
+                                                        <img ref={lbImgRef} src={generatedImageUrl} alt="lightbox"
+                                                            className="absolute left-0 top-0 max-w-none"
+                                                            style={{ transformOrigin: '0 0' }}
+                                                            draggable={false} />
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+
                                     {/* Ambient Matrix Grid - Phase 3 Visual */}
                                     <div className="absolute inset-0 pointer-events-none opacity-20 overflow-hidden">
                                         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:45px_45px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
@@ -1178,7 +1748,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                 <motion.button
                                                                     whileHover={{ scale: 1.05, y: -2 }}
                                                                     whileTap={{ scale: 0.95 }}
-                                                                    onClick={() => { setShowScenePicker(true); void drawPickerSceneCards(); }}
+                                                                    onClick={() => setNarrativeStep(1)}
                                                                     className="text-[10px] text-[var(--color-gold)] font-black uppercase tracking-[0.2em] border-b border-[var(--color-gold)]/40 hover:border-[var(--color-gold)] transition-all flex items-center gap-2"
                                                                 >
                                                                     <span>✨</span> {eventInput.trim() ? '更換場景' : '選場景'}
@@ -1186,7 +1756,29 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                             </div>
                                                         </div>
 
-                                                        {/* Step Indicator & Status Hint */}
+                                                        {/* Step 3 確認摘要：已選場景 + 服裝 */}
+                                        {confirmedScene && (
+                                            <div className="flex flex-wrap items-center gap-2 px-1 pb-2">
+                                                <span className="px-3 py-1 bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/30 rounded-full text-[9px] text-[var(--color-gold)] font-black">
+                                                    📍 {confirmedScene.name_zh}
+                                                </span>
+                                                {confirmedOutfitId && (
+                                                    <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[9px] text-gray-300 font-bold">
+                                                        👗 已選服裝
+                                                    </span>
+                                                )}
+                                                <button onClick={() => setNarrativeStep(2)}
+                                                    className="text-[8px] text-gray-600 hover:text-gray-400 transition-colors">
+                                                    ← 換服裝
+                                                </button>
+                                                <button onClick={() => setNarrativeStep(1)}
+                                                    className="text-[8px] text-gray-600 hover:text-gray-400 transition-colors">
+                                                    ← 換場景
+                                                </button>
+                                            </div>
+                                        )}
+
+                                        {/* Step Indicator & Status Hint */}
                                                         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 px-6 py-4 bg-black/20 rounded-[1.5rem] border border-white/5 backdrop-blur-lg">
                                                             <div className="flex items-center gap-2 shrink-0">
                                                                 <div className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest ${!eventInput.trim() ? 'bg-gray-600 text-white' : !diary ? 'bg-[var(--color-gold)] text-black' : 'bg-emerald-500 text-black'}`}>
@@ -1231,7 +1823,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                         <motion.button 
                                             whileHover={!eventInput.trim() || isGenerating ? {} : { scale: 1.02 }}
                                             whileTap={!eventInput.trim() || isGenerating ? {} : { scale: 0.98 }}
-                                            onClick={() => handleGenerateDiary(previewScene?.scene_id, undefined, previewOutfit?.outfit_id)} 
+                                            onClick={() => handleGenerateDiary(confirmedScene?.scene_id, eventInput, confirmedOutfitId || model.preferences?.active_outfit_id)} 
                                             disabled={!eventInput.trim() || isGenerating}
                                                             className={`w-full py-5 text-[12px] font-black tracking-[0.5em] uppercase rounded-3xl transition-all duration-300 ${
                                                                 !eventInput.trim() || isGenerating
@@ -1300,7 +1892,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                 className="space-y-8 lg:border-l lg:border-white/5 lg:pl-10"
                                             >
                                                 {/* P3-3: Step 3 CTA — 影像就緒行動區 */}
-                                                {narrativeStep === 3 && generatedImageUrl && (
+                                                {narrativeStep === 5 && generatedImageUrl && (
                                                     <div className="p-5 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl space-y-3">
                                                         <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest text-center">✨ 影像就緒 // IMAGE READY</p>
                                                         <Button
@@ -1652,171 +2244,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                 </AnimatePresence>
             </motion.div>
 
-            {/* ── Scene Picker Modal ─────────────────────────────── */}
-            {showScenePicker && (
-                <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex flex-col">
-                    {/* Header */}
-                    <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 shrink-0">
-                        <div>
-                            <p className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">選場景 // SCENE SELECT</p>
-                            <p className="text-[8px] text-gray-500 uppercase tracking-widest mt-0.5">選擇今日拍攝場景</p>
-                        </div>
-                        <button onClick={() => setShowScenePicker(false)} className="text-gray-500 hover:text-white text-lg font-light transition-colors w-8 h-8 flex items-center justify-center">✕</button>
-                    </div>
 
-                    {/* Filters */}
-                    <div className="px-6 py-3 border-b border-white/5 space-y-2 shrink-0">
-                        <div className="flex items-center gap-2 flex-wrap">
-                            <span className="text-[8px] text-gray-600 uppercase tracking-widest w-8 shrink-0">地區</span>
-                            {SCENE_PICKER_REGIONS.map(r => (
-                                <button key={String(r.value)} onClick={() => { setPickerRegion(r.value); void drawPickerSceneCards(r.value, pickerCategory); }}
-                                    className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wide transition-all ${pickerRegion === r.value ? 'bg-[var(--color-gold)] text-black' : 'bg-white/5 text-gray-400 hover:text-white'}`}>
-                                    {r.label}
-                                </button>
-                            ))}
-                        </div>
-                        <div className="flex items-center gap-2 flex-wrap">
-                            <span className="text-[8px] text-gray-600 uppercase tracking-widest w-8 shrink-0">類別</span>
-                            {SCENE_PICKER_CATEGORIES.map(c => (
-                                <button key={String(c.value)} onClick={() => { setPickerCategory(c.value); void drawPickerSceneCards(pickerRegion, c.value); }}
-                                    className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wide transition-all ${pickerCategory === c.value ? 'bg-[var(--color-gold)] text-black' : 'bg-white/5 text-gray-400 hover:text-white'}`}>
-                                    {c.label}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Scene Cards */}
-                    <div className="flex-1 overflow-y-auto p-6">
-                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                            {pickerSceneCards.map((card) => {
-                                const of = (card.scene as any).outfit_filter as string[] || [];
-                                const nonUrban = of.filter((x: string) => x !== 'urban_street');
-                                const primaryCtx = nonUrban[0] || of[0] || '';
-                                const ctxLabel: Record<string,string> = {
-                                    beach_island:'海岸泳池', mountain_outdoor:'山林田野', rural_field:'田野',
-                                    cafe_aesthetic:'咖啡日常', temple_old_town:'文化廟町', festival_event:'節慶',
-                                    urban_street:'城市街頭', shopping_random:'購物', night_market:'夜市',
-                                    travel_journey:'旅途移動', home_cozy:'居家', office_pro:'職場',
-                                };
-                                const regionLabel: Record<string,string> = { north:'北部', central:'中部', south:'南部', east:'東部', islands:'外島', all:'全台' };
-                                return (
-                                    <div key={card.scene.scene_id}
-                                        onClick={() => setPickerSelectedScene(card.scene)}
-                                        className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-4 flex flex-col gap-2 cursor-pointer hover:border-[var(--color-gold)]/40 hover:bg-white/5 transition-all active:scale-[0.98]">
-                                        <div className="flex items-start justify-between gap-1">
-                                            <p className="text-[11px] font-black text-white leading-tight">{card.scene.name_zh}</p>
-                                            <span className="text-[7px] font-bold text-gray-500 bg-white/5 px-2 py-0.5 rounded-full shrink-0">{regionLabel[(card.scene as any).region] || '全台'}</span>
-                                        </div>
-                                        <p className="text-[9px] text-gray-400 leading-relaxed line-clamp-3">{card.eventText.slice(0,60)}{card.eventText.length>60?'…':''}</p>
-                                        <p className="text-[8px] text-gray-600 font-bold uppercase tracking-widest mt-auto">{ctxLabel[primaryCtx] || primaryCtx}</p>
-                                    </div>
-                                );
-                            })}
-                            {/* AI Card */}
-                            <div className="bg-[var(--color-bg-card)] border border-[var(--color-gold)]/30 rounded-xl p-4 flex flex-col gap-2 cursor-pointer hover:border-[var(--color-gold)]/60 hover:bg-white/5 transition-all active:scale-[0.98]"
-                                onClick={() => pickerAICard && setPickerSelectedScene(pickerAICard.scene)}>
-                                <div className="flex items-center gap-1.5">
-                                    <span className="text-[8px] font-black text-[var(--color-gold)] uppercase tracking-widest">✨ AI 推薦</span>
-                                </div>
-                                {isLoadingAICard ? (
-                                    <div className="space-y-2 animate-pulse flex-1">
-                                        <div className="h-2.5 bg-white/10 rounded-full w-3/4"/>
-                                        <div className="h-2 bg-white/5 rounded-full w-full"/>
-                                        <div className="h-2 bg-white/5 rounded-full w-2/3"/>
-                                    </div>
-                                ) : pickerAICard ? (
-                                    <>
-                                        <p className="text-[11px] font-black text-white leading-tight">{pickerAICard.scene.name_zh}</p>
-                                        <p className="text-[9px] text-gray-400 leading-relaxed line-clamp-3">{pickerAICard.eventText.slice(0,60)}{pickerAICard.eventText.length>60?'…':''}</p>
-                                    </>
-                                ) : (
-                                    <p className="text-[9px] text-gray-600 italic">感應中...</p>
-                                )}
-                            </div>
-                        </div>
-                        {/* Refresh */}
-                        <div className="flex justify-end mt-4">
-                            <button onClick={() => void drawPickerSceneCards()}
-                                className="text-[9px] text-gray-500 hover:text-white font-black uppercase tracking-widest flex items-center gap-1.5 transition-colors">
-                                <span>↺</span> 換一批
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* ── Layer 2: Outfit Selection ───────────────── */}
-                    {pickerSelectedScene && (
-                        <div className="absolute inset-0 z-10 bg-black/95 flex flex-col">
-                            {/* Layer 2 Header */}
-                            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 shrink-0">
-                                <div className="flex items-center gap-4">
-                                    <button
-                                        onClick={() => { setPickerSelectedScene(null); setPickerOutfitOptions(null); }}
-                                        className="text-[9px] text-gray-400 hover:text-white font-black uppercase tracking-widest flex items-center gap-1.5 transition-colors">
-                                        ← 返回場景
-                                    </button>
-                                    <div className="w-px h-4 bg-white/20"/>
-                                    <div>
-                                        <p className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">選服裝 // OUTFIT SELECT</p>
-                                        <p className="text-[8px] text-gray-500 mt-0.5 truncate max-w-48">{pickerSelectedScene?.name_zh}</p>
-                                    </div>
-                                </div>
-                                <button onClick={() => setShowScenePicker(false)} className="text-gray-500 hover:text-white text-lg font-light transition-colors w-8 h-8 flex items-center justify-center">✕</button>
-                            </div>
-
-                            {/* Outfit Cards */}
-                            <div className="flex-1 overflow-y-auto p-6">
-                                {!pickerOutfitOptions ? (
-                                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 animate-pulse">
-                                        {[0,1,2,3].map(i => (
-                                            <div key={i} className="bg-white/5 rounded-xl h-32"/>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                                        {pickerOutfitOptions.alternatives.map((outfit: any) => (
-                                            <div key={outfit.outfit_id}
-                                                onClick={() => void confirmSceneOutfit(pickerSelectedScene, outfit)}
-                                                className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-4 flex flex-col gap-2 cursor-pointer hover:border-[var(--color-gold)]/40 hover:bg-white/5 transition-all active:scale-[0.98]">
-                                                <p className="text-[11px] font-black text-white leading-tight">
-                                                    {STYLE_ARCHETYPE_MAP[outfit.style_archetype] || outfit.style_archetype}
-                                                </p>
-                                                <p className="text-[9px] text-gray-400 leading-relaxed line-clamp-2">
-                                                    {buildStructuredOutfitLabel(outfit.pillars?.top || '', 'top')}
-                                                    {outfit.pillars?.bottom ? ` · ${buildStructuredOutfitLabel(outfit.pillars.bottom, 'bottom')}` : ''}
-                                                </p>
-                                                <p className="text-[8px] text-gray-600 font-bold uppercase tracking-widest mt-auto">Tier {outfit.aesthetic_tier}</p>
-                                            </div>
-                                        ))}
-                                        {/* AI Recommended (topPick) */}
-                                        <div
-                                            onClick={() => void confirmSceneOutfit(pickerSelectedScene, pickerOutfitOptions.topPick)}
-                                            className="bg-[var(--color-bg-card)] border border-[var(--color-gold)]/30 rounded-xl p-4 flex flex-col gap-2 cursor-pointer hover:border-[var(--color-gold)]/60 hover:bg-white/5 transition-all active:scale-[0.98]">
-                                            <span className="text-[8px] font-black text-[var(--color-gold)] uppercase tracking-widest">✨ AI 推薦</span>
-                                            <p className="text-[11px] font-black text-white leading-tight">
-                                                {STYLE_ARCHETYPE_MAP[pickerOutfitOptions.topPick.style_archetype] || pickerOutfitOptions.topPick.style_archetype}
-                                            </p>
-                                            <p className="text-[9px] text-gray-400 leading-relaxed line-clamp-2">
-                                                {buildStructuredOutfitLabel(pickerOutfitOptions.topPick.pillars?.top || '', 'top')}
-                                                {pickerOutfitOptions.topPick.pillars?.bottom ? ` · ${buildStructuredOutfitLabel(pickerOutfitOptions.topPick.pillars.bottom, 'bottom')}` : ''}
-                                            </p>
-                                            <p className="text-[8px] text-gray-600 font-bold uppercase tracking-widest mt-auto">Tier {pickerOutfitOptions.topPick.aesthetic_tier}</p>
-                                        </div>
-                                    </div>
-                                )}
-                                {/* Skip */}
-                                <div className="flex justify-center mt-6">
-                                    <button
-                                        onClick={() => void confirmSceneOutfit(pickerSelectedScene, null)}
-                                        className="text-[9px] text-gray-600 hover:text-gray-400 transition-colors underline-offset-2 hover:underline">
-                                        略過，自動搭配
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            )}
         </div>
     );
 };
