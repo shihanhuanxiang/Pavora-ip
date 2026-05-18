@@ -1259,12 +1259,37 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                             : 
                                 <motion.div
                                     key="main-workflow"
-                                    initial={{ opacity: 0, filter: 'blur(10px)' }}
-                                    animate={{ opacity: 1, filter: 'blur(0px)' }}
-                                    exit={{ opacity: 0, filter: 'blur(10px)' }}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
                                     className="p-12 space-y-10 relative min-h-full overflow-y-auto custom-scrollbar"
                                 >
                                     {/* ── Step 1：選場景 ─────────────────────────────── */}
+                                    {/* ── 步驟進度條（Step 3 可見，其他 Step overlay 蓋住） ── */}
+                                    <div className="flex items-center justify-between px-6 py-3 border-b border-white/5 shrink-0">
+                                        <div className="flex items-center gap-1.5">
+                                            {[
+                                                { step: 1, label: '選場景' },
+                                                { step: 2, label: '選服裝' },
+                                                { step: 3, label: '確認設定' },
+                                                { step: 4, label: '劇本審閱' },
+                                                { step: 5, label: '出圖結果' }
+                                            ].map((s, i) => (
+                                                <div key={s.step} className="flex items-center">
+                                                    <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full transition-all ${narrativeStep === s.step ? 'bg-[var(--color-gold)]/10 text-[var(--color-gold)]' : (narrativeStep > s.step ? 'text-emerald-500' : 'text-gray-600')}`}>
+                                                        <span className="text-[10px] font-black italic">{s.step < narrativeStep ? '✓' : `0${s.step}`}</span>
+                                                        <span className="text-[9px] font-black uppercase tracking-widest">{s.label}</span>
+                                                    </div>
+                                                    {i < 4 && <div className="w-2 h-px bg-white/5 mx-1" />}
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div className="flex items-center gap-4">
+                                            <div className="h-4 w-px bg-white/10" />
+                                            <p className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">靈魂敘事系統 // V1.0</p>
+                                        </div>
+                                    </div>
+
                                     {narrativeStep === 1 && (
                                         <div className="absolute inset-0 bg-[var(--color-bg-surface)]/98 backdrop-blur-sm overflow-y-auto z-20 flex flex-col">
                                             {/* Header */}
@@ -1332,14 +1357,18 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                     <span className="text-[9px] font-bold text-gray-500 bg-white/5 px-2 py-0.5 rounded-full">{regionLabel[(card.scene as any).region] || '全台'}</span>
                                                                     {ctxLabel[primaryCtx] && <span className="text-[9px] font-bold text-gray-500 bg-white/5 px-2 py-0.5 rounded-full">{ctxLabel[primaryCtx]}</span>}
                                                                 </div>
-                                                                {/* 場景名稱（靠上，推底部往下） */}
-                                                                <p className="text-[16px] font-black text-white leading-tight mb-auto">{card.scene.name_zh}</p>
-                                                                {/* 分隔線 + 事件描述（完整內容） */}
-                                                                <div className="mt-4">
-                                                                    <div className="border-t border-[var(--color-gold)]/10 mb-3" />
-                                                                    <p className="text-[11px] text-gray-400 leading-relaxed mb-3">{card.eventText}</p>
-                                                                    <p className="text-[9px] text-[var(--color-gold)]/50 font-bold uppercase tracking-widest">{ctxLabel[primaryCtx] || primaryCtx}</p>
-                                                                </div>
+                                                                {/* 場景名稱 */}
+                                                                <p className="text-[16px] font-black text-white leading-tight mb-2">{card.scene.name_zh}</p>
+                                                                {/* 分隔線 */}
+                                                                <div className="border-t border-[var(--color-gold)]/10 mt-1 mb-3" />
+                                                                {/* 事件描述：無內容或等同標題時顯示佔位 */}
+                                                                <p className="text-[11px] text-gray-400 leading-relaxed flex-1">
+                                                                    {card.eventText && card.eventText !== card.scene.name_zh
+                                                                        ? card.eventText
+                                                                        : <span className="text-gray-600 italic">✦ 點擊進入場景</span>
+                                                                    }
+                                                                </p>
+                                                                <p className="text-[9px] text-[var(--color-gold)]/50 font-bold uppercase tracking-widest mt-3">{ctxLabel[primaryCtx] || primaryCtx}</p>
                                                             </div>
                                                         );
                                                     })}
@@ -1358,12 +1387,10 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                             </div>
                                                         ) : pickerAICardScene ? (
                                                             <>
-                                                                <p className="text-[16px] font-black text-white leading-tight mb-auto">{pickerAICardScene.name_zh}</p>
-                                                                <div className="mt-4">
-                                                                    <div className="border-t border-[var(--color-gold)]/10 mb-3" />
-                                                                    <p className="text-[11px] text-gray-400 leading-relaxed mb-3">{pickerAICardText}</p>
-                                                                    <p className="text-[9px] text-[var(--color-gold)]/50 font-bold uppercase tracking-widest">靈魂導向</p>
-                                                                </div>
+                                                                <p className="text-[16px] font-black text-white leading-tight mb-2">{pickerAICardScene.name_zh}</p>
+                                                                <div className="border-t border-[var(--color-gold)]/10 mt-1 mb-3" />
+                                                                <p className="text-[11px] text-gray-400 leading-relaxed flex-1">{pickerAICardText}</p>
+                                                                <p className="text-[9px] text-[var(--color-gold)]/50 font-bold uppercase tracking-widest mt-3">靈魂導向</p>
                                                             </>
                                                         ) : (
                                                             <>
@@ -1407,36 +1434,60 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                     {pickerOutfitOptions.alternatives.map((outfit: any) => (
                                                         <div key={outfit.outfit_id}
                                                             onClick={() => confirmSceneOutfit(confirmedScene, outfit.outfit_id)}
-                                                            className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-4 flex flex-col gap-2 cursor-pointer hover:border-[var(--color-gold)]/40 hover:bg-white/5 transition-all active:scale-[0.98]">
-                                                            <p className="text-[11px] font-black text-white leading-tight">
+                                                            className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-[14px] p-3.5 flex flex-col cursor-pointer hover:border-[var(--color-gold)]/40 hover:bg-white/5 transition-all active:scale-[0.98] min-h-[240px]">
+                                                            <p className="text-[16px] font-black text-white leading-tight mb-2">
                                                                 {STYLE_ARCHETYPE_MAP[outfit.style_archetype] || outfit.style_archetype}
                                                             </p>
-                                                            <div className="flex flex-wrap gap-1 mt-0.5">
+                                                            <div className="border-t border-[var(--color-gold)]/10 mt-1 mb-3" />
+                                                            <div className="flex flex-col gap-1.5 flex-1">
                                                                 {(['top','bottom','shoes','accessories'] as const).map(k =>
                                                                     outfit.pillars?.[k] ? (
-                                                                        <span key={k} className="text-[8px] text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">{outfit.pillars[k]}</span>
+                                                                        <div key={k} className="flex items-start gap-1.5">
+                                                                            <span className="text-[9px] font-bold text-[var(--color-gold)]/60 shrink-0 w-6">
+                                                                                {k === 'top' ? '上身' : k === 'bottom' ? '下身' : k === 'shoes' ? '鞋款' : '配件'}
+                                                                            </span>
+                                                                            <span className="text-[10px] text-gray-400 leading-relaxed">{outfit.pillars[k]}</span>
+                                                                        </div>
                                                                     ) : null
                                                                 )}
                                                             </div>
-                                                            <p className="text-[8px] text-gray-600 font-bold uppercase tracking-widest mt-auto">{outfit.season}</p>
+                                                            <p className="text-[9px] text-[var(--color-gold)]/50 font-bold uppercase tracking-widest mt-3">
+                                                                {outfit.season?.toLowerCase() === 'summer' ? '夏季' : 
+                                                                 outfit.season?.toLowerCase() === 'winter' ? '冬季' : 
+                                                                 outfit.season?.toLowerCase() === 'spring' ? '春季' : 
+                                                                 (outfit.season?.toLowerCase() === 'fall' || outfit.season?.toLowerCase() === 'autumn' || outfit.season?.toLowerCase() === 'spring_autumn') ? '秋季' : 
+                                                                 outfit.season?.toLowerCase() === 'all' ? '全年' : outfit.season}
+                                                            </p>
                                                         </div>
                                                     ))}
                                                     {/* AI 推薦（topPick） */}
                                                     <div
                                                         onClick={() => confirmSceneOutfit(confirmedScene, pickerOutfitOptions.topPick.outfit_id)}
-                                                        className="bg-[var(--color-bg-card)] border border-[var(--color-gold)]/30 rounded-xl p-4 flex flex-col gap-2 cursor-pointer hover:border-[var(--color-gold)]/60 hover:bg-white/5 transition-all active:scale-[0.98]">
-                                                        <span className="text-[8px] font-black text-[var(--color-gold)] uppercase tracking-widest">✦ AI 推薦</span>
-                                                        <p className="text-[11px] font-black text-white leading-tight">
+                                                        className="bg-[var(--color-bg-card)] border border-[var(--color-gold)]/30 rounded-[14px] p-3.5 flex flex-col cursor-pointer hover:border-[var(--color-gold)]/60 hover:bg-white/5 transition-all active:scale-[0.98] min-h-[240px]">
+                                                        <span className="text-[9px] font-black text-[var(--color-gold)] uppercase tracking-widest mb-2">✦ AI 推薦</span>
+                                                        <p className="text-[16px] font-black text-white leading-tight mb-2">
                                                             {STYLE_ARCHETYPE_MAP[pickerOutfitOptions.topPick.style_archetype] || pickerOutfitOptions.topPick.style_archetype}
                                                         </p>
-                                                        <div className="flex flex-wrap gap-1 mt-0.5">
+                                                        <div className="border-t border-[var(--color-gold)]/10 mt-1 mb-3" />
+                                                        <div className="flex flex-col gap-1.5 flex-1">
                                                             {(['top','bottom','shoes','accessories'] as const).map(k =>
                                                                 pickerOutfitOptions.topPick.pillars?.[k] ? (
-                                                                    <span key={k} className="text-[8px] text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">{pickerOutfitOptions.topPick.pillars[k]}</span>
+                                                                    <div key={k} className="flex items-start gap-1.5">
+                                                                        <span className="text-[9px] font-bold text-[var(--color-gold)]/60 shrink-0 w-6">
+                                                                            {k === 'top' ? '上身' : k === 'bottom' ? '下身' : k === 'shoes' ? '鞋款' : '配件'}
+                                                                        </span>
+                                                                        <span className="text-[10px] text-gray-400 leading-relaxed">{pickerOutfitOptions.topPick.pillars[k]}</span>
+                                                                    </div>
                                                                 ) : null
                                                             )}
                                                         </div>
-                                                        <p className="text-[8px] text-gray-600 font-bold uppercase tracking-widest mt-auto">{pickerOutfitOptions.topPick.season}</p>
+                                                        <p className="text-[9px] text-[var(--color-gold)]/50 font-bold uppercase tracking-widest mt-3">
+                                                            {pickerOutfitOptions.topPick.season?.toLowerCase() === 'summer' ? '夏季' : 
+                                                             pickerOutfitOptions.topPick.season?.toLowerCase() === 'winter' ? '冬季' : 
+                                                             pickerOutfitOptions.topPick.season?.toLowerCase() === 'spring' ? '春季' : 
+                                                             (pickerOutfitOptions.topPick.season?.toLowerCase() === 'fall' || pickerOutfitOptions.topPick.season?.toLowerCase() === 'autumn' || pickerOutfitOptions.topPick.season?.toLowerCase() === 'spring_autumn') ? '秋季' : 
+                                                             pickerOutfitOptions.topPick.season?.toLowerCase() === 'all' ? '全年' : pickerOutfitOptions.topPick.season}
+                                                        </p>
                                                     </div>
                                                 </div>
                                                 {/* Skip */}
@@ -1715,554 +1766,157 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                     )}
                                                 </div>
                                             </div>
-                                            {/* Lightbox */}
-                                            {showLightbox && (
-                                                <div className="fixed inset-0 z-50 bg-black/95"
-                                                    onClick={(e) => { if (e.target === e.currentTarget) setShowLightbox(false); }}>
-                                                    <button onClick={() => setShowLightbox(false)}
-                                                        className="absolute top-4 right-4 z-10 text-gray-400 hover:text-white text-2xl font-light w-10 h-10 flex items-center justify-center transition-colors">✕</button>
-                                                    <button onClick={initLightboxCenter}
-                                                        className="absolute bottom-4 right-4 z-10 text-[8px] font-black text-gray-500 hover:text-white uppercase tracking-widest transition-colors">重置</button>
-                                                    <div ref={lbContainerRef}
-                                                        className="relative w-full h-full overflow-hidden cursor-grab active:cursor-grabbing select-none">
-                                                        <img ref={lbImgRef} src={generatedImageUrl} alt="lightbox"
-                                                            className="absolute left-0 top-0 max-w-none"
-                                                            style={{ transformOrigin: '0 0' }}
-                                                            draggable={false} />
-                                                    </div>
-                                                </div>
-                                            )}
                                         </div>
                                     )}
 
-                                    {/* Ambient Matrix Grid - Phase 3 Visual */}
-                                    <div className="absolute inset-0 pointer-events-none opacity-20 overflow-hidden">
-                                        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:45px_45px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
-                                        <motion.div 
-                                            animate={{ y: [0, 1000] }}
-                                            transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-                                            className="absolute top-0 left-0 right-0 h-[250px] bg-gradient-to-b from-transparent via-[var(--color-gold)]/5 to-transparent opacity-40 shadow-[0_40px_40px_rgba(212,175,55,0.02)]"
-                                        />
-                                    </div>
+                                    {/* ── Step 3：核心敘事編寫 (當非 Overlay 時呈現) ── */}
+                                    {narrativeStep === 3 && (
+                                        <div className="relative z-10 flex flex-col gap-6 p-8 flex-1 overflow-y-auto">
+                                            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                                                <div className="lg:col-span-3 space-y-6">
+                                                    <div className="grid grid-cols-2 gap-4">
+                                                        {/* 場景確認 */}
+                                                        <div className="group relative bg-[var(--color-bg-card)]/40 border border-[var(--color-border)] rounded-[2rem] p-5 hover:border-[var(--color-gold)]/30 transition-all">
+                                                            <div className="flex justify-between items-start mb-3">
+                                                                <span className="text-[8px] font-black text-gray-500 uppercase tracking-widest">當前場景 // SCENE</span>
+                                                                <button onClick={() => setNarrativeStep(1)} className="text-[8px] font-black text-[var(--color-gold)] uppercase tracking-widest hover:underline">← 更換</button>
+                                                            </div>
+                                                            <p className="text-[15px] font-black text-white leading-tight mb-1">{confirmedScene?.name_zh || '尚未選擇'}</p>
+                                                            <p className="text-[10px] text-gray-500 uppercase tracking-widest">
+                                                                {(confirmedScene as any)?.city === 'any' ? '全台通用' : (confirmedScene as any)?.city || '—'} · {(confirmedScene as any)?.category || '一般'}
+                                                            </p>
+                                                        </div>
 
-                                    <div className="relative z-10 flex flex-col gap-8 pb-16 text-left">
-                                        <motion.div
-                                            initial={{ opacity: 0, scale: 0.98 }}
-                                            animate={{ opacity: 1, scale: 1 }}
-                                            transition={{ delay: 0.2 }}
-                                            className="grid grid-cols-2 lg:grid-cols-4 gap-8 p-8 bg-[var(--color-bg-card)]/40 rounded-[3rem] border border-[var(--color-border)] backdrop-blur-xl shadow-2xl"
-                                        >
-                                            <div className="space-y-1.5 border-r border-[var(--color-border)] pr-6">
-                                                <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black">人格內核 // MBTI</p>
-                                                <p className="text-base text-[var(--color-gold)] font-black italic">{model.persona?.mbti || 'N/A'}</p>
-                                            </div>
-                                            <div className="space-y-1.5 border-r border-[var(--color-border)] px-6">
-                                                <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black">核心氛圍 // VIBE</p>
-                                                <p className="text-base text-[var(--color-text-title)] font-black uppercase tracking-tight">{model.persona?.coreVibe || 'Standard'}</p>
-                                            </div>
-                                            <div className="space-y-1.5 border-r border-[var(--color-border)] px-6">
-                                                <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black">主力足跡 // CITY</p>
-                                                <p className="text-base text-[var(--color-text-title)] font-bold">{model.lifeCircuit?.primaryCity || 'Global'}</p>
-                                            </div>
-                                            <div className="space-y-1.5 pl-6">
-                                                <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black">生理對齊 // PHYS-SYNC</p>
-                                                <p className="text-base text-emerald-500 font-black flex items-center gap-3">
-                                                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.6)] animate-pulse"></span>
-                                                    已上線 // ACTIVE
-                                                </p>
-                                            </div>
-                                        </motion.div>
+                                                        {/* 服裝確認 */}
+                                                        <div className="group relative bg-[var(--color-bg-card)]/40 border border-[var(--color-border)] rounded-[2rem] p-5 hover:border-blue-500/20 transition-all">
+                                                            <div className="flex justify-between items-start mb-3">
+                                                                <span className="text-[8px] font-black text-gray-500 uppercase tracking-widest">當前服裝 // OUTFIT</span>
+                                                                <button onClick={() => setNarrativeStep(2)} className="text-[8px] font-black text-blue-400 uppercase tracking-widest hover:underline">← 更換</button>
+                                                            </div>
+                                                            <p className="text-[15px] font-black text-white leading-tight mb-1">
+                                                                {confirmedOutfitId ? (STYLE_ARCHETYPE_MAP[([...(pickerOutfitOptions?.alternatives || []), pickerOutfitOptions?.topPick].find((o: any) => o?.outfit_id === confirmedOutfitId) as any)?.style_archetype || ''] || '已選服裝') : '自動搭配'}
+                                                            </p>
+                                                            <div className="flex flex-wrap gap-1 mt-2">
+                                                                {(() => {
+                                                                    const outfit = [...(pickerOutfitOptions?.alternatives || []), pickerOutfitOptions?.topPick].find((o: any) => o?.outfit_id === confirmedOutfitId) as any;
+                                                                    if (!outfit?.pillars) return <span className="text-[10px] text-gray-600">自動匹配中...</span>;
+                                                                    return [outfit.pillars.top, outfit.pillars.bottom].filter(Boolean).map((item: string, i: number) => (
+                                                                        <span key={i} className="text-[9px] text-gray-500 bg-white/5 border border-white/10 rounded px-1.5 py-0.5">{item}</span>
+                                                                    ));
+                                                                })()}
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
+                                                    {/* 事件描述 textarea */}
+                                                    <div className="group relative">
+                                                        <div className="flex justify-between items-end mb-3 px-1">
+                                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.4em]">敘事起點 // EVENT TRIGGER</label>
+                                                            <span className="text-[8px] text-gray-600 font-mono italic">AI-ASSISTED</span>
+                                                        </div>
+                                                        <textarea
+                                                            className="w-full min-h-[180px] bg-black/5 dark:bg-black/40 border border-black/5 dark:border-white/5 rounded-[2.5rem] p-6 text-sm text-gray-200 focus:border-[var(--color-gold)]/30 transition-all resize-vertical leading-relaxed outline-none"
+                                                            placeholder="描繪此刻的情境..."
+                                                            value={eventInput}
+                                                            onChange={(e) => { setEventInput(e.target.value); setRandomSceneId(null); setSelectedBrief(null); setEventSource('manual'); }}
+                                                        />
+                                                    </div>
+                                                </div>
 
-                                        <div className="order-1 grid grid-cols-1 xl:grid-cols-2 gap-8 pt-0">
-                                            {/* Left: Narrative Decision 敘事決策區 */}
-                                            <div className="space-y-10">
-                                                <motion.div 
-                                                    initial={{ opacity: 0, x: -10 }}
-                                                    animate={{ opacity: 1, x: 0 }}
-                                                    transition={{ delay: 0.3 }}
-                                                    className="space-y-8"
-                                                >
+                                                {/* Right: Visual Production */}
+                                                <div className="space-y-8 lg:border-l lg:border-white/5 lg:pl-10">
                                                     <div className="space-y-6">
-                                                        <div className="flex justify-between items-end">
-                                                            <div className="space-y-1">
-                                                                <div className="flex items-center gap-2">
-                                                                    <div className="w-1 h-3 bg-white/20 rounded-full"></div>
-                                                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.4em]">
-                                                                        當下敘事起點 // EVENT TRIGGER
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                            <div className="flex gap-6 pb-1">
-                                                                <motion.button
-                                                                    whileHover={{ scale: 1.05, y: -2 }}
-                                                                    whileTap={{ scale: 0.95 }}
-                                                                    onClick={() => setNarrativeStep(1)}
-                                                                    className="text-[10px] text-[var(--color-gold)] font-black uppercase tracking-[0.2em] border-b border-[var(--color-gold)]/40 hover:border-[var(--color-gold)] transition-all flex items-center gap-2"
-                                                                >
-                                                                    <span>✨</span> {eventInput.trim() ? '更換場景' : '選場景'}
-                                                                </motion.button>
-                                                            </div>
-                                                        </div>
-
-                                                        {/* Step 3 確認卡：場景 + 服裝雙列 */}
-                                        {confirmedScene && (
-                                            <div className="border border-[var(--color-border)] rounded-2xl overflow-hidden mb-2">
-                                                {/* 場景列 */}
-                                                <div className="flex items-stretch border-b border-[var(--color-border)]">
-                                                    <div className="w-12 flex items-center justify-center bg-[var(--color-gold)]/8 border-r border-[var(--color-border)] shrink-0">
-                                                        <span className="text-[8px] font-black text-[var(--color-gold)] uppercase tracking-widest">場景</span>
-                                                    </div>
-                                                    <div className="flex-1 px-4 py-2.5">
-                                                        <p className="text-[13px] font-black text-[var(--color-text-title)] leading-tight">{confirmedScene.name_zh}</p>
-                                                        <p className="text-[10px] text-gray-500 mt-0.5">
-                                                            {(confirmedScene as any).city !== 'any' ? (confirmedScene as any).city : '全台通用'}
-                                                        </p>
-                                                    </div>
-                                                    <button onClick={() => setNarrativeStep(1)}
-                                                        className="px-4 text-[9px] text-gray-600 hover:text-[var(--color-gold)] font-black transition-colors border-l border-[var(--color-border)] shrink-0">
-                                                        ← 換
-                                                    </button>
-                                                </div>
-                                                {/* 服裝列 */}
-                                                <div className="flex items-stretch">
-                                                    <div className="w-12 flex items-center justify-center bg-blue-500/5 border-r border-[var(--color-border)] shrink-0">
-                                                        <span className="text-[8px] font-black text-blue-400 uppercase tracking-widest">服裝</span>
-                                                    </div>
-                                                    <div className="flex-1 px-4 py-2.5">
-                                                        {confirmedOutfitId ? (
-                                                            <>
-                                                                <p className="text-[12px] font-black text-[var(--color-text-title)] leading-tight">
-                                                                    {STYLE_ARCHETYPE_MAP[([...(pickerOutfitOptions?.alternatives || []), pickerOutfitOptions?.topPick].find((o: any) => o?.outfit_id === confirmedOutfitId) as any)?.style_archetype || ''] || '已選服裝'}
-                                                                </p>
-                                                                <div className="flex flex-wrap gap-1 mt-1">
-                                                                    {(() => {
-                                                                        const outfit = [...(pickerOutfitOptions?.alternatives || []), pickerOutfitOptions?.topPick].find((o: any) => o?.outfit_id === confirmedOutfitId) as any;
-                                                                        if (!outfit?.pillars) return null;
-                                                                        const items = [outfit.pillars.top, outfit.pillars.bottom, outfit.pillars.shoes, ...(outfit.pillars.accessories || [])].filter(Boolean).slice(0, 5);
-                                                                        return items.map((item: string, i: number) => (
-                                                                            <span key={i} className="text-[9px] text-gray-500 bg-white/5 border border-white/10 rounded px-1.5 py-0.5">{item}</span>
-                                                                        ));
-                                                                    })()}
-                                                                </div>
-                                                            </>
-                                                        ) : (
-                                                            <p className="text-[12px] text-gray-500 py-0.5">自動搭配</p>
-                                                        )}
-                                                    </div>
-                                                    <button onClick={() => setNarrativeStep(2)}
-                                                        className="px-4 text-[9px] text-gray-600 hover:text-blue-400 font-black transition-colors border-l border-[var(--color-border)] shrink-0">
-                                                        ← 換
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        )}
-
-                                                        <div className="group relative">
-                                                            <label className="text-[9px] font-black text-gray-500 uppercase tracking-widest block mb-2">事件描述（可調整）</label>
-                                                            <textarea 
-                                                                className="w-full min-h-[220px] bg-black/5 dark:bg-black/40 border border-black/5 dark:border-white/5 rounded-[2.5rem] p-6 text-sm text-gray-800 dark:text-gray-200 focus:border-[var(--color-gold)]/30 focus:shadow-[0_0_40px_rgba(212,175,55,0.05)] transition-all resize-vertical font-medium leading-relaxed outline-none shadow-inner"
-                                                                placeholder="描繪此刻的情境... 靈魂敘事將以此為軸心展開。"
-                                                                value={eventInput}
-                                                                onChange={(e) => {
-                                                                    setEventInput(e.target.value);
-                                                                    setRandomSceneId(null);
-                                                                    setSelectedBrief(null);
-                                                                    setEventSource('manual');
-                                                                }}
-                                                            />
-                                                            <div className="absolute bottom-6 right-6 w-12 h-0.5 bg-gradient-to-r from-transparent to-[var(--color-gold)]/20 opacity-0 group-focus-within:opacity-100 transition-opacity"></div>
-                                        </div>
-                                        <AnimatePresence>
-                                            {eventInput.trim() && previewScene && previewOutfit && !diary && (
-                                                <ShootConfigCard />
-                                            )}
-                                        </AnimatePresence>
-                                        <motion.button 
-                                            whileHover={!eventInput.trim() || isGenerating ? {} : { scale: 1.02 }}
-                                            whileTap={!eventInput.trim() || isGenerating ? {} : { scale: 0.98 }}
-                                            onClick={() => handleGenerateDiary(confirmedScene?.scene_id, eventInput, confirmedOutfitId || model.preferences?.active_outfit_id)} 
-                                            disabled={!eventInput.trim() || isGenerating}
-                                                            className={`w-full py-5 text-[12px] font-black tracking-[0.5em] uppercase rounded-3xl transition-all duration-300 ${
-                                                                !eventInput.trim() || isGenerating
-                                                                    ? 'bg-white/5 text-gray-600 border border-white/5 cursor-not-allowed opacity-50'
-                                                                    : 'bg-[var(--color-gold)] text-black shadow-[0_20px_40px_rgba(212,175,55,0.15)] hover:shadow-[0_25px_50px_rgba(212,175,55,0.25)]'
-                                                            }`}
-                                                        >
-                                                            {isGenerating ? '正在編織命運線 (SYNCING...)' : '建立拍攝劇本 // BUILD SHOOT BRIEF'}
-                                                        </motion.button>
-                                                    </div>
-
-                                                    <AnimatePresence>
-                                                        {diary && (
-                                                            <motion.div 
-                                                                initial={{ opacity: 0, y: 10 }}
-                                                                animate={{ opacity: 1, y: 0 }}
-                                                                className="space-y-4"
-                                                            >
-                                                                <div className="flex items-center gap-3">
-                                                                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-gold)] animate-pulse"></div>
-                                                                    <span className="text-[10px] font-bold text-[var(--color-gold)] uppercase tracking-[0.3em]">{model.name} 的敘事日記 (Narrative Diary)</span>
-                                                                </div>
-                                                                
-                                                                {currentSceneId && (
-                                                                    <div className="flex items-center justify-between px-4 py-2 bg-white/5 border border-white/10 rounded-xl">
-                                                                        <div className="flex items-center gap-2">
-                                                                            <span className="text-[11px] text-white/90">
-                                                                                🎬 今日場景：{ALL_EXTENDED_SCENES.find(s => s.scene_id === currentSceneId)?.name_zh || currentSceneId}
-                                                                                <span className="text-gray-500 ml-1">（{ALL_EXTENDED_SCENES.find(s => s.scene_id === currentSceneId)?.category || '一般'}）</span>
-                                                                            </span>
-                                                                        </div>
-                                                                        <button 
-                                                                            onClick={() => handleChangeScene()}
-                                                                            disabled={isGenerating}
-                                                                            className="text-[9px] text-[var(--color-gold)] font-bold uppercase tracking-widest hover:underline flex items-center gap-1 disabled:opacity-30"
-                                                                        >
-                                                                            {isGenerating ? '切換中...' : '🔄 換一個場景'}
+                                                        <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em]">視覺轉化控制 (Visual Control)</h3>
+                                                        <div className="space-y-6">
+                                                            {/* Ratio */}
+                                                            <div className="space-y-2">
+                                                                <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">比例 // RATIO</label>
+                                                                <div className="grid grid-cols-4 gap-2">
+                                                                    {['9:16', '4:5', '1:1', '16:9'].map(id => (
+                                                                        <button key={id} onClick={() => setAspectRatio(id)}
+                                                                            className={`py-3 text-[9px] font-bold rounded-xl border transition-all ${aspectRatio === id ? 'bg-[var(--color-gold)]/20 border-[var(--color-gold)] text-[var(--color-gold)]' : 'border-white/5 text-gray-500'}`}>
+                                                                            {id}
                                                                         </button>
-                                                                    </div>
-                                                                )}
-
-                                                                <div className="bg-[var(--color-bg-input)] p-8 rounded-[2.5rem] border border-[var(--color-border)] font-serif italic text-[var(--color-text-main)] leading-relaxed text-base whitespace-pre-wrap shadow-xl">
-                                                                    「{diary.content}」
+                                                                    ))}
                                                                 </div>
-                                                                <div className="flex flex-wrap gap-2">
-                                                                    <span className="px-3 py-1 bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/20 rounded-full text-[9px] font-bold text-[var(--color-gold)] uppercase">
-                                                                        情緒狀態 (Mood): {diary.mood}
-                                                                    </span>
-                                                                    <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[9px] font-bold text-gray-400 uppercase">
-                                                                        場景類型 (Scene): {diary.generatedPromptParams?.locationType}
-                                                                    </span>
+                                                            </div>
+
+                                                            {/* POV Section */}
+                                                            <div className="space-y-2">
+                                                                <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">鏡頭視角 // PERSPECTIVE</label>
+                                                                <div className="grid grid-cols-2 gap-2">
+                                                                    {[
+                                                                        { id: true, label: '第一人稱 (POV)' },
+                                                                        { id: false, label: '第三人稱 (3RD)' }
+                                                                    ].map(v => (
+                                                                        <button key={String(v.id)} onClick={() => setIsPOV(v.id)}
+                                                                            className={`py-3 text-[9px] font-bold rounded-xl border transition-all ${isPOV === v.id ? 'bg-[var(--color-gold)]/20 border-[var(--color-gold)] text-[var(--color-gold)]' : 'border-white/5 text-gray-500'}`}>
+                                                                            {v.label}
+                                                                        </button>
+                                                                    ))}
                                                                 </div>
-                                                            </motion.div>
-                                                        )}
-                                                    </AnimatePresence>
+                                                            </div>
 
-                                                    <FinalShootCard />
-                                                </motion.div>
-                                            </div>
-
-                                            {/* Right: Visual Production 生成控制區 */}
-                                            <motion.div 
-                                                initial={{ opacity: 0, x: 10 }}
-                                                animate={{ opacity: 1, x: 0 }}
-                                                transition={{ delay: 0.4 }}
-                                                className="space-y-8 lg:border-l lg:border-white/5 lg:pl-10"
-                                            >
-                                                {/* P3-3: Step 3 CTA — 影像就緒行動區 */}
-                                                {narrativeStep === 5 && generatedImageUrl && (
-                                                    <div className="p-5 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl space-y-3">
-                                                        <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest text-center">✨ 影像就緒 // IMAGE READY</p>
-                                                        <Button
-                                                            onClick={() => handleFinish()}
-                                                            disabled={isExtractingMem}
-                                                            isLoading={isExtractingMem}
-                                                            className="w-full py-4 text-[10px] font-black tracking-widest uppercase"
-                                                        >
-                                                            完成並前往 IP 休息室 →
-                                                        </Button>
-                                                        <div className="grid grid-cols-2 gap-2">
-                                                            <button
-                                                                onClick={() => handleGenerateImage()}
-                                                                disabled={isGeneratingImage}
-                                                                className="py-3 text-[9px] font-bold rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-white/30 transition-all disabled:opacity-30"
-                                                            >
-                                                                🔄 再生一張
-                                                            </button>
-                                                            <button
-                                                                onClick={() => handleResetToStep1()}
-                                                                className="py-3 text-[9px] font-bold rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-white/30 transition-all"
-                                                            >
-                                                                📝 繼續敘事
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                )}
-                                                <div className="space-y-6">
-                                <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em]">視覺轉化控制 (Visual Control)</h3>
-                                
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-4">
-                                        <div className="space-y-2">
-                                            <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">構圖比例 // ASPECT RATIO</label>
-                                            <div className="grid grid-cols-2 gap-2">
-                                                {[
-                                                    { id: '9:16', label: '直式短影 // REELS' },
-                                                    { id: '4:5', label: '社群貼文 // POST' },
-                                                    { id: '1:1', label: '方型 // SQ' },
-                                                    { id: '16:9', label: '寬螢幕 // CINEMA' }
-                                                ].map(r => (
-                                                    <button
-                                                        key={r.id}
-                                                        onClick={() => setAspectRatio(r.id)}
-                                                        className={`py-3 text-[9px] font-bold rounded-xl border transition-all ${aspectRatio === r.id ? 'bg-[var(--color-gold)]/20 border-[var(--color-gold)] text-[var(--color-gold)] shadow-[0_0_15px_rgba(212,175,55,0.1)]' : 'border-white/5 text-gray-500 hover:border-white/20 hover:bg-white/5'}`}
-                                                    >
-                                                        {r.label}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        <div className="space-y-2">
-                                            <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">鏡頭控制 (Camera Optic POV)</label>
-                        <div className="flex bg-[var(--color-bg-card)] p-1 rounded-xl border border-[var(--color-border)]">
-                            <button 
-                                onClick={() => setIsPOV(true)}
-                                className={`flex-1 py-3 text-[9px] font-bold rounded-lg transition-all ${isPOV ? 'bg-[var(--color-gold)]/20 text-[var(--color-gold)] shadow-lg' : 'text-gray-500 hover:text-gray-300'}`}
-                            >
-                                第一人稱 (POV)
-                            </button>
-                            <button 
-                                onClick={() => setIsPOV(false)}
-                                className={`flex-1 py-3 text-[9px] font-bold rounded-lg transition-all ${!isPOV ? 'bg-[var(--color-gold)]/20 text-[var(--color-gold)] shadow-lg' : 'text-gray-500 hover:text-gray-300'}`}
-                            >
-                                第三人稱 (3RD)
-                            </button>
-                        </div>
-                        <p className="text-[7px] text-gray-600 text-center mt-1">
-                            切換後請重新點擊「同步靈魂敘事」
-                        </p>
-                                        </div>
-                                    </div>
-                                    <div className="space-y-4">
-                                        <div className="space-y-2">
-                                            <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">畫質與光影預設 // QUALITY PRESET</label>
-                                            <div className="grid grid-cols-1 gap-2">
-                                                {[
-                                                    { id: 'HD', label: '高解析度還原 // HD', desc: '日常產出 1K // DAILY' },
-                                                    { id: 'Cinematic', label: '電影製片級 // CINEMATIC', desc: '精緻細節 2K // DETAIL' },
-                                                    { id: 'Pro', label: '極致還原 // PRO', desc: '臉部鎖定 4K // FIDELITY' }
-                                                ].map(q => (
-                                                    <button
-                                                        key={q.id}
-                                                        onClick={() => setQuality(q.id)}
-                                                        className={`flex flex-col items-center justify-center py-2.5 rounded-xl border transition-all ${quality === q.id ? 'bg-white/10 border-white/40 text-white shadow-xl shadow-white/5' : 'border-white/5 text-gray-500 hover:border-white/20 hover:bg-white/5'}`}
-                                                    >
-                                                        <span className="text-[9px] font-bold uppercase tracking-wider">{q.label}</span>
-                                                        <span className="text-[7px] opacity-40 mt-0.5 tracking-widest">{q.desc}</span>
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {diary && (
-                                <div className="space-y-3 group">
-                                    <div className="flex justify-between items-center px-1">
-                                        <div className="flex gap-4">
-                                            <button 
-                                                onClick={() => setActivePromptLang('ZH')}
-                                                className={`text-[9px] font-bold uppercase tracking-widest transition-colors ${activePromptLang === 'ZH' ? 'text-[var(--color-gold)] underline' : 'text-gray-500 hover:text-gray-300'}`}
-                                            >
-                                                中文提示詞 (ZH)
-                                            </button>
-                                            <button 
-                                                onClick={() => setActivePromptLang('EN')}
-                                                className={`text-[9px] font-bold uppercase tracking-widest transition-colors ${activePromptLang === 'EN' ? 'text-[var(--color-gold)] underline' : 'text-gray-500 hover:text-gray-300'}`}
-                                            >
-                                                英文提示詞 (EN)
-                                            </button>
-                                        </div>
-                                        <button 
-                                            onClick={() => handleSyncPrompt()}
-                                            disabled={isSyncing || !diary}
-                                            className="text-[9px] font-bold text-[var(--color-gold)] uppercase tracking-widest flex items-center gap-2 hover:opacity-80 disabled:opacity-30"
-                                        >
-                                            {isSyncing ? '同步中...' : '🔄 雙語同步 (Sync)'}
-                                        </button>
-                                    </div>
-                                    <div className="space-y-4">
-                                        <div className="relative">
-                                            {activePromptLang === 'ZH' ? (
-                                                <div className="space-y-3">
-                                                    <div className="flex items-center justify-between px-2">
-                                                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">分段式編輯 (Modular Edit Mode)</span>
-                                                        <div className="w-2 h-2 rounded-full bg-emerald-500/50 animate-pulse"></div>
-                                                    </div>
-                                                    {hasStructuredPromptZH ? (
-                                                        <div className="grid grid-cols-1 gap-2.5">
-                                                            {promptSectionsZH.map((section) => (
-                                                                <div key={`${section.label}-${section.lineIndex}`} className="group flex flex-col bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-3 hover:border-[var(--color-gold)]/30 transition-all shadow-sm">
-                                                                    <div className="flex justify-between items-center mb-1">
-                                                                        <span className="text-[8px] font-black text-[var(--color-gold)] uppercase tracking-widest pl-1">
-                                                                            {getPromptSectionDisplayLabel(section.label, 'ZH')}
-                                                                        </span>
-                                                                        <div className="w-1 h-1 rounded-full bg-[var(--color-gold)]/20 group-hover:bg-[var(--color-gold)] transition-colors"></div>
-                                                                    </div>
-                                                                    <textarea 
-                                                                        className="w-full bg-transparent border-none p-0 text-[11px] text-[var(--color-text-main)] focus:ring-0 resize-none min-h-[40px] outline-none leading-relaxed placeholder-gray-500"
-                                                                        value={section.value}
-                                                                        onChange={(e) => {
-                                                                            const lines = editablePromptZH.split('\n');
-                                                                            lines[section.lineIndex] = `${section.prefix}${section.separator} ${e.target.value}`;
-                                                                            setEditablePromptZH(lines.join('\n'));
-                                                                        }}
-                                                                    />
+                                                            {/* Quality/Preset */}
+                                                            <div className="space-y-2">
+                                                                <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">預設 // PRESET</label>
+                                                                <div className="grid grid-cols-3 gap-2">
+                                                                    {['HD', 'Cinematic', 'Pro'].map(id => (
+                                                                        <button key={id} onClick={() => setQuality(id)}
+                                                                            className={`py-2.5 rounded-xl border text-[9px] font-bold transition-all ${quality === id ? 'bg-white/10 border-white/40 text-white' : 'border-white/5 text-gray-500'}`}>
+                                                                            {id}
+                                                                        </button>
+                                                                    ))}
                                                                 </div>
-                                                            ))}
-                                                        </div>
-                                                    ) : (
-                                                        <textarea 
-                                                            className="w-full h-40 bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-2xl p-5 text-[10px] font-medium text-[var(--color-text-main)] focus:border-[var(--color-gold)]/50 transition-all resize-none outline-none leading-relaxed"
-                                                            value={editablePromptZH}
-                                                            onChange={(e) => setEditablePromptZH(e.target.value)}
-                                                            disabled={!diary}
-                                                            placeholder={diary ? "修改中文提示詞..." : "同步敘事後產出"}
-                                                        />
-                                                    )}
-                                                </div>
-                                            ) : (
-                                                <div className="space-y-3">
-                                                    <div className="flex items-center justify-between px-2">
-                                                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">Visual DNA Editor (Modular)</span>
-                                                        <div className="w-2 h-2 rounded-full bg-blue-500/50 animate-pulse"></div>
-                                                    </div>
-                                                    {hasStructuredPromptEN ? (
-                                                        <div className="grid grid-cols-1 gap-2.5">
-                                                            {promptSectionsEN.map((section) => (
-                                                                <div key={`${section.label}-${section.lineIndex}`} className="group flex flex-col bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-3 hover:border-blue-500/20 transition-all">
-                                                                    <span className="text-[8px] font-mono font-bold text-blue-400/40 uppercase tracking-widest mb-1 pl-1">
-                                                                        {section.label}
-                                                                    </span>
-                                                                    <textarea 
-                                                                        className="w-full bg-transparent border-none p-0 text-[10px] font-mono text-gray-400 focus:ring-0 resize-none min-h-[45px] outline-none leading-tight"
-                                                                        value={section.value}
-                                                                        onChange={(e) => {
-                                                                            const lines = editablePrompt.split('\n');
-                                                                            lines[section.lineIndex] = `${section.prefix}${section.separator} ${e.target.value}`;
-                                                                            setEditablePrompt(lines.join('\n'));
-                                                                        }}
-                                                                    />
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    ) : (
-                                                        <textarea 
-                                                            className="w-full h-40 bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-2xl p-5 text-[10px] font-mono text-[var(--color-text-main)] focus:border-[var(--color-gold)]/50 transition-all resize-none outline-none leading-relaxed"
-                                                            value={editablePrompt}
-                                                            onChange={(e) => setEditablePrompt(e.target.value)}
-                                                            disabled={!diary}
-                                                            placeholder={diary ? "Edit English prompt..." : "Waiting for narrative..."}
-                                                        />
-                                                    )}
-                                                </div>
-                                            )}
-                                            <div className="flex justify-end gap-2 mt-2">
-                                                <div className="px-2 py-1 bg-[var(--color-bg-input)] rounded-md text-[7px] text-gray-500 border border-[var(--color-border)] uppercase tracking-tighter">
-                                                    結構化編輯模式 // STRUCTURED EDIT
-                                                </div>
-                                                <div className="px-2 py-1 bg-[var(--color-bg-input)] rounded-md text-[7px] text-gray-500 border border-[var(--color-border)] uppercase tracking-tighter">
-                                                    字數統計: {activePromptLang === 'ZH' ? editablePromptZH.length : editablePrompt.length}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                )}
-                                <motion.button 
-                                    whileHover={!diary || isGeneratingImage ? {} : { scale: 1.02 }}
-                                    whileTap={!diary || isGeneratingImage ? {} : { scale: 0.98 }}
-                                    onClick={() => handleGenerateImage()} 
-                                    disabled={!diary || isGeneratingImage}
-                                    className={`w-full py-5 text-[12px] font-black tracking-[0.5em] uppercase rounded-3xl transition-all duration-300 ${
-                                        !diary || isGeneratingImage
-                                            ? 'bg-white/5 text-gray-600 border border-white/5 cursor-not-allowed opacity-50'
-                                            : 'bg-emerald-500 text-black shadow-[0_20px_40px_rgba(16,185,129,0.15)] hover:shadow-[0_25px_50px_rgba(16,185,129,0.25)]'
-                                    }`}
-                                >
-                                    {isGeneratingImage ? '正在捕捉靈魂切片 (RENDERING...)' : (generatedImageUrl ? '重新生成影像 // REGENERATE' : '生成故事影像 // GENERATE IMAGE')}
-                                </motion.button>
-                            </div>
-
-                            {/* Image Preview Result */}
-                            <div className="aspect-[3/4] rounded-[2rem] overflow-hidden bg-[var(--color-bg-card)] border border-[var(--color-border)] relative group">
-                                                <AnimatePresence mode="wait">
-                                                    {isGeneratingImage ? (
-                                                        <motion.div 
-                                                            key="loader"
-                                                            initial={{ opacity: 0 }}
-                                                            animate={{ opacity: 1 }}
-                                                            exit={{ opacity: 0 }}
-                                                            className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-[var(--color-bg-input)]"
-                                                        >
-                                                            <Loader message="正在生成視覺影像..." />
-                                                            <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] animate-pulse">正在物化意識與光影...</p>
-                                                        </motion.div>
-                                                    ) : generatedImageUrl ? (
-                                                        <div className="relative w-full h-full">
-                                                            <motion.img 
-                                                                key="image"
-                                                                initial={{ opacity: 0 }}
-                                                                animate={{ opacity: 1 }}
-                                                                src={generatedImageUrl}
-                                                                className="w-full h-full object-cover"
-                                                            />
-                                                            <div className="absolute bottom-4 right-4 flex gap-2">
-                                                                <button 
-                                                                    onClick={() => setPreviewingImage({images: [generatedImageUrl], startIndex: 0})}
-                                                                    className="w-10 h-10 flex items-center justify-center rounded-full bg-[var(--color-bg-surface)]/60 hover:bg-white text-[var(--color-text-main)] hover:text-black transition-all backdrop-blur-md border border-[var(--color-border)]"
-                                                                >
-                                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
-                                                                </button>
-                                                                <button 
-                                                                    onClick={() => {
-                                                                        const link = document.createElement('a');
-                                                                        link.href = generatedImageUrl;
-                                                                        link.download = `narrative_${model.name}_${Date.now()}.jpg`;
-                                                                        link.click();
-                                                                    }}
-                                                                    className="w-10 h-10 flex items-center justify-center rounded-full bg-[var(--color-bg-surface)]/60 hover:bg-[var(--color-gold)] text-[var(--color-text-main)] hover:text-black transition-all backdrop-blur-md border border-[var(--color-border)]"
-                                                                >
-                                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                                                                </button>
                                                             </div>
                                                         </div>
-                                                    ) : (
-                                                        <div className="absolute inset-0 flex flex-col items-center justify-center p-12 text-center bg-[var(--color-bg-input)]">
-                                                            <svg className="w-12 h-12 text-gray-700 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                            </svg>
-                                                            <p className="text-[10px] text-gray-600 uppercase tracking-[0.2em]">影像尚未生成 // READY</p>
-                                                        </div>
-                                                    )}
-                                                </AnimatePresence>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </motion.div>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        }
-                    </AnimatePresence>
-                </div>
-
-    {/* Footer and Finish - Sticky at the bottom of Content Hub */}
-    <div className="p-8 bg-[var(--color-bg-surface)]/60 border-t border-[var(--color-border)] flex justify-between items-center backdrop-blur-md">
-                    <span className="text-[8px] text-gray-600 uppercase tracking-[0.5em] font-light">
-                        Antigravity 靈魂視覺引擎已上線 // ENGINE ACTIVE
-                    </span>
-                    <div className="flex gap-4">
-                        <Button 
-                            variant="secondary" 
-                            onClick={() => { if (!isAnyTaskRunning) onClose(); }}
-                            disabled={isAnyTaskRunning}
-                            title={isAnyTaskRunning ? "生圖進行中，請稍候..." : ""}
-                            className={`px-8 border-white/10 text-[10px] tracking-widest font-black uppercase italic ${
-                                isAnyTaskRunning ? "opacity-30 cursor-not-allowed" : ""
-                            }`}
-                        >
-                            取消 // CANCEL
-                        </Button>
-                        <Button 
-                            onClick={() => handleFinish()} 
-                            disabled={!diary || isExtractingMem}
-                            isLoading={isExtractingMem}
-                            className="px-10 text-[11px] font-bold tracking-[0.4em] uppercase italic"
-                        >
-                            完成佈署 // FINISH
-                        </Button>
+                                        </div>
+                                    )}
+                                </motion.div>
+                            }
+                        </AnimatePresence>
                     </div>
+
+                    {/* Footer and Finish - Sticky at the bottom of Content Hub */}
+                    <div className="px-8 py-5 border-t border-white/5 bg-[var(--color-bg-surface)] shrink-0 flex items-center justify-between gap-4">
+                        {narrativeStep === 3 && !diary ? (
+                            <>
+                                <button
+                                    onClick={() => setNarrativeStep(2)}
+                                    className="px-6 py-3 rounded-[1.5rem] text-[11px] font-black tracking-[0.3em] uppercase bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white transition-all border border-white/5">
+                                    ← 換服裝
+                                </button>
+                                <button
+                                    onClick={() => handleGenerateDiary(confirmedScene?.scene_id, eventInput, confirmedOutfitId)}
+                                    disabled={!eventInput.trim() || isGenerating}
+                                    className={`px-8 py-3 rounded-[1.5rem] text-[11px] font-black tracking-[0.3em] uppercase transition-all ${!eventInput.trim() || isGenerating ? 'bg-white/5 text-gray-600 cursor-not-allowed' : 'bg-[var(--color-gold)] text-black hover:bg-[var(--color-gold)]/90'}`}>
+                                    {isGenerating ? '正在編織...' : '建立拍攝劇本 →'}
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <span className="text-[8px] text-gray-600 uppercase tracking-[0.5em] font-light">
+                                    Antigravity 靈魂視覺引擎已上線 // ENGINE ACTIVE
+                                </span>
+                                <div className="flex gap-4">
+                                    <button
+                                        onClick={() => { if (!isAnyTaskRunning) onClose(); }}
+                                        disabled={isAnyTaskRunning}
+                                        className="px-8 py-3 rounded-[1.5rem] text-[10px] tracking-widest font-black uppercase italic border border-white/10 text-gray-400 hover:text-white transition-all disabled:opacity-30">
+                                        取消 // CANCEL
+                                    </button>
+                                    <button
+                                        onClick={() => handleFinish()}
+                                        disabled={!diary || isExtractingMem}
+                                        className="px-8 py-3 rounded-[1.5rem] text-[11px] font-black tracking-[0.3em] uppercase bg-[var(--color-gold)] text-black hover:bg-[var(--color-gold)]/90 transition-all disabled:opacity-50">
+                                        {isExtractingMem ? '完成中...' : '完成佈署 // FINISH'}
+                                    </button>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
 
