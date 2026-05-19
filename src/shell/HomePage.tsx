@@ -64,6 +64,15 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           size: 'large' 
         },
         { 
+          id: 'narrative', 
+          zh: '靈魂敘事', 
+          en: 'Narrative Workflow', 
+          desc: '為目前 IP 生成日常事件、場景、服裝與社群內容，延續長期記憶',
+          icon: <DirectorModeIcon />, 
+          color: 'from-violet-500/20 to-transparent',
+          size: 'large' 
+        },
+        { 
           id: 'portfolio', 
           zh: '作品與內容庫', 
           en: 'Content Gallery', 
@@ -267,7 +276,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       )}
 
       {/* Main Hubs */}
-      <div className="w-full max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+      <div className="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 mb-20">
         {hubs.map((hub) => (
           <button 
             key={hub.id}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import type { Model, PortfolioItem, DiaryEntry } from '../../shared/types/types';
+import type { Model, PortfolioItem } from '../../shared/types/types';
 import Button from '../../shared/components/common/Button';
 import Card from '../../shared/components/common/Card';
 import ImagePreviewModal from '../../shared/components/common/ImagePreviewModal';
@@ -9,7 +9,6 @@ import { useBrandStore } from '../../shared/stores/useBrandStore';
 import { STORY_ARCS } from '../narrative/constants/storyElements';
 import AsyncImage from '../../shared/components/common/AsyncImage';
 import PortfolioSelectModal from '../../components/PortfolioSelectModal';
-import NarrativeWorkflow from '../narrative/NarrativeWorkflow';
 import { User } from 'firebase/auth';
 import { extractMetadataFromFile, hasPavoraMetadata, embedMetadata } from '../../shared/utils/metadataUtils';
 import { downloadImage, cropImage, fileToBase64 } from '../../shared/utils/imageUtils';
@@ -57,7 +56,6 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
   const [selectedModels, setSelectedModels] = useState<Set<string>>(new Set());
   const [previewingImage, setPreviewingImage] = useState<{images: string[], startIndex: number} | null>(null);
   const [showPortfolioImport, setShowPortfolioImport] = useState(false);
-  const [selectedModelForNarrative, setSelectedModelForNarrative] = useState<Model | null>(null);
   const [editingModel, setEditingModel] = useState<Model | null>(null);
   const [viewingPortfolioModelId, setViewingPortfolioModelId] = useState<string | null>(null);
   
@@ -172,14 +170,6 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
       setSelectedModels(new Set());
       addNotification({ type: 'success', message: '模特兒人物已成功刪除' });
     }
-  };
-
-  const handleNarrativeConfirm = (diary: Partial<DiaryEntry>, generatedImageUrl?: string) => {
-      if (!selectedModelForNarrative) return;
-      
-      // Just refresh the data locally via the store (NarrativeWorkflow already calls updateModelGallery)
-      setSelectedModelForNarrative(null);
-      addNotification({ type: 'success', message: '靈魂敘事已同步至模特兒作品集' });
   };
 
   const handlePromoteToAmbassador = async (model: Model) => {
@@ -513,13 +503,6 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                         </motion.div>
                     </div>
                 )}
-                {selectedModelForNarrative && (
-                    <NarrativeWorkflow 
-                        model={selectedModelForNarrative}
-                        onClose={() => setSelectedModelForNarrative(null)}
-                        onConfirm={handleNarrativeConfirm}
-                    />
-                )}
                 {editingModel && (
                     <ModelIdentityEditor 
                         model={editingModel}
@@ -695,7 +678,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                                             <Button onClick={() => setEditingModel(portfolioModel)} variant="secondary" className="h-10 px-3 text-[9px] font-bold whitespace-nowrap tracking-normal border-white/10">
                                                                 編輯身份
                                                             </Button>
-                                                            <Button onClick={() => setSelectedModelForNarrative(portfolioModel)} className="h-10 px-4 text-[9px] font-bold whitespace-nowrap tracking-normal">
+                                                            <Button onClick={() => onModelSelect(portfolioModel, 'narrative')} className="h-10 px-4 text-[9px] font-bold whitespace-nowrap tracking-normal">
                                                                 啟動靈魂敘事
                                                             </Button>
                                                         </div>
@@ -779,7 +762,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                                             <p className="text-[12px] text-gray-500 uppercase tracking-widest font-black">尚無進行中的故事線 // NO ACTIVE STORY ARC</p>
                                                         </div>
                                                         <button 
-                                                            onClick={() => setSelectedModelForNarrative(portfolioModel)}
+                                                            onClick={() => onModelSelect(portfolioModel, 'narrative')}
                                                             className="text-[11px] text-[var(--color-gold)] font-bold uppercase tracking-widest hover:underline"
                                                         >
                                                             前往靈魂敘事開啟新篇章 →
@@ -821,7 +804,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                                             </div>
                                                         </div>
                                                         <Button 
-                                                            onClick={() => setSelectedModelForNarrative(portfolioModel)}
+                                                            onClick={() => onModelSelect(portfolioModel, 'narrative')}
                                                             className="px-8 py-3 text-[12px] font-black tracking-[0.2em] shadow-lg shadow-[var(--color-gold)]/10"
                                                         >
                                                             繼續故事線 (CONTINUE STORY)
@@ -1105,11 +1088,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                                     isOpen={activePortfolioItemId === item.id}
                                                     onClose={() => setActivePortfolioItemId(null)}
                                                     onModelSelect={(model, dest) => {
-                                                        if (dest === 'narrative') {
-                                                            setSelectedModelForNarrative(model);
-                                                        } else {
-                                                            onModelSelect(model, dest);
-                                                        }
+                                                        onModelSelect(model, dest);
                                                     }}
                                                     isGalleryItem={true}
                                                 />
@@ -1194,11 +1173,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                         isOpen={activeMenuId === model.id}
                                         onClose={() => setActiveMenuId(null)}
                                         onModelSelect={(model, dest) => {
-                                            if (dest === 'narrative') {
-                                                setSelectedModelForNarrative(model);
-                                            } else {
-                                                onModelSelect(model, dest);
-                                            }
+                                            onModelSelect(model, dest);
                                         }}
                                         onPromote={handlePromoteToAmbassador}
                                     />

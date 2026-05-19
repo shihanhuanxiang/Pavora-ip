@@ -34,6 +34,7 @@ export enum WorkflowStep {
   BRAND_IDENTITY_HUB_COMP_CARD,
   MARKETING_FACTORY_POSTER,
   MARKETING_FACTORY_ARCHITECT,
+  NARRATIVE,
 }
 
 // 高端廣告視覺生成相關類型 (各 21 種)
