@@ -536,6 +536,102 @@ app.get('/api/drive/image/:fileId', async (req, res) => {
   }
 });
 
+app.get('/admin/usage-data', (_req, res) => {
+  try {
+    const logPath = path.join(__dirname, 'logs', 'usage.jsonl');
+    if (!fs.existsSync(logPath)) {
+      return res.json({ records: [], stats: {} });
+    }
+    const lines = fs.readFileSync(logPath, 'utf8')
+      .split('\n')
+      .filter(Boolean)
+      .map((line) => JSON.parse(line));
+
+    // 統計：依模型分群
+    const statsMap: Record<string, { calls: number; success: number; totalMs: number }> = {};
+    for (const r of lines) {
+      if (!statsMap[r.model]) statsMap[r.model] = { calls: 0, success: 0, totalMs: 0 };
+      statsMap[r.model].calls++;
+      if (r.success) statsMap[r.model].success++;
+      statsMap[r.model].totalMs += r.durationMs || 0;
+    }
+
+    const stats = Object.entries(statsMap).map(([model, s]) => ({
+      model,
+      calls: s.calls,
+      successRate: ((s.success / s.calls) * 100).toFixed(1) + '%',
+      avgMs: Math.round(s.totalMs / s.calls),
+    }));
+
+    // 最近 50 筆紀錄（倒序）
+    const recent = lines.slice(-50).reverse();
+    res.json({ stats, recent });
+  } catch (err) {
+    res.status(500).json({ error: String(err) });
+  }
+});
+
+app.get('/admin', (_req, res) => {
+  res.send(`<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>Pavora Admin</title>
+  <style>
+    body { font-family: monospace; background: #0d0d0d; color: #e0e0e0; padding: 32px; }
+    h1 { color: #f5c518; margin-bottom: 8px; }
+    h2 { color: #aaa; font-size: 14px; margin: 24px 0 8px; text-transform: uppercase; letter-spacing: 2px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+    th { background: #1a1a1a; color: #f5c518; padding: 8px 12px; text-align: left; font-size: 12px; }
+    td { padding: 7px 12px; border-bottom: 1px solid #222; font-size: 12px; }
+    tr:hover td { background: #1a1a1a; }
+    .ok { color: #4caf50; }
+    .fail { color: #f44336; }
+    .ts { color: #666; }
+    #refresh { background: #f5c518; color: #000; border: none; padding: 6px 16px; cursor: pointer; font-family: monospace; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>PAVORA ADMIN</h1>
+  <button id="refresh" onclick="load()">↻ 重新整理</button>
+
+  <h2>模型用量統計</h2>
+  <table id="stats-table">
+    <thead><tr><th>Model</th><th>總呼叫</th><th>成功率</th><th>平均耗時 (ms)</th></tr></thead>
+    <tbody id="stats-body"></tbody>
+  </table>
+
+  <h2>最近 50 筆紀錄</h2>
+  <table id="recent-table">
+    <thead><tr><th>時間</th><th>Model</th><th>Endpoint</th><th>狀態</th><th>耗時 (ms)</th></tr></thead>
+    <tbody id="recent-body"></tbody>
+  </table>
+
+  <script>
+    async function load() {
+      const r = await fetch('/admin/usage-data');
+      const { stats = [], recent = [] } = await r.json();
+
+      document.getElementById('stats-body').innerHTML = stats.map(s =>
+        '<tr><td>' + s.model + '</td><td>' + s.calls + '</td><td>' + s.successRate + '</td><td>' + s.avgMs + '</td></tr>'
+      ).join('');
+
+      document.getElementById('recent-body').innerHTML = recent.map(r =>
+        '<tr>' +
+        '<td class="ts">' + new Date(r.timestamp).toLocaleString('zh-TW') + '</td>' +
+        '<td>' + r.model + '</td>' +
+        '<td>' + r.endpoint + '</td>' +
+        '<td class="' + (r.success ? 'ok' : 'fail') + '">' + (r.success ? '✓ ' + r.statusCode : '✗ ' + r.statusCode) + '</td>' +
+        '<td>' + r.durationMs + '</td>' +
+        '</tr>'
+      ).join('');
+    }
+    load();
+  </script>
+</body>
+</html>`);
+});
+
 // Catch-all for /api/* to prevent falling through to SPA fallback
 app.all('/api/*all', (req, res) => {
   res.status(404).json({ error: 'API endpoint not found' });
