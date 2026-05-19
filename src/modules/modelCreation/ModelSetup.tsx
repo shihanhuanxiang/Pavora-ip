@@ -1,6 +1,6 @@
 
 import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import type { Model, OutfitPreset } from '../../shared/types/types';
+import type { Model, OutfitPreset, WorldAnchors } from '../../shared/types/types';
 import Button from '../../shared/components/common/Button';
 import Card from '../../shared/components/common/Card';
 import Select from '../../shared/components/common/Select';
@@ -58,6 +58,68 @@ interface ModelSetupProps {
 
 type QualityLevel = 'standard' | 'high' | 'ultra';
 
+type ModelCreationWorldAnchors = {
+    pet: NonNullable<WorldAnchors['pet']>;
+    relationships: NonNullable<WorldAnchors['relationships']>;
+    iconicItems: NonNullable<WorldAnchors['iconicItems']>;
+    longTermMemories: string[];
+};
+
+const createEmptyWorldAnchors = (): ModelCreationWorldAnchors => ({
+    pet: { breed: '', name: '', description: '', traits: [] },
+    relationships: [],
+    iconicItems: [],
+    longTermMemories: []
+});
+
+const toModelCreationWorldAnchors = (anchors?: WorldAnchors): ModelCreationWorldAnchors => ({
+    pet: anchors?.pet || { breed: '', name: '', description: '', traits: [] },
+    relationships: anchors?.relationships || [],
+    iconicItems: anchors?.iconicItems || [],
+    longTermMemories: anchors?.longTermMemories || []
+});
+
+const formatPetAnchor = (pet?: WorldAnchors['pet']) => {
+    if (!pet) return '';
+    return [pet.breed, pet.name].filter(Boolean).join(' ') || pet.description || '';
+};
+
+const parsePetAnchor = (value: string, current: ModelCreationWorldAnchors['pet']): ModelCreationWorldAnchors['pet'] => {
+    const trimmed = value.trim();
+    if (!trimmed) return { breed: '', name: '', description: '', traits: [] };
+
+    const parts = trimmed.split(/[、,，/]/).map(part => part.trim()).filter(Boolean);
+    if (parts.length >= 2) {
+        return {
+            ...current,
+            breed: parts[0],
+            name: parts.slice(1).join(' '),
+            description: current.description || trimmed,
+            traits: current.traits || []
+        };
+    }
+
+    return {
+        ...current,
+        name: trimmed,
+        description: current.description || trimmed,
+        traits: current.traits || []
+    };
+};
+
+const normalizeWorldAnchorsForModel = (anchors: ModelCreationWorldAnchors): WorldAnchors => {
+    const result: WorldAnchors = {};
+    const petHasContent = Boolean(anchors.pet.breed || anchors.pet.name || anchors.pet.description || anchors.pet.traits.length);
+    const iconicItems = anchors.iconicItems.filter(item => item.name || item.description || item.significance);
+
+    if (petHasContent) result.pet = anchors.pet;
+    if (anchors.relationships.length) result.relationships = anchors.relationships;
+    if (iconicItems.length) result.iconicItems = iconicItems;
+    if (anchors.longTermMemories.length) result.longTermMemories = anchors.longTermMemories;
+
+    return result;
+};
+
 const getDefaultVisualIdentityHint = (gender: string) => {
     const isMale = gender === 'M' || gender === 'male';
     return {
@@ -106,10 +168,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
           toneOfVoice: '',
           locked_descriptor: ''
       },
-      worldAnchors: {
-          pet: '',
-          iconicItem: ''
-      },
+      worldAnchors: createEmptyWorldAnchors(),
       lifeCircuit: {
           primaryCity: '台北市',
           primaryDistrict: '大安區',
@@ -172,6 +231,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                 ...prev.lifeCircuit,
                 ...inheritedModel.lifeCircuit
             },
+            worldAnchors: toModelCreationWorldAnchors(inheritedModel.worldAnchors || prev.worldAnchors),
             visualIdentityHint: inheritedModel.visualIdentityHint || prev.visualIdentityHint,
             preferredArchetypes: inheritedModel.preferred_archetypes || prev.preferredArchetypes,
             height: inheritedModel.stats?.height ? Number(inheritedModel.stats.height) : prev.height,
@@ -206,6 +266,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
             gender: model.gender || 'female',
             persona: model.persona || prev.persona,
             lifeCircuit: model.lifeCircuit || prev.lifeCircuit,
+            worldAnchors: toModelCreationWorldAnchors(model.worldAnchors || prev.worldAnchors),
             visualIdentityHint: model.visualIdentityHint || prev.visualIdentityHint,
             preferredArchetypes: model.preferred_archetypes || prev.preferredArchetypes,
             lightingPreset: diaryParams.recommendedLighting || prev.lightingPreset,
@@ -241,10 +302,25 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
     }));
   };
 
-  const handleWorldAnchorUpdate = (field: string, value: any) => {
+  const handlePetAnchorUpdate = (value: string) => {
     setFormState(prev => ({
         ...prev,
-        worldAnchors: { ...prev.worldAnchors, [field]: value }
+        worldAnchors: {
+            ...prev.worldAnchors,
+            pet: parsePetAnchor(value, prev.worldAnchors.pet)
+        }
+    }));
+  };
+
+  const handleIconicItemsUpdate = (value: string) => {
+    setFormState(prev => ({
+        ...prev,
+        worldAnchors: {
+            ...prev.worldAnchors,
+            iconicItems: value.trim()
+                ? [{ ...(prev.worldAnchors.iconicItems[0] || { description: '', significance: '' }), name: value }]
+                : []
+        }
     }));
   };
 
@@ -559,6 +635,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
         ...formState,
         isExpertMode,
         generationQuality,
+        worldAnchors: normalizeWorldAnchorsForModel(formState.worldAnchors),
         outfitItems: selectedItems,
         faceReferences: finalFaceRefs,
         preferred_archetypes: formState.preferredArchetypes,
@@ -739,11 +816,11 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                                     <div className="grid grid-cols-2 gap-3">
                                         <div>
                                             <label className="block text-[10px] font-bold text-gray-500 mb-1.5">🐾 寵物</label>
-                                            <input type="text" className="w-full bg-black/40 border border-white/10 rounded-xl p-2.5 text-xs focus:border-[var(--color-gold)] focus:outline-none transition-all placeholder:text-gray-700" placeholder="品種/名字" value={formState.worldAnchors.pet} onChange={e => handleWorldAnchorUpdate('pet', e.target.value)} />
+                                            <input type="text" className="w-full bg-black/40 border border-white/10 rounded-xl p-2.5 text-xs focus:border-[var(--color-gold)] focus:outline-none transition-all placeholder:text-gray-700" placeholder="品種/名字" value={formatPetAnchor(formState.worldAnchors.pet)} onChange={e => handlePetAnchorUpdate(e.target.value)} />
                                         </div>
                                         <div>
                                             <label className="block text-[10px] font-bold text-gray-500 mb-1.5">✨ 標誌物品</label>
-                                            <input type="text" className="w-full bg-black/40 border border-white/10 rounded-xl p-2.5 text-xs focus:border-[var(--color-gold)] focus:outline-none transition-all placeholder:text-gray-700" placeholder="例：相機、特定飾品" value={formState.worldAnchors.iconicItem} onChange={e => handleWorldAnchorUpdate('iconicItem', e.target.value)} />
+                                            <input type="text" className="w-full bg-black/40 border border-white/10 rounded-xl p-2.5 text-xs focus:border-[var(--color-gold)] focus:outline-none transition-all placeholder:text-gray-700" placeholder="例：相機、特定飾品" value={formState.worldAnchors.iconicItems[0]?.name || ''} onChange={e => handleIconicItemsUpdate(e.target.value)} />
                                         </div>
                                     </div>
                                 </div>
@@ -1173,11 +1250,11 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                             type="text" 
                             className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm focus:border-[var(--color-gold)] focus:outline-none transition-all placeholder:text-gray-700" 
                             placeholder="例：橘貓 Mochi、柴犬 Koko" 
-                            value={formState.worldAnchors?.pet || ''} 
-                            onChange={e => handleWorldAnchorUpdate('pet', e.target.value)} 
+                            value={formatPetAnchor(formState.worldAnchors?.pet)} 
+                            onChange={e => handlePetAnchorUpdate(e.target.value)} 
                         />
                     </div>
-                    <div className={getFieldClass('iconicItem')}>
+                    <div className={getFieldClass('iconicItems')}>
                         <label className="block text-[11px] font-bold text-gray-500 uppercase mb-3 min-h-[2.5rem] font-display tracking-[0.2em] leading-tight text-left">
                             <span className="block text-white mb-0.5">標誌性物品</span>
                             <span className="block text-[9px] opacity-40 font-normal normal-case tracking-normal">(Iconic Item)</span>
@@ -1186,8 +1263,8 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                             type="text" 
                             className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm focus:border-[var(--color-gold)] focus:outline-none transition-all placeholder:text-gray-700" 
                             placeholder="例：總是帶著的底片相機、特定款式耳環" 
-                            value={formState.worldAnchors?.iconicItem || ''} 
-                            onChange={e => handleWorldAnchorUpdate('iconicItem', e.target.value)} 
+                            value={formState.worldAnchors?.iconicItems[0]?.name || ''} 
+                            onChange={e => handleIconicItemsUpdate(e.target.value)} 
                         />
                     </div>
                 </div>
