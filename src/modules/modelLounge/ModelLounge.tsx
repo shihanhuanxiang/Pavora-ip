@@ -10,13 +10,13 @@ import { STORY_ARCS } from '../narrative/constants/storyElements';
 import AsyncImage from '../../shared/components/common/AsyncImage';
 import PortfolioSelectModal from '../../components/PortfolioSelectModal';
 import NarrativeWorkflow from '../narrative/NarrativeWorkflow';
-import { auth } from '../../shared/services/firebase/firebaseConfig';
-import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, User } from 'firebase/auth';
+import { User } from 'firebase/auth';
 import { extractMetadataFromFile, hasPavoraMetadata, embedMetadata } from '../../shared/utils/metadataUtils';
 import { downloadImage, cropImage, fileToBase64 } from '../../shared/utils/imageUtils';
 import ManualCropModal from '../../shared/components/business/ManualCropModal';
 import { detectMultiAngleLayout } from '../../shared/services/geminiService';
 import { useNotification } from '../../shared/context/NotificationContext';
+import { useAuth } from '../../shared/context/AuthContext';
 import Loader from '../../shared/components/common/Loader';
 import { checkGoogleDriveStatus, syncToGoogleDrive, getOrCreateDriveFolder } from '../../shared/services/googleDriveService';
 import DriveFilePickerModal from '../../components/DriveFilePickerModal';
@@ -61,7 +61,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
   const [editingModel, setEditingModel] = useState<Model | null>(null);
   const [viewingPortfolioModelId, setViewingPortfolioModelId] = useState<string | null>(null);
   
-  const [currentUser, setCurrentUser] = useState<User | null>(auth.currentUser);
+  const { user: currentUser, signInWithGoogle, signOutUser } = useAuth();
   const [isUploading, setIsUploading] = useState(false);
   const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
   const [activePortfolioItemId, setActivePortfolioItemId] = useState<string | null>(null);
@@ -91,23 +91,18 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
   const faceReferenceCount = (portfolioModel?.preferences?.face_reference_urls || []).filter(Boolean).length;
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-        setCurrentUser(user);
-        if (user) {
-            syncWithCloud();
-        }
-    });
-    return () => unsubscribe();
-  }, [syncWithCloud]);
+    if (currentUser) {
+        syncWithCloud();
+    }
+  }, [currentUser, syncWithCloud]);
 
   useEffect(() => {
     checkGoogleDriveStatus().then(setDriveConnected);
   }, []);
 
   const handleLogin = async () => {
-    const provider = new GoogleAuthProvider();
     try {
-        await signInWithPopup(auth, provider);
+        await signInWithGoogle();
         addNotification({ type: 'success', message: '已成功連接雲端' });
     } catch (e) {
         console.error("Login failed", e);
@@ -552,7 +547,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                 <div className="flex items-center gap-2 bg-green-500/10 border border-green-500/20 px-3 py-1 rounded-full">
                                     <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
                                     <span className="text-[10px] font-bold text-green-500">{currentUser.displayName || '已登入'}</span>
-                                    <button onClick={() => auth.signOut()} className="text-[9px] text-gray-500 hover:text-white ml-2 transition-colors">登出</button>
+                                    <button onClick={() => signOutUser()} className="text-[9px] text-gray-500 hover:text-white ml-2 transition-colors">登出</button>
                                 </div>
                             ) : (
                                 <button 

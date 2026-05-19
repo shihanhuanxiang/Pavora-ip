@@ -33,6 +33,7 @@ import MarketingFactory from '../modules/marketing/MarketingFactory';
 import MotionHub from '../modules/motion/MotionHub';
 
 import { useNotification } from '../shared/context/NotificationContext';
+import { AuthProvider } from '../shared/context/AuthContext';
 import NotificationPortal from '../shared/components/notification/NotificationPortal';
 
 interface AppProps {
@@ -232,22 +233,24 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
   };
 
   return (
-    <div className="min-h-screen transition-colors duration-500 bg-[var(--color-bg-deep)] text-[var(--color-text-main)] font-sans">
-      {isTransitioning && <Loader message="正在準備編輯素材..." />}
-      <Header 
-        onTitleClick={handleGoHome} 
-        onNavigate={handleNavigate} 
-        imagenUsage={imagenUsage} 
-        isDarkMode={isDarkMode}
-        onToggleTheme={toggleTheme}
-      />
-      <main className="relative">
-        <QuotaErrorModal isOpen={isQuotaModalVisible} onClose={() => setQuotaModalVisible(false)} />
-        <PaidFeatureModal isOpen={!!paidModalConfig?.isOpen} onConfirm={handlePaidConfirm} onCancel={handlePaidCancel} />
-        {renderContent()}
-      </main>
-      <NotificationPortal />
-    </div>
+    <AuthProvider>
+      <div className="min-h-screen transition-colors duration-500 bg-[var(--color-bg-deep)] text-[var(--color-text-main)] font-sans">
+        {isTransitioning && <Loader message="正在準備編輯素材..." />}
+        <Header 
+          onTitleClick={handleGoHome} 
+          onNavigate={handleNavigate} 
+          imagenUsage={imagenUsage} 
+          isDarkMode={isDarkMode}
+          onToggleTheme={toggleTheme}
+        />
+        <main className="relative">
+          <QuotaErrorModal isOpen={isQuotaModalVisible} onClose={() => setQuotaModalVisible(false)} />
+          <PaidFeatureModal isOpen={!!paidModalConfig?.isOpen} onConfirm={handlePaidConfirm} onCancel={handlePaidCancel} />
+          {renderContent()}
+        </main>
+        <NotificationPortal />
+      </div>
+    </AuthProvider>
   );
 };
 

@@ -87,7 +87,7 @@ export const saveModelToCloud = async (model: Model) => {
         const docData = {
             ...sanitizedModelData,
             createdBy: userId,
-            createdAt: modelData.schemaVersion ? modelData.schemaVersion : serverTimestamp(),
+            createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
         };
 
