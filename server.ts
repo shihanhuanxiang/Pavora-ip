@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { Readable } from 'stream';
 
+dotenv.config({ path: '.env.local', override: false });
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -77,6 +78,40 @@ const SCOPES = [
 ];
 
 // --- API Routes ---
+
+app.get('/api/config', (_req, res) => {
+  const key = process.env.GEMINI_API_KEY;
+  if (!key) {
+    return res.status(500).json({ error: 'GEMINI_API_KEY not configured' });
+  }
+  res.json({ apiKey: key });
+});
+
+app.use('/api/gemini-proxy', async (req: express.Request, res: express.Response) => {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    return res.status(500).json({ error: 'GEMINI_API_KEY not configured' });
+  }
+
+  const geminiBase = 'https://generativelanguage.googleapis.com';
+  const targetUrl = `${geminiBase}${req.path}${req.url.includes('?') ? req.url.substring(req.url.indexOf('?')) : ''}`;
+
+  try {
+    const body = req.method !== 'GET' ? JSON.stringify(req.body) : undefined;
+    const upstream = await fetch(targetUrl, {
+      method: req.method,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': apiKey,
+      },
+      body,
+    });
+    const data = await upstream.json();
+    res.status(upstream.status).json(data);
+  } catch (err) {
+    res.status(502).json({ error: 'Proxy upstream error', detail: String(err) });
+  }
+});
 
 app.get('/api/auth/google/url', (req, res) => {
   console.log('GET /api/auth/google/url');

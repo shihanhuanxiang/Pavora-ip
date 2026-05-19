@@ -8,7 +8,7 @@ export const generateModels = async (params: any): Promise<Model[]> => {
     const prompt = buildModelPrompt(params);
     
     // Determine model name
-    let modelName = 'gemini-2.0-flash-preview-image-generation';
+    let modelName = 'gemini-2.5-flash-image';
     if (params.generationQuality === 'ultra' || params.generationQuality === 'high' || hasFaceRef) {
         modelName = 'gemini-3.1-flash-image-preview'; 
     }

@@ -1,5 +1,5 @@
 
-import { GoogleGenAI, Modality, GenerateContentResponse, Type } from "@google/genai";
+import { Modality, GenerateContentResponse, Type } from "@google/genai";
 import { getFriendlyErrorMessage, fileToBase64, imageUrlToimageData } from "../utils/imageUtils";
 import { EGEN_ANALYSIS_PROMPT, EGEN_STYLE_DEF_PROMPT, EGEN_COPYWRITING_PROMPT } from "../../prompts/eGen";
 import { REELS_VIDEO_PROMPT, SOCIAL_COPY_PROMPT, CAMPAIGN_STRATEGY_PROMPT } from "../../prompts/marketing";
@@ -63,7 +63,7 @@ const cleanJsonString = (str: string): string => {
  * 強化了品類與材質的判斷邏輯
  */
 export const analyzeLuxuryProduct = async (imageDatas: { data: string, mimeType: string } | { data: string, mimeType: string }[], views?: string[]) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const images = Array.isArray(imageDatas) ? imageDatas : [imageDatas];
     const viewLabels = views ? views.map((v, i) => `Image ${i}: ${v}`).join(', ') : 'Not provided';
     
@@ -111,7 +111,7 @@ export const analyzeLuxuryProduct = async (imageDatas: { data: string, mimeType:
  * 生成社群媒體行銷文案 (Instagram/TikTok/Facebook)
  */
 export const generateSocialCopy = async (analysisJson: string, platform: 'Instagram' | 'TikTok' | 'Facebook') => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const analysis = JSON.parse(analysisJson);
     const prompt = SOCIAL_COPY_PROMPT(analysis, platform);
 
@@ -126,7 +126,7 @@ export const generateSocialCopy = async (analysisJson: string, platform: 'Instag
  * 生成 3 日行銷活動策略
  */
 export const generateCampaignStrategy = async (analysisJson: string) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const analysis = JSON.parse(analysisJson);
     const prompt = CAMPAIGN_STRATEGY_PROMPT(analysis);
 
@@ -166,7 +166,7 @@ export const transformImage = async (
 ) => {
     const usePro = config.usePro || false;
     await ensureAuthorized(usePro);
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const model = usePro ? 'gemini-3.1-flash-image-preview' : 'gemini-2.5-flash-image';
     
     if (onProgress) onProgress("正在調度 AI 算力渲染影像...");
@@ -247,7 +247,7 @@ export const transformImage = async (
 
 // ...其餘代碼保持不變...
 export const analyzeSceneAndSubject = async (personData: any, bgData: any) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: { parts: [{ inlineData: personData }, { inlineData: bgData }, { text: SCENE_ANALYSIS_PROMPT }] },
@@ -337,7 +337,7 @@ export const generateBurstImages = async (baseImageData: any, pairs: any[], lock
 };
 
 export const getAISmartLayout = async (images: any[]) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: { parts: [...images.map(img => ({ inlineData: img })), { text: "Suggest layout templateId, themeColor (hex), fontTheme (CSS font-family) for a model composite card based on these images." }] },
@@ -369,7 +369,7 @@ export const generateApparelDesignSequence = async (params: any, config: any, on
         } else {
             // Text-to-image case
             const usePro = config.usePro || false;
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = await getGeminiClient();
             const model = usePro ? 'gemini-3.1-flash-image-preview' : 'gemini-2.5-flash-image';
             
             if (onProgress) onProgress("正在調度 AI 算力渲染影像...");
@@ -411,7 +411,7 @@ export const generateApparelDesignSequence = async (params: any, config: any, on
 };
 
 export const getFashionTrends = async (query: string) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: query,
@@ -437,7 +437,7 @@ export const transformHairAndMakeup = async (baseData: any, identityRef: any, pr
 };
 
 export const getAIStyleAnalysis = async (imageData: any, gender: string) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: { parts: [{ inlineData: imageData }, { text: STYLE_ANALYSIS_PROMPT(gender) }] },
@@ -447,7 +447,7 @@ export const getAIStyleAnalysis = async (imageData: any, gender: string) => {
 };
 
 export const getStylistFeedback = async (imageData: any) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: { parts: [{ inlineData: imageData }, { text: STYLIST_FEEDBACK_PROMPT }] },
@@ -457,7 +457,7 @@ export const getStylistFeedback = async (imageData: any) => {
 };
 
 export const extractAssetsFromImage = async (imageData: any, options: any, onProgress: any) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     if (onProgress) onProgress("正在識別圖片中的時尚元素...");
     const idResponse = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
@@ -481,7 +481,7 @@ export const extractAssetsFromImage = async (imageData: any, options: any, onPro
 
 export const tuneImageDetail = async (baseData: any, maskData: any, instruction: string, refImages: any[], onProgress: any, config: any = {}) => {
     if (onProgress) onProgress("正在執行局部重繪...");
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const prompt = DETAIL_TUNE_PROMPT(instruction);
     
     // 強化局部重繪的品質提示詞
@@ -513,7 +513,7 @@ export const tuneImageDetail = async (baseData: any, maskData: any, instruction:
 };
 
 export const analyzeApparelItem = async (imageData: any) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: { parts: [{ inlineData: imageData }, { text: ANALYZE_APPAREL_PROMPT }] },
@@ -540,7 +540,7 @@ export const optimizeAndReangleImage = async (imageData: any, params: any, onPro
 };
 
 export const getRealismAnalysis = async (imageData: any) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: { parts: [{ inlineData: imageData }, { text: REALISM_ANALYSIS_PROMPT }] },
@@ -550,7 +550,7 @@ export const getRealismAnalysis = async (imageData: any) => {
 };
 
 export const analyzeImageForPrompt = async (imageData: any) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: { parts: [{ inlineData: imageData }, { text: PROMPT_ANALYSIS_PROMPT }] },
@@ -570,7 +570,7 @@ export const getAIDiagnosis = async (subjectImages: any | any[], isModel: boolea
         }
     }));
 
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: { 
@@ -585,7 +585,7 @@ export const getAIDiagnosis = async (subjectImages: any | any[], isModel: boolea
 };
 
 export const getBackgroundCards = async (diagnosis: any) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: PCPE_CARDS_PROMPT(JSON.stringify(diagnosis)),
@@ -595,7 +595,7 @@ export const getBackgroundCards = async (diagnosis: any) => {
 };
 
 export const getAllControlOptions = async (diagnosis: any, card: any) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: PCPE_OPTIONS_PROMPT(JSON.stringify(diagnosis), JSON.stringify(card)),
@@ -632,7 +632,7 @@ export const generateProductPoster = async (
 };
 
 export const analyzeEGenProduct = async (images: any[]) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: { parts: [...images.map(img => ({ inlineData: img })), { text: EGEN_ANALYSIS_PROMPT }] },
@@ -642,7 +642,7 @@ export const analyzeEGenProduct = async (images: any[]) => {
 };
 
 export const defineEGenStyle = async (analysisJson: string, atmosphere: string = 'default') => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const prompt = atmosphere !== 'default' 
         ? `${EGEN_STYLE_DEF_PROMPT(analysisJson)}\n\n[USER PREFERENCE]: Force the visual atmosphere to be: ${atmosphere}.`
         : EGEN_STYLE_DEF_PROMPT(analysisJson);
@@ -656,7 +656,7 @@ export const defineEGenStyle = async (analysisJson: string, atmosphere: string =
 };
 
 export const generateEGenCopy = async (analysisJson: string) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: EGEN_COPYWRITING_PROMPT(analysisJson),
@@ -704,7 +704,7 @@ export const refineFullBody = async (
 };
 
 export const analyzeFashionLayout = async (personData: any, itemDataList: any[]) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const parts = [{ inlineData: personData }, ...itemDataList.map(i => ({ inlineData: i })), { text: LAYOUT_ANALYSIS_PROMPT }];
     const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
@@ -715,7 +715,7 @@ export const analyzeFashionLayout = async (personData: any, itemDataList: any[])
 };
 
 export const analyzeCinematicShot = async (fileData: any) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: { parts: [{ inlineData: fileData }, { text: CINEMATIC_ANALYSIS_PROMPT }] },
@@ -725,7 +725,7 @@ export const analyzeCinematicShot = async (fileData: any) => {
 };
 
 export const analyzeMacroProduct = async (fileData: any) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: { parts: [{ inlineData: fileData }, { text: MACRO_ANALYSIS_PROMPT }] },
@@ -750,7 +750,7 @@ export const generateStyleAnchorImage = async (params: any, onProgress: any) => 
 import { STORYBOARD_ANALYSIS_PROMPT } from "../../prompts/character";
 
 export const analyzeStoryboard = async (imageData: any) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: { parts: [{ inlineData: imageData }, { text: STORYBOARD_ANALYSIS_PROMPT }] },
@@ -764,7 +764,7 @@ export const analyzeStoryboard = async (imageData: any) => {
  * 識別大圖中的多個人物及其對應的角度
  */
 export const detectMultiAngleLayout = async (imageData: { data: string, mimeType: string }) => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = await getGeminiClient();
     const prompt = `Analyze this image which contains multiple views/angles of the same person (common in e-commerce photography). 
     The image is likely a horizontal quad-view (4 views side-by-side) or a triptych (3 views).
     
