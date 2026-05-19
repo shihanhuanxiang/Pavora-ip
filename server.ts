@@ -1,5 +1,6 @@
 
 import express from 'express';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { google } from 'googleapis';
@@ -79,6 +80,24 @@ const SCOPES = [
 
 // --- API Routes ---
 
+const USAGE_LOG_PATH = path.join(__dirname, 'logs', 'usage.jsonl');
+
+function appendUsageLog(record: {
+  timestamp: string;
+  model: string;
+  endpoint: string;
+  success: boolean;
+  statusCode: number;
+  durationMs: number;
+}): void {
+  try {
+    const line = JSON.stringify(record) + '\n';
+    fs.appendFileSync(USAGE_LOG_PATH, line, 'utf8');
+  } catch {
+    // log 失敗不影響主流程
+  }
+}
+
 app.get('/api/config', (_req, res) => {
   const key = process.env.GEMINI_API_KEY;
   if (!key) {
@@ -96,6 +115,13 @@ app.use('/api/gemini-proxy', async (req: express.Request, res: express.Response)
   const geminiBase = 'https://generativelanguage.googleapis.com';
   const targetUrl = `${geminiBase}${req.path}${req.url.includes('?') ? req.url.substring(req.url.indexOf('?')) : ''}`;
 
+  // 從 URL 路徑抓 model 和 endpoint
+  // 路徑格式：/v1beta/models/{model}:{endpoint}
+  const modelMatch = req.path.match(/\/models\/([^:]+):(.+)/);
+  const model = modelMatch ? modelMatch[1] : 'unknown';
+  const endpoint = modelMatch ? modelMatch[2] : 'unknown';
+  const startTime = Date.now();
+
   try {
     const body = req.method !== 'GET' ? JSON.stringify(req.body) : undefined;
     const upstream = await fetch(targetUrl, {
@@ -107,8 +133,26 @@ app.use('/api/gemini-proxy', async (req: express.Request, res: express.Response)
       body,
     });
     const data = await upstream.json();
+
+    appendUsageLog({
+      timestamp: new Date().toISOString(),
+      model,
+      endpoint,
+      success: upstream.ok,
+      statusCode: upstream.status,
+      durationMs: Date.now() - startTime,
+    });
+
     res.status(upstream.status).json(data);
   } catch (err) {
+    appendUsageLog({
+      timestamp: new Date().toISOString(),
+      model,
+      endpoint,
+      success: false,
+      statusCode: 502,
+      durationMs: Date.now() - startTime,
+    });
     res.status(502).json({ error: 'Proxy upstream error', detail: String(err) });
   }
 });

@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Usage logs
+logs/*.jsonl
+!logs/
+!logs/.gitkeep
