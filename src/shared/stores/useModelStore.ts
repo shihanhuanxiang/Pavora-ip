@@ -13,9 +13,14 @@ import { checkGoogleDriveStatus, syncToGoogleDrive, listDriveFolders, createDriv
 import { getDriveSettings } from '../services/storageService';
 import { embedMetadata } from '../utils/metadataUtils';
 
+// Firestore 同步為 best-effort 外掛：失敗時不阻擋本地操作，只降級狀態供 UI 讀取（不再噴 console.error）。
+export type CloudSyncStatus = 'idle' | 'syncing' | 'ok' | 'degraded';
+
 interface ModelState {
   models: Model[];
   activeModelId: string | null;
+  cloudSyncStatus: CloudSyncStatus;
+  lastSyncError?: string;
   addModel: (model: Model, skipCloud?: boolean) => Promise<void>;
   syncWithCloud: () => Promise<void>;
   removeModels: (ids: string[]) => Promise<void>;
@@ -48,6 +53,8 @@ export const useModelStore = create<ModelState>()(
     (set, get) => ({
       models: [],
       activeModelId: null,
+      cloudSyncStatus: 'idle',
+      lastSyncError: undefined,
 
       removeFromModelGallery: async (modelId, itemIds) => {
         const model = get().models.find(m => m.id === modelId);
@@ -76,9 +83,11 @@ export const useModelStore = create<ModelState>()(
                 for (const itemId of itemIds) {
                     await deleteGalleryItemFromCloud(modelId, itemId);
                 }
+                set({ cloudSyncStatus: 'ok', lastSyncError: undefined });
             }
         } catch (e) {
-            console.error("Cloud gallery item deletion failed", e);
+            set({ cloudSyncStatus: 'degraded', lastSyncError: e instanceof Error ? e.message : String(e) });
+            console.warn("Cloud gallery item deletion failed", e);
         }
       },
 
@@ -96,9 +105,10 @@ export const useModelStore = create<ModelState>()(
             }
           });
 
-          set({ models: merged });
+          set({ models: merged, cloudSyncStatus: 'ok', lastSyncError: undefined });
         } catch (e) {
-          console.error("Cloud sync failed", e);
+          set({ cloudSyncStatus: 'degraded', lastSyncError: e instanceof Error ? e.message : String(e) });
+          console.warn("Cloud sync failed", e);
         }
       },
 
@@ -160,9 +170,11 @@ export const useModelStore = create<ModelState>()(
               // Ensure we don't accidentally update with an empty object causing issues if no other fields changed
               await updateDoc(modelRef, safeUpdates);
             }
+            set({ cloudSyncStatus: 'ok', lastSyncError: undefined });
           }
         } catch (e) {
-          console.error("Cloud update failed", e);
+          set({ cloudSyncStatus: 'degraded', lastSyncError: e instanceof Error ? e.message : String(e) });
+          console.warn("Cloud update failed", e);
         }
       },
 
@@ -270,10 +282,12 @@ export const useModelStore = create<ModelState>()(
                 const newItem = updatedModel?.gallery?.find(i => i.id === `gal-${galleryItemTimestamp}`);
                 if (newItem) {
                     await saveGalleryItemToCloud(modelId, newItem);
+                    set({ cloudSyncStatus: 'ok', lastSyncError: undefined });
                 }
             }
         } catch (e) {
-            console.error("Cloud gallery item sync failed", e);
+            set({ cloudSyncStatus: 'degraded', lastSyncError: e instanceof Error ? e.message : String(e) });
+            console.warn("Cloud gallery item sync failed", e);
         }
       },
 
@@ -328,8 +342,10 @@ export const useModelStore = create<ModelState>()(
             }
             try {
                 await deleteModelFromCloud(m.id);
+                set({ cloudSyncStatus: 'ok', lastSyncError: undefined });
             } catch (e) {
-                console.error("Failed to delete from cloud", e);
+                set({ cloudSyncStatus: 'degraded', lastSyncError: e instanceof Error ? e.message : String(e) });
+                console.warn("Failed to delete from cloud", e);
             }
         }
 
@@ -368,13 +384,4 @@ export const useModelStore = create<ModelState>()(
             visualPromptZH: item.visualPromptZH ? item.visualPromptZH.slice(0, 800) : undefined,
             contentCategory: item.contentCategory,
             styleTags: item.styleTags,
-            driveFileId: item.driveFileId,
-            driveLink: item.driveLink,
-            driveSyncedAt: item.driveSyncedAt
-          }))
-        }))
-      }),
-      // Only persist metadata, images are in IDB linked by URL
-    }
-  )
-);
+            driveFileId

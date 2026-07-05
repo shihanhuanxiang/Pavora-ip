@@ -5,6 +5,7 @@ import { buildDirectorPrompt, VIDEO_PROMPT_ANALYSIS, SCRIPT_TO_STORYBOARD_PROMPT
 import { GoogleGenAI, Modality } from "@google/genai";
 import { fitImageToAspectRatio } from "../../../shared/utils/imageUtils";
 import { withBackoff } from "../../../shared/services/retry";
+import { runPromptPipeline } from "../../../promptPipeline";
 
 // Preflight Check for Video Generation Parameters
 function videoGenerationPreflight(params: any) {
@@ -267,11 +268,8 @@ export const extractVideoFrames = async (videoUrl: string, type: 'first' | 'last
 
     if (videoUrl.startsWith('http')) {
         try {
-            const resp = await fetch(videoUrl, {
-                headers: {
-                    'x-goog-api-key': process.env.API_KEY || ''
-                }
-            });
+            // E0: video bytes 一律走 server-side proxy，key 不出 server（見 PAVORA_E_SECURITY_PLAN.md E0）
+            const resp = await fetch(`/api/gemini-video?fileUri=${encodeURIComponent(videoUrl)}`);
             if (resp.ok) {
                 const blob = await resp.blob();
                 blobUrl = URL.createObjectURL(blob);
@@ -405,7 +403,8 @@ export const generateImageAsset = async (
     if (primaryImage) {
         parts.push({ inlineData: primaryImage });
     }
-    parts.push({ text: prompt });
+    const pipelinedPrompt = runPromptPipeline(prompt, { source: 'directorService:generateImageAsset', mode: 'dryrun' }).prompt;
+    parts.push({ text: pipelinedPrompt });
 
     const response = await client.models.generateContent({
         model: 'gemini-2.5-flash-image',
@@ -420,5 +419,4 @@ export const generateImageAsset = async (
     if (resultPart && resultPart.inlineData) {
         return `data:${resultPart.inlineData.mimeType};base64,${resultPart.inlineData.data}`;
     }
-    throw new Error("預覽圖生成失敗");
-};
+    thr

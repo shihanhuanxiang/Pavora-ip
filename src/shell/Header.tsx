@@ -5,6 +5,7 @@ import BellIcon from '../shared/assets/icons/BellIcon';
 import ActivityLog from '../shared/components/notification/ActivityLog';
 import { useNotification } from '../shared/context/NotificationContext';
 import { useAppStore } from '../shared/stores/useAppStore';
+import { useModelStore } from '../shared/stores/useModelStore';
 
 interface HeaderProps {
   onTitleClick: () => void;
@@ -16,6 +17,8 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, isDarkMode, onToggleTheme }) => {
   const { projectMode, setProjectMode } = useAppStore();
+  const cloudSyncStatus = useModelStore((state) => state.cloudSyncStatus);
+  const lastSyncError = useModelStore((state) => state.lastSyncError);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isActivityLogOpen, setIsActivityLogOpen] = useState(false);
   const { notifications, tasks } = useNotification();
@@ -36,37 +39,36 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
     {
       title: "品牌與行銷",
       items: [
-        { label: "品牌識別中心", id: "brand_identity_hub", desc: "品牌視覺靈魂、核心美學與模特兒合輯卡管理" },
-        { label: "行銷工廠", id: "marketing_factory", desc: "全平台行銷策略、素材生產與 AI 影像總監" },
-        { label: "動態中心", id: "motion_hub", desc: "賦予靜態影像電影級的流動生命" },
+        { label: "品牌識別中心", id: "brand_identity_hub", desc: "整理品牌的模特兒、美學調性與合輯卡，讓每次產出風格一致" },
+        { label: "行銷工廠", id: "marketing_factory", desc: "一次規劃並產出多平台需要的行銷素材與廣告視覺" },
+        { label: "動態中心", id: "motion_hub", desc: "把靜態影像變成有電影運鏡感的動態畫面" },
       ]
     },
     {
       title: "核心流程",
       items: [
-        { label: "模特兒生成", id: "model_setup", desc: "打造獨一無二的品牌專屬代言人" },
-        { label: "虛擬試衣間", id: "fitting_room", desc: "零成本實現高品質服裝穿搭效果" },
-        { label: "場景轉移", id: "scene", desc: "將主體瞬間置於全球奢華場景中" },
+        { label: "模特兒生成", id: "model_setup", desc: "打造一個長相固定、可重複使用的專屬代言人" },
+        { label: "虛擬試衣間", id: "fitting_room", desc: "不用實際拍攝，直接把商品穿到模特兒身上出圖" },
+        { label: "場景轉移", id: "scene", desc: "把同一張圖換到任何你想要的背景與情境" },
       ]
     },
     {
       title: "專業工具",
       items: [
-        { label: "廣告視覺生成", id: "luxury_visual", desc: "創作頂級時尚雜誌等級的視覺大片" },
-        { label: "電商全鏈路", id: "e_gen", desc: "自動化生成電商詳情頁與主圖矩陣" },
-        { label: "導演模式", id: "director_mode", desc: "將創意腳本轉化為分鏡與動態預覽" },
-        { label: "視覺錨點", id: "style_anchor", desc: "精準鎖定並遷移特定的視覺風格" },
-        { label: "影像解構", id: "deconstruction", desc: "深度解析影像構成並提取核心元素" },
+        { label: "導演模式", id: "director_mode", desc: "把你的腳本文字變成一組分鏡與動態預覽" },
+        { label: "視覺錨點", id: "style_anchor", desc: "鎖定喜歡的視覺風格，套用到新的產出上" },
+        { label: "影像解構", id: "deconstruction", desc: "拆解一張圖的構成元素，方便你重新組合運用" },
       ]
     },
     {
       title: "創意實驗與資產",
       items: [
-        { label: "服裝設計", id: "apparel", desc: "探索前衛剪裁與材質的無限可能" },
-        { label: "妝髮沙龍", id: "salon", desc: "精準控制模特兒的妝容與髮型細節" },
-        { label: "角色矩陣", id: "character_lab", desc: "生成多樣化的角色原型與視覺一致性" },
-        { label: "作品集錦", id: "portfolio", desc: "管理與展示您的所有 AI 創作資產" },
-        { label: "模特兒休息室", id: "lounge", desc: "管理您的專屬模特兒矩陣與代言人" },
+        { label: "服裝設計", id: "apparel", desc: "設計現實中還不存在的服裝款式與材質" },
+        { label: "妝髮沙龍", id: "salon", desc: "微調模特兒的妝容與髮型，做出你想要的細節" },
+        { label: "角色矩陣", id: "character_lab", desc: "一次生成多個角色原型，方便挑選並保持一致視覺" },
+        { label: "作品集錦", id: "portfolio", desc: "瀏覽並管理你目前所有 AI 產出的作品" },
+        { label: "作品優化", id: "portfolio_optimization", desc: "針對單張作品重新打光、換角度、補強細節" },
+        { label: "模特兒休息室", id: "lounge", desc: "在這裡切換你要接續經營的模特兒或代言人" },
       ]
     }
   ];
@@ -166,8 +168,24 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
                   )}
               </div>
 
+              {/* Cloud Sync Status Badge：degraded 才醒目，其他狀態不干擾視覺 */}
+              {cloudSyncStatus === 'degraded' && (
+                <div
+                  className="flex items-center gap-1.5 group cursor-default"
+                  title={lastSyncError ? `雲端同步異常：${lastSyncError}` : '雲端同步異常'}
+                >
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-amber-400/60 animate-ping"></span>
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-400"></span>
+                  </span>
+                  <span className="hidden sm:inline text-[9px] font-bold uppercase tracking-[0.15em] text-amber-400/90">
+                    雲端同步異常
+                  </span>
+                </div>
+              )}
+
               {/* Notification Bell */}
-              <button 
+              <button
                 onClick={() => setIsActivityLogOpen(true)}
                 className="relative p-2 rounded-full hover:bg-[var(--color-gold)]/10 transition-all duration-300 group"
               >
@@ -211,31 +229,4 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
                                             {item.label}
                                         </span>
                                         {item.desc && (
-                                            <span className="text-[10px] text-[var(--color-text-dim)] group-hover/item:text-[var(--color-text-main)] opacity-60 mt-1 transition-colors max-w-[240px] leading-relaxed">
-                                                {item.desc}
-                                            </span>
-                                        )}
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                ))}
-            </div>
-
-            {/* Bottom Branding */}
-            <div className={`mt-32 border-t border-[var(--color-border)] pt-8 flex justify-between items-center transition-all duration-1000 delay-500 ${isMenuOpen ? 'opacity-100' : 'opacity-0'}`}>
-                <span className="text-[10px] font-mono tracking-[0.5em] text-[var(--color-text-dim)] uppercase">Pavora AI 時尚工作室 2026</span>
-                <div className="flex gap-6">
-                    <span className="w-1 h-1 rounded-full bg-[var(--color-gold)]"></span>
-                    <span className="w-1 h-1 rounded-full bg-[var(--color-gold)] opacity-50"></span>
-                    <span className="w-1 h-1 rounded-full bg-[var(--color-gold)] opacity-20"></span>
-                </div>
-            </div>
-        </div>
-      </div>
-    </>
-  );
-};
-
-export default Header;
+                                            <span className="text-[10px] text-[var(--color-text-dim)] group-hover/item:text-[var(--color-text-main)] opacity-60 mt-1 transition-colors max-w-[240px]

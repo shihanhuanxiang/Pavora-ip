@@ -5,6 +5,7 @@ import type { ProgressFn } from "../../../shared/types/types";
 import { buildFittingPrompt, buildStylingPlanPrompt, buildIdentityFixPrompt } from "../../../prompts/fittingRoom";
 
 import { imageDB } from "../../../shared/services/imageDB";
+import { runPromptPipeline } from "../../../promptPipeline";
 
 /**
  * 獲取圖片的實際長寬比
@@ -83,12 +84,13 @@ export const removeApparelBackground = async (apparelImage: {data: string, mimeT
     Maintain all original textures, colors, and details of the garment. 
     Do not include any hangers, mannequins, or background elements.
     `;
+    const pipelinedPrompt = runPromptPipeline(prompt, { source: 'fitting:removeApparelBackground', mode: 'dryrun' }).prompt;
 
     const response = await client.models.generateContent({
         model: 'gemini-2.5-flash-image',
         contents: [
             { inlineData: apparelImage },
-            { text: prompt }
+            { text: pipelinedPrompt }
         ],
         config: {
             responseModalities: [Modality.IMAGE]
@@ -235,7 +237,8 @@ Update the existing ${category} in Asset 3 with the new design from Asset 2. Mai
     prompt += `\n\nNote: Maintain the model's appearance and the scene's composition. 
     IMPORTANT: Maintain the EXACT framing of Asset 3. If Asset 3 is a full-body shot, the output MUST also be a full-body shot. Do not crop. Ensure the entire subject is visible within the frame.`;
 
-    parts.push({ text: prompt });
+    const pipelinedApplyPrompt = runPromptPipeline(prompt, { source: 'fitting:applyApparel', mode: 'dryrun' }).prompt;
+    parts.push({ text: pipelinedApplyPrompt });
     
     // 1. 身份參考 (Identity Anchor) - 優先使用臉部錨點，否則使用目前影像
     parts.push({ inlineData: identityRef || currentCanvasData });
@@ -301,8 +304,9 @@ Update the existing ${category} in Asset 3 with the new design from Asset 2. Mai
             console.warn("VTO: First attempt blocked by safety filters. Retrying with simplified prompt...");
             
             const retryPrompt = `Fashion catalog production: Transfer garment from Asset 2 to model in Asset 3. Maintain model characteristics from Asset 1. High-end studio photography.`;
+            const pipelinedRetryPrompt = runPromptPipeline(retryPrompt, { source: 'fitting:applyApparel:retry', mode: 'dryrun' }).prompt;
             const retryParts = [
-                { text: retryPrompt },
+                { text: pipelinedRetryPrompt },
                 { inlineData: identityRef || currentCanvasData },
                 { inlineData: processedApparel },
                 { inlineData: currentCanvasData }
@@ -363,10 +367,11 @@ export const restoreIdentity = async (
         - Output resolution must be extremely high with clean edges.`;
     }
 
+    const pipelinedFixPrompt = runPromptPipeline(fixPrompt, { source: 'fitting:restoreIdentity', mode: 'dryrun' }).prompt;
     const parts: any[] = [
         { inlineData: faceAnchorData }, 
         { inlineData: currentCanvasData }, 
-        { text: fixPrompt }
+        { text: pipelinedFixPrompt }
     ];
 
     const client = await getGeminiClient(usePro);
@@ -427,9 +432,10 @@ export const refineGarmentDetails = async (
     
     Output the refined image with extremely high detail and professional studio quality.
     `.trim();
+    const pipelinedRefinePrompt = runPromptPipeline(prompt, { source: 'fitting:refineGarmentDetails', mode: 'dryrun' }).prompt;
 
     const parts: any[] = [
-        { text: prompt },
+        { text: pipelinedRefinePrompt },
         { inlineData: apparelImage },
         { inlineData: currentCanvasData }
     ];

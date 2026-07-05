@@ -1,5 +1,9 @@
 
 
+// NOTE: Model 域型別（模特兒身份、外觀、鎖定）正在遷移到 src/domains/model/types.ts。
+// 本檔僅保留 re-export 以維持既有 import 路徑相容，請勿在此重新定義已搬遷的型別。
+// 詳見 handoff_docs/PAVORA_CONVERGENCE_BLUEPRINT_2026-07-04.md Stage A。
+
 /**
  * 核心流程步驟
  */
@@ -140,51 +144,15 @@ export interface EGenPoster {
     status: 'pending' | 'loading' | 'success' | 'error';
 }
 
-export interface IPPersona {
-    coreVibe: string;
-    mbti?: string;
-    profession?: string;
-    socialStatus?: string;
-    catchphrase?: string;
-    postingHabit?: string;
-    toneOfVoice?: string;
-    locked_descriptor?: string;
-}
+export type { IPPersona } from '../../domains/model/types';
 
-export interface IPVisualConstants {
-    catchlightPreference?: string;
-    signaturePoses?: string[];
-    stylingFilters?: string[];
-    facialBoneStructure?: string;
-    expressionStyle?: string;
-    colorTone?: string;
-    poseEnergy?: string;
-}
+export type { IPVisualConstants } from '../../domains/model/types';
 
-export interface IPLifeCircuit {
-    primaryCity?: string;
-    primaryDistrict?: string;
-    interests?: string[];
-    relationships?: string[];
-}
+export type { IPLifeCircuit } from '../../domains/model/types';
 
 export type ContentCategory = 'lifestyle' | 'curve' | 'drama';
 
-export interface IPStyleBible {
-    referenceId?: string;
-    contentTargets?: Record<ContentCategory, number>;
-    visualKeywords?: string[];
-    signatureScenes?: string[];
-    signatureOutfits?: string[];
-    signaturePoses?: string[];
-    expressionPalette?: string[];
-    cameraLanguage?: string[];
-    colorPalette?: string[];
-    captionTone?: string[];
-    avoid?: string[];
-    notes?: string;
-    updatedAt?: number;
-}
+export type { IPStyleBible } from '../../domains/model/types';
 
 export interface DiaryEntry {
     id: string;
@@ -209,78 +177,11 @@ export interface NarrativeContext {
     detectedOutfit?: string;
 }
 
-export interface AdvancedPhysiqueStats {
-    bustTension: number;
-    physiqueCurvature: number;
-    muscularDensity: number;
-    vTaperScale: number;
-}
+export type { AdvancedPhysiqueStats } from '../../domains/model/types';
 
-export interface WorldAnchors {
-    pet?: {
-        breed: string;
-        name: string;
-        description: string;
-        traits: string[];
-    };
-    relationships?: {
-        name: string;
-        relation: string;
-        personality: string;
-        memo: string;
-    }[];
-    iconicItems?: {
-        name: string;
-        description: string;
-        significance: string;
-    }[];
-    longTermMemories?: string[];
-}
+export type { WorldAnchors } from '../../domains/model/types';
 
-export interface LocalizedScene {
-  id?: string;
-  scene_id?: string;
-  name_zh?: string;
-  name_en?: string;
-  city: string;
-  region: "north" | "central" | "south" | "east" | "islands" | "all";
-  category: string;
-  event: string;
-  sensory: string | any;
-  visualNoise: string | any;
-  promptSkeleton?: string;
-  emotions?: string[];
-}
-
-export interface ExtendedScene extends LocalizedScene {
-  depth_module_id: number;
-  event_type_ref?: number[];
-  season?: string[];
-  time_of_day?: string[];
-  outfit_hint?: string;
-  outfit_filter?: string[];
-  outfit_suggestion?: string[];
-  forbidden_outfit_contexts?: string[];
-  scene_context_id?: string;
-  spicy_level?: number;
-  pov_modes?: string[];
-  negative_prompt?: string;
-  visual_noise?: string[]; // Alternative naming in v1.1
-  prompt_skeleton?: string; // Alternative naming in v1.1
-  flags: {
-    relationship_layer: string | null;
-    story_arc_id: string | null;
-    arc_phase: string | null;
-    identity_thread_id: string | null;
-    thread_milestone: string | null;
-    object_focus: boolean;
-    digital_layer: boolean;
-    intimacy_emotional: boolean;
-    in_between_location: boolean;
-    vulnerability_tag: string | null;
-    weather_event: string | null;
-  };
-}
+export type { NarrativeScene, NarrativeSceneExtended, LocalizedScene, ExtendedScene } from '../../domains/scene/types';
 
 export interface DepthModule {
   id: number;
@@ -350,99 +251,13 @@ export interface WeeklyPlanBrief {
     isThreadScene?: boolean;
 }
 
-export interface VisualIdentityHint {
-  subjectDescriptor: string;
-  facialLineageHint: string;
-  styleReferenceHint: string;
-  hairMakeupHint: string;
-}
+export type { VisualIdentityHint } from '../../domains/model/types';
 
-export interface Model { 
-    id: string; 
-    name: string; 
-    imageUrl: string; 
-    type: 'standard' | 'custom'; 
-    schemaVersion?: string; 
-    persona?: IPPersona;
-    visualIdentityHint?: VisualIdentityHint;
-    visualConstants?: IPVisualConstants;
-    lifeCircuit?: IPLifeCircuit;
-    worldAnchors?: WorldAnchors;
-    styleBible?: IPStyleBible;
-    stats?: ModelData['stats'];
-    advancedStats?: AdvancedPhysiqueStats;
-    gender?: string;
-    age?: number;
-    preferences?: {
-        preferred_archetypes?: string[];
-        aesthetic_tier_min?: number;
-        aesthetic_tier_max?: number;
-        active_arc_id?: string | null;
-        active_arc_phase_index?: number;
-        active_outfit_id?: string | null;
-        recent_outfit_ids?: string[];
-        visual_preset_id?: string | null;
-        face_reference_urls?: string[];
-        manual_wear_state?: string | null;
-        active_threads?: {
-            thread_id: string;
-            current_milestone_index: number;
-            last_update_timestamp: number;
-        }[];
-        persona_extension?: {
-            best_friend_name?: string;
-            pet_name?: string;
-            hometown?: string;
-        };
-        enable_story_arcs?: boolean;
-        enable_identity_threads?: boolean;
-        custom_story_arcs?: StoryArc[];
-        custom_identity_threads?: IdentityThread[];
-    };
-    gallery?: {
-        id: string;
-        url: string;
-        timestamp: number;
-        narrativeContent?: string;
-        visualPrompt?: string;
-        visualPromptZH?: string;
-        contentCategory?: ContentCategory;
-        styleTags?: string[];
-        driveFileId?: string;
-        driveLink?: string;
-        driveSyncedAt?: string;
-    }[];
-}
+export type { Model } from '../../domains/model/types';
 
-export interface OutfitV2 {
-    outfit_id: string;
-    gender: 'F' | 'M' | 'U';
-    style_archetype: string;
-    context_id: string;
-    aesthetic_tier: number;
-    pillars: {
-        layer_inner: string | null;
-        top: string;
-        layer_outer: string | null;
-        bottom: string;
-        shoes: string;
-        accessories: string[];
-        props: string[];
-    };
-    fabric_difficulty: 'safe' | 'medium' | 'hard';
-    wear_state: string;
-    layering_count: number;
-    compatible_contexts: string[];
-    hand_occupation: {
-        left_hand: string;
-        right_hand: string;
-        both_busy: boolean;
-    };
-    prop_light_emit?: string[];
-    prompt_skeleton: string;
-}
-export interface StoredApparelItem { id: string; name: string; imageUrl: string; category: string; schemaVersion?: string; analysis?: any; tags?: string[]; color?: string; }
-export interface PortfolioItem { 
+export type { WardrobeOutfit, WardrobeItem, OutfitV2, StoredApparelItem } from '../../domains/wardrobe/types';
+
+export interface PortfolioItem {
   id: string; 
   imageUrl: string; 
   sourceModule: string; 
@@ -455,7 +270,7 @@ export interface ApparelItemDefinition { id: string; name: string; }
 export interface ApparelMainCategory { mainCategory: string; groups: { groupName: string; items: ApparelItemDefinition[]; }[]; }
 export type ProgressFn = (message: string) => void;
 
-export interface OutfitPreset { id: string; label: string; prompt: string; category: string; gender: 'male' | 'female'; }
+export type { OutfitPreset } from '../../domains/wardrobe/types';
 export interface ApparelItem { id: string; name: string; file: File; previewUrl: string; }
 export interface GeneratedLook { id: number; imageUrl: string; qaChecks: QaCheck[]; }
 export interface QaCheck { id: string; label: string; passed: boolean; }
@@ -663,15 +478,7 @@ export interface FantasyJob extends FantasyPresetV8 {
     reference?: string;
 }
 
-export interface ScenePresetV8 {
-    id: string;
-    name?: string;
-    labelZh: string;
-    category: string;
-    environment: string;
-    lightingRig: string;
-    atmosphere?: string;
-}
+export type { FantasyScene, ScenePresetV8 } from '../../domains/scene/types';
 
 export interface FantasyLightingV4 {
     id: string;

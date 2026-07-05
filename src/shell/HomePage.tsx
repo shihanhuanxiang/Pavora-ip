@@ -42,6 +42,24 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     [models, activeModelId]
   );
 
+  // 旅程進度推導：只讀既有 models/activeModel/gallery 資料，不開新 localStorage key。
+  // 站點：建立 IP → 挑選 IP 開始經營 → 穿搭/場景與首次產出 → 整理作品或繼續產出
+  // 誠實取捨：Model.preferences.active_outfit_id / recent_outfit_ids 只在 NarrativeWorkflow 產出流程內才會被寫入，
+  // 資料上「穿搭/場景完成」與「開始產內容」無法區分是同一動作，故合併為單一站點，不硬拆成 4 站。
+  const journeyStep = useMemo(() => {
+    if (models.length === 0) {
+      return { key: 'create_ip' as const };
+    }
+    if (!activeModel) {
+      return { key: 'pick_ip' as const };
+    }
+    const galleryCount = activeModel.gallery?.length ?? 0;
+    if (galleryCount === 0) {
+      return { key: 'first_output' as const, model: activeModel };
+    }
+    return { key: 'curate_or_continue' as const, model: activeModel, galleryCount };
+  }, [models, activeModel]);
+
   const hubs = useMemo(() => {
     if (projectMode === 'ip_creator') {
       return [
@@ -49,7 +67,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           id: 'lounge', 
           zh: 'IP 休息室', 
           en: '身份與作品管理', 
-          desc: '管理目前 IP 的身份鎖定、基準圖、作品集與靈魂敘事入口',
+          desc: '在這裡看到你的 IP 目前的長相與所有作品，一鍵接續下一次產出',
           icon: <ModelLoungeIcon />, 
           color: 'from-amber-500/20 to-transparent',
           size: 'large' 
@@ -58,7 +76,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           id: 'model_setup', 
           zh: '建立或更新 IP', 
           en: '建立與優化角色', 
-          desc: '建立新角色，或延伸既有 IP 的臉部方向、妝髮與視覺身份',
+          desc: '從零打造一個新角色的長相，或調整既有 IP 的臉型、妝髮方向',
           icon: <ModelIcon />, 
           color: 'from-rose-500/20 to-transparent',
           size: 'large' 
@@ -67,7 +85,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           id: 'narrative', 
           zh: '靈魂敘事', 
           en: '日常內容流程', 
-          desc: '為目前 IP 生成日常事件、場景、服裝與社群內容，延續長期記憶',
+          desc: '幫你的 IP 換上穿搭、換到新場景，一次產出一篇可發文的內容',
           icon: <DirectorModeIcon />, 
           color: 'from-violet-500/20 to-transparent',
           size: 'large' 
@@ -76,7 +94,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           id: 'portfolio', 
           zh: '作品與內容庫', 
           en: '作品素材整理', 
-          desc: '整理 IP 已產出的日常、曲線與戲劇張力內容素材',
+          desc: '把已經產出的內容整理成一份可以直接拿去發文的素材庫',
           icon: <PortfolioGalleryIcon />, 
           color: 'from-purple-500/20 to-transparent',
           size: 'large' 
@@ -89,7 +107,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         id: 'brand_identity_hub', 
         zh: '品牌形象中心', 
         en: '品牌身份管理', 
-        desc: '管理品牌專屬模特兒、妝造與身份鎖定',
+        desc: '建立一個穿你家商品的專屬模特兒，長相與妝造固定不跑掉',
         icon: <ModelIcon />, 
         color: 'from-amber-500/20 to-transparent',
         size: 'large' 
@@ -98,7 +116,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         id: 'marketing_factory', 
         zh: '行銷素材工廠', 
         en: '行銷素材產線', 
-        desc: '批次產出電商海報、精品廣告與社群素材',
+        desc: '一次產出一整批電商圖、廣告視覺與社群貼文素材',
         icon: <PosterEngineIcon />, 
         color: 'from-blue-500/20 to-transparent',
         size: 'large' 
@@ -107,7 +125,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         id: 'motion_hub', 
         zh: '動態視覺中心', 
         en: '動態與電影感視覺', 
-        desc: '產出 Reels/TikTok 適用之產品動態特寫',
+        desc: '把靜態商品照變成 Reels/TikTok 能直接用的動態影片',
         icon: <DirectorModeIcon />, 
         color: 'from-purple-500/20 to-transparent',
         size: 'large' 
@@ -209,27 +227,10 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
       )}
 
-      {projectMode === 'ip_creator' && models.length > 0 && !activeModel && (
+      {projectMode === 'ip_creator' && journeyStep.key === 'create_ip' && (
         <div className="w-full max-w-7xl mb-10 animate-fade-in">
           <div className="glass-panel rounded-2xl p-5 md:p-6 border border-[var(--color-gold)]/20 bg-[var(--color-gold)]/3">
-            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--color-gold)] mb-3">✦ 選擇你的 IP</p>
-            <p className="text-sm text-[var(--color-text-main)] font-medium mb-4">
-              你已建立 {models.length} 個虛擬 IP。前往 IP 休息室選擇一個開始工作。
-            </p>
-            <button
-              onClick={() => onNavigate('lounge')}
-              className="px-4 py-2 rounded-xl bg-[var(--color-gold)] text-black text-[10px] font-bold uppercase tracking-widest transition-all hover:opacity-90"
-            >
-              前往 IP 休息室 →
-            </button>
-          </div>
-        </div>
-      )}
-
-      {projectMode === 'ip_creator' && models.length === 0 && (
-        <div className="w-full max-w-7xl mb-10 animate-fade-in">
-          <div className="glass-panel rounded-2xl p-5 md:p-6 border border-[var(--color-gold)]/20 bg-[var(--color-gold)]/3">
-            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--color-gold)] mb-3">✦ 建議起點</p>
+            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--color-gold)] mb-3">✦ 繼續你的旅程：下一步是建立 IP</p>
             <p className="text-sm text-[var(--color-text-main)] font-medium mb-4">
               還沒有虛擬 IP？從建立第一個角色開始——設定外貌、身份鎖定，再用靈魂敘事產出內容。
             </p>
@@ -243,11 +244,60 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
       )}
 
-      {projectMode === 'ip_creator' && activeModel && (
+      {projectMode === 'ip_creator' && journeyStep.key === 'pick_ip' && (
+        <div className="w-full max-w-7xl mb-10 animate-fade-in">
+          <div className="glass-panel rounded-2xl p-5 md:p-6 border border-[var(--color-gold)]/20 bg-[var(--color-gold)]/3">
+            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--color-gold)] mb-3">✦ 繼續你的旅程：下一步是挑選 IP</p>
+            <p className="text-sm text-[var(--color-text-main)] font-medium mb-4">
+              你已建立 {models.length} 個虛擬 IP。前往 IP 休息室選擇一個開始經營。
+            </p>
+            <button
+              onClick={() => onNavigate('lounge')}
+              className="px-4 py-2 rounded-xl bg-[var(--color-gold)] text-black text-[10px] font-bold uppercase tracking-widest transition-all hover:opacity-90"
+            >
+              前往 IP 休息室 →
+            </button>
+          </div>
+        </div>
+      )}
+
+      {projectMode === 'ip_creator' && journeyStep.key === 'first_output' && (
         <div className="w-full max-w-7xl mb-10 animate-fade-in">
           <button
             onClick={() => {
-              setActiveModel(activeModel.id);
+              setActiveModel(journeyStep.model.id);
+              onNavigate('narrative');
+            }}
+            className="group w-full glass-panel rounded-2xl p-5 md:p-6 flex items-center justify-between gap-5 text-left transition-all duration-500 hover:-translate-y-1 hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)]/5"
+          >
+            <div className="flex items-center gap-4 min-w-0">
+              <div className="w-14 h-14 rounded-2xl bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/20 flex items-center justify-center text-[var(--color-gold)] flex-shrink-0 [&_svg]:w-8 [&_svg]:h-8">
+                <DirectorModeIcon />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--color-gold)] mb-1">
+                  繼續你的旅程：下一步是穿搭與第一次產出
+                </p>
+                <h3 className="text-lg md:text-2xl font-bold text-[var(--color-text-main)] truncate">
+                  {journeyStep.model.name} 還沒有作品
+                </h3>
+                <p className="text-xs md:text-sm text-[var(--color-text-dim)] mt-1">
+                  前往靈魂敘事，為這個 IP 搭配第一套穿搭與場景，產出第一張內容
+                </p>
+              </div>
+            </div>
+            <div className="w-9 h-9 rounded-full border border-[var(--color-gold)]/40 flex items-center justify-center text-[var(--color-gold)] flex-shrink-0 transition-transform duration-500 group-hover:translate-x-1">
+              →
+            </div>
+          </button>
+        </div>
+      )}
+
+      {projectMode === 'ip_creator' && journeyStep.key === 'curate_or_continue' && (
+        <div className="w-full max-w-7xl mb-10 animate-fade-in">
+          <button
+            onClick={() => {
+              setActiveModel(journeyStep.model.id);
               onNavigate('lounge');
             }}
             className="group w-full glass-panel rounded-2xl p-5 md:p-6 flex items-center justify-between gap-5 text-left transition-all duration-500 hover:-translate-y-1 hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)]/5"
@@ -258,13 +308,13 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               </div>
               <div className="min-w-0">
                 <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--color-gold)] mb-1">
-                  繼續目前 IP
+                  繼續你的旅程：整理作品或繼續產出
                 </p>
                 <h3 className="text-lg md:text-2xl font-bold text-[var(--color-text-main)] truncate">
-                  繼續我的 IP：{activeModel.name}
+                  繼續我的 IP：{journeyStep.model.name}
                 </h3>
                 <p className="text-xs md:text-sm text-[var(--color-text-dim)] mt-1">
-                  回到模特兒休息室，接續身份、作品集與靈魂敘事流程
+                  已累積 {journeyStep.galleryCount} 件作品。回到模特兒休息室整理作品集，或接續靈魂敘事繼續產出
                 </p>
               </div>
             </div>
@@ -326,72 +376,4 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <span className="text-base font-bold tracking-wide text-[var(--color-text-main)] group-hover:text-[var(--color-gold)] transition-colors">
                   {tool.zh}
                 </span>
-                <span className="text-[9px] uppercase tracking-[0.2em] text-[var(--color-text-dim)] mt-1 font-display group-hover:text-[var(--color-text-main)] transition-colors">
-                  {tool.en}
-                </span>
-              </div>
-
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-2 group-hover:translate-x-0">
-                <span className="text-[var(--color-gold)] text-lg">›</span>
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const ModuleButton: React.FC<{ 
-  zh: string; 
-  en: string; 
-  icon: React.ReactNode; 
-  onClick: () => void; 
-  size?: 'large' | 'wide' | 'standard' 
-}> = ({ zh, en, icon, onClick, size = 'standard' }) => {
-    const isLarge = size === 'large';
-    const isWide = size === 'wide';
-
-    return (
-      <button 
-        onClick={onClick}
-        className="group relative w-full h-full glass-panel rounded-xl transition-all duration-700 ease-out hover:-translate-y-2 hover:border-[var(--color-gold)] hover:shadow-2xl flex flex-col items-center justify-center overflow-hidden p-6"
-      >
-        {/* Hover Background Effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-gold)]/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-        
-        {/* Icon */}
-        <div className={`text-[var(--color-text-dim)] group-hover:text-[var(--color-gold)] group-hover:scale-110 transition-all duration-700 z-10 opacity-70 group-hover:opacity-100 ${
-          isLarge ? '[&_svg]:w-32 [&_svg]:h-32 mb-6' : 
-          isWide ? '[&_svg]:w-20 [&_svg]:h-20 mb-4' : 
-          '[&_svg]:w-14 [&_svg]:h-14 mb-4'
-        }`}>
-          {icon}
-        </div>
-
-        {/* Text Content */}
-        <div className="flex flex-col items-center z-10 w-full">
-            <span className={`font-sans font-bold text-[var(--color-text-main)] group-hover:text-[var(--color-gold)] transition-colors duration-500 text-center ${
-              isLarge ? 'text-3xl tracking-[0.2em]' : 
-              'text-lg tracking-widest'
-            }`}>
-                {zh}
-            </span>
-            <div className={`h-[1px] bg-[var(--color-gold)]/30 transition-all duration-700 my-3 ${
-              isLarge ? 'w-12 group-hover:w-24' : 'w-6 group-hover:w-12'
-            }`}></div>
-            <span className={`font-display text-[var(--color-gold)] uppercase tracking-[0.2em] text-center transition-colors ${
-              isLarge ? 'text-xs' : 'text-[9px]'
-            }`}>
-                {en}
-            </span>
-        </div>
-
-        {/* Decorative Corner */}
-        <div className="absolute top-0 right-0 w-12 h-12 border-t border-r border-transparent group-hover:border-[var(--color-gold)]/20 transition-all duration-700 rounded-tr-xl"></div>
-        <div className="absolute bottom-0 left-0 w-12 h-12 border-b border-l border-transparent group-hover:border-[var(--color-gold)]/20 transition-all duration-700 rounded-bl-xl"></div>
-      </button>
-    );
-};
-
-export default HomePage;
+                <span className="text-[

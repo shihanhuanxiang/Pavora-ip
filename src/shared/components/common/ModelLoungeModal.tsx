@@ -1,5 +1,5 @@
 import React from 'react';
-import { getModels } from '../../services/storageService';
+import { useModelStore } from '../../stores/useModelStore';
 import type { Model } from '../../types/types';
 import Card from './Card';
 import Button from './Button';
@@ -11,8 +11,8 @@ interface ModelLoungeModalProps {
 }
 
 const ModelLoungeModal: React.FC<ModelLoungeModalProps> = ({ isOpen, onClose, onSelect }) => {
+  const models = useModelStore(state => state.models);
   if (!isOpen) return null;
-  const models = getModels();
 
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50" onClick={onClose}>

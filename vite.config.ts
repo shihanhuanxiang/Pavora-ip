@@ -8,6 +8,9 @@ export default defineConfig(() => {
       server: {
         port: 3000,
         host: '0.0.0.0',
+        hmr: {
+          port: 24700,
+        },
       },
       plugins: [react(), tailwindcss()],
       resolve: {

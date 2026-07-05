@@ -355,11 +355,7 @@ const DirectorMode: React.FC<DirectorModeProps> = ({ onGoHome, initialImage, ini
         try {
             setLoadingMessage('準備下載中...');
             setIsLoading(true);
-            const response = await fetch(activeScene.generatedVideoUrl, {
-                headers: {
-                    'x-goog-api-key': process.env.API_KEY || ''
-                }
-            });
+            const response = await fetch(`/api/gemini-video?fileUri=${encodeURIComponent(activeScene.generatedVideoUrl)}`);
             if (!response.ok) throw new Error('Network response was not ok');
             const blob = await response.blob();
             const url = URL.createObjectURL(blob);
@@ -900,3 +896,4 @@ const DirectorMode: React.FC<DirectorModeProps> = ({ onGoHome, initialImage, ini
 };
 
 export default DirectorMode;
+                                                                                                                                                                                                                                       

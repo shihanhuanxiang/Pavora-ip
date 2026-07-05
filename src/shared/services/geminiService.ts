@@ -14,6 +14,7 @@ import { CINEMATIC_ANALYSIS_PROMPT } from "../../prompts/cinematic";
 import { MACRO_ANALYSIS_PROMPT, buildMacroCraftPrompt } from "../../prompts/macroCraft";
 import { buildStyleAnchorPrompt } from "../../prompts/styleAnchor";
 import { buildPromptV8 } from "../../prompts/fantasy";
+import { runPromptPipeline } from "../../promptPipeline";
 
 import { 
     generateVideo, 
@@ -107,48 +108,18 @@ export const analyzeLuxuryProduct = async (imageDatas: { data: string, mimeType:
     }
 };
 
-/**
- * 生成社群媒體行銷文案 (Instagram/TikTok/Facebook)
- */
-export const generateSocialCopy = async (analysisJson: string, platform: 'Instagram' | 'TikTok' | 'Facebook') => {
-    const ai = await getGeminiClient();
-    const analysis = JSON.parse(analysisJson);
-    const prompt = SOCIAL_COPY_PROMPT(analysis, platform);
-
-    const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
-        contents: prompt
-    });
-    return response.text || "";
-};
-
-/**
- * 生成 3 日行銷活動策略
- */
-export const generateCampaignStrategy = async (analysisJson: string) => {
-    const ai = await getGeminiClient();
-    const analysis = JSON.parse(analysisJson);
-    const prompt = CAMPAIGN_STRATEGY_PROMPT(analysis);
-
-    const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
-        contents: prompt,
-        config: { responseMimeType: 'application/json' }
-    });
-    
-    try {
-        return JSON.parse(cleanJsonString(response.text || '{}'));
-    } catch (e) {
-        throw new Error("行銷策略格式錯誤");
-    }
-};
+// generateSocialCopy / generateCampaignStrategy：實作已搬至
+// src/domains/ipContent/captionService.ts（Stage C 包 C4，文案管線合一）。
+// 此處保留 re-export，全 repo import 路徑不變。
+export { generateSocialCopy, generateCampaignStrategy } from '../../domains/ipContent/captionService';
 
 /**
  * AI 自動去背服務
  * 使用 Gemini 影像生成能力將主體提取並置於純白背景，便於後續合成
  */
 export const removeBackground = async (imageData: { data: string, mimeType: string }, onProgress?: (msg: string) => void) => {
-    const prompt = "Extract the main product/subject from this image and place it on a clean, solid white background. Remove all shadows, reflections, and existing background elements. Ensure the subject's edges are sharp and clean. [OUTPUT]: Only the subject on pure white #FFFFFF.";
+    const rawPrompt = "Extract the main product/subject from this image and place it on a clean, solid white background. Remove all shadows, reflections, and existing background elements. Ensure the subject's edges are sharp and clean. [OUTPUT]: Only the subject on pure white #FFFFFF.";
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:removeBackground', mode: 'dryrun' }).prompt;
     return transformImage(imageData, prompt, [], onProgress, { usePro: false });
 };
 
@@ -282,7 +253,7 @@ export const generateScene = async (personData: any | { label: string; fileData:
     
     const multiAngleData = isMultiAngle ? personData.map((p: any) => p.label) : (Array.isArray(personData) && personData.length > 1);
 
-    const prompt = buildSceneCompositionPrompt(
+    const rawSceneCompositionPrompt = buildSceneCompositionPrompt(
         options.poseExpression.customPoseText || options.poseExpression.posePreset, 
         options.poseExpression.customExpressionText || options.poseExpression.expressionPreset,
         options.physics,
@@ -305,6 +276,7 @@ export const generateScene = async (personData: any | { label: string; fileData:
         multiAngleData,
         config.imageConfig?.seed
     );
+    const prompt = runPromptPipeline(rawSceneCompositionPrompt, { source: 'sceneGeneration:generateScene', mode: 'dryrun' }).prompt;
     const refs = [];
     if (hasBgImage) refs.push(bgData);
     if (identityRef) refs.push(identityRef);
@@ -324,7 +296,8 @@ export const generateScene = async (personData: any | { label: string; fileData:
 export const generateBurstImages = async (baseImageData: any, pairs: any[], lock: number, onProgress: any, faceRef: any, onStep: (idx: number, url: string) => void, config: any) => {
     for (let i = 0; i < pairs.length; i++) {
         const pair = pairs[i];
-        const prompt = `Generate a portrait with pose: ${pair.pose} and expression: ${pair.expression}. Identity lock level: ${lock}.`;
+        const rawPrompt = `Generate a portrait with pose: ${pair.pose} and expression: ${pair.expression}. Identity lock level: ${lock}.`;
+        const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateBurstImages', mode: 'dryrun' }).prompt;
         const refs = faceRef ? [faceRef] : [];
         try {
             const url = await transformImage(baseImageData, prompt, refs, onProgress, config);
@@ -362,7 +335,8 @@ export const generateApparelDesignSequence = async (params: any, config: any, on
     const refs = params.faceReferences || [];
     
     const generateOne = async (suffix: string, faceRefs: any[]) => {
-        const prompt = `${basePrompt} ${suffix}`;
+        const rawPrompt = `${basePrompt} ${suffix}`;
+        const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateApparelDesignSequence', mode: 'dryrun' }).prompt;
         const finalRefs = [...faceRefs];
         if (params.referenceImage && params.referenceImage.data) {
             return await transformImage(params.referenceImage, prompt, finalRefs, onProgress, config);
@@ -371,9 +345,9 @@ export const generateApparelDesignSequence = async (params: any, config: any, on
             const usePro = config.usePro || false;
             const ai = await getGeminiClient();
             const model = usePro ? 'gemini-3.1-flash-image-preview' : 'gemini-2.5-flash-image';
-            
+
             if (onProgress) onProgress("正在調度 AI 算力渲染影像...");
-            
+
             const parts: any[] = finalRefs.map(ref => ({ inlineData: ref }));
             parts.push({ text: prompt });
             
@@ -467,12 +441,13 @@ export const extractAssetsFromImage = async (imageData: any, options: any, onPro
     const items = JSON.parse(cleanJsonString(idResponse.text || '[]'));
     if (onProgress) onProgress(`正在提取 ${items.length} 個素材...`);
     const extractedAssets = await Promise.all(items.map(async (item: any) => {
-        let prompt;
+        let rawPrompt;
         if (item.category === 'head' && options.portraitHead) {
-            prompt = HEAD_PORTRAIT_PROMPT(item.description);
+            rawPrompt = HEAD_PORTRAIT_PROMPT(item.description);
         } else {
-            prompt = ASSET_EXTRACTION_IMAGE_PROMPT(item.name, item.description);
+            rawPrompt = ASSET_EXTRACTION_IMAGE_PROMPT(item.name, item.description);
         }
+        const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:extractAssetsFromImage', mode: 'dryrun' }).prompt;
         const url = await transformImage(imageData, prompt, [], undefined, { usePro: options.usePro });
         return { ...item, pngTransparentUrl: url };
     }));
@@ -482,10 +457,11 @@ export const extractAssetsFromImage = async (imageData: any, options: any, onPro
 export const tuneImageDetail = async (baseData: any, maskData: any, instruction: string, refImages: any[], onProgress: any, config: any = {}) => {
     if (onProgress) onProgress("正在執行局部重繪...");
     const ai = await getGeminiClient();
-    const prompt = DETAIL_TUNE_PROMPT(instruction);
-    
+    const rawPrompt = DETAIL_TUNE_PROMPT(instruction);
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:tuneImageDetail', mode: 'dryrun' }).prompt;
+
     // 強化局部重繪的品質提示詞
-    const qualityPrompt = config.usePro 
+    const qualityPrompt = config.usePro
         ? `[PRECISION_REPAINT_MODE]: Maintain extreme texture consistency, seamless blending, high-fidelity reconstruction. ${prompt}`
         : prompt;
 
@@ -524,8 +500,9 @@ export const analyzeApparelItem = async (imageData: any) => {
 
 export const optimizeAndReangleImage = async (imageData: any, params: any, onProgress: any) => {
     if (onProgress) onProgress("正在進行影像重塑與質感優化...");
-    const prompt = buildOptimizationPrompt(params);
-    
+    const rawPrompt = buildOptimizationPrompt(params);
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:optimizeAndReangleImage', mode: 'dryrun' }).prompt;
+
     const imageConfig: any = {};
     if (params.aspectRatio && params.aspectRatio !== 'original') {
         imageConfig.aspectRatio = params.aspectRatio;
@@ -625,7 +602,8 @@ export const generateProductPoster = async (
 
     if (!subjectData) throw new Error("Missing subject image data");
 
-    const prompt = buildPCPEPosterPrompt(overrides, form.ratio, form.quality, colorLock);
+    const rawPrompt = buildPCPEPosterPrompt(overrides, form.ratio, form.quality, colorLock);
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateProductPoster', mode: 'dryrun' }).prompt;
     const refs = faceAnchor ? [faceAnchor] : [];
     const url = await transformImage(subjectData, prompt, refs, onProgress, { usePro: form.quality === 'high', imageConfig: { aspectRatio: form.ratio } });
     return { url };
@@ -655,15 +633,9 @@ export const defineEGenStyle = async (analysisJson: string, atmosphere: string =
     return JSON.parse(cleanJsonString(response.text || '{}'));
 };
 
-export const generateEGenCopy = async (analysisJson: string) => {
-    const ai = await getGeminiClient();
-    const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
-        contents: EGEN_COPYWRITING_PROMPT(analysisJson),
-        config: { responseMimeType: 'application/json' }
-    });
-    return JSON.parse(cleanJsonString(response.text || '{}'));
-};
+// generateEGenCopy：實作已搬至 src/domains/ipContent/captionService.ts
+// （Stage C 包 C4，文案管線合一）。此處保留 re-export，全 repo import 路徑不變。
+export { generateEGenCopy } from '../../domains/ipContent/captionService';
 
 export const processFashionItem = async (
     item: any, 
@@ -679,11 +651,13 @@ export const processFashionItem = async (
         : "Add subtle contact shadows to ground the object.";
     const styleNote = styleRef ? "Match the photographic style, film grain, contrast, and color grading of the provided reference image. Ensure the item looks like it was shot in the same session." : "";
     
-    const cleanPrompt = `${CLEAN_SHOT_PROMPT} ${lightingNote} ${styleNote} Ensure clean edges and professional studio quality.`;
-    const macroPrompt = `${MACRO_SHOT_PROMPT} ${styleNote} Focus on texture and material detail.`;
-    
+    const rawCleanPrompt = `${CLEAN_SHOT_PROMPT} ${lightingNote} ${styleNote} Ensure clean edges and professional studio quality.`;
+    const rawMacroPrompt = `${MACRO_SHOT_PROMPT} ${styleNote} Focus on texture and material detail.`;
+    const cleanPrompt = runPromptPipeline(rawCleanPrompt, { source: 'geminiService:processFashionItem:clean', mode: 'dryrun' }).prompt;
+    const macroPrompt = runPromptPipeline(rawMacroPrompt, { source: 'geminiService:processFashionItem:macro', mode: 'dryrun' }).prompt;
+
     const refs = styleRef ? [styleRef] : [];
-    
+
     const cleanUrl = await transformImage(item.fileData, cleanPrompt, refs, undefined, { usePro: resolution !== 'HD' });
     const macroUrl = await transformImage(item.fileData, macroPrompt, refs, undefined, { usePro: resolution !== 'HD' });
     return { ...item, processedUrl: cleanUrl, macroUrl: macroUrl };
@@ -698,7 +672,8 @@ export const refineFullBody = async (
 ) => {
     if (onProgress) onProgress("正在優化全身影像品質與風格同步...");
     const styleNote = styleRef ? "Match the photographic style, grain, and color grading of the provided reference image." : "";
-    const prompt = `${REFINE_BODY_PROMPT(notes)} ${styleNote}`;
+    const rawPrompt = `${REFINE_BODY_PROMPT(notes)} ${styleNote}`;
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:refineFullBody', mode: 'dryrun' }).prompt;
     const refs = styleRef ? [styleRef] : [];
     return await transformImage(imageData, prompt, refs, onProgress, { usePro: resolution !== 'HD' });
 };
@@ -735,12 +710,14 @@ export const analyzeMacroProduct = async (fileData: any) => {
 };
 
 export const generateMacroCraftScene = async (fileData: any, params: any, analysis: any, onProgress: any) => {
-    const prompt = buildMacroCraftPrompt(params, analysis);
+    const rawPrompt = buildMacroCraftPrompt(params, analysis);
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateMacroCraftScene', mode: 'dryrun' }).prompt;
     return await transformImage(fileData, prompt, [], onProgress, { usePro: params.quality === 'high' });
 };
 
 export const generateStyleAnchorImage = async (params: any, onProgress: any) => {
-    const prompt = buildStyleAnchorPrompt(params);
+    const rawPrompt = buildStyleAnchorPrompt(params);
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateStyleAnchorImage', mode: 'dryrun' }).prompt;
     const refs = [];
     if (params.identityImage) refs.push(params.identityImage);
     if (params.outfitImage) refs.push(params.outfitImage);

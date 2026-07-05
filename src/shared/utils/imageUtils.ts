@@ -119,14 +119,10 @@ export const downloadImage = async (url: string, filename: string, sourceModule?
                 return;
             }
         } 
-        // Case 2: Gemini API Video URL (requires API Key header)
+        // Case 2: Gemini API Video URL (proxied server-side, key never reaches browser)
         else if (url.includes('generativelanguage.googleapis.com') && !url.includes('data:')) {
             try {
-                const response = await fetch(url, {
-                    headers: {
-                        'x-goog-api-key': process.env.API_KEY || ''
-                    }
-                });
+                const response = await fetch(`/api/gemini-video?fileUri=${encodeURIComponent(url)}`);
                 if (response.ok) {
                     const blob = await response.blob();
                     downloadUrl = URL.createObjectURL(blob);
@@ -378,3 +374,4 @@ export const stitchImages = async (
         }
     });
 };
+                                                                                                                                                                                                                          

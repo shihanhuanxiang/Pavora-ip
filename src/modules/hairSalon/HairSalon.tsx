@@ -3,6 +3,7 @@ import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'motion/react';
 import { transformHairAndMakeup, getFriendlyErrorMessage, imageUrlToimageData, getAIStyleAnalysis, getStylistFeedback, tuneImageDetail, detectMultiAngleLayout } from '../../shared/services/geminiService';
 import { buildSalonPrompt, STYLE_ANALYSIS_PROMPT } from '../../prompts/hair';
+import { runPromptPipeline } from '../../promptPipeline';
 import { savePortfolioItem, getSalonPresets, saveSalonPreset, deleteSalonPreset } from '../../shared/services/storageService';
 import { downloadImage, stitchImages, cropImage, fileToBase64 } from '../../shared/utils/imageUtils';
 import ManualCropModal from '../../shared/components/business/ManualCropModal';
@@ -272,7 +273,8 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
         setIsRegenerating(angleId);
         try {
             const prompt = constructPrompt();
-            const anglePrompt = `${prompt}, ${angle.en}`;
+            const rawAnglePrompt = `${prompt}, ${angle.en}`;
+            const anglePrompt = runPromptPipeline(rawAnglePrompt, { source: 'hairSalon:transformHairAndMakeup:regenerateAngle', mode: 'dryrun' }).prompt;
             
             const matrixImages = (Object.values(salonMatrix) as any[])
                 .filter(m => m.fileData)
@@ -348,7 +350,8 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                   const angle = MODEL_ANGLES[i];
                   setLoadingMessage(`正在生成角度: ${angle.label} (${i+1}/4)...`);
                   
-                  const anglePrompt = `${prompt}, ${angle.en}`;
+                  const rawAnglePrompt = `${prompt}, ${angle.en}`;
+                  const anglePrompt = runPromptPipeline(rawAnglePrompt, { source: 'hairSalon:transformHairAndMakeup:multiAngle', mode: 'dryrun' }).prompt;
                   const angleConfig = {
                       ...config,
                       imageConfig: {
@@ -370,7 +373,8 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
               });
           } else {
               setLoadingMessage('正在執行髮絲微觀渲染與妝容融合...');
-              const result = await transformHairAndMakeup(baseImage!.fileData, identityRef, prompt, config, setLoadingMessage, hairstyleRefImage?.fileData);
+              const pipelinedPrompt = runPromptPipeline(prompt, { source: 'hairSalon:transformHairAndMakeup:single', mode: 'dryrun' }).prompt;
+              const result = await transformHairAndMakeup(baseImage!.fileData, identityRef, pipelinedPrompt, config, setLoadingMessage, hairstyleRefImage?.fileData);
               setGeneratedImage(result);
               
               // Phase 3: Get Stylist Feedback

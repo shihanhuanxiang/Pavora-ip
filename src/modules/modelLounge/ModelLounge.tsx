@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import type { Model, PortfolioItem } from '../../shared/types/types';
 import Button from '../../shared/components/common/Button';
@@ -27,6 +27,8 @@ interface ModelLoungeProps {
   onGoHome: () => void;
   onModelSelect: (model: Model, destination: string) => void;
   isHubMode?: boolean;
+  initialPortfolioModelId?: string | null;
+  focusPortfolioAssets?: boolean;
 }
 
 export const handleDownload = (model: Model) => {
@@ -49,7 +51,7 @@ const DESTINATIONS = [
     { key: 'salon', label: '髮型沙龍 (Salon)' },
 ];
 
-const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHubMode }) => {
+const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHubMode, initialPortfolioModelId, focusPortfolioAssets }) => {
   const { models, removeModels, addModel, updateModel, syncWithCloud } = useModelStore();
   const { addAmbassador, ambassadors } = useBrandStore();
   const { addNotification } = useNotification();
@@ -57,7 +59,8 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
   const [previewingImage, setPreviewingImage] = useState<{images: string[], startIndex: number} | null>(null);
   const [showPortfolioImport, setShowPortfolioImport] = useState(false);
   const [editingModel, setEditingModel] = useState<Model | null>(null);
-  const [viewingPortfolioModelId, setViewingPortfolioModelId] = useState<string | null>(null);
+  const [viewingPortfolioModelId, setViewingPortfolioModelId] = useState<string | null>(initialPortfolioModelId || null);
+  const portfolioAssetsRef = useRef<HTMLDivElement | null>(null);
   
   const { user: currentUser, signInWithGoogle, signOutUser } = useAuth();
   const [isUploading, setIsUploading] = useState(false);
@@ -87,6 +90,20 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
 
   const portfolioModel = viewingPortfolioModelId ? models.find(m => m.id === viewingPortfolioModelId) : null;
   const faceReferenceCount = (portfolioModel?.preferences?.face_reference_urls || []).filter(Boolean).length;
+
+  useEffect(() => {
+    if (initialPortfolioModelId) {
+      setViewingPortfolioModelId(initialPortfolioModelId);
+    }
+  }, [initialPortfolioModelId]);
+
+  useEffect(() => {
+    if (!focusPortfolioAssets || !portfolioModel) return;
+    const timer = window.setTimeout(() => {
+      portfolioAssetsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 120);
+    return () => window.clearTimeout(timer);
+  }, [focusPortfolioAssets, portfolioModel?.id, portfolioModel?.gallery?.length]);
 
   useEffect(() => {
     if (currentUser) {
@@ -827,7 +844,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                 </div>
 
                             {/* Assets Grid */}
-                            <div className="space-y-6">
+                            <div ref={portfolioAssetsRef} className="space-y-6">
                                 <div className="flex items-center justify-between border-b border-white/5 pb-4">
                                     <h3 className="text-[13px] font-bold text-white uppercase tracking-[0.4em]">
                                         {isConsistencyView ? '臉部一致性預覽 / Consistency Check' : '模特兒作品集與衍生資產 (Portfolio & Assets)'}
@@ -1190,7 +1207,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                         </div>
                         <h3 className="text-2xl font-display font-bold uppercase tracking-[0.3em] text-[var(--color-text-main)] mb-4">您的模特兒休息室是空的</h3>
                         <p className="text-sm text-[var(--color-text-dim)] max-w-md leading-relaxed">請先至「模特兒生成」創建您的專屬模特兒。創建後，您可以在此管理並快速啟動其他創意流程。</p>
-                        <Button onClick={() => onModelSelect({} as any, 'model_setup')} variant="primary" className="mt-10 text-[10px] font-bold tracking-widest">前往模特兒生成</Button>
+                                                <Button onClick={() => onModelSelect({} as any, 'model_setup')} variant="primary" className="mt-10 text-[10px] font-bold tracking-widest">前往模特兒生成</Button>
                     </div>
                 )}
             </main>

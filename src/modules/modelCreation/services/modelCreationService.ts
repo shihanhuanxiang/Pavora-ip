@@ -2,6 +2,7 @@ import { Modality } from "@google/genai";
 import { getGeminiClient } from "../../../shared/services/core/geminiClient";
 import type { Model } from "../../../shared/types/types";
 import { buildModelPrompt } from "../../../prompts/modelCreation";
+import { runPromptPipeline } from "../../../promptPipeline";
 
 export const generateModels = async (params: any): Promise<Model[]> => {
     const hasFaceRef = params.faceReferences && params.faceReferences.length > 0;
@@ -63,18 +64,21 @@ The body proportions are extreme (Bust:${params.bust}, Waist:${params.waist}). Y
             imageConfig.imageSize = '4K';
         }
 
+        const isExpectedMale = params.gender === 'male' || params.gender === 'M';
+        const pipelinedPrompt = runPromptPipeline(prompt, { source: 'modelCreation:generateModels', mode: 'dryrun', expectMale: isExpectedMale }).prompt;
+
         let contents: any;
         if (hasFaceRef) {
             const imageParts = params.faceReferences.map((ref: any) => ({ inlineData: ref }));
             contents = {
                 parts: [
                     ...imageParts,
-                    { text: prompt }
+                    { text: pipelinedPrompt }
                 ]
             };
         } else {
             contents = {
-                parts: [{ text: prompt }]
+                parts: [{ text: pipelinedPrompt }]
             };
         }
 

@@ -1,6 +1,6 @@
 import { getGeminiClient } from "../../../shared/services/core/geminiClient";
 import { transformImage } from "../../../shared/services/geminiService";
-import { sanitizeFinalPrompt } from "../../../shared/services/promptSanitizer";
+import { runPromptPipeline } from "../../../promptPipeline";
 import type { Model, DiaryEntry, OutfitV2, ExtendedScene, NonVisualPersona } from "../../../shared/types/types";
 import { useModelStore } from "../../../shared/stores/useModelStore";
 import { LOCALIZED_SCENES, getScenesByCity } from "../constants/localizedScenes";
@@ -13,6 +13,7 @@ import { DEPTH_MODULES } from "../constants/depthModules";
 import { COMPOSER_INJECTION_RULES } from "../constants/injectionRules";
 import { WardrobeService } from "./wardrobeService";
 import { getPresetById } from '../constants/visualPresets';
+import { isSceneCombinationSafe } from "../../../domains/scene/sceneSafeMatrix";
 
 /**
  * 將 Visual Preset 的值填入 model 的對應欄位
@@ -65,9 +66,12 @@ const pickOutfit = (model: Model, contextInput: string | string[], targetTier: n
     const userOutfits = WardrobeService.getUserOutfits();
     const fullPool = [...OUTFIT_SEEDS_V2, ...userOutfits];
 
-    // 2. 硬性篩選：性別
+    // 2. 硬性篩選：性別 (加入防禦性安全獲取，預設為女性 F)
+    const modelGenderLetter = (model.gender && model.gender.length > 0)
+        ? model.gender.charAt(0).toUpperCase()
+        : 'F';
     const genderFiltered = fullPool.filter(o =>
-        o.gender === model.gender?.charAt(0).toUpperCase() || o.gender === 'U'
+        o.gender === modelGenderLetter || o.gender === 'U'
     );
 
     // 3. 硬性篩選：場景（最高優先，防止西裝出現在海邊）
@@ -188,11 +192,14 @@ export const getOutfitOptionsForScene = (
         ? (scene as any).outfit_filter
         : ['urban_street'];
 
-    // 2. 建立候選池（與 pickOutfit 邏輯一致）
+    // 2. 建立候選池（與 pickOutfit 邏輯一致，並加入防禦性安全獲取）
     const userOutfits = WardrobeService.getUserOutfits();
     const fullPool = [...OUTFIT_SEEDS_V2, ...userOutfits];
+    const modelGenderLetter = (model.gender && model.gender.length > 0)
+        ? model.gender.charAt(0).toUpperCase()
+        : 'F';
     const genderFiltered = fullPool.filter(o =>
-        o.gender === model.gender?.charAt(0).toUpperCase() || o.gender === 'U'
+        o.gender === modelGenderLetter || o.gender === 'U'
     );
     const contextFiltered = genderFiltered.filter(o =>
         contextIds.some(ctx => o.compatible_contexts.includes(ctx))
@@ -759,7 +766,13 @@ const buildFinalVisualPromptV11 = (
     ].filter(p => !p.endsWith(': '));
 
     const rawPrompt = cleanPromptV2(parts.join('\n'));
-    const sanitized = sanitizeFinalPrompt(rawPrompt);
+    // Stage B: routed through runPromptPipeline (mode:'enforce') instead of a
+    // direct sanitizeFinalPrompt call. enforce mode internally calls the same
+    // sanitizePromptText function that sanitizeFinalPrompt aliases, so the
+    // returned prompt is byte-identical to the pre-Stage-B behavior. This is
+    // the equivalence-verification package (plan §2 package 2).
+    const pipelineResult = runPromptPipeline(rawPrompt, { source: 'narrative:buildFinalVisualPromptV11', mode: 'enforce' });
+    const sanitized = { prompt: pipelineResult.prompt, report: pipelineResult.report };
 
     if (typeof window !== 'undefined' && window.localStorage && window.localStorage.getItem('PAVORA_DEBUG_PROMPT') === '1') {
         const debugSnapshot = {
@@ -1127,6 +1140,13 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
         }
     });
     
+    // C3 scene-safe matrix（warn-only 階段，見 handoff_docs/PAVORA_C_SERVICE_LAYER_PLAN.md §3 包 C3）：
+    // 只偵測記錄，不 throw、不 re-roll、不改變下面的生成流程。
+    const sceneSafeCheck = isSceneCombinationSafe(sceneContext, contextId);
+    if (!sceneSafeCheck.ok) {
+        console.warn('[PAVORA][sceneSafe] 偵測到可能不合理的場景組合', sceneSafeCheck.reason, { sceneId: sceneContext?.scene_id || sceneContext?.id, contextId });
+    }
+
     // 3. V1.1 Layered Prompt Composition
     const finalVisualPrompt = buildFinalVisualPromptV11(model, sceneContext, outfit, targetTier, options);
 
@@ -1330,8 +1350,10 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
         };
 
         const repairedApparelVisualPrompt = repairApparelSection(repairedVisualPrompt);
-        const sanitizedVisualPrompt = sanitizeFinalPrompt(repairedApparelVisualPrompt).prompt;
-        const sanitizedVisualPromptZH = sanitizeFinalPrompt(repairedVisualPromptZH).prompt;
+        // Stage B equivalence: runPromptPipeline enforce mode wraps the same
+        // sanitizePromptText call sanitizeFinalPrompt aliases — output unchanged.
+        const sanitizedVisualPrompt = runPromptPipeline(repairedApparelVisualPrompt, { source: 'narrative:diaryVisualPrompt', mode: 'enforce' }).prompt;
+        const sanitizedVisualPromptZH = runPromptPipeline(repairedVisualPromptZH, { source: 'narrative:diaryVisualPromptZH', mode: 'enforce' }).prompt;
         
         return {
             content: data.content,
@@ -1342,6 +1364,7 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
             meta: {
                 ...data.meta,
                 petNote,
+                scene_id: sceneContext?.scene_id || sceneContext?.id,
                 depth_module_id: sceneContext.depth_module_id || 0,
                 story_arc_id: sceneContext.flags?.story_arc_id,
                 identity_thread_id: sceneContext.flags?.identity_thread_id,
@@ -1351,13 +1374,7 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
         };
     } catch (e) {
         console.error("Diary generation critical failure:", e);
-        return {
-            content: "（視線漫無目的地掃過城市的皺摺，那些瑣碎的聲音與氣味在空氣中凝結。此刻的真實，往往藏在那些最不起眼的雜訊裡...）",
-            mood: "沉浸",
-            visualPrompt: finalVisualPrompt,
-            visualPromptZH: "基本的視覺提示詞備援",
-            contentCategory: fallbackCategory
-        };
+        throw e instanceof Error ? e : new Error("Diary generation critical failure");
     }
 };
 
@@ -2091,62 +2108,9 @@ export const previewShootConfig = (
     return { scene, outfit };
 };
 
-/**
- * 根據已生成的 IG 發文，產出指定平台（Facebook / Threads）的版本。
- * Facebook：社群共鳴型，200-400 字，1-3 個 hashtag，附分享觸發語。
- * Threads：口語極簡，50-150 字，台灣鄰居感，幾乎不加 hashtag。
- */
-export const generatePlatformCaption = async (
-    model: Model,
-    igCaption: string,
-    platform: 'facebook' | 'threads'
-): Promise<string> => {
-    const client = await getGeminiClient(true) as any;
-
-    const toneOfVoice = model.persona?.toneOfVoice || '';
-    const coreVibe = model.persona?.coreVibe || '';
-    const ipVoiceHint = [toneOfVoice, coreVibe].filter(Boolean).join('、');
-
-    const platformRules = platform === 'facebook'
-        ? `
-【平台】Facebook
-【字數】200-400 字
-【語氣】社群共鳴型：生活感重、情感連結強、適合中年至中青年 Facebook 用戶
-【結構】開場白（具體日常細節）→ 普遍共鳴（有轉折感）→ 分享觸發語（引導讀者留言或分享，但不要說「留言告訴我」）
-【hashtag】1-3 個，選最精準的，不過度堆砌
-【禁止】「不禁感嘆」「深深體悟」「令人動容」等文藝翻譯腔
-【必須】用問句或邀請語做結尾，讓人想回覆`
-        : `
-【平台】Threads
-【字數】50-150 字
-【語氣】口語極簡，台灣鄰居感，就像傳給朋友的私訊
-【結構】直接切入核心感受或場景 → 輕輕帶出情緒 → 一句問句做結
-【hashtag】可省略，最多 1-2 個
-【禁止】「不禁感嘆」「深深體悟」任何書面詞，長篇大論
-【必須】短句節奏，有呼吸感，不超過 150 字`;
-
-    const prompt = `你是一位台灣年輕女性虛擬 IP 的社群文案助手。
-以下是她的 Instagram 版發文草稿，請根據規則改寫成指定平台的版本。
-
-【IP 語氣參考】${ipVoiceHint || '台灣口語、日常感、真實溫暖'}
-【IG 原稿】
-${igCaption}
-
-${platformRules}
-
-請直接輸出改寫後的發文內容，不要加任何說明或前後綴文字。`;
-
-    try {
-        const resultResponse = await client.models.generateContent({
-            model: "gemini-3-flash-preview",
-            contents: prompt
-        });
-        return (resultResponse.text || '').trim();
-    } catch (e) {
-        console.error(`generatePlatformCaption failed (${platform}):`, e);
-        return igCaption;
-    }
-};
+// generatePlatformCaption：實作已搬至 src/domains/ipContent/captionService.ts
+// （Stage C 包 C4，文案管線合一）。此處保留 re-export，全 repo import 路徑不變。
+export { generatePlatformCaption } from '../../../domains/ipContent/captionService';
 
 /**
  * 以已生成的圖片為 reference，生成輪播變化版。
@@ -2202,47 +2166,6 @@ export const generateCarouselVariation = async (
     );
 };
 
-/**
- * 根據已生成的敘事日記，產出 Instagram 發文（台灣口語，三段式：勾住→共鳴→互動）。
- * 這是平台發文功能的基礎；FB / Threads 以本函式輸出為基底，再透過 generatePlatformCaption 轉換。
- */
-export const generateIPDiaryCaption = async (
-    model: Model,
-    diary: Partial<DiaryEntry>
-): Promise<string> => {
-    const client = await getGeminiClient(true) as any;
-
-    const toneOfVoice = model.persona?.toneOfVoice || '';
-    const coreVibe = model.persona?.coreVibe || '';
-    const ipVoiceHint = [toneOfVoice, coreVibe].filter(Boolean).join('、');
-    const city = model.lifeCircuit?.primaryCity || '台北';
-
-    const prompt = `你是一位台灣年輕女性虛擬 IP 的 Instagram 文案助手。
-根據以下敘事日記，寫出一篇 IG 貼文。
-
-【IP 語氣參考】${ipVoiceHint || '台灣口語、日常感、真實溫暖'}
-【城市】${city}
-【敘事日記】
-${diary.content || ''}
-
-【規則】
-- 語氣：台灣年輕女性日常分享，口語化，不用書面詞
-- 結構：勾住（具體場景）→ 共鳴（普遍情緒，有轉折）→ 互動（問句，不說「留言告訴我」）
-- 長度：150-250 字
-- 禁止：「不禁感嘆」「深深體悟」等文藝翻譯腔
-- 必須：自然問句結尾，讓人想回答
-- 加入：📍 ${city} · 地點 + 3-5 個相關 hashtag
-
-請直接輸出發文內容，不要加任何說明或前後綴文字。`;
-
-    try {
-        const result = await client.models.generateContent({
-            model: "gemini-3-flash-preview",
-            contents: prompt
-        });
-        return (result.text || '').trim();
-    } catch (e) {
-        console.error('generateIPDiaryCaption failed:', e);
-        return '';
-    }
-};
+// generateIPDiaryCaption：實作已搬至 src/domains/ipContent/captionService.ts
+// （Stage C 包 C4，文案管線合一）。此處保留 re-export，全 repo import 路徑不變。
+export { generateIPDiaryCaption } from '../../../domains/ipContent/captionService';

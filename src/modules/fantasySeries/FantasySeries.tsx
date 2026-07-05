@@ -5,6 +5,7 @@ import { buildPromptV8, getFriendlyErrorMessage, fileToBase64, transformImage, c
 import { getGeminiClient } from '../../shared/services/core/geminiClient';
 import { savePortfolioItem } from '../../shared/services/storageService';
 import { downloadImage } from '../../shared/utils/imageUtils';
+import { runPromptPipeline } from '../../promptPipeline';
 import type { FantasyPresetV8, FxLevel, GarmentEraser, ScenePresetV8, PoseV8, FantasyExpressionV8, BgMode, FantasyRace, FantasyJob, FantasyLightingV4, FantasyCompositionV4 } from '../../shared/types/types';
 import { 
     FANTASY_RACES_V8, FANTASY_JOBS_V8, FANTASY_SCENES_V8, POSE_LIBRARY_V8, 
@@ -403,6 +404,7 @@ const FantasySeries: React.FC<FantasySeriesProps> = ({ onGoHome, initialImage, o
                 aspectRatio,
                 version: 'v4' // 指示使用 V4 邏輯 (強化五官與材質)
             });
+            const pipelinedCharacterPrompt = runPromptPipeline(characterPrompt, { source: 'fantasySeries:transformImage', mode: 'dryrun' }).prompt;
 
             const config = { 
                 usePro: quality === 'fast' ? false : true, 
@@ -413,7 +415,7 @@ const FantasySeries: React.FC<FantasySeriesProps> = ({ onGoHome, initialImage, o
             };
             const result = await transformImage(
                 baseImage.fileData, 
-                characterPrompt, 
+                pipelinedCharacterPrompt, 
                 [faceCropData], 
                 setLoadingMessage, 
                 config

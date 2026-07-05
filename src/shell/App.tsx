@@ -1,8 +1,9 @@
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, Suspense } from 'react';
 import { WorkflowStep } from '../shared/types/types';
 import type { TaxonomyData } from '../shared/services/taxonomyService';
 
+// 常駐首屏必需元件：維持靜態 import，確保首頁秒開
 import Header from './Header';
 import Loader from '../shared/components/common/Loader';
 import { getImagenUsage, imageUrlToimageData } from '../shared/services/geminiService';
@@ -10,39 +11,67 @@ import HomePage from './HomePage';
 import QuotaErrorModal from '../shared/components/common/QuotaErrorModal';
 import PaidFeatureModal from '../shared/components/common/PaidFeatureModal';
 
-import ModelSetup from '../modules/modelCreation/ModelSetup';
-import VirtualFittingRoom from '../modules/virtualFittingRoom/VirtualFittingRoom';
-import ApparelDesign from '../modules/apparelDesign/ApparelDesign';
-import HairAndMakeupStudio from '../modules/hairSalon/HairSalon';
-import SceneGeneration from '../modules/sceneGeneration/SceneGeneration';
-import FantasySeries from '../modules/fantasySeries/FantasySeries';
-import ModelLounge from '../modules/modelLounge/ModelLounge';
-import PersonalWardrobe from '../modules/personalWardrobe/PersonalWardrobe';
-import CompositeCardStudio from '../modules/compositeCard/CompositeCardStudio';
-import PortfolioGallery from '../modules/portfolio/PortfolioGallery';
-import PortfolioOptimization from '../modules/portfolio/PortfolioOptimization';
-import ImageDeconstructionStudio from '../modules/imageDeconstruction/ImageDeconstructionStudio';
-import ProductPosterEngine from '../modules/pcpe/ProductPosterEngine';
-import DirectorMode from '../modules/directorMode/DirectorMode';
-import CharacterLab from '../modules/characterLab/CharacterLab';
-import MacroCraftStudio from '../modules/macroCraft/MacroCraftStudio';
-import StyleAnchorStudio from '../modules/styleAnchor/StyleAnchorStudio';
+// 大模組：改 React.lazy 動態 import，切出獨立 chunk（D1，Stage D 導覽計畫）
+const ModelSetup = React.lazy(() => import('../modules/modelCreation/ModelSetup'));
+const VirtualFittingRoom = React.lazy(() => import('../modules/virtualFittingRoom/VirtualFittingRoom'));
+const ApparelDesign = React.lazy(() => import('../modules/apparelDesign/ApparelDesign'));
+const HairAndMakeupStudio = React.lazy(() => import('../modules/hairSalon/HairSalon'));
+const SceneGeneration = React.lazy(() => import('../modules/sceneGeneration/SceneGeneration'));
+const FantasySeries = React.lazy(() => import('../modules/fantasySeries/FantasySeries'));
+const ModelLounge = React.lazy(() => import('../modules/modelLounge/ModelLounge'));
+const PersonalWardrobe = React.lazy(() => import('../modules/personalWardrobe/PersonalWardrobe'));
+const CompositeCardStudio = React.lazy(() => import('../modules/compositeCard/CompositeCardStudio'));
+const PortfolioGallery = React.lazy(() => import('../modules/portfolio/PortfolioGallery'));
+const PortfolioOptimization = React.lazy(() => import('../modules/portfolio/PortfolioOptimization'));
+const ImageDeconstructionStudio = React.lazy(() => import('../modules/imageDeconstruction/ImageDeconstructionStudio'));
+const ProductPosterEngine = React.lazy(() => import('../modules/pcpe/ProductPosterEngine'));
+const DirectorMode = React.lazy(() => import('../modules/directorMode/DirectorMode'));
+const CharacterLab = React.lazy(() => import('../modules/characterLab/CharacterLab'));
+const MacroCraftStudio = React.lazy(() => import('../modules/macroCraft/MacroCraftStudio'));
+const StyleAnchorStudio = React.lazy(() => import('../modules/styleAnchor/StyleAnchorStudio'));
 
-import BrandIdentityHub from '../modules/brandIdentity/BrandIdentityHub';
-import MarketingFactory from '../modules/marketing/MarketingFactory';
-import MotionHub from '../modules/motion/MotionHub';
-import NarrativeWorkflow from '../modules/narrative/NarrativeWorkflow';
+const BrandIdentityHub = React.lazy(() => import('../modules/brandIdentity/BrandIdentityHub'));
+const MarketingFactory = React.lazy(() => import('../modules/marketing/MarketingFactory'));
+const MotionHub = React.lazy(() => import('../modules/motion/MotionHub'));
+const NarrativeWorkflow = React.lazy(() => import('../modules/narrative/NarrativeWorkflow'));
 
 import { useNotification } from '../shared/context/NotificationContext';
-import { AuthProvider } from '../shared/context/AuthContext';
+import { AuthProvider, useAuth } from '../shared/context/AuthContext';
 import NotificationPortal from '../shared/components/notification/NotificationPortal';
+import LoginScreen from './LoginScreen';
 
 interface AppProps {
   taxonomyData: TaxonomyData;
 }
 
+// D1 Suspense fallback：premium 調性（黑底＋PAVORA 淡入＋細金線 pulse），避免白畫面/土轉圈。
+// 固定 min-h-[60vh] 避免 layout shift。
+const RouteTransitionFallback: React.FC = () => (
+  <div className="min-h-[60vh] w-full flex flex-col items-center justify-center bg-[var(--color-bg-deep)] animate-fade-in">
+    <span className="text-xs font-display font-bold uppercase tracking-[0.6em] text-[var(--color-text-main)]">
+      PAVORA
+    </span>
+    <div className="mt-6 h-px w-24 overflow-hidden bg-white/10">
+      <div className="h-full w-1/3 bg-[var(--color-gold)] animate-pulse" />
+    </div>
+  </div>
+);
+
 import { useAppStore } from '../shared/stores/useAppStore';
 import { useModelStore } from '../shared/stores/useModelStore';
+
+// E4b：登入閘（env 旗標控制）。VITE_REQUIRE_LOGIN 未設定或非 'true' 時，
+// requireLogin 為 false，直接 render children，行為與旗標不存在前完全相同。
+// 必須放在 AuthProvider 之內才能拿到真實的 user/loading（App 本體在 Provider 外層）。
+const AuthGate: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const requireLogin = import.meta.env.VITE_REQUIRE_LOGIN === 'true';
+  const { user, loading } = useAuth();
+
+  if (!requireLogin) return <>{children}</>;
+  if (loading) return <RouteTransitionFallback />;
+  if (!user) return <LoginScreen />;
+  return <>{children}</>;
+};
 
 const getWorkflowStepForPath = (pathname: string): WorkflowStep | null => {
   if (pathname === '/narrative') return WorkflowStep.NARRATIVE;
@@ -95,6 +124,7 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [narrativeData, setNarrativeData] = useState<{model: any, diary: any} | null>(null);
   const [selectedModel, setSelectedModel] = useState<any | null>(null);
+  const [loungeFocusModelId, setLoungeFocusModelId] = useState<string | null>(null);
   
   // 主題管理
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -164,7 +194,7 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  const handleGoHome = useCallback(() => { setWorkflowStepWithPath(WorkflowStep.HOMEPAGE); setEditingImage(null); }, [setWorkflowStepWithPath]);
+  const handleGoHome = useCallback(() => { setWorkflowStepWithPath(WorkflowStep.HOMEPAGE); setEditingImage(null); setLoungeFocusModelId(null); }, [setWorkflowStepWithPath]);
   const handleGoBack = useCallback(() => { setWorkflowStepWithPath(WorkflowStep.HOMEPAGE); }, [setWorkflowStepWithPath]);
   
   const handleNavigate = useCallback((destination: string) => {
@@ -248,13 +278,15 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
             onClearNarrative={() => { setNarrativeData(null); setSelectedModel(null); }}
           />
       );
-      case WorkflowStep.MODEL_LOUNGE: return <ModelLounge onGoHome={handleGoHome} onModelSelect={handleModelSelect} />;
+      case WorkflowStep.MODEL_LOUNGE: return <ModelLounge onGoHome={handleGoHome} onModelSelect={handleModelSelect} initialPortfolioModelId={loungeFocusModelId} focusPortfolioAssets={!!loungeFocusModelId} />;
       case WorkflowStep.NARRATIVE: return narrativeModel ? (
           <NarrativeWorkflow
             model={narrativeModel}
             onClose={() => setWorkflowStepWithPath(WorkflowStep.MODEL_LOUNGE)}
+            onGoHome={handleGoHome}
             onConfirm={() => {
               addNotification({ type: 'success', message: '靈魂敘事已同步至模特兒作品集' });
+              setLoungeFocusModelId(narrativeModel.id);
               setWorkflowStepWithPath(WorkflowStep.MODEL_LOUNGE);
             }}
           />
@@ -301,22 +333,26 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
 
   return (
     <AuthProvider>
-      <div className="min-h-screen transition-colors duration-500 bg-[var(--color-bg-deep)] text-[var(--color-text-main)] font-sans">
-        {isTransitioning && <Loader message="正在準備編輯素材..." />}
-        <Header 
-          onTitleClick={handleGoHome} 
-          onNavigate={handleNavigate} 
-          imagenUsage={imagenUsage} 
-          isDarkMode={isDarkMode}
-          onToggleTheme={toggleTheme}
-        />
-        <main className="relative">
-          <QuotaErrorModal isOpen={isQuotaModalVisible} onClose={() => setQuotaModalVisible(false)} />
-          <PaidFeatureModal isOpen={!!paidModalConfig?.isOpen} onConfirm={handlePaidConfirm} onCancel={handlePaidCancel} />
-          {renderContent()}
-        </main>
-        <NotificationPortal />
-      </div>
+      <AuthGate>
+        <div className="min-h-screen transition-colors duration-500 bg-[var(--color-bg-deep)] text-[var(--color-text-main)] font-sans">
+          {isTransitioning && <Loader message="正在準備編輯素材..." />}
+          <Header
+            onTitleClick={handleGoHome}
+            onNavigate={handleNavigate}
+            imagenUsage={imagenUsage}
+            isDarkMode={isDarkMode}
+            onToggleTheme={toggleTheme}
+          />
+          <main className="relative">
+                      <QuotaErrorModal isOpen={isQuotaModalVisible} onClose={() => setQuotaModalVisible(false)} />
+            <PaidFeatureModal isOpen={!!paidModalConfig?.isOpen} onConfirm={handlePaidConfirm} onCancel={handlePaidCancel} />
+            <Suspense fallback={<RouteTransitionFallback />}>
+              {renderContent()}
+            </Suspense>
+          </main>
+          <NotificationPortal />
+        </div>
+      </AuthGate>
     </AuthProvider>
   );
 };

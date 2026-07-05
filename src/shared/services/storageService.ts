@@ -1,11 +1,10 @@
 
 // FIX: Corrected import path for types.
-import type { Model, StoredApparelItem, PortfolioItem } from '../types/types';
+import type { StoredApparelItem, PortfolioItem } from '../types/types';
 import { imageDB, base64ToBlob } from './imageDB';
 import { checkGoogleDriveStatus, syncToGoogleDrive } from './googleDriveService';
 
 const STORAGE_KEYS = {
-  MODELS: 'pavora_models',
   APPAREL: 'pavora_apparel',
   PORTFOLIO: 'pavora_portfolio',
   DRIVE_SETTINGS: 'pavora_drive_settings',
@@ -27,110 +26,8 @@ export const saveDriveSettings = (settings: DriveSettings): void => {
   localStorage.setItem(STORAGE_KEYS.DRIVE_SETTINGS, JSON.stringify(settings));
 };
 
-const CURRENT_MODEL_VERSION = "1.1";
 const CURRENT_APPAREL_VERSION = "1.1";
 const CURRENT_PORTFOLIO_VERSION = "1.1";
-
-// --- Model Lounge ---
-export const getModels = (): Model[] => {
-  try {
-    const data = localStorage.getItem(STORAGE_KEYS.MODELS);
-    const models: Model[] = data ? JSON.parse(data) : [];
-    // Data Versioning Check
-    return models.map(model => {
-      if (!model.schemaVersion) {
-        // console.warn(`Upgrading model data "${model.name}" to schema v${CURRENT_MODEL_VERSION}`);
-        return { ...model, schemaVersion: CURRENT_MODEL_VERSION };
-      }
-      return model;
-    });
-  } catch (error) {
-    console.error("Failed to parse models from localStorage", error);
-    return [];
-  }
-};
-
-export const saveModel = async (model: Model): Promise<void> => {
-  const models = getModels();
-  if (!models.find(m => m.id === model.id || m.imageUrl === model.imageUrl)) {
-    let finalImageUrl = model.imageUrl;
-    // Offload large base64 to IDB
-    if (finalImageUrl.startsWith('data:')) {
-        try {
-            const blob = await base64ToBlob(finalImageUrl);
-            finalImageUrl = await imageDB.save(blob);
-        } catch (e) {
-            console.error("Failed to save model image to DB", e);
-        }
-    }
-    const modelToSave = { ...model, imageUrl: finalImageUrl, schemaVersion: CURRENT_MODEL_VERSION };
-    localStorage.setItem(STORAGE_KEYS.MODELS, JSON.stringify([modelToSave, ...models]));
-
-    // --- Auto Sync to Google Drive ---
-    const isConnected = await checkGoogleDriveStatus();
-    if (isConnected) {
-        try {
-            let syncData = finalImageUrl;
-            if (imageDB.isIdbUrl(syncData)) {
-                const blob = await imageDB.get(syncData);
-                if (blob) syncData = await imageDB.blobToBase64(blob);
-            }
-            const settings = getDriveSettings();
-            await syncToGoogleDrive(
-              `Model_${model.name || Date.now()}.png`, 
-              syncData, 
-              'image/png', 
-              'Pavora_Models',
-              settings.modelsFolderId
-            );
-        } catch (e) {
-            console.error("Model auto-sync failed", e);
-        }
-    }
-  }
-};
-
-export const saveMultipleModels = async (newModels: Model[]): Promise<void> => {
-  const existingModels = getModels();
-  // Filter duplicates
-  const uniqueNewModels = newModels.filter(newModel => 
-    !existingModels.some(existing => existing.imageUrl === newModel.imageUrl)
-  );
-
-  const processedModels = await Promise.all(uniqueNewModels.map(async (m) => {
-      let finalImageUrl = m.imageUrl;
-      if (finalImageUrl.startsWith('data:')) {
-          try {
-              const blob = await base64ToBlob(finalImageUrl);
-              finalImageUrl = await imageDB.save(blob);
-          } catch (e) {
-              console.error("Failed to save model image to DB", e);
-          }
-      }
-      return { ...m, imageUrl: finalImageUrl, schemaVersion: CURRENT_MODEL_VERSION };
-  }));
-
-  if (processedModels.length > 0) {
-    const combined = [...processedModels, ...existingModels];
-    localStorage.setItem(STORAGE_KEYS.MODELS, JSON.stringify(combined));
-  }
-};
-
-export const deleteModels = async (modelIds: string[]): Promise<void> => {
-  let models = getModels();
-  const toDelete = models.filter(m => modelIds.includes(m.id));
-  
-  // Cleanup DB
-  for (const m of toDelete) {
-      if (m.imageUrl.startsWith('idb://')) {
-          await imageDB.delete(m.imageUrl);
-      }
-  }
-
-  models = models.filter(m => !modelIds.includes(m.id));
-  localStorage.setItem(STORAGE_KEYS.MODELS, JSON.stringify(models));
-};
-
 
 // --- Personal Closet ---
 export const getApparel = (): StoredApparelItem[] => {

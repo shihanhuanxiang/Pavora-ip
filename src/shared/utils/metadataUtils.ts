@@ -41,10 +41,10 @@ export const embedMetadata = (base64Image: string, metadata: any): string => {
  * Deeply embeds a model's identity into a new image.
  * This is the "Output Hook" used by various modules (Dressing, Hair, Scene).
  */
-export const wrapImageWithIdentity = (newBase64: string, sourceModel: any): string => {
+export const wrapImageWithIdentity = (newBase64: string, sourceModel: any, extra?: { scene_id?: string; prompt_snapshot?: string }): string => {
     if (!sourceModel || !newBase64.startsWith('data:')) return newBase64;
 
-    const metadata = {
+    const metadata: any = {
         id: sourceModel.id, // Persistent Model ID
         name: sourceModel.name,
         gender: sourceModel.gender,
@@ -57,6 +57,19 @@ export const wrapImageWithIdentity = (newBase64: string, sourceModel: any): stri
         inheritedAt: new Date().toISOString(),
         isDerivative: true
     };
+
+    if (sourceModel.version) {
+        metadata.model_version = sourceModel.version;
+    }
+
+    if (extra?.scene_id) {
+        metadata.scene_id = extra.scene_id;
+    }
+
+    if (extra?.prompt_snapshot) {
+        // Defensive re-truncation even if caller already sliced; keeps embedded payload bounded.
+        metadata.prompt_snapshot = extra.prompt_snapshot.slice(0, 200);
+    }
 
     return embedMetadata(newBase64, metadata);
 };
