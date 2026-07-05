@@ -34,7 +34,7 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
 
   const menuCategories = [
     {
-      title: "品牌與行銷 // Brand & Marketing",
+      title: "品牌與行銷",
       items: [
         { label: "品牌識別中心", id: "brand_identity_hub", desc: "品牌視覺靈魂、核心美學與模特兒合輯卡管理" },
         { label: "行銷工廠", id: "marketing_factory", desc: "全平台行銷策略、素材生產與 AI 影像總監" },
@@ -42,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
       ]
     },
     {
-      title: "核心流程 // Core Workflow",
+      title: "核心流程",
       items: [
         { label: "模特兒生成", id: "model_setup", desc: "打造獨一無二的品牌專屬代言人" },
         { label: "虛擬試衣間", id: "fitting_room", desc: "零成本實現高品質服裝穿搭效果" },
@@ -50,7 +50,7 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
       ]
     },
     {
-      title: "專業工具 // Pro Tools",
+      title: "專業工具",
       items: [
         { label: "廣告視覺生成", id: "luxury_visual", desc: "創作頂級時尚雜誌等級的視覺大片" },
         { label: "電商全鏈路", id: "e_gen", desc: "自動化生成電商詳情頁與主圖矩陣" },
@@ -60,7 +60,7 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
       ]
     },
     {
-      title: "創意實驗與資產 // Lab & Assets",
+      title: "創意實驗與資產",
       items: [
         { label: "服裝設計", id: "apparel", desc: "探索前衛剪裁與材質的無限可能" },
         { label: "妝髮沙龍", id: "salon", desc: "精準控制模特兒的妝容與髮型細節" },
@@ -139,7 +139,7 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
                     onClick={() => setProjectMode('ip_creator')}
                     className={`px-4 py-1 rounded-full text-[8px] font-bold uppercase tracking-widest transition-all ${projectMode === 'ip_creator' ? 'bg-[var(--color-gold)] text-black shadow-lg shadow-[var(--color-gold)]/20' : 'text-[var(--color-text-dim)] hover:text-white'}`}
                   >
-                    IP Creator
+                    IP 創作模式
                   </button>
               </div>
           </div>
@@ -225,7 +225,7 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
 
             {/* Bottom Branding */}
             <div className={`mt-32 border-t border-[var(--color-border)] pt-8 flex justify-between items-center transition-all duration-1000 delay-500 ${isMenuOpen ? 'opacity-100' : 'opacity-0'}`}>
-                <span className="text-[10px] font-mono tracking-[0.5em] text-[var(--color-text-dim)] uppercase">Pavora AI Fashion Studio // 2026</span>
+                <span className="text-[10px] font-mono tracking-[0.5em] text-[var(--color-text-dim)] uppercase">Pavora AI 時尚工作室 2026</span>
                 <div className="flex gap-6">
                     <span className="w-1 h-1 rounded-full bg-[var(--color-gold)]"></span>
                     <span className="w-1 h-1 rounded-full bg-[var(--color-gold)] opacity-50"></span>

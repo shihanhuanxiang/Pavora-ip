@@ -84,13 +84,184 @@
   .custom-scrollbar::-webkit-scrollbar-thumb {
     @apply bg-white/5 rounded-full hover:bg-[var(--color-gold)]/30 transition-colors;
   }
-}
 
-.animate-shimmer {
-  animation: shimmer 2s infinite;
-}
+  /* ── Narrative Workbench ── */
 
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  .narrative-workbench {
+    --narrative-ink: #161311;
+    --narrative-ink-soft: #27221e;
+    --narrative-bone: #f5efe6;
+    --narrative-paper: #fffaf2;
+    --narrative-mist: #ede7dd;
+    --narrative-rail-w: 68px;
+    --narrative-topbar-h: 52px;
+    --narrative-commandbar-h: 52px;
+
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--narrative-paper);
+    color: var(--narrative-ink);
+    font-family: var(--font-sans);
+  }
+
+  .narrative-studio {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    overflow: hidden;
+  }
+
+  /* ── Rail (left sidebar) ── */
+  .narrative-rail {
+    width: var(--narrative-rail-w);
+    min-width: var(--narrative-rail-w);
+    background: var(--narrative-ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 0;
+    gap: 0.5rem;
+    z-index: 10;
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .narrative-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+  }
+
+  .narrative-brand span {
+    font-size: 7px;
+    font-weight: 900;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    opacity: 0.7;
+  }
+
+  /* ── Workspace (right of rail) ── */
+  .narrative-workspace {
+    flex: 1;
+    min-height: 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--narrative-bone);
+  }
+
+  /* ── Topbar ── */
+  .narrative-topbar {
+    height: var(--narrative-topbar-h);
+    min-height: var(--narrative-topbar-h);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    background: var(--narrative-ink);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    gap: 1rem;
+  }
+
+  .narrative-topbar h2 {
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .narrative-topbar p {
+    font-size: 9px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .narrative-eyebrow {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    opacity: 0.8;
+  }
+
+  .narrative-status-pill {
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    border: 1px solid rgba(212,175,55,0.3);
+    border-radius: 999px;
+    padding: 3px 10px;
+    background: rgba(212,175,55,0.07);
+  }
+
+  .narrative-back-button {
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 0.75rem;
+    padding: 5px 14px;
+    background: transparent;
+    transition: all 0.2s;
+  }
+
+  .narrative-back-button:hover {
+    color: #fff;
+    border-color: rgba(212,175,55,0.4);
+  }
+
+  /* ── Page & Inner ── */
+  .narrative-page {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;        /* 改 hidden：讓 narrative-inner 自己處理 scroll */
+    position: relative;
+    background: var(--narrative-bone);
+  }
+
+  .narrative-inner {
+    height: 100%;            /* 填滿 narrative-page 的固定高度 */
+    overflow-y: auto;        /* 此層負責 scroll（Tailwind overflow-y-auto 也會加） */
+    box-sizing: border-box;
+    position: relative;      /* 供 absolute inset-0 overlay 定位 */
+  }
+
+  /* ── Commandbar (bottom) ── */
+  .narrative-commandbar {
+    height: var(--narrative-commandbar-h);
+    min-height: var(--narrative-commandbar-h);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    background: var(--narrative-ink-soft);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    gap: 0.75rem;
+  }
+
+  /* ── Nav Tooltip ── */
+  .narrative-nav-tooltip {
+    background: var(--narrative-ink);
+    color: rgba(255,255,255,0.7);
+    border: 1px solid rgba(255,255,255,0.08);
+    white-space: nowrap;
+    pointer-events: none;
+  }
 }

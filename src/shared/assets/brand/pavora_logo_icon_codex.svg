@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">PAVORA Icon Mark</title>
+  <desc id="desc">A compact PAVORA icon mark combining a hanger hook, P letterform, and folded fabric curve.</desc>
+  <defs>
+    <linearGradient id="wine" x1="186" y1="203" x2="347" y2="413" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#A23A52"/>
+      <stop offset="1" stop-color="#671C31"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="156" y1="128" x2="356" y2="128" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E7C981"/>
+      <stop offset="1" stop-color="#AE7C32"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#FFF9F0"/>
+  <path d="M200 104c0-34 27-59 64-59 34 0 61 21 67 51" fill="none" stroke="url(#gold)" stroke-width="25" stroke-linecap="round"/>
+  <path d="M264 60v58" fill="none" stroke="#161311" stroke-width="22" stroke-linecap="round"/>
+  <path d="M145 424V143h127c85 0 139 45 139 115 0 73-54 118-139 118h-51v48h-76Z" fill="#161311"/>
+  <path d="M221 211v97h45c46 0 71-17 71-50 0-31-25-47-71-47h-45Z" fill="#FFF9F0"/>
+  <path d="M221 425c33-74 77-131 132-172 18-13 36-24 56-34-13 65-40 117-82 158-30 29-66 48-106 58Z" fill="url(#wine)"/>
+  <path d="M234 404c37-42 77-73 121-93" fill="none" stroke="#D2A34F" stroke-width="17" stroke-linecap="round"/>
+</svg>

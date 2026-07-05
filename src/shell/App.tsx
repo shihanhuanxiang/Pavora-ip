@@ -250,11 +250,12 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
       );
       case WorkflowStep.MODEL_LOUNGE: return <ModelLounge onGoHome={handleGoHome} onModelSelect={handleModelSelect} />;
       case WorkflowStep.NARRATIVE: return narrativeModel ? (
-          <NarrativeWorkflow 
+          <NarrativeWorkflow
             model={narrativeModel}
-            onClose={handleGoHome}
+            onClose={() => setWorkflowStepWithPath(WorkflowStep.MODEL_LOUNGE)}
             onConfirm={() => {
               addNotification({ type: 'success', message: '靈魂敘事已同步至模特兒作品集' });
+              setWorkflowStepWithPath(WorkflowStep.MODEL_LOUNGE);
             }}
           />
       ) : (

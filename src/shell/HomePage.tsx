@@ -48,7 +48,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         { 
           id: 'lounge', 
           zh: 'IP 休息室', 
-          en: 'IP Lounge', 
+          en: '身份與作品管理', 
           desc: '管理目前 IP 的身份鎖定、基準圖、作品集與靈魂敘事入口',
           icon: <ModelLoungeIcon />, 
           color: 'from-amber-500/20 to-transparent',
@@ -57,7 +57,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         { 
           id: 'model_setup', 
           zh: '建立或更新 IP', 
-          en: 'Create / Refine IP', 
+          en: '建立與優化角色', 
           desc: '建立新角色，或延伸既有 IP 的臉部方向、妝髮與視覺身份',
           icon: <ModelIcon />, 
           color: 'from-rose-500/20 to-transparent',
@@ -66,7 +66,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         { 
           id: 'narrative', 
           zh: '靈魂敘事', 
-          en: 'Narrative Workflow', 
+          en: '日常內容流程', 
           desc: '為目前 IP 生成日常事件、場景、服裝與社群內容，延續長期記憶',
           icon: <DirectorModeIcon />, 
           color: 'from-violet-500/20 to-transparent',
@@ -75,7 +75,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         { 
           id: 'portfolio', 
           zh: '作品與內容庫', 
-          en: 'Content Gallery', 
+          en: '作品素材整理', 
           desc: '整理 IP 已產出的日常、曲線與戲劇張力內容素材',
           icon: <PortfolioGalleryIcon />, 
           color: 'from-purple-500/20 to-transparent',
@@ -88,7 +88,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       { 
         id: 'brand_identity_hub', 
         zh: '品牌形象中心', 
-        en: 'Brand Identity Hub', 
+        en: '品牌身份管理', 
         desc: '管理品牌專屬模特兒、妝造與身份鎖定',
         icon: <ModelIcon />, 
         color: 'from-amber-500/20 to-transparent',
@@ -97,7 +97,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       { 
         id: 'marketing_factory', 
         zh: '行銷素材工廠', 
-        en: 'Marketing Factory', 
+        en: '行銷素材產線', 
         desc: '批次產出電商海報、精品廣告與社群素材',
         icon: <PosterEngineIcon />, 
         color: 'from-blue-500/20 to-transparent',
@@ -106,7 +106,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       { 
         id: 'motion_hub', 
         zh: '動態視覺中心', 
-        en: 'Motion & Cinematic', 
+        en: '動態與電影感視覺', 
         desc: '產出 Reels/TikTok 適用之產品動態特寫',
         icon: <DirectorModeIcon />, 
         color: 'from-purple-500/20 to-transparent',
@@ -117,15 +117,15 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
   const advancedTools = useMemo(() => {
     const allTools = [
-      { id: 'fitting_room', zh: '虛擬試衣', en: 'Virtual Fitting', icon: <FittingRoomIcon />, modes: ['commerce'] },
-      { id: 'apparel', zh: '服裝設計', en: 'Apparel Design', icon: <ApparelDesignIcon />, modes: ['all'] },
-      { id: 'scene', zh: '場景轉移', en: 'Scene Transfer', icon: <SceneTransferIcon />, modes: ['all'] },
-      { id: 'deconstruction', zh: '影像解構', en: 'Deconstruct', icon: <DeconstructIcon />, modes: ['all'] },
-      { id: 'macro_craft', zh: '微觀工藝', en: 'MacroCraft', icon: <MacroCraftIcon />, modes: ['all'] },
-      { id: 'fantasy', zh: '幻想系列', en: 'Fantasy Morph', icon: <FantasySeriesIcon />, modes: ['all'] },
-      { id: 'wardrobe', zh: '智慧衣櫥', en: 'Smart Wardrobe', icon: <PersonalWardrobeIcon />, modes: ['commerce'] },
-      { id: 'lounge', zh: '資產保險庫', en: 'IP Vault', icon: <ModelLoungeIcon />, modes: ['ip_creator'] },
-      { id: 'portfolio', zh: '作品集錦', en: 'Gallery', icon: <PortfolioGalleryIcon />, modes: ['all'] },
+      { id: 'fitting_room', zh: '虛擬試衣', en: '商品穿搭合成', icon: <FittingRoomIcon />, modes: ['commerce'] },
+      { id: 'apparel', zh: '服裝設計', en: '服裝款式生成', icon: <ApparelDesignIcon />, modes: ['all'] },
+      { id: 'scene', zh: '場景轉移', en: '背景與情境重建', icon: <SceneTransferIcon />, modes: ['all'] },
+      { id: 'deconstruction', zh: '影像解構', en: '視覺元素拆解', icon: <DeconstructIcon />, modes: ['all'] },
+      { id: 'macro_craft', zh: '微觀工藝', en: '細節與材質強化', icon: <MacroCraftIcon />, modes: ['all'] },
+      { id: 'fantasy', zh: '幻想系列', en: '奇幻造型轉換', icon: <FantasySeriesIcon />, modes: ['all'] },
+      { id: 'wardrobe', zh: '智慧衣櫥', en: '商品衣櫥管理', icon: <PersonalWardrobeIcon />, modes: ['commerce'] },
+      { id: 'lounge', zh: '資產保險庫', en: 'IP 資產管理', icon: <ModelLoungeIcon />, modes: ['ip_creator'] },
+      { id: 'portfolio', zh: '作品集錦', en: '創作成果瀏覽', icon: <PortfolioGalleryIcon />, modes: ['all'] },
     ];
 
     return allTools.filter(t => t.modes.includes('all') || t.modes.includes(projectMode));
@@ -141,7 +141,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           Pavora
         </h1>
         <p className="text-[var(--color-text-dim)] text-xs tracking-[0.4em] font-light uppercase">
-          {projectMode === 'commerce' ? 'Enterprise AI Fashion Engine' : 'Virtual IP Operating Studio'}
+          {projectMode === 'commerce' ? '企業級 AI 時尚影像引擎' : '虛擬 IP 經營工作室'}
         </p>
 
         {/* Project Mode Toggle */}
@@ -151,14 +151,14 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   onClick={() => setProjectMode('commerce')}
                   className={`px-6 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${projectMode === 'commerce' ? 'bg-[var(--color-gold)] text-black shadow-lg shadow-[var(--color-gold)]/20' : 'text-[var(--color-text-dim)] hover:text-[var(--color-text-main)]'}`}
                 >
-                  商業模式 (Commercial)
+                  商業模式
                 </button>
                 <div className="w-px h-4 bg-white/10 mx-1"></div>
                 <button 
                   onClick={() => setProjectMode('ip_creator')}
                   className={`px-6 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${projectMode === 'ip_creator' ? 'bg-[var(--color-gold)] text-black shadow-lg shadow-[var(--color-gold)]/20' : 'text-[var(--color-text-dim)] hover:text-[var(--color-text-main)]'}`}
                 >
-                  IP 創作模式 (IP Creator)
+                  IP 創作模式
                 </button>
             </div>
 
@@ -187,7 +187,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             >
               ✕
             </button>
-            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--color-gold)] mb-3">✦ 建議起點 / Start Here</p>
+            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--color-gold)] mb-3">✦ 建議起點</p>
             <p className="text-sm text-[var(--color-text-main)] font-medium mb-4">
               第一次使用？先上傳商品圖，用 AI 快速生成電商圖或試衣效果。
             </p>
@@ -212,7 +212,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       {projectMode === 'ip_creator' && models.length > 0 && !activeModel && (
         <div className="w-full max-w-7xl mb-10 animate-fade-in">
           <div className="glass-panel rounded-2xl p-5 md:p-6 border border-[var(--color-gold)]/20 bg-[var(--color-gold)]/3">
-            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--color-gold)] mb-3">✦ 選擇你的 IP / Pick Your IP</p>
+            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--color-gold)] mb-3">✦ 選擇你的 IP</p>
             <p className="text-sm text-[var(--color-text-main)] font-medium mb-4">
               你已建立 {models.length} 個虛擬 IP。前往 IP 休息室選擇一個開始工作。
             </p>
@@ -229,7 +229,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       {projectMode === 'ip_creator' && models.length === 0 && (
         <div className="w-full max-w-7xl mb-10 animate-fade-in">
           <div className="glass-panel rounded-2xl p-5 md:p-6 border border-[var(--color-gold)]/20 bg-[var(--color-gold)]/3">
-            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--color-gold)] mb-3">✦ 建議起點 / Start Here</p>
+            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--color-gold)] mb-3">✦ 建議起點</p>
             <p className="text-sm text-[var(--color-text-main)] font-medium mb-4">
               還沒有虛擬 IP？從建立第一個角色開始——設定外貌、身份鎖定，再用靈魂敘事產出內容。
             </p>
@@ -258,7 +258,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               </div>
               <div className="min-w-0">
                 <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--color-gold)] mb-1">
-                  Continue Current IP
+                  繼續目前 IP
                 </p>
                 <h3 className="text-lg md:text-2xl font-bold text-[var(--color-text-main)] truncate">
                   繼續我的 IP：{activeModel.name}
@@ -306,7 +306,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       {/* Advanced Tools Section */}
       <div className="w-full max-w-7xl">
         <div className="flex items-center gap-4 mb-8">
-          <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-[var(--color-text-dim)]">進階工具箱 / Advanced Tools</h3>
+          <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-[var(--color-text-dim)]">進階工具箱</h3>
           <div className="h-px flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent"></div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
