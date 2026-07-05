@@ -119,7 +119,8 @@ export { generateSocialCopy, generateCampaignStrategy } from '../../domains/ipCo
  */
 export const removeBackground = async (imageData: { data: string, mimeType: string }, onProgress?: (msg: string) => void) => {
     const rawPrompt = "Extract the main product/subject from this image and place it on a clean, solid white background. Remove all shadows, reflections, and existing background elements. Ensure the subject's edges are sharp and clean. [OUTPUT]: Only the subject on pure white #FFFFFF.";
-    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:removeBackground', mode: 'dryrun' }).prompt;
+    // Stage 1b batch 1: pure-English literal template — safe to enforce.
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:removeBackground', mode: 'enforce' }).prompt;
     return transformImage(imageData, prompt, [], onProgress, { usePro: false });
 };
 
@@ -653,8 +654,9 @@ export const processFashionItem = async (
     
     const rawCleanPrompt = `${CLEAN_SHOT_PROMPT} ${lightingNote} ${styleNote} Ensure clean edges and professional studio quality.`;
     const rawMacroPrompt = `${MACRO_SHOT_PROMPT} ${styleNote} Focus on texture and material detail.`;
-    const cleanPrompt = runPromptPipeline(rawCleanPrompt, { source: 'geminiService:processFashionItem:clean', mode: 'dryrun' }).prompt;
-    const macroPrompt = runPromptPipeline(rawMacroPrompt, { source: 'geminiService:processFashionItem:macro', mode: 'dryrun' }).prompt;
+    // Stage 1b batch 1: pure-English literal templates + programmatic English notes — safe to enforce.
+    const cleanPrompt = runPromptPipeline(rawCleanPrompt, { source: 'geminiService:processFashionItem:clean', mode: 'enforce' }).prompt;
+    const macroPrompt = runPromptPipeline(rawMacroPrompt, { source: 'geminiService:processFashionItem:macro', mode: 'enforce' }).prompt;
 
     const refs = styleRef ? [styleRef] : [];
 
@@ -717,7 +719,8 @@ export const generateMacroCraftScene = async (fileData: any, params: any, analys
 
 export const generateStyleAnchorImage = async (params: any, onProgress: any) => {
     const rawPrompt = buildStyleAnchorPrompt(params);
-    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateStyleAnchorImage', mode: 'dryrun' }).prompt;
+    // Stage 1b batch 2: preset-only English prompt fields — safe to enforce.
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateStyleAnchorImage', mode: 'enforce' }).prompt;
     const refs = [];
     if (params.identityImage) refs.push(params.identityImage);
     if (params.outfitImage) refs.push(params.outfitImage);

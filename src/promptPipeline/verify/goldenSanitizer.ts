@@ -23,6 +23,11 @@
 // - Equivalence check (plan §2 package 2): runPromptPipeline(enforce) output
 //   must be byte-identical to the pre-existing sanitizeFinalPrompt(...).prompt
 //   for the same input — proves the narrative integration changed nothing.
+//   (Stage 1b note: both sides now strip Chinese by default — sanitizeFinalPrompt
+//   aliases the same function — so the equivalence assertion still holds.)
+// - Stage 1b Chinese stripping (section 10): enforce mode strips Han chars +
+//   CJK punctuation; keepChinese option retains ZH text for display-layer
+//   exits while still removing forbidden facial-mark terms.
 
 import { runPromptPipeline } from '../index';
 import {
@@ -204,6 +209,36 @@ function assert(cond: boolean, msg: string): void {
   const result = runPromptPipeline(raw, { source: 'verify:dryrun-non-mutation', mode: 'dryrun' });
   assert(result.prompt === raw, 'DRYRUN-NON-MUTATION: dry-run must return the prompt unchanged regardless of content');
   assert(result.blocked === false, 'DRYRUN-NON-MUTATION: blocked must always be false in dry-run');
+}
+
+// --- 10. Stage 1b: enforce mode strips Chinese characters (full-English rule) ---
+{
+  const raw = '[Scene]: 山林間的午後陽光, soft rim light, 電影感 editorial fashion，自然光';
+  const result = runPromptPipeline(raw, { source: 'verify:chinese-strip', mode: 'enforce' });
+  assert(!/[一-鿿]/.test(result.prompt), `CHINESE-STRIP: Han characters must be removed, got "${result.prompt}"`);
+  assert(!/[，。、：！【】]/.test(result.prompt), `CHINESE-STRIP: CJK punctuation must be removed, got "${result.prompt}"`);
+  assert(result.prompt.includes('soft rim light'), `CHINESE-STRIP: English content must survive, got "${result.prompt}"`);
+  assert(result.prompt.includes('editorial fashion'), `CHINESE-STRIP: English content must survive, got "${result.prompt}"`);
+  assert(!result.report.hasChineseCharacters, 'CHINESE-STRIP: report.hasChineseCharacters must be false after stripping');
+  assert(!result.blocked, 'CHINESE-STRIP: clean-after-strip prompt must not be blocked');
+
+  const glued = 'soft焦點light';
+  const gluedResult = runPromptPipeline(glued, { source: 'verify:chinese-strip-boundary', mode: 'enforce' });
+  assert(
+    gluedResult.prompt === 'soft light',
+    `CHINESE-STRIP: stripping must not glue adjacent English tokens, got "${gluedResult.prompt}"`
+  );
+
+  const zhRaw = '【場景】：山林間的午後陽光，臉上有痣的模特兒';
+  const kept = runPromptPipeline(zhRaw, { source: 'verify:chinese-keep', mode: 'enforce', keepChinese: true });
+  assert(/[一-鿿]/.test(kept.prompt), 'CHINESE-KEEP: keepChinese must retain Chinese text');
+  assert(!kept.prompt.includes('痣'), `CHINESE-KEEP: forbidden ZH facial-mark terms must still be removed, got "${kept.prompt}"`);
+  assert(kept.report.hasChineseCharacters, 'CHINESE-KEEP: report must still flag Chinese characters');
+
+  // Dryrun exits must remain completely unaffected by Stage 1b.
+  const dry = runPromptPipeline(raw, { source: 'verify:chinese-strip-dryrun', mode: 'dryrun' });
+  assert(dry.prompt === raw, 'CHINESE-STRIP: dryrun must not strip Chinese');
+  assert(dry.report.hasChineseCharacters, 'CHINESE-STRIP: dryrun report must still flag Chinese characters');
 }
 
 console.log(`PASS ${pass} / FAIL ${fail}`);

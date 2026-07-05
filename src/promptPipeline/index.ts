@@ -32,6 +32,13 @@ export interface PipelineOptions {
    * option check, not a new detector array entry (plan §1, PITFALLS #10).
    */
   expectMale?: boolean;
+  /**
+   * Stage 1b: enforce mode now strips Chinese characters / CJK punctuation
+   * (full-English final prompt rule). Display-layer ZH exits (e.g.
+   * narrative:diaryVisualPromptZH) set keepChinese: true to retain ZH text
+   * while still removing forbidden facial-mark terms. No effect in dryrun.
+   */
+  keepChinese?: boolean;
 }
 
 export interface PipelineResult {
@@ -63,12 +70,12 @@ const appendMaleMismatchWarning = (report: PromptSanitizerReport, prompt: string
  * dryrun (default): validatePromptText only. Prompt is returned unchanged,
  *   blocked is always false. Report is recorded to the debug snapshot when
  *   PAVORA_DEBUG_PROMPT=1.
- * enforce: sanitizePromptText — removes forbidden facial-mark terms and
- *   normalizes whitespace (identical behavior to narrative's existing
- *   sanitizeFinalPrompt call). blocked = !report.isClean afterward
- *   (residual Chinese / hardcoded subject / male-mismatch are report-only
- *   per plan §6.5 and §6.10 — callers may choose to act on `blocked`, this
- *   package does not hard-stop generation).
+ * enforce: sanitizePromptText — removes forbidden facial-mark terms,
+ *   strips Chinese characters / CJK punctuation (Stage 1b, unless
+ *   keepChinese is set) and normalizes whitespace. blocked = !report.isClean
+ *   afterward (hardcoded subject / male-mismatch remain report-only per plan
+ *   §6.5 and §6.10 — callers may choose to act on `blocked`, this package
+ *   does not hard-stop generation).
  */
 export function runPromptPipeline(prompt: string, options: PipelineOptions): PipelineResult {
   const mode = options.mode ?? getPipelineMode();
@@ -79,7 +86,7 @@ export function runPromptPipeline(prompt: string, options: PipelineOptions): Pip
   let blocked: boolean;
 
   if (mode === 'enforce') {
-    const sanitized = sanitizePromptText(prompt);
+    const sanitized = sanitizePromptText(prompt, { stripChinese: !options.keepChinese });
     resultPrompt = sanitized.prompt;
     report = sanitized.report;
     blocked = !report.isClean;

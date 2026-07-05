@@ -84,7 +84,8 @@ export const removeApparelBackground = async (apparelImage: {data: string, mimeT
     Maintain all original textures, colors, and details of the garment. 
     Do not include any hangers, mannequins, or background elements.
     `;
-    const pipelinedPrompt = runPromptPipeline(prompt, { source: 'fitting:removeApparelBackground', mode: 'dryrun' }).prompt;
+    // Stage 1b batch 2: pure-English literal template — safe to enforce.
+    const pipelinedPrompt = runPromptPipeline(prompt, { source: 'fitting:removeApparelBackground', mode: 'enforce' }).prompt;
 
     const response = await client.models.generateContent({
         model: 'gemini-2.5-flash-image',
@@ -304,7 +305,8 @@ Update the existing ${category} in Asset 3 with the new design from Asset 2. Mai
             console.warn("VTO: First attempt blocked by safety filters. Retrying with simplified prompt...");
             
             const retryPrompt = `Fashion catalog production: Transfer garment from Asset 2 to model in Asset 3. Maintain model characteristics from Asset 1. High-end studio photography.`;
-            const pipelinedRetryPrompt = runPromptPipeline(retryPrompt, { source: 'fitting:applyApparel:retry', mode: 'dryrun' }).prompt;
+            // Stage 1b batch 2: pure-English literal retry template — safe to enforce.
+            const pipelinedRetryPrompt = runPromptPipeline(retryPrompt, { source: 'fitting:applyApparel:retry', mode: 'enforce' }).prompt;
             const retryParts = [
                 { text: pipelinedRetryPrompt },
                 { inlineData: identityRef || currentCanvasData },
@@ -367,7 +369,8 @@ export const restoreIdentity = async (
         - Output resolution must be extremely high with clean edges.`;
     }
 
-    const pipelinedFixPrompt = runPromptPipeline(fixPrompt, { source: 'fitting:restoreIdentity', mode: 'dryrun' }).prompt;
+    // Stage 1b batch 2: parameterless English template — safe to enforce.
+    const pipelinedFixPrompt = runPromptPipeline(fixPrompt, { source: 'fitting:restoreIdentity', mode: 'enforce' }).prompt;
     const parts: any[] = [
         { inlineData: faceAnchorData }, 
         { inlineData: currentCanvasData }, 
@@ -432,7 +435,8 @@ export const refineGarmentDetails = async (
     
     Output the refined image with extremely high detail and professional studio quality.
     `.trim();
-    const pipelinedRefinePrompt = runPromptPipeline(prompt, { source: 'fitting:refineGarmentDetails', mode: 'dryrun' }).prompt;
+    // Stage 1b batch 2: pure-English literal template — safe to enforce.
+    const pipelinedRefinePrompt = runPromptPipeline(prompt, { source: 'fitting:refineGarmentDetails', mode: 'enforce' }).prompt;
 
     const parts: any[] = [
         { text: pipelinedRefinePrompt },

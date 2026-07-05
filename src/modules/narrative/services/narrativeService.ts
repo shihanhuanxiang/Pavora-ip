@@ -1351,9 +1351,11 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
 
         const repairedApparelVisualPrompt = repairApparelSection(repairedVisualPrompt);
         // Stage B equivalence: runPromptPipeline enforce mode wraps the same
-        // sanitizePromptText call sanitizeFinalPrompt aliases — output unchanged.
+        // sanitizePromptText call sanitizeFinalPrompt aliases.
+        // Stage 1b: enforce now also strips Chinese (full-English rule); the
+        // ZH exit is display-layer content and opts out via keepChinese.
         const sanitizedVisualPrompt = runPromptPipeline(repairedApparelVisualPrompt, { source: 'narrative:diaryVisualPrompt', mode: 'enforce' }).prompt;
-        const sanitizedVisualPromptZH = runPromptPipeline(repairedVisualPromptZH, { source: 'narrative:diaryVisualPromptZH', mode: 'enforce' }).prompt;
+        const sanitizedVisualPromptZH = runPromptPipeline(repairedVisualPromptZH, { source: 'narrative:diaryVisualPromptZH', mode: 'enforce', keepChinese: true }).prompt;
         
         return {
             content: data.content,

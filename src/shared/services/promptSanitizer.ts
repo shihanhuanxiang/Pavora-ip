@@ -64,6 +64,14 @@ export interface PromptSanitizerResult {
 
 const CHINESE_CHARACTER_PATTERN = /[\u4e00-\u9fff]/;
 
+// Stage 1b: enforce-mode Chinese stripping (full-English final prompt rule).
+// Han characters plus CJK/fullwidth punctuation are removed so no ZH residue
+// survives on the image-model path. Display-layer ZH prompts opt out via
+// sanitize option { stripChinese: false } (pipeline option keepChinese).
+// Fullwidth alphanumerics (\uff21\uff3a\uff10\uff19) are intentionally not stripped.
+const CHINESE_STRIP_PATTERN = /[\u4e00-\u9fff]/g;
+const CJK_PUNCTUATION_STRIP_PATTERN = /[\u3000-\u303f\uff01-\uff0f\uff1a-\uff20\uff3b-\uff40\uff5b-\uff65]/g;
+
 const escapeRegExp = (value: string): string => {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 };
@@ -138,7 +146,17 @@ export const validatePromptText = (prompt: string): PromptSanitizerReport => {
   return buildReport(prompt, prompt);
 };
 
-export const sanitizePromptText = (prompt: string): PromptSanitizerResult => {
+export interface SanitizePromptOptions {
+  /**
+   * Default true: strip Chinese characters and CJK punctuation (Stage 1b,
+   * full-English final prompt rule). Set false only for display-layer ZH
+   * prompts that must keep Chinese while still removing forbidden terms.
+   */
+  stripChinese?: boolean;
+}
+
+export const sanitizePromptText = (prompt: string, options: SanitizePromptOptions = {}): PromptSanitizerResult => {
+  const stripChinese = options.stripChinese !== false;
   let sanitizedPrompt = prompt;
   const removedTerms: string[] = [];
 
@@ -150,6 +168,14 @@ export const sanitizePromptText = (prompt: string): PromptSanitizerResult => {
       removedTerms.push(term);
       sanitizedPrompt = sanitizedPrompt.replace(pattern, '');
     }
+  }
+
+  if (stripChinese) {
+    // Replace with a space (not empty string) so adjacent English tokens do
+    // not get glued together; normalizePromptSpacing collapses the residue.
+    sanitizedPrompt = sanitizedPrompt
+      .replace(CHINESE_STRIP_PATTERN, ' ')
+      .replace(CJK_PUNCTUATION_STRIP_PATTERN, ' ');
   }
 
   sanitizedPrompt = normalizePromptSpacing(sanitizedPrompt);
