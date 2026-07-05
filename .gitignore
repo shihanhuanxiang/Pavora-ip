@@ -27,3 +27,10 @@ dist-ssr
 logs/*.jsonl
 !logs/
 !logs/.gitkeep
+
+# Build & review artifacts
+dist
+.codex-review-*
+*.bak
+*.tmp
+_fuse_test.txt
