@@ -56,7 +56,9 @@ function handleFirestoreError(error: unknown, operationType: OperationType, path
     operationType,
     path
   }
-  console.error('Firestore Error: ', JSON.stringify(errInfo));
+  // Firestore 為 best-effort 同步外掛：這裡只 warn（保留原始診斷資訊），
+  // 呼叫方（useModelStore）的 catch 會統一把狀態降為 degraded，不再噴 console.error。
+  console.warn('Firestore Error (degraded, non-fatal to local flow): ', JSON.stringify(errInfo));
   throw new Error(JSON.stringify(errInfo));
 }
 
@@ -103,7 +105,10 @@ export const saveModelToCloud = async (model: Model) => {
             // For now, let's just use the subcollection pattern which is safe for size
             for (const item of gallery) {
                 if (item.id) {
-                    await setDoc(doc(db, galleryPath, item.id), item);
+                    // Remove any undefined values that Firestore doesn't like (e.g. driveFileId before Drive sync)
+                    const cleanItem = { ...item };
+                    Object.keys(cleanItem).forEach(key => (cleanItem as any)[key] === undefined && delete (cleanItem as any)[key]);
+                    await setDoc(doc(db, galleryPath, item.id), cleanItem);
                 }
             }
         }
@@ -120,7 +125,10 @@ export const saveGalleryItemToCloud = async (modelId: string, item: any) => {
     const userId = auth.currentUser.uid;
     const path = getGalleryCollectionPath(userId, modelId);
     try {
-        await setDoc(doc(db, path, item.id), item);
+        // Remove any undefined values that Firestore doesn't like (e.g. driveFileId before Drive sync)
+        const cleanItem = { ...item };
+        Object.keys(cleanItem).forEach(key => (cleanItem as any)[key] === undefined && delete (cleanItem as any)[key]);
+        await setDoc(doc(db, path, item.id), cleanItem);
     } catch (error) {
         handleFirestoreError(error, OperationType.WRITE, `${path}/${item.id}`);
     }
@@ -168,24 +176,4 @@ export const getMyCloudModels = async (): Promise<Model[]> => {
         }));
 
         return models;
-    } catch (error) {
-        handleFirestoreError(error, OperationType.LIST, path);
-        return [];
-    }
-};
-
-/**
- * Delete a model from the cloud.
- */
-export const deleteModelFromCloud = async (modelId: string) => {
-    if (!auth.currentUser) return;
-
-    const userId = auth.currentUser.uid;
-    const collectionPath = getUserModelsCollectionPath(userId);
-    const path = `${collectionPath}/${modelId}`;
-    try {
-        await deleteDoc(doc(db, collectionPath, modelId));
-    } catch (error) {
-        handleFirestoreError(error, OperationType.DELETE, path);
-    }
-};
+    } catch (error)

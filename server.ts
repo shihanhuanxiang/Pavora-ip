@@ -7,6 +7,7 @@ import { google } from 'googleapis';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { Readable } from 'stream';
+import { originGuard, rateLimit, geminiAllowlist, adminGuard } from './server/middleware/guard';
 
 dotenv.config({ path: '.env.local', override: false });
 dotenv.config();
@@ -63,6 +64,14 @@ console.log('Configured Secrets URIs:', [process.env.GOOGLE_REDIRECT_URI, proces
 console.log('APP_BASE_URL:', process.env.APP_BASE_URL);
 console.log('--------------------------------');
 
+// /api/gemini-proxy 收斂 payload 上限：敘事生圖會在單次 generateContent 帶入多張 base64
+// 參考圖（identity ref + apparel + canvas，見 fittingService.ts / narrativeService.ts 實掃），
+// 單張 1024px 級 JPEG/PNG base64 約 1-3MB，3-4 張疊加可能到 8-12MB；32mb 給出充足緩衝，
+// 同時遠低於 50mb 全域值，避免異常大 payload（濫用/攻擊）打滿記憶體。
+// 必須註冊在全域 express.json 之前：Express 的 body parser 依註冊順序執行，
+// 全域版本先註冊的話 /api/gemini-proxy 會先被 50mb 版本解析掉，路由級 limit 就不會生效。
+app.use('/api/gemini-proxy', express.json({ limit: '32mb' }));
+
 app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
 
@@ -98,15 +107,63 @@ function appendUsageLog(record: {
   }
 }
 
-app.get('/api/config', (_req, res) => {
-  const key = process.env.GEMINI_API_KEY;
-  if (!key) {
+app.get('/api/gemini-video', originGuard, rateLimit, async (req: express.Request, res: express.Response) => {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
     return res.status(500).json({ error: 'GEMINI_API_KEY not configured' });
   }
-  res.json({ apiKey: key });
+
+  const fileUri = req.query.fileUri;
+  if (!fileUri || typeof fileUri !== 'string') {
+    return res.status(400).json({ error: 'fileUri query parameter is required' });
+  }
+
+  // SSRF 防護：只允許 Google Generative Language API 網域，拒絕任意 URL
+  let parsedUrl: URL;
+  try {
+    parsedUrl = new URL(fileUri);
+  } catch {
+    return res.status(400).json({ error: 'Invalid fileUri' });
+  }
+  if (parsedUrl.hostname !== 'generativelanguage.googleapis.com' || parsedUrl.protocol !== 'https:') {
+    return res.status(403).json({ error: 'fileUri host not allowed' });
+  }
+
+  try {
+    const upstream = await fetch(parsedUrl.toString(), {
+      headers: {
+        'x-goog-api-key': apiKey,
+      },
+      redirect: 'follow',
+    });
+
+    if (!upstream.ok || !upstream.body) {
+      return res.status(upstream.status).json({ error: `Upstream video fetch failed: ${upstream.status}` });
+    }
+
+    const contentType = upstream.headers.get('content-type');
+    if (contentType) res.setHeader('Content-Type', contentType);
+    const contentLength = upstream.headers.get('content-length');
+    if (contentLength) res.setHeader('Content-Length', contentLength);
+
+    const videoStream = Readable.fromWeb(upstream.body as any);
+    // 防 stream 中斷造成 unhandled error 讓整個 server process crash（E0 驗收記錄的非阻斷風險）
+    videoStream.on('error', (streamErr) => {
+      console.warn('[gemini-video] upstream stream error:', String(streamErr));
+      if (!res.headersSent) {
+        res.status(502).json({ error: 'Video stream interrupted' });
+      } else {
+        res.destroy();
+      }
+    });
+    res.on('close', () => videoStream.destroy());
+    videoStream.pipe(res);
+  } catch (err) {
+    res.status(502).json({ error: 'Video proxy upstream error', detail: String(err) });
+  }
 });
 
-app.use('/api/gemini-proxy', async (req: express.Request, res: express.Response) => {
+app.use('/api/gemini-proxy', originGuard, rateLimit, geminiAllowlist, async (req: express.Request, res: express.Response) => {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return res.status(500).json({ error: 'GEMINI_API_KEY not configured' });
@@ -536,7 +593,7 @@ app.get('/api/drive/image/:fileId', async (req, res) => {
   }
 });
 
-app.get('/admin/usage-data', (_req, res) => {
+app.get('/admin/usage-data', adminGuard, (_req, res) => {
   try {
     const logPath = path.join(__dirname, 'logs', 'usage.jsonl');
     if (!fs.existsSync(logPath)) {
@@ -571,7 +628,7 @@ app.get('/admin/usage-data', (_req, res) => {
   }
 });
 
-app.get('/admin', (_req, res) => {
+app.get('/admin', adminGuard, (_req, res) => {
   res.send(`<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -579,84 +636,4 @@ app.get('/admin', (_req, res) => {
   <title>Pavora Admin</title>
   <style>
     body { font-family: monospace; background: #0d0d0d; color: #e0e0e0; padding: 32px; }
-    h1 { color: #f5c518; margin-bottom: 8px; }
-    h2 { color: #aaa; font-size: 14px; margin: 24px 0 8px; text-transform: uppercase; letter-spacing: 2px; }
-    table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
-    th { background: #1a1a1a; color: #f5c518; padding: 8px 12px; text-align: left; font-size: 12px; }
-    td { padding: 7px 12px; border-bottom: 1px solid #222; font-size: 12px; }
-    tr:hover td { background: #1a1a1a; }
-    .ok { color: #4caf50; }
-    .fail { color: #f44336; }
-    .ts { color: #666; }
-    #refresh { background: #f5c518; color: #000; border: none; padding: 6px 16px; cursor: pointer; font-family: monospace; font-weight: bold; }
-  </style>
-</head>
-<body>
-  <h1>PAVORA ADMIN</h1>
-  <button id="refresh" onclick="load()">↻ 重新整理</button>
-
-  <h2>模型用量統計</h2>
-  <table id="stats-table">
-    <thead><tr><th>Model</th><th>總呼叫</th><th>成功率</th><th>平均耗時 (ms)</th></tr></thead>
-    <tbody id="stats-body"></tbody>
-  </table>
-
-  <h2>最近 50 筆紀錄</h2>
-  <table id="recent-table">
-    <thead><tr><th>時間</th><th>Model</th><th>Endpoint</th><th>狀態</th><th>耗時 (ms)</th></tr></thead>
-    <tbody id="recent-body"></tbody>
-  </table>
-
-  <script>
-    async function load() {
-      const r = await fetch('/admin/usage-data');
-      const { stats = [], recent = [] } = await r.json();
-
-      document.getElementById('stats-body').innerHTML = stats.map(s =>
-        '<tr><td>' + s.model + '</td><td>' + s.calls + '</td><td>' + s.successRate + '</td><td>' + s.avgMs + '</td></tr>'
-      ).join('');
-
-      document.getElementById('recent-body').innerHTML = recent.map(r =>
-        '<tr>' +
-        '<td class="ts">' + new Date(r.timestamp).toLocaleString('zh-TW') + '</td>' +
-        '<td>' + r.model + '</td>' +
-        '<td>' + r.endpoint + '</td>' +
-        '<td class="' + (r.success ? 'ok' : 'fail') + '">' + (r.success ? '✓ ' + r.statusCode : '✗ ' + r.statusCode) + '</td>' +
-        '<td>' + r.durationMs + '</td>' +
-        '</tr>'
-      ).join('');
-    }
-    load();
-  </script>
-</body>
-</html>`);
-});
-
-// Catch-all for /api/* to prevent falling through to SPA fallback
-app.all('/api/*all', (req, res) => {
-  res.status(404).json({ error: 'API endpoint not found' });
-});
-
-// Vite middleware setup
-async function startServer() {
-  if (process.env.NODE_ENV !== 'production') {
-    const { createServer: createViteServer } = await import('vite');
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: 'spa',
-    });
-    app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*all', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
-  }
-
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
-}
-
-startServer();
+    h1 { color: #f5c518; margi
