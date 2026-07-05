@@ -384,4 +384,13 @@ export const useModelStore = create<ModelState>()(
             visualPromptZH: item.visualPromptZH ? item.visualPromptZH.slice(0, 800) : undefined,
             contentCategory: item.contentCategory,
             styleTags: item.styleTags,
-            driveFileId
+            driveFileId: item.driveFileId,
+            driveLink: item.driveLink,
+            driveSyncedAt: item.driveSyncedAt
+          }))
+        }))
+      }),
+      // Only persist metadata, images are in IDB linked by URL
+    }
+  )
+);

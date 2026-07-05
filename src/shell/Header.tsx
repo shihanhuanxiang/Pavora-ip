@@ -229,4 +229,31 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
                                             {item.label}
                                         </span>
                                         {item.desc && (
-                                            <span className="text-[10px] text-[var(--color-text-dim)] group-hover/item:text-[var(--color-text-main)] opacity-60 mt-1 transition-colors max-w-[240px]
+                                            <span className="text-[10px] text-[var(--color-text-dim)] group-hover/item:text-[var(--color-text-main)] opacity-60 mt-1 transition-colors max-w-[240px] leading-relaxed">
+                                                {item.desc}
+                                            </span>
+                                        )}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
+            </div>
+
+            {/* Bottom Branding */}
+            <div className={`mt-32 border-t border-[var(--color-border)] pt-8 flex justify-between items-center transition-all duration-1000 delay-500 ${isMenuOpen ? 'opacity-100' : 'opacity-0'}`}>
+                <span className="text-[10px] font-mono tracking-[0.5em] text-[var(--color-text-dim)] uppercase">Pavora AI 時尚工作室 2026</span>
+                <div className="flex gap-6">
+                    <span className="w-1 h-1 rounded-full bg-[var(--color-gold)]"></span>
+                    <span className="w-1 h-1 rounded-full bg-[var(--color-gold)] opacity-50"></span>
+                    <span className="w-1 h-1 rounded-full bg-[var(--color-gold)] opacity-20"></span>
+                </div>
+            </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Header;

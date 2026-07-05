@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { Readable } from 'stream';
 import { originGuard, rateLimit, geminiAllowlist, adminGuard } from './server/middleware/guard';
+import { authGuard, quotaGuard, recordGeneration, initQuotaFromLog, logAuthQuotaConfig } from './server/middleware/authQuota';
 
 dotenv.config({ path: '.env.local', override: false });
 dotenv.config();
@@ -98,6 +99,7 @@ function appendUsageLog(record: {
   success: boolean;
   statusCode: number;
   durationMs: number;
+  uid?: string; // Stage 28-1: per-user quota 需要，舊行無此欄位屬正常
 }): void {
   try {
     const line = JSON.stringify(record) + '\n';
@@ -163,7 +165,11 @@ app.get('/api/gemini-video', originGuard, rateLimit, async (req: express.Request
   }
 });
 
-app.use('/api/gemini-proxy', originGuard, rateLimit, geminiAllowlist, async (req: express.Request, res: express.Response) => {
+// Stage 28-1 middleware 順序：origin → rateLimit → auth（驗身份）→ quota（查額度）→ allowlist
+initQuotaFromLog(USAGE_LOG_PATH);
+logAuthQuotaConfig();
+
+app.use('/api/gemini-proxy', originGuard, rateLimit, authGuard, quotaGuard, geminiAllowlist, async (req: express.Request, res: express.Response) => {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return res.status(500).json({ error: 'GEMINI_API_KEY not configured' });
@@ -191,6 +197,8 @@ app.use('/api/gemini-proxy', originGuard, rateLimit, geminiAllowlist, async (req
     });
     const data = await upstream.json();
 
+    const uid = typeof res.locals.uid === 'string' ? res.locals.uid : 'unknown';
+    recordGeneration(uid, model, upstream.ok); // 只有生成類 model 且成功才計入額度
     appendUsageLog({
       timestamp: new Date().toISOString(),
       model,
@@ -198,6 +206,7 @@ app.use('/api/gemini-proxy', originGuard, rateLimit, geminiAllowlist, async (req
       success: upstream.ok,
       statusCode: upstream.status,
       durationMs: Date.now() - startTime,
+      uid,
     });
 
     res.status(upstream.status).json(data);
@@ -209,6 +218,7 @@ app.use('/api/gemini-proxy', originGuard, rateLimit, geminiAllowlist, async (req
       success: false,
       statusCode: 502,
       durationMs: Date.now() - startTime,
+      uid: typeof res.locals.uid === 'string' ? res.locals.uid : 'unknown',
     });
     res.status(502).json({ error: 'Proxy upstream error', detail: String(err) });
   }
@@ -636,4 +646,89 @@ app.get('/admin', adminGuard, (_req, res) => {
   <title>Pavora Admin</title>
   <style>
     body { font-family: monospace; background: #0d0d0d; color: #e0e0e0; padding: 32px; }
-    h1 { color: #f5c518; margi
+    h1 { color: #f5c518; margin-bottom: 8px; }
+    h2 { color: #aaa; font-size: 14px; margin: 24px 0 8px; text-transform: uppercase; letter-spacing: 2px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+    th { background: #1a1a1a; color: #f5c518; padding: 8px 12px; text-align: left; font-size: 12px; }
+    td { padding: 7px 12px; border-bottom: 1px solid #222; font-size: 12px; }
+    tr:hover td { background: #1a1a1a; }
+    .ok { color: #4caf50; }
+    .fail { color: #f44336; }
+    .ts { color: #666; }
+    #refresh { background: #f5c518; color: #000; border: none; padding: 6px 16px; cursor: pointer; font-family: monospace; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>PAVORA ADMIN</h1>
+  <button id="refresh" onclick="load()">↻ 重新整理</button>
+
+  <h2>模型用量統計</h2>
+  <table id="stats-table">
+    <thead><tr><th>Model</th><th>總呼叫</th><th>成功率</th><th>平均耗時 (ms)</th></tr></thead>
+    <tbody id="stats-body"></tbody>
+  </table>
+
+  <h2>最近 50 筆紀錄</h2>
+  <table id="recent-table">
+    <thead><tr><th>時間</th><th>Model</th><th>Endpoint</th><th>狀態</th><th>耗時 (ms)</th></tr></thead>
+    <tbody id="recent-body"></tbody>
+  </table>
+
+  <script>
+    async function load() {
+      // /admin 頁面本身是靠 ?token= query 打開的（瀏覽器網址列無法帶自訂 header），
+      // 這裡的子請求 /admin/usage-data 一樣掛了 adminGuard，所以要把目前網址的
+      // token 原封轉發過去，否則頁面殼打得開、內部這個 fetch 會 401（半殘：表格空白）。
+      const currentToken = new URLSearchParams(window.location.search).get('token');
+      const dataUrl = currentToken ? '/admin/usage-data?token=' + encodeURIComponent(currentToken) : '/admin/usage-data';
+      const r = await fetch(dataUrl);
+      const { stats = [], recent = [] } = await r.json();
+
+      document.getElementById('stats-body').innerHTML = stats.map(s =>
+        '<tr><td>' + s.model + '</td><td>' + s.calls + '</td><td>' + s.successRate + '</td><td>' + s.avgMs + '</td></tr>'
+      ).join('');
+
+      document.getElementById('recent-body').innerHTML = recent.map(r =>
+        '<tr>' +
+        '<td class="ts">' + new Date(r.timestamp).toLocaleString('zh-TW') + '</td>' +
+        '<td>' + r.model + '</td>' +
+        '<td>' + r.endpoint + '</td>' +
+        '<td class="' + (r.success ? 'ok' : 'fail') + '">' + (r.success ? '✓ ' + r.statusCode : '✗ ' + r.statusCode) + '</td>' +
+        '<td>' + r.durationMs + '</td>' +
+        '</tr>'
+      ).join('');
+    }
+    load();
+  </script>
+</body>
+</html>`);
+});
+
+// Catch-all for /api/* to prevent falling through to SPA fallback
+app.all('/api/*all', (req, res) => {
+  res.status(404).json({ error: 'API endpoint not found' });
+});
+
+// Vite middleware setup
+async function startServer() {
+  if (process.env.NODE_ENV !== 'production') {
+    const { createServer: createViteServer } = await import('vite');
+    const vite = await createViteServer({
+      server: { middlewareMode: true },
+      appType: 'spa',
+    });
+    app.use(vite.middlewares);
+  } else {
+    const distPath = path.join(process.cwd(), 'dist');
+    app.use(express.static(distPath));
+    app.get('*all', (req, res) => {
+      res.sendFile(path.join(distPath, 'index.html'));
+    });
+  }
+
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+startServer();

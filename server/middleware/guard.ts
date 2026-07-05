@@ -190,4 +190,75 @@ export function geminiAllowlist(req: express.Request, res: express.Response, nex
     return next();
   }
 
-  const modelMatch 
+  const modelMatch = req.path.match(/\/models\/([^:]+):(.+)/);
+  const model = modelMatch ? modelMatch[1] : null;
+  const endpoint = modelMatch ? modelMatch[2] : null;
+
+  const modelAllowlist = getModelAllowlist();
+
+  if (!model || !endpoint || !modelAllowlist.includes(model) || !DEFAULT_ENDPOINT_ALLOWLIST.includes(endpoint)) {
+    console.warn(`[geminiAllowlist] blocked request: path=${req.path} model=${model ?? 'unknown'} endpoint=${endpoint ?? 'unknown'}`);
+    res.status(403).json({ error: 'Model or endpoint not allowed' });
+    return;
+  }
+
+  next();
+}
+
+// ---------------------------------------------------------------------------
+// 4) adminGuard — /admin 與 /admin/usage-data 的 token 檢查
+// ---------------------------------------------------------------------------
+//
+// 取捨（誠實記錄，Stage E 包 E4a 決策）：
+// - **Fail-closed**：如果 `ADMIN_TOKEN` 沒有設定在環境變數裡，一律回 403，不會「沒設定就放行」。
+//   理由：/admin 會暴露用量統計（模型呼叫量、成功率、耗時），這是內部維運資訊，不該在「忘記設定
+//   env」的情況下變成預設公開。寧可 Hank 本地多設一行 env、重啟才能用 /admin，也不留一個
+//   fail-open 的洞讓正式部署踩雷（例如忘記設定就直接上線，/admin 對全世界公開）。
+// - Token 比對支援兩種帶法：
+//     1) `Authorization: Bearer <token>` header —— 給程式化呼叫（curl/monitoring）用。
+//     2) `?token=<token>` query string —— 給 Hank 直接在瀏覽器網址列打開 /admin 頁面用
+//        （瀏覽器直開網址沒辦法帶自訂 header，只能靠 query）。
+// - **誠實的防護邊界**：這不是完整的 auth 系統，只是一個共用 token 的簡單門檔。token 會出現在
+//   瀏覽器網址列、瀏覽紀錄、伺服器 access log 裡（query string 的固有限制），不適合當成高敏感
+//   憑證的等級。若未來要更嚴謹，應換成真正的登入（per-user auth），本包不做。
+// - 未帶 token（不論 header 或 query 都沒有）視為「格式錯誤的請求」而非「token 錯誤」，但為了不
+//   洩漏「到底是沒帶還是帶錯」這種細節給攻擊者，兩種情況統一回 401，訊息一致。
+function getAdminToken(): string | undefined {
+  const raw = process.env.ADMIN_TOKEN;
+  if (!raw || raw.trim() === '') return undefined;
+  return raw.trim();
+}
+
+function extractBearerToken(header: string | string[] | undefined): string | null {
+  const value = Array.isArray(header) ? header[0] : header;
+  if (!value) return null;
+  const match = value.match(/^Bearer\s+(.+)$/i);
+  return match ? match[1].trim() : null;
+}
+
+export function adminGuard(req: express.Request, res: express.Response, next: express.NextFunction): void {
+  const adminToken = getAdminToken();
+
+  // Fail-closed：沒設定 env 一律 403，不因為「圖方便本地測試」而放行。
+  if (!adminToken) {
+    res.status(403).json({ error: 'ADMIN_TOKEN 未設定，請在 .env.local 加入後重啟' });
+    return;
+  }
+
+  const headerToken = extractBearerToken(req.headers.authorization);
+  const queryTokenRaw = req.query.token;
+  const queryToken = typeof queryTokenRaw === 'string' ? queryTokenRaw : null;
+  const providedToken = headerToken || queryToken;
+
+  if (!providedToken) {
+    res.status(401).json({ error: '需要提供管理權限 token（Authorization: Bearer 或 ?token=）' });
+    return;
+  }
+
+  if (providedToken !== adminToken) {
+    res.status(401).json({ error: '管理權限 token 不正確' });
+    return;
+  }
+
+  next();
+}

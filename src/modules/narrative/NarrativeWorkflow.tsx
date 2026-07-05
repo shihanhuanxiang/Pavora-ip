@@ -13,6 +13,7 @@ import { useNotification } from '../../shared/context/NotificationContext';
 import { useModelStore } from '../../shared/stores/useModelStore';
 import { imageUrlToimageData } from '../../shared/utils/imageUtils';
 import { recordGeneration, checkQuota } from '../../domains/ipContent/usageRecorder';
+import { isServerQuotaError } from '../../shared/services/core/geminiClient';
 
 import ImagePreviewModal from '../../shared/components/common/ImagePreviewModal';
 import { WardrobeManager } from './components/WardrobeManager';
@@ -834,7 +835,13 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             recordGeneration({ module: 'narrative', kind: 'image', model_id: model.id, ok: true });
         } catch (e) {
             console.error(e);
-            addNotification({ type: 'error', message: '影像生成失敗 (Generation Failed)', description: 'AI 算力調度異常，請稍後再試 (AI engine error, please try again later).' });
+            // Stage 28-1: server 端 quota 拒絕（429 QUOTA_EXCEEDED）走既有 QuotaErrorModal，
+            // 不用一般錯誤通知混淆使用者
+            if (isServerQuotaError(e)) {
+                window.dispatchEvent(new Event('imagenQuotaExceeded'));
+            } else {
+                addNotification({ type: 'error', message: '影像生成失敗 (Generation Failed)', description: 'AI 算力調度異常，請稍後再試 (AI engine error, please try again later).' });
+            }
             recordGeneration({ module: 'narrative', kind: 'image', model_id: model.id, ok: false });
         } finally {
             setIsGeneratingImage(false);
@@ -2642,4 +2649,96 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                             disabled={!diary || isExtractingMem || isFinishCooldown}
                             isLoading={isExtractingMem}
                             title={isFinishCooldown ? '影像剛生成，請稍候片刻再確認送出' : undefined}
-                            className="px-10 text-[11px] fon
+                            className="px-10 text-[11px] font-bold tracking-[0.4em] uppercase italic"
+                        >
+                            完成佈署 // FINISH
+                        </Button>
+                    </div>
+                    </div>
+                </div>
+
+            {/* Memory Confirmation Modal */}
+                <AnimatePresence>
+                    {showMemoryConfirm && (
+                        <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="absolute inset-0 bg-[var(--color-bg-deep)]/95 backdrop-blur-md z-[100] flex items-center justify-center p-6"
+                        >
+                            <div className="max-w-sm w-full bg-[var(--color-bg-surface)] border border-[var(--color-gold)]/20 p-8 rounded-[2.5rem] space-y-6 shadow-2xl">
+                                <div className="text-center space-y-2">
+                                    <h4 className="text-sm font-bold text-[var(--color-gold)] uppercase tracking-[0.2em] font-display">核心記憶同步 // CORE MEMORY SYNC</h4>
+                                    <p className="text-[10px] text-gray-400 font-medium">
+                                        系統偵測到了新的生活細節與記憶碎片。是否要將這些內容永久存入其靈魂底座？
+                                    </p>
+                                </div>
+                                
+                                <div className="flex flex-wrap gap-2 justify-center">
+                                    {newMemories.map((mem, i) => (
+                                        <div key={i} className="px-4 py-2 bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/30 rounded-xl text-[10px] text-[var(--color-gold)] font-bold">
+                                            {mem}
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="space-y-3 pt-4">
+                                    <Button onClick={() => handleConfirmMemories(newMemories)} className="w-full py-4 text-[10px] tracking-widest uppercase italic">
+                                        存入長期記憶 // SAVE MEMORY 🧠
+                                    </Button>
+                                    <Button variant="secondary" onClick={() => handleConfirmMemories([])} className="w-full py-3 text-[10px] border-white/10 opacity-60 uppercase italic tracking-widest">
+                                        不儲存跳過 // SKIP
+                                    </Button>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                {/* D3(b)：未儲存離開攔截 Modal */}
+                <AnimatePresence>
+                    {showUnsavedLeaveConfirm && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="absolute inset-0 bg-[var(--color-bg-deep)]/95 backdrop-blur-md z-[100] flex items-center justify-center p-6"
+                        >
+                            <div className="max-w-sm w-full bg-[var(--color-bg-surface)] border border-[var(--color-gold)]/20 p-8 rounded-[2.5rem] space-y-6 shadow-2xl">
+                                <div className="text-center space-y-2">
+                                    <h4 className="text-sm font-bold text-[var(--color-gold)] uppercase tracking-[0.2em] font-display">尚未儲存 // UNSAVED WORK</h4>
+                                    <p className="text-[10px] text-gray-400 font-medium">
+                                        本次產出尚未儲存至作品集，確定離開？
+                                    </p>
+                                </div>
+
+                                <div className="space-y-3 pt-4">
+                                    <Button
+                                        onClick={() => { setShowUnsavedLeaveConfirm(false); setPendingLeaveAction(null); }}
+                                        className="w-full py-4 text-[10px] tracking-widest uppercase italic"
+                                    >
+                                        返回儲存 // BACK TO SAVE
+                                    </Button>
+                                    <Button
+                                        variant="secondary"
+                                        onClick={() => {
+                                            const action = pendingLeaveAction;
+                                            setShowUnsavedLeaveConfirm(false);
+                                            setPendingLeaveAction(null);
+                                            if (action) action();
+                                        }}
+                                        className="w-full py-3 text-[10px] border-white/10 opacity-60 uppercase italic tracking-widest"
+                                    >
+                                        放棄並離開 // DISCARD & LEAVE
+                                    </Button>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </motion.div>
+
+
+        </div>
+    );
+};
+
+export default NarrativeWorkflow;

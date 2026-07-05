@@ -419,4 +419,5 @@ export const generateImageAsset = async (
     if (resultPart && resultPart.inlineData) {
         return `data:${resultPart.inlineData.mimeType};base64,${resultPart.inlineData.data}`;
     }
-    thr
+    throw new Error("預覽圖生成失敗");
+};

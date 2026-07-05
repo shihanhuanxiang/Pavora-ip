@@ -176,4 +176,24 @@ export const getMyCloudModels = async (): Promise<Model[]> => {
         }));
 
         return models;
-    } catch (error)
+    } catch (error) {
+        handleFirestoreError(error, OperationType.LIST, path);
+        return [];
+    }
+};
+
+/**
+ * Delete a model from the cloud.
+ */
+export const deleteModelFromCloud = async (modelId: string) => {
+    if (!auth.currentUser) return;
+
+    const userId = auth.currentUser.uid;
+    const collectionPath = getUserModelsCollectionPath(userId);
+    const path = `${collectionPath}/${modelId}`;
+    try {
+        await deleteDoc(doc(db, collectionPath, modelId));
+    } catch (error) {
+        handleFirestoreError(error, OperationType.DELETE, path);
+    }
+};

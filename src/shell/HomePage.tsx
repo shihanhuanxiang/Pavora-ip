@@ -376,4 +376,72 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <span className="text-base font-bold tracking-wide text-[var(--color-text-main)] group-hover:text-[var(--color-gold)] transition-colors">
                   {tool.zh}
                 </span>
-                <span className="text-[
+                <span className="text-[9px] uppercase tracking-[0.2em] text-[var(--color-text-dim)] mt-1 font-display group-hover:text-[var(--color-text-main)] transition-colors">
+                  {tool.en}
+                </span>
+              </div>
+
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-2 group-hover:translate-x-0">
+                <span className="text-[var(--color-gold)] text-lg">›</span>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ModuleButton: React.FC<{ 
+  zh: string; 
+  en: string; 
+  icon: React.ReactNode; 
+  onClick: () => void; 
+  size?: 'large' | 'wide' | 'standard' 
+}> = ({ zh, en, icon, onClick, size = 'standard' }) => {
+    const isLarge = size === 'large';
+    const isWide = size === 'wide';
+
+    return (
+      <button 
+        onClick={onClick}
+        className="group relative w-full h-full glass-panel rounded-xl transition-all duration-700 ease-out hover:-translate-y-2 hover:border-[var(--color-gold)] hover:shadow-2xl flex flex-col items-center justify-center overflow-hidden p-6"
+      >
+        {/* Hover Background Effect */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-gold)]/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+        
+        {/* Icon */}
+        <div className={`text-[var(--color-text-dim)] group-hover:text-[var(--color-gold)] group-hover:scale-110 transition-all duration-700 z-10 opacity-70 group-hover:opacity-100 ${
+          isLarge ? '[&_svg]:w-32 [&_svg]:h-32 mb-6' : 
+          isWide ? '[&_svg]:w-20 [&_svg]:h-20 mb-4' : 
+          '[&_svg]:w-14 [&_svg]:h-14 mb-4'
+        }`}>
+          {icon}
+        </div>
+
+        {/* Text Content */}
+        <div className="flex flex-col items-center z-10 w-full">
+            <span className={`font-sans font-bold text-[var(--color-text-main)] group-hover:text-[var(--color-gold)] transition-colors duration-500 text-center ${
+              isLarge ? 'text-3xl tracking-[0.2em]' : 
+              'text-lg tracking-widest'
+            }`}>
+                {zh}
+            </span>
+            <div className={`h-[1px] bg-[var(--color-gold)]/30 transition-all duration-700 my-3 ${
+              isLarge ? 'w-12 group-hover:w-24' : 'w-6 group-hover:w-12'
+            }`}></div>
+            <span className={`font-display text-[var(--color-gold)] uppercase tracking-[0.2em] text-center transition-colors ${
+              isLarge ? 'text-xs' : 'text-[9px]'
+            }`}>
+                {en}
+            </span>
+        </div>
+
+        {/* Decorative Corner */}
+        <div className="absolute top-0 right-0 w-12 h-12 border-t border-r border-transparent group-hover:border-[var(--color-gold)]/20 transition-all duration-700 rounded-tr-xl"></div>
+        <div className="absolute bottom-0 left-0 w-12 h-12 border-b border-l border-transparent group-hover:border-[var(--color-gold)]/20 transition-all duration-700 rounded-bl-xl"></div>
+      </button>
+    );
+};
+
+export default HomePage;
