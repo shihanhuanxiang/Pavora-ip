@@ -15,6 +15,7 @@ import { MACRO_ANALYSIS_PROMPT, buildMacroCraftPrompt } from "../../prompts/macr
 import { buildStyleAnchorPrompt } from "../../prompts/styleAnchor";
 import { buildPromptV8 } from "../../prompts/fantasy";
 import { runPromptPipeline } from "../../promptPipeline";
+import { ensureEnglishPrompt } from "./promptTranslation";
 
 import { 
     generateVideo, 
@@ -332,12 +333,17 @@ export const getAISmartLayout = async (images: any[]) => {
 };
 
 export const generateApparelDesignSequence = async (params: any, config: any, onProgress: any) => {
-    const basePrompt = buildApparelBasePrompt(params);
+    // Stage 1b-T: customBrandStyle is user free text — translate ZH→EN before enforce.
+    const safeParams = {
+        ...params,
+        customBrandStyle: await ensureEnglishPrompt(params.customBrandStyle, 'a fashion brand aesthetic description')
+    };
+    const basePrompt = buildApparelBasePrompt(safeParams);
     const refs = params.faceReferences || [];
     
     const generateOne = async (suffix: string, faceRefs: any[]) => {
         const rawPrompt = `${basePrompt} ${suffix}`;
-        const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateApparelDesignSequence', mode: 'dryrun' }).prompt;
+        const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateApparelDesignSequence', mode: 'enforce' }).prompt;
         const finalRefs = [...faceRefs];
         if (params.referenceImage && params.referenceImage.data) {
             return await transformImage(params.referenceImage, prompt, finalRefs, onProgress, config);
@@ -458,8 +464,10 @@ export const extractAssetsFromImage = async (imageData: any, options: any, onPro
 export const tuneImageDetail = async (baseData: any, maskData: any, instruction: string, refImages: any[], onProgress: any, config: any = {}) => {
     if (onProgress) onProgress("正在執行局部重繪...");
     const ai = await getGeminiClient();
-    const rawPrompt = DETAIL_TUNE_PROMPT(instruction);
-    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:tuneImageDetail', mode: 'dryrun' }).prompt;
+    // Stage 1b-T: user free-text instruction — translate ZH→EN before enforce.
+    const englishInstruction = await ensureEnglishPrompt(instruction, 'a localized inpainting instruction for the masked region');
+    const rawPrompt = DETAIL_TUNE_PROMPT(englishInstruction);
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:tuneImageDetail', mode: 'enforce' }).prompt;
 
     // 強化局部重繪的品質提示詞
     const qualityPrompt = config.usePro
@@ -674,8 +682,10 @@ export const refineFullBody = async (
 ) => {
     if (onProgress) onProgress("正在優化全身影像品質與風格同步...");
     const styleNote = styleRef ? "Match the photographic style, grain, and color grading of the provided reference image." : "";
-    const rawPrompt = `${REFINE_BODY_PROMPT(notes)} ${styleNote}`;
-    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:refineFullBody', mode: 'dryrun' }).prompt;
+    // Stage 1b-T: notes is user free text — translate ZH→EN before enforce.
+    const englishNotes = await ensureEnglishPrompt(notes, 'styling notes for refining a full-body fashion photo');
+    const rawPrompt = `${REFINE_BODY_PROMPT(englishNotes)} ${styleNote}`;
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:refineFullBody', mode: 'enforce' }).prompt;
     const refs = styleRef ? [styleRef] : [];
     return await transformImage(imageData, prompt, refs, onProgress, { usePro: resolution !== 'HD' });
 };
@@ -712,8 +722,13 @@ export const analyzeMacroProduct = async (fileData: any) => {
 };
 
 export const generateMacroCraftScene = async (fileData: any, params: any, analysis: any, onProgress: any) => {
-    const rawPrompt = buildMacroCraftPrompt(params, analysis);
-    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateMacroCraftScene', mode: 'dryrun' }).prompt;
+    // Stage 1b-T: customInstruction is user free text — translate ZH→EN before enforce.
+    const safeParams = {
+        ...params,
+        customInstruction: await ensureEnglishPrompt(params.customInstruction, 'an additional creative instruction for a macro-scale product scene')
+    };
+    const rawPrompt = buildMacroCraftPrompt(safeParams, analysis);
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateMacroCraftScene', mode: 'enforce' }).prompt;
     return await transformImage(fileData, prompt, [], onProgress, { usePro: params.quality === 'high' });
 };
 

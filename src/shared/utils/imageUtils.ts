@@ -36,6 +36,7 @@ export const getFriendlyErrorMessage = (error: any): string => {
     if (msg.includes('429') || msg.includes('RESOURCE_EXHAUSTED')) return 'API 配額已用盡，請稍後再試或更換金鑰。';
     if (msg.includes('safety')) return '生成的內容可能不符合安全規範，請嘗試修改提示詞。';
     if (msg.includes('API key')) return 'API 金鑰無效或未設定，請檢查設定。';
+    if (msg.includes('PROMPT_TRANSLATION_FAILED')) return '中文描述翻譯失敗，請稍後再試，或改用英文輸入。';
     return `發生錯誤：${msg}`;
 };
 
