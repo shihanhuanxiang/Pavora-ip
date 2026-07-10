@@ -71,11 +71,11 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
 
     // Matrix Mode State
     const [isMatrixMode, setIsMatrixMode] = useState(false);
-    const [modelMatrix, setModelMatrix] = useState<Record<string, { id: string; label: string; url: string | null; fileData: { data: string; mimeType: string } | null }>>({
-        'front': { id: 'front', label: '正面 (Front)', url: null, fileData: null },
-        'side': { id: 'side', label: '側面 (Side)', url: null, fileData: null },
-        'angle': { id: 'angle', label: '45度角 (45°)', url: null, fileData: null },
-        'back': { id: 'back', label: '背面 (Back)', url: null, fileData: null },
+    const [modelMatrix, setModelMatrix] = useState<Record<string, { id: string; label: string; en: string; url: string | null; fileData: { data: string; mimeType: string } | null }>>({
+        'front': { id: 'front', label: '正面 (Front)', en: 'Front', url: null, fileData: null },
+        'side': { id: 'side', label: '側面 (Side)', en: 'Side', url: null, fileData: null },
+        'angle': { id: 'angle', label: '45度角 (45°)', en: 'Angle', url: null, fileData: null },
+        'back': { id: 'back', label: '背面 (Back)', en: 'Back', url: null, fileData: null },
     });
     const [isMultiAngleGen, setIsMultiAngleGen] = useState(false);
 
@@ -365,10 +365,10 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
 
     const handleClearModelMatrix = () => {
         setModelMatrix({
-            'front': { id: 'front', label: '正面 (Front)', url: null, fileData: null },
-            'side': { id: 'side', label: '側面 (Side)', url: null, fileData: null },
-            'angle': { id: 'angle', label: '45度角 (45°)', url: null, fileData: null },
-            'back': { id: 'back', label: '背面 (Back)', url: null, fileData: null },
+            'front': { id: 'front', label: '正面 (Front)', en: 'Front', url: null, fileData: null },
+            'side': { id: 'side', label: '側面 (Side)', en: 'Side', url: null, fileData: null },
+            'angle': { id: 'angle', label: '45度角 (45°)', en: 'Angle', url: null, fileData: null },
+            'back': { id: 'back', label: '背面 (Back)', en: 'Back', url: null, fileData: null },
         });
         setOriginalBaseImage(null);
         setFaceAnchor(null);
@@ -412,7 +412,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
 
             const matrixImages = isMatrixMode 
                 ? Object.values(modelMatrix).filter((m: any) => m.fileData).map((m: any) => ({
-                    label: m.label,
+                    label: m.en,
                     fileData: m.fileData
                 }))
                 : null;
@@ -461,7 +461,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
         // Collect matrix images if in matrix mode
         const matrixImages = isMatrixMode 
             ? Object.values(modelMatrix).filter((m: any) => m.fileData).map((m: any) => ({
-                label: m.label,
+                label: m.en,
                 fileData: m.fileData
             }))
             : null;

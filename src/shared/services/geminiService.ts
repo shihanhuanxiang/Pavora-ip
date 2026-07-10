@@ -255,13 +255,15 @@ export const generateScene = async (personData: any | { label: string; fileData:
     
     const multiAngleData = isMultiAngle ? personData.map((p: any) => p.label) : (Array.isArray(personData) && personData.length > 1);
 
+    // Stage 1b-T1: backgroundSupplement is user free text (custom_manual textarea) — translate ZH→EN before enforce.
+    const englishBgSupplement = await ensureEnglishPrompt(options.backgroundSupplement, 'extra background scene details for a fashion photo');
     const rawSceneCompositionPrompt = buildSceneCompositionPrompt(
-        options.poseExpression.customPoseText || options.poseExpression.posePreset, 
+        options.poseExpression.customPoseText || options.poseExpression.posePreset,
         options.poseExpression.customExpressionText || options.poseExpression.expressionPreset,
         options.physics,
-        options.backgroundPreset, 
+        options.backgroundPreset,
         hasBgImage,
-        options.backgroundSupplement,
+        englishBgSupplement,
         options.gender,
         spatialData,
         options.framing,
@@ -278,7 +280,7 @@ export const generateScene = async (personData: any | { label: string; fileData:
         multiAngleData,
         config.imageConfig?.seed
     );
-    const prompt = runPromptPipeline(rawSceneCompositionPrompt, { source: 'sceneGeneration:generateScene', mode: 'dryrun' }).prompt;
+    const prompt = runPromptPipeline(rawSceneCompositionPrompt, { source: 'sceneGeneration:generateScene', mode: 'enforce' }).prompt;
     const refs = [];
     if (hasBgImage) refs.push(bgData);
     if (identityRef) refs.push(identityRef);
@@ -296,10 +298,25 @@ export const generateScene = async (personData: any | { label: string; fileData:
 };
 
 export const generateBurstImages = async (baseImageData: any, pairs: any[], lock: number, onProgress: any, faceRef: any, onStep: (idx: number, url: string) => void, config: any) => {
+    // Stage 1b-T2: pose/expression are English preset keywords today (no free-text input),
+    // so ensureEnglishPrompt is a defensive no-op that short-circuits on non-Chinese input.
+    // The cache avoids re-translating repeated pairs and future-proofs against a free-text box.
+    const translationCache = new Map<string, string>();
+    const toEnglish = async (text: string, ctx: string): Promise<string> => {
+        const key = text || '';
+        if (translationCache.has(key)) return translationCache.get(key)!;
+        const en = await ensureEnglishPrompt(key, ctx);
+        translationCache.set(key, en);
+        return en;
+    };
     for (let i = 0; i < pairs.length; i++) {
         const pair = pairs[i];
-        const rawPrompt = `Generate a portrait with pose: ${pair.pose} and expression: ${pair.expression}. Identity lock level: ${lock}.`;
-        const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateBurstImages', mode: 'dryrun' }).prompt;
+        const [englishPose, englishExpression] = await Promise.all([
+            toEnglish(pair.pose, 'a model pose description for a portrait'),
+            toEnglish(pair.expression, 'a facial expression description for a portrait'),
+        ]);
+        const rawPrompt = `Generate a portrait with pose: ${englishPose} and expression: ${englishExpression}. Identity lock level: ${lock}.`;
+        const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateBurstImages', mode: 'enforce' }).prompt;
         const refs = faceRef ? [faceRef] : [];
         try {
             const url = await transformImage(baseImageData, prompt, refs, onProgress, config);

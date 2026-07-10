@@ -274,7 +274,8 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
         try {
             const prompt = constructPrompt();
             const rawAnglePrompt = `${prompt}, ${angle.en}`;
-            const anglePrompt = runPromptPipeline(rawAnglePrompt, { source: 'hairSalon:transformHairAndMakeup:regenerateAngle', mode: 'dryrun' }).prompt;
+            // Stage 1b batch 3: English-only preset chain (prompt/keyword/en fields) — safe to enforce.
+            const anglePrompt = runPromptPipeline(rawAnglePrompt, { source: 'hairSalon:transformHairAndMakeup:regenerateAngle', mode: 'enforce' }).prompt;
             
             const matrixImages = (Object.values(salonMatrix) as any[])
                 .filter(m => m.fileData)
@@ -351,7 +352,8 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                   setLoadingMessage(`正在生成角度: ${angle.label} (${i+1}/4)...`);
                   
                   const rawAnglePrompt = `${prompt}, ${angle.en}`;
-                  const anglePrompt = runPromptPipeline(rawAnglePrompt, { source: 'hairSalon:transformHairAndMakeup:multiAngle', mode: 'dryrun' }).prompt;
+                  // Stage 1b batch 3: English-only preset chain — safe to enforce.
+                  const anglePrompt = runPromptPipeline(rawAnglePrompt, { source: 'hairSalon:transformHairAndMakeup:multiAngle', mode: 'enforce' }).prompt;
                   const angleConfig = {
                       ...config,
                       imageConfig: {
@@ -373,7 +375,9 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
               });
           } else {
               setLoadingMessage('正在執行髮絲微觀渲染與妝容融合...');
-              const pipelinedPrompt = runPromptPipeline(prompt, { source: 'hairSalon:transformHairAndMakeup:single', mode: 'dryrun' }).prompt;
+              // Stage 1b batch 3: English-only preset chain — safe to enforce.
+              // (customHairstyleDescription is NOT wired into constructPrompt today — tracked as a separate bug.)
+              const pipelinedPrompt = runPromptPipeline(prompt, { source: 'hairSalon:transformHairAndMakeup:single', mode: 'enforce' }).prompt;
               const result = await transformHairAndMakeup(baseImage!.fileData, identityRef, pipelinedPrompt, config, setLoadingMessage, hairstyleRefImage?.fileData);
               setGeneratedImage(result);
               

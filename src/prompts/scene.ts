@@ -259,7 +259,7 @@ ${selfieRotationProtocol}
         const racePrompt = gender === 'male' ? (fantasyRace.race_prompt_male_en || fantasyRace.race_prompt_en) : 
                           (gender === 'female' ? (fantasyRace.race_prompt_female_en || fantasyRace.race_prompt_en) : fantasyRace.race_prompt_en);
         
-        const jobPrompt = fantasyJob ? `Class: ${fantasyJob.labelZh}. Features: ${fantasyJob.features?.join(', ')}. Action: ${fantasyJob.action?.join(', ')}.` : "";
+        const jobPrompt = fantasyJob ? `Class: ${fantasyJob.name}. Features: ${fantasyJob.features?.join(', ')}. Action: ${fantasyJob.action?.join(', ')}.` : "";
         
         const damageDesc = battleDamage === 1 ? "Light battle wear: minor scratches on armor, slightly disheveled hair." :
                           (battleDamage === 2 ? "Moderate battle damage: cracked armor plates, visible dirt and small cuts, intense expression." :
@@ -271,7 +271,7 @@ ${selfieRotationProtocol}
 ### [FANTASY_3.0_IDENTITY_LOCK_ENGINE]
 - **RACE OVERLAY**: ${racePrompt}
 - **IDENTITY PRESERVATION**: MANDATORY. Apply race features (ears, eyes, skin tone) as an OVERLAY. DO NOT change the underlying bone structure, nose shape, or eye position of the person from Input ${identityIdx}.
-- **MORPHING RULE**: The result must be "The person from Input ${identityIdx} as a ${fantasyRace.labelZh}". 100% facial recognition must be maintained.
+- **MORPHING RULE**: The result must be "The person from Input ${identityIdx} as a ${fantasyRace.name}". 100% facial recognition must be maintained.
 - **JOB & GEAR**: ${jobPrompt}
 - **NARRATIVE STATE**: ${damageDesc}
 - **EXTRAS**: ${companionDesc}
