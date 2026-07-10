@@ -6,6 +6,7 @@ import { buildFittingPrompt, buildStylingPlanPrompt, buildIdentityFixPrompt } fr
 
 import { imageDB } from "../../../shared/services/imageDB";
 import { runPromptPipeline } from "../../../promptPipeline";
+import { ensureEnglishPrompt } from "../../../shared/services/promptTranslation";
 
 /**
  * 獲取圖片的實際長寬比
@@ -123,6 +124,7 @@ export const analyzeApparel = async (apparelImage: {data: string, mimeType: stri
     5. CONSTRUCTION: (e.g., "Double-needle topstitching", "Raw distressed edges", "Hidden placket")
 
     Output a detailed, comma-separated list of these features in English.
+    Respond in English ONLY — do not use any Chinese characters anywhere in the output.
     Focus on descriptors that will help an AI image generator maintain the EXACT material feel.
     `;
 
@@ -138,6 +140,20 @@ export const analyzeApparel = async (apparelImage: {data: string, mimeType: stri
 };
 
 // Apply Apparel
+// Stage 1b-T7: VTO category labels are a bounded Traditional-Chinese set (SimpleVTOCategorySelector / VFR category list) — deterministic zh→en mapping for prompt use, no runtime translation (established preset rule). UI keeps showing Chinese. Branch regexes elsewhere still receive the original Chinese label.
+const VTO_CATEGORY_EN_MAP: Record<string, string> = {
+    '上衣': 'top', '褲/裙': 'bottoms', '外套': 'outerwear', '套裝/洋裝': 'dress / one-piece outfit',
+    '包/袋': 'bag', '鞋子': 'shoes', '帽子/眼鏡': 'headwear / eyewear',
+    '短袖': 'short-sleeve', '長袖': 'long-sleeve', '無袖': 'sleeveless',
+    '長褲': 'trousers', '短褲': 'shorts', '裙子': 'skirt',
+};
+const vtoCategoryToEnglish = (category: string): string => {
+    // Handles composite labels like「上衣 (短袖)」; English ids (e.g. 'tops') pass through untouched.
+    let en = category;
+    for (const [zh, e] of Object.entries(VTO_CATEGORY_EN_MAP)) en = en.split(zh).join(e);
+    return en;
+};
+
 export const applyApparel = async (
     currentImageUrl: string, 
     apparelImage: {data: string, mimeType: string}, 
@@ -182,7 +198,8 @@ export const applyApparel = async (
     
     // Add custom instruction if provided
     if (config?.customInstruction) {
-        prompt += `\n\n${config.customInstruction}`;
+        // Stage 1b-T7: identity context may embed a user-editable Chinese model name / locked_descriptor — translate ZH→EN (English input short-circuits at zero cost).
+        prompt += `\n\n${await ensureEnglishPrompt(config.customInstruction, 'a model identity or styling instruction for a virtual try-on prompt')}`;
     }
 
     // Add protection instructions
@@ -220,10 +237,12 @@ export const applyApparel = async (
     const sanitizedFeatures = apparelFeatures
         .replace(/sheer|transparent|see-through|nude|skin|body|sexy|hot|revealing/gi, "fashionable")
         .replace(/leather/gi, "premium material");
+    // Stage 1b-T7: analyzeApparel output is only soft-constrained to English — translate defensively before it enters the prompt.
+    const englishFeatures = await ensureEnglishPrompt(sanitizedFeatures, 'a comma-separated list of garment material and texture features');
 
     prompt += `\n\nSpecific Garment Details:
 The garment from Asset 2 has these key features to replicate:
-${sanitizedFeatures}
+${englishFeatures}
 Please ensure these details are clearly visible in the final result.`;
 
     if (config?.isFirstTime) {
@@ -231,14 +250,14 @@ Please ensure these details are clearly visible in the final result.`;
 Transfer the design from Asset 2 onto the model in Asset 3. Ensure a natural fit and professional presentation.`;
     } else {
         prompt += `\n\nLayer Update:
-Update the existing ${category} in Asset 3 with the new design from Asset 2. Maintain all other scene elements.`;
+Update the existing ${vtoCategoryToEnglish(category)} in Asset 3 with the new design from Asset 2. Maintain all other scene elements.`;
     }
 
     // Natural language instructions
     prompt += `\n\nNote: Maintain the model's appearance and the scene's composition. 
     IMPORTANT: Maintain the EXACT framing of Asset 3. If Asset 3 is a full-body shot, the output MUST also be a full-body shot. Do not crop. Ensure the entire subject is visible within the frame.`;
 
-    const pipelinedApplyPrompt = runPromptPipeline(prompt, { source: 'fitting:applyApparel', mode: 'dryrun' }).prompt;
+    const pipelinedApplyPrompt = runPromptPipeline(prompt, { source: 'fitting:applyApparel', mode: 'enforce' }).prompt;
     parts.push({ text: pipelinedApplyPrompt });
     
     // 1. 身份參考 (Identity Anchor) - 優先使用臉部錨點，否則使用目前影像
