@@ -1,5 +1,6 @@
 
 import { getGeminiClient } from "../../../shared/services/core/geminiClient";
+import { ensureEnglishPrompt } from "../../../shared/services/promptTranslation";
 import type { DirectorScene } from "../../../shared/types/types";
 import { buildDirectorPrompt, VIDEO_PROMPT_ANALYSIS, SCRIPT_TO_STORYBOARD_PROMPT, IMAGE_VISUAL_ANALYSIS_PROMPT } from "../../../prompts/director";
 import { GoogleGenAI, Modality } from "@google/genai";
@@ -403,7 +404,9 @@ export const generateImageAsset = async (
     if (primaryImage) {
         parts.push({ inlineData: primaryImage });
     }
-    const pipelinedPrompt = runPromptPipeline(prompt, { source: 'directorService:generateImageAsset', mode: 'dryrun' }).prompt;
+    // Stage 1b-T6: single choke point for 4 callers. PersonalWardrobe / ImageDeconstruction pass whole user free-text prompts (translated here); CinematicAnalyzer passes English AI scripts (zero-cost pass-through); DirectorMode pre-translates scene.customPrompt at the source so its English skeleton short-circuits here.
+    const englishPrompt = await ensureEnglishPrompt(prompt, 'an image generation instruction');
+    const pipelinedPrompt = runPromptPipeline(englishPrompt, { source: 'directorService:generateImageAsset', mode: 'enforce' }).prompt;
     parts.push({ text: pipelinedPrompt });
 
     const response = await client.models.generateContent({

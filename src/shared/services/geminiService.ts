@@ -471,7 +471,8 @@ export const extractAssetsFromImage = async (imageData: any, options: any, onPro
         } else {
             rawPrompt = ASSET_EXTRACTION_IMAGE_PROMPT(item.name, item.description);
         }
-        const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:extractAssetsFromImage', mode: 'dryrun' }).prompt;
+        // Stage 1b-T5: item.name/description are AI outputs constrained to English at the source (ASSET_IDENTIFICATION_PROMPT rule 4); enforce is the safety net. item.name_zh is the UI display label and never enters this prompt.
+        const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:extractAssetsFromImage', mode: 'enforce' }).prompt;
         const url = await transformImage(imageData, prompt, [], undefined, { usePro: options.usePro });
         return { ...item, pngTransparentUrl: url };
     }));

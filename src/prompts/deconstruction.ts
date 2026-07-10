@@ -32,15 +32,17 @@ Schema:
 [
   { 
     "id": "unique_id", 
-    "name": "Short Item Name (e.g. 'Model Head', 'Leather Jacket', 'Denim Jeans')", 
+    "name": "Short Item Name in English (e.g. 'Model Head', 'Leather Jacket', 'Denim Jeans')",
+    "name_zh": "物品的繁體中文短名（例如 '模特頭像'、'皮革外套'、'丹寧牛仔褲'）",
     "category": "One of ['head', 'tops', 'bottoms', 'outerwear', 'dresses', 'accessories', 'shoes']",
-    "description": "Visual description of the item" 
+    "description": "Visual description of the item, in English"
   }
 ]
 IMPORTANT: 
 1. Always include "Model Head" (category: 'head') as the first item if a person is visible.
 2. Then list every distinct garment and accessory.
 3. Keep descriptions concise.
+4. "name" and "description" MUST be written in English regardless of the language of the request above (they are inserted into an English image-generation prompt). "name_zh" MUST be Traditional Chinese (it is a UI display label only).
 `;
 
 export const ASSET_EXTRACTION_IMAGE_PROMPT = (itemName: string, description: string) => `

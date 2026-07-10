@@ -579,6 +579,8 @@ export interface DeconstructedPrompt {
 export interface ExtractedAsset {
     id: string;
     name: string;
+    /** 繁體中文顯示名（UI 顯示層專用，不進生圖 prompt；AI 可能省略，顯示時 fallback 到 name） */
+    name_zh?: string;
     category: string;
     description: string;
     pngTransparentUrl: string;

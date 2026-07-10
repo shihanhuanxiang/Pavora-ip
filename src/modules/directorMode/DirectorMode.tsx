@@ -1,6 +1,7 @@
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { generateVideo, getFriendlyErrorMessage, extractVideoFrames, fileToBase64, imageUrlToimageData, constructDirectorPrompt, generateVideoPromptFromImage, analyzeImageForDirector, generateStoryboardFromScript, generateImageAsset } from '../../shared/services/geminiService';
+import { ensureEnglishPrompt } from '../../shared/services/promptTranslation';
 import { savePortfolioItem } from '../../shared/services/storageService';
 import type { DirectorScene } from '../../shared/types/types';
 import { DIRECTOR_STYLES, LENS_LANGUAGES, ACTION_RHYTHMS, LIGHTING_VIBES, COMPOSITION_FOCUSES, CAMERA_MOVEMENTS, SUBJECT_ACTIONS, TRANSITION_STYLES, MASTER_PRESETS } from '../../shared/constants/constants';
@@ -309,7 +310,12 @@ const DirectorMode: React.FC<DirectorModeProps> = ({ onGoHome, initialImage, ini
         setIsLoading(true); setLoadingMessage(`正在生成分鏡 ${activeSceneIndex + 1} 的靜態預覽 (${count} 張)...`); setError(null);
         
         try {
-            const staticPrompt = prompt.replace(/^A video of/, "A cinematic photo of").replace(/^Captured in/, "Cinematic shot,");
+            // Stage 1b-T6: pre-translate the user's Chinese 額外描述 before assembling, so the English prompt skeleton is never re-translated at the generateImageAsset choke point.
+            const sceneForPrompt = activeScene.customPrompt
+                ? { ...activeScene, customPrompt: await ensureEnglishPrompt(activeScene.customPrompt, 'additional scene details for a cinematic storyboard shot') }
+                : activeScene;
+            const { prompt: promptEn } = constructDirectorPrompt(sceneForPrompt);
+            const staticPrompt = promptEn.replace(/^A video of/, "A cinematic photo of").replace(/^Captured in/, "Cinematic shot,");
             const primaryImage = isMultiRef ? activeScene.referenceFramesFileData![0] : baseImage!.fileData;
             const refs = isMultiRef ? activeScene.referenceFramesFileData : [];
 
