@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { transformHairAndMakeup, getFriendlyErrorMessage, imageUrlToimageData, getAIStyleAnalysis, getStylistFeedback, tuneImageDetail, detectMultiAngleLayout } from '../../shared/services/geminiService';
 import { buildSalonPrompt, STYLE_ANALYSIS_PROMPT } from '../../prompts/hair';
 import { runPromptPipeline } from '../../promptPipeline';
+import { ensureEnglishPrompt } from '../../shared/services/promptTranslation';
 import { savePortfolioItem, getSalonPresets, saveSalonPreset, deleteSalonPreset } from '../../shared/services/storageService';
 import { downloadImage, stitchImages, cropImage, fileToBase64 } from '../../shared/utils/imageUtils';
 import ManualCropModal from '../../shared/components/business/ManualCropModal';
@@ -206,7 +207,7 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
     const handleAddColorStop = () => { if (colorStops.length < 5) { setColorStops(stops => [...stops, { id: Date.now(), hex: '#ffffff' }]); } };
     const handleRemoveColorStop = (id: number) => { if (colorStops.length > 2) { setColorStops(stops => stops.filter(stop => stop.id !== id)); } };
 
-    const constructPrompt = useCallback(() => {
+    const constructPrompt = useCallback(async () => {
         const makeupPresets = MAKEUP_PRESETS[gender];
         const makeupPreset = makeupPresets.find(p => p.id === selectedMakeupPresetId);
         const makeupKeyword = makeupPreset?.keyword || selectedMakeupPresetId;
@@ -214,7 +215,7 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
         const beardPreset = BEARD_PRESETS.find(p => p.id === beardStyleId);
         const beardPrompt = beardPreset?.prompt || '';
 
-        return buildSalonPrompt(
+        const basePrompt = buildSalonPrompt(
             hairstyleParams,
             hairColor,
             hairColorMode,
@@ -230,7 +231,13 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
             beardPrompt,
             beardColor
         );
-    }, [selectedPresetId, hairstyleParams, hairColor, hairColorMode, colorStops, gradientCoverage, highlightPattern, highlightDensity, selectedMakeupPresetId, makeupIntensity, makeupParams, isSelfieMode, gender, beardStyleId, beardColor]);
+        // Stage 1b-T10: the 'custom' preset has empty params/prompt, so the user's description is the ONLY hairstyle instruction — it was previously never wired in (dead textarea). Translate ZH→EN here; the three pipeline exits downstream are already enforce.
+        if (selectedPresetId === 'custom' && customHairstyleDescription.trim()) {
+            const customEn = await ensureEnglishPrompt(customHairstyleDescription, 'a desired hairstyle description');
+            return `${basePrompt} Desired custom hairstyle: ${customEn}.`;
+        }
+        return basePrompt;
+    }, [selectedPresetId, hairstyleParams, hairColor, hairColorMode, colorStops, gradientCoverage, highlightPattern, highlightDensity, selectedMakeupPresetId, makeupIntensity, makeupParams, isSelfieMode, gender, beardStyleId, beardColor, customHairstyleDescription]);
 
     const handleCopy = async (url: string, id: string) => {
         try {
@@ -272,7 +279,7 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
 
         setIsRegenerating(angleId);
         try {
-            const prompt = constructPrompt();
+            const prompt = await constructPrompt();
             const rawAnglePrompt = `${prompt}, ${angle.en}`;
             // Stage 1b batch 3: English-only preset chain (prompt/keyword/en fields) — safe to enforce.
             const anglePrompt = runPromptPipeline(rawAnglePrompt, { source: 'hairSalon:transformHairAndMakeup:regenerateAngle', mode: 'enforce' }).prompt;
@@ -322,7 +329,7 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
         setIsLoading(true); setLoadingMessage('正在啟動寫實渲染引擎...'); setError(null);
         try {
           setLoadingMessage('正在分析原圖光影與皮膚紋理...');
-          const prompt = constructPrompt();
+          const prompt = await constructPrompt();
           
           const matrixImages = isMultiAngleMode 
             ? (Object.values(salonMatrix) as any[])
@@ -376,7 +383,7 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
           } else {
               setLoadingMessage('正在執行髮絲微觀渲染與妝容融合...');
               // Stage 1b batch 3: English-only preset chain — safe to enforce.
-              // (customHairstyleDescription is NOT wired into constructPrompt today — tracked as a separate bug.)
+              // (customHairstyleDescription is wired into constructPrompt as of Stage 1b-T10, translated via ensureEnglishPrompt.)
               const pipelinedPrompt = runPromptPipeline(prompt, { source: 'hairSalon:transformHairAndMakeup:single', mode: 'enforce' }).prompt;
               const result = await transformHairAndMakeup(baseImage!.fileData, identityRef, pipelinedPrompt, config, setLoadingMessage, hairstyleRefImage?.fileData);
               setGeneratedImage(result);
