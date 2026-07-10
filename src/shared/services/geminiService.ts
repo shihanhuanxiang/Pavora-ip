@@ -526,8 +526,15 @@ export const analyzeApparelItem = async (imageData: any) => {
 
 export const optimizeAndReangleImage = async (imageData: any, params: any, onProgress: any) => {
     if (onProgress) onProgress("正在進行影像重塑與質感優化...");
-    const rawPrompt = buildOptimizationPrompt(params);
-    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:optimizeAndReangleImage', mode: 'dryrun' }).prompt;
+    // Stage 1b-T4: addObject/removeObject/changeStyle are user free-text inputs; additionalPrompt comes from the AI realism analysis (historically Chinese) — translate ZH→EN before enforce. All other params are numeric or English enum/prompt values (audited SAFE 2026-07-10).
+    const [addObject, removeObject, changeStyle, additionalPrompt] = await Promise.all([
+        ensureEnglishPrompt(params.addObject, 'an object to add into the photo'),
+        ensureEnglishPrompt(params.removeObject, 'an object to remove from the photo'),
+        ensureEnglishPrompt(params.changeStyle, 'a style transformation instruction for the photo'),
+        ensureEnglishPrompt(params.additionalPrompt, 'additional optimization instructions for the photo'),
+    ]);
+    const rawPrompt = buildOptimizationPrompt({ ...params, addObject, removeObject, changeStyle, additionalPrompt });
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:optimizeAndReangleImage', mode: 'enforce' }).prompt;
 
     const imageConfig: any = {};
     if (params.aspectRatio && params.aspectRatio !== 'original') {
@@ -628,8 +635,16 @@ export const generateProductPoster = async (
 
     if (!subjectData) throw new Error("Missing subject image data");
 
-    const rawPrompt = buildPCPEPosterPrompt(overrides, form.ratio, form.quality, colorLock);
-    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateProductPoster', mode: 'dryrun' }).prompt;
+    // Stage 1b-T3: the 5 override fields are user-editable free text (textarea / localStorage preset) — translate ZH→EN before enforce. ratio/quality/colorLock are fixed enums, no translation needed.
+    const [background, camera, lighting, pose, props] = await Promise.all([
+        ensureEnglishPrompt(overrides.background, 'a background description for a product poster'),
+        ensureEnglishPrompt(overrides.camera, 'a camera and lens description for a product poster'),
+        ensureEnglishPrompt(overrides.lighting, 'a lighting description for a product poster'),
+        ensureEnglishPrompt(overrides.pose, 'a pose description for a product poster'),
+        ensureEnglishPrompt(overrides.props, 'a props description for a product poster'),
+    ]);
+    const rawPrompt = buildPCPEPosterPrompt({ ...overrides, background, camera, lighting, pose, props }, form.ratio, form.quality, colorLock);
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateProductPoster', mode: 'enforce' }).prompt;
     const refs = faceAnchor ? [faceAnchor] : [];
     const url = await transformImage(subjectData, prompt, refs, onProgress, { usePro: form.quality === 'high', imageConfig: { aspectRatio: form.ratio } });
     return { url };
