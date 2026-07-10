@@ -3,10 +3,40 @@ import { getGeminiClient } from "../../../shared/services/core/geminiClient";
 import type { Model } from "../../../shared/types/types";
 import { buildModelPrompt } from "../../../prompts/modelCreation";
 import { runPromptPipeline } from "../../../promptPipeline";
+import { ensureEnglishPrompt } from "../../../shared/services/promptTranslation";
+import { CORE_VIBE_EN_MAP, TONE_OF_VOICE_EN_MAP } from "../../../shared/constants/personaPresets";
 
 export const generateModels = async (params: any): Promise<Model[]> => {
     const hasFaceRef = params.faceReferences && params.faceReferences.length > 0;
-    const prompt = buildModelPrompt(params);
+
+    // T8 ZH→EN 前置（切 enforce 前的語意防線）：自由輸入欄位在此翻譯（無中文時
+    // 零成本零延遲）；有限集合 preset（coreVibe/toneOfVoice/primaryCity）由
+    // buildModelPrompt 內的確定性映射處理，不走執行時翻譯。toneOfVoice 可能被
+    // AI 生成值覆寫成非 preset 中文，故未命中映射時防禦性翻譯。
+    // 翻譯失敗會 throw PROMPT_TRANSLATION_FAILED（fail loud，不偽裝成功）。
+    const persona = params.persona;
+    const [hairColorEn, professionEn, toneOfVoiceEn, customOutfitEn] = await Promise.all([
+        ensureEnglishPrompt(params.hairColor, 'a hair color description for a virtual model'),
+        ensureEnglishPrompt(persona?.profession, "the model's profession"),
+        persona?.toneOfVoice && !TONE_OF_VOICE_EN_MAP[persona.toneOfVoice]
+            ? ensureEnglishPrompt(persona.toneOfVoice, "the persona's tone of voice / expression style")
+            : Promise.resolve(persona?.toneOfVoice ?? ''),
+        ensureEnglishPrompt(params.customOutfitPrompt, 'a custom outfit description')
+    ]);
+    const effectiveParams = {
+        ...params,
+        hairColor: params.hairColor ? hairColorEn : params.hairColor,
+        customOutfitPrompt: params.customOutfitPrompt ? customOutfitEn : params.customOutfitPrompt,
+        persona: persona
+            ? {
+                ...persona,
+                profession: persona.profession ? professionEn : persona.profession,
+                toneOfVoice: persona.toneOfVoice ? toneOfVoiceEn : persona.toneOfVoice
+              }
+            : persona
+    };
+
+    const prompt = buildModelPrompt(effectiveParams);
     
     // Determine model name
     let modelName = 'gemini-2.5-flash-image';
@@ -38,8 +68,10 @@ The user has provided FACE REFERENCE IMAGES. These are the ABSOLUTE and EXCLUSIV
             ? `Maintain strict brand visual consistency following the ${params.brandStyleAnchor} style guide.` 
             : "";
         
-        const personaInstruction = params.persona 
-            ? `EMBODIMENT: The soul of this model is "${params.persona.coreVibe}". Adhere to their unique micro-expressions and aura.` 
+        // T8: systemInstruction 不經 runPromptPipeline（enforce 管不到），coreVibe
+        // 必須在此取映射英文值，否則中文旁路直送模型（2026-07-11 審計發現的洩漏點）。
+        const personaInstruction = persona
+            ? `EMBODIMENT: The soul of this model is "${CORE_VIBE_EN_MAP[persona.coreVibe] ?? persona.coreVibe}". Adhere to their unique micro-expressions and aura.`
             : "";
         
         const physicsInstruction = (params.bustTension > 80 || params.vTaperScale > 80)
@@ -65,7 +97,7 @@ The body proportions are extreme (Bust:${params.bust}, Waist:${params.waist}). Y
         }
 
         const isExpectedMale = params.gender === 'male' || params.gender === 'M';
-        const pipelinedPrompt = runPromptPipeline(prompt, { source: 'modelCreation:generateModels', mode: 'dryrun', expectMale: isExpectedMale }).prompt;
+        const pipelinedPrompt = runPromptPipeline(prompt, { source: 'modelCreation:generateModels', mode: 'enforce', expectMale: isExpectedMale }).prompt;
 
         let contents: any;
         if (hasFaceRef) {

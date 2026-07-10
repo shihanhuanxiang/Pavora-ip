@@ -76,6 +76,33 @@ export const TAIWAN_COUNTIES = [
     { value: '連江縣', label: '連江縣 (Matsu)' }
 ];
 
+// T8 確定性 zh→en 映射（final prompt 全英文鐵則）：UI 顯示與既存資料仍用中文 value，
+// 僅 prompt 組裝層取英文。新增選項時必須同步補映射（goldenSanitizer §11 有完整性檢查）。
+export const TAIWAN_COUNTY_EN_MAP: Record<string, string> = {
+    '台北市': 'Taipei',
+    '新北市': 'New Taipei',
+    '桃園市': 'Taoyuan',
+    '台中市': 'Taichung',
+    '台南市': 'Tainan',
+    '高雄市': 'Kaohsiung',
+    '基隆市': 'Keelung',
+    '新竹市': 'Hsinchu City',
+    '新竹縣': 'Hsinchu County',
+    '苗栗縣': 'Miaoli',
+    '彰化縣': 'Changhua',
+    '南投縣': 'Nantou',
+    '雲林縣': 'Yunlin',
+    '嘉義市': 'Chiayi City',
+    '嘉義縣': 'Chiayi County',
+    '屏東縣': 'Pingtung',
+    '宜蘭縣': 'Yilan',
+    '花蓮縣': 'Hualien',
+    '台東縣': 'Taitung',
+    '澎湖縣': 'Penghu',
+    '金門縣': 'Kinmen',
+    '連江縣': 'Matsu'
+};
+
 export const INTEREST_OPTIONS = [
     { value: '時尚街拍', label: '時尚街拍 (Street Photography)' },
     { value: '極限運動', label: '極限運動 (Extreme Sports)' },
@@ -97,6 +124,18 @@ export const TONE_OPTIONS = [
     { value: '熱血正能量', label: '熱血正能量 (Energetic & Positive)' },
     { value: '沉穩優雅', label: '沉穩優雅 (Elegant & Calm)' }
 ];
+
+// T8 確定性 zh→en 映射（同 TAIWAN_COUNTY_EN_MAP 說明）。
+// 注意：toneOfVoice 可能被 AI 生成值覆寫成非 preset 中文，該情況由
+// modelCreationService 的 ensureEnglishPrompt 防禦性翻譯兜底。
+export const TONE_OF_VOICE_EN_MAP: Record<string, string> = {
+    '專業高冷': 'Professional & Cool',
+    '親切鄰家': 'Friendly & Warm',
+    '毒舌犀利': 'Sharp & Witty',
+    '佛系隨緣': 'Zen & Casual',
+    '熱血正能量': 'Energetic & Positive',
+    '沉穩優雅': 'Elegant & Calm'
+};
 
 export const POSTING_HABITS = [
     { value: '圖多文少', label: '圖多文少 (Visual Focus)' },
@@ -148,3 +187,14 @@ export const CORE_VIBE_OPTIONS = [
     { value: '文藝復古', label: '文藝復古 (Retro Artsy)' },
     { value: '機能未來', label: '機能未來 (Tech Future)' }
 ];
+
+// T8 確定性 zh→en 映射（同 TAIWAN_COUNTY_EN_MAP 說明）。coreVibe 無自由輸入路徑
+//（僅 Select 與 handleRandomize），值保證落在此集合內。
+export const CORE_VIBE_EN_MAP: Record<string, string> = {
+    '優雅時尚': 'Elegant Fashion',
+    '活力街頭': 'Vibrant Street',
+    '清純鄰家': 'Pure & Sweet, approachable next-door charm',
+    '高冷超模': 'Aloof High-Fashion Supermodel',
+    '文藝復古': 'Retro Artsy',
+    '機能未來': 'Tech-Future Functional'
+};

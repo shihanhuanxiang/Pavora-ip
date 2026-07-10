@@ -3,6 +3,9 @@
 // PAVORA V8.6 - FULL BODY ANCHOR EDITION
 // ============================================================================
 
+// T8: 有限集合 preset 的確定性 zh→en 映射（final prompt 全英文鐵則）。
+import { CORE_VIBE_EN_MAP, TONE_OF_VOICE_EN_MAP, TAIWAN_COUNTY_EN_MAP } from '../shared/constants/personaPresets';
+
 // 1. AESTHETIC STYLE MAPPING (Gender Specific)
 const AESTHETIC_MAP: Record<string, Record<string, string>> = {
     female: {
@@ -85,7 +88,7 @@ const getStylistKeywords = (params: any) => {
 const TAIWAN_SCENE_ANCHORS: Record<string, string> = {
     ximending_neon: "Ximending youth district at night. Vibrant neon signs in Traditional Chinese, wet asphalt reflections, bustling crowds in the far background, urban anime aesthetic, slightly gritty city vibe.",
     xinyi_modern: "Xinyi District luxury skyline. Sleek glass skyscrapers (Taipei 101 style), modern architectural lines, clean wide sidewalks, upscale urban lighting, high-end commercial atmosphere.",
-    old_street_vibe: "Traditional Taiwan old street. Red brick walls, retro iron window lattices (窗花), weathered textures, hanging lanterns, nostalgic atmosphere, warm amber lighting.",
+    old_street_vibe: "Traditional Taiwan old street. Red brick walls, retro iron window lattices, weathered textures, hanging lanterns, nostalgic atmosphere, warm amber lighting.",
     convenience_store_night: "Outside a brightly lit 24/7 convenience store. Iconic white/green/blue ambient glow, plastic chairs, city night background with passing scooters, everyday life realism.",
     dadaocheng_retro: "Dadaocheng historical district. Baroque-style facades, tea house interiors, nostalgic wooden textures, heritage vibe, warm afternoon sun filtering through old windows."
 };
@@ -129,7 +132,7 @@ export const buildModelPrompt = (params: any) => {
         prompt += `[🚨 ULTIMATE IDENTITY MANDATE: BIOMETRIC_MESH_LOCK_LEVEL_10 🚨]\n`;
         prompt += `- STATUS: ABSOLUTE SURGICAL PRECISION.\n`;
         prompt += `- THE ONLY VISUAL TRUTH: The provided face reference images are the EXCLUSIVE source for facial identity. \n`;
-        prompt += `- FEATURE RECOVERY (五官還原): 1:1 mapping of eye tilt, nasal bridge height, lip thickness, and ear position. \n`;
+        prompt += `- FEATURE RECOVERY: 1:1 mapping of eye tilt, nasal bridge height, lip thickness, and ear position. \n`;
         prompt += `- RENDERING ENGINE INSTRUCTION: Prioritize biometric data in the reference photos as the master layer. Background and clothing must conform to face geometry, never the other way around. \n`;
         prompt += `- ANTI-DRIFT PROTOCOL: Reject all generic AI aesthetics. If the result looks like a "typical AI model," it is a failure. Preserve skin texture, slight facial asymmetry, and unique heritage markers from source. \n\n`;
     }
@@ -140,17 +143,28 @@ export const buildModelPrompt = (params: any) => {
     prompt += `- HAIR SPECTRUM: Force hair color to exact "${params.hairColor}" color. Identity depends on this chromatic consistency. \n\n`;
     if (params.persona) {
         const personaPrefix = hasFaceRef ? "Subject Behavior" : "IP Persona";
-        prompt += `[${personaPrefix}: ${params.persona.coreVibe}]\n`;
+        // T8: preset 中文值在插值處走確定性映射（coreVibe/toneOfVoice/primaryCity）；
+        // profession/hairColor 等自由輸入已在 service 層 ensureEnglishPrompt 前置翻譯。
+        const coreVibeEn = CORE_VIBE_EN_MAP[params.persona.coreVibe] ?? params.persona.coreVibe;
+        const toneEn = params.persona.toneOfVoice
+            ? (TONE_OF_VOICE_EN_MAP[params.persona.toneOfVoice] ?? params.persona.toneOfVoice)
+            : 'Natural';
+        const cityZh = params.lifeCircuit?.primaryCity;
+        const cityEn = cityZh ? (TAIWAN_COUNTY_EN_MAP[cityZh] ?? cityZh) : '';
+        prompt += `[${personaPrefix}: ${coreVibeEn}]\n`;
         prompt += `- Behavioral Personality: ${params.persona.mbti || 'Unknown'} - ${params.persona.profession || ''}. \n`;
-        prompt += `- Expression Archetype: ${params.persona.toneOfVoice || 'Natural'}. \n`;
-        prompt += `- Background Setting: ${params.lifeCircuit?.primaryCity || 'Taiwan'}. \n`;
-        
+        prompt += `- Expression Archetype: ${toneEn}. \n`;
+        prompt += `- Background Setting: ${cityEn ? `${cityEn}, Taiwan` : 'Taiwan'}. \n`;
+
         // Micro-Expression Logic based on Vibe
+        // T8 bug fix：原比對字串（'高冷厭世'/'鄰家親切'）與 CORE_VIBE_OPTIONS 實際值
+        // 不符，兩分支從未生效；改比對實際 preset 值（Hank 2026-07-11 拍板順手修）。
+        // 注意此處比對「原始中文 preset 值」（service 層不改寫 coreVibe，映射僅在插值處）。
         prompt += `[MICRO-EXPRESSION ENGINE]\n`;
-        if (params.persona.coreVibe === '高冷厭世') {
+        if (params.persona.coreVibe === '高冷超模') {
             prompt += `- Expression: Subtle "sultry/bored" look. Slightly narrowed eyes, relaxed lips. Micro-tension in the forehead. \n`;
-        } else if (params.persona.coreVibe === '鄰家親切') {
-            prompt += `- Expression: Genuine warm smile. Visible nasolabial folds (法令紋) and soft "crow's feet" (魚尾紋) muscle compression for authenticity. \n`;
+        } else if (params.persona.coreVibe === '清純鄰家') {
+            prompt += `- Expression: Genuine warm smile. Visible nasolabial folds and soft "crow's feet" muscle compression for authenticity. \n`;
         } else {
             prompt += `- Expression: Controlled facial tension. Professional model gaze. \n`;
         }
@@ -351,7 +365,7 @@ export const buildModelPrompt = (params: any) => {
         
         prompt += `[ROW 2: BIOMETRIC FACE CLOSE-UPS (Bottom Half of Frame)]:\n`;
         prompt += `- 4 detailed face close-ups aligned horizontally: FRONTAL FACE, LEFT FACE PROFILE, RIGHT FACE PROFILE, BACK OF HEAD (Hair texture).\n`;
-        prompt += `- Focus on high-fidelity biometric restoration of facial features (五官).\n\n`;
+        prompt += `- Focus on high-fidelity biometric restoration of facial features.\n\n`;
         
         prompt += `- CONSISTENCY: The identity, skin texture, hair, and clothing MUST remain 100% consistent across all 8 views. Zero drift in character identity.\n`;
         prompt += `- FIDELITY: Sharp high-detail fashion photography. No CG, no 3D-render look. \n\n`;

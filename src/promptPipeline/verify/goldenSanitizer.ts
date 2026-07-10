@@ -35,6 +35,14 @@ import {
   FORBIDDEN_FACIAL_MARK_TERMS,
   HARDCODED_SUBJECT_TERMS
 } from '../../shared/services/promptSanitizer';
+import {
+  CORE_VIBE_OPTIONS,
+  CORE_VIBE_EN_MAP,
+  TONE_OPTIONS,
+  TONE_OF_VOICE_EN_MAP,
+  TAIWAN_COUNTIES,
+  TAIWAN_COUNTY_EN_MAP
+} from '../../shared/constants/personaPresets';
 
 let pass = 0;
 let fail = 0;
@@ -239,6 +247,31 @@ function assert(cond: boolean, msg: string): void {
   const dry = runPromptPipeline(raw, { source: 'verify:chinese-strip-dryrun', mode: 'dryrun' });
   assert(dry.prompt === raw, 'CHINESE-STRIP: dryrun must not strip Chinese');
   assert(dry.report.hasChineseCharacters, 'CHINESE-STRIP: dryrun report must still flag Chinese characters');
+}
+
+// --- 11. T8: modelCreation preset zh→en maps must fully cover their option lists ---
+// Guards the deterministic-mapping contract: every Chinese preset value that can
+// reach buildModelPrompt / systemInstruction has a non-empty, Chinese-free English
+// mapping. Adding a preset option without updating its EN map fails here.
+{
+  const mapPairs: Array<[string, Array<{ value: string }>, Record<string, string>]> = [
+    ['CORE-VIBE', CORE_VIBE_OPTIONS, CORE_VIBE_EN_MAP],
+    ['TONE-OF-VOICE', TONE_OPTIONS, TONE_OF_VOICE_EN_MAP],
+    ['TAIWAN-COUNTY', TAIWAN_COUNTIES, TAIWAN_COUNTY_EN_MAP]
+  ];
+  for (const [name, options, map] of mapPairs) {
+    for (const opt of options) {
+      const en = map[opt.value];
+      assert(
+        typeof en === 'string' && en.trim().length > 0,
+        `${name}-EN-MAP: missing English mapping for preset value "${opt.value}"`
+      );
+      assert(
+        typeof en !== 'string' || !/[一-鿿]/.test(en),
+        `${name}-EN-MAP: mapping for "${opt.value}" must not contain Chinese, got "${en}"`
+      );
+    }
+  }
 }
 
 console.log(`PASS ${pass} / FAIL ${fail}`);
