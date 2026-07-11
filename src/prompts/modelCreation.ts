@@ -6,6 +6,16 @@
 // T8: 有限集合 preset 的確定性 zh→en 映射（final prompt 全英文鐵則）。
 import { CORE_VIBE_EN_MAP, TONE_OF_VOICE_EN_MAP, TAIWAN_COUNTY_EN_MAP } from '../shared/constants/personaPresets';
 
+// 2026-07-11 膚色語意校準（Hank 拍板美感升級）：裸值 "medium" 會被生圖模型解讀成
+// 全球平均的偏深膚色（東南亞/南亞感）。此映射把 4 檔膚色錨定在高級時裝 IP 審美語彙。
+// 鍵對應 modelPresets.ts 的 SKIN_TONE_OPTIONS value（fair/medium/tan/deep）。
+const SKIN_TONE_DESC_MAP: Record<string, string> = {
+    fair: 'porcelain-fair luminous ivory with a subtle rosy undertone',
+    medium: 'natural light-medium warm ivory — a healthy, bright, translucent East Asian complexion (NOT tan, NOT olive, NOT dusky)',
+    tan: 'sun-kissed light golden honey tan, warm and luminous',
+    deep: 'rich deep bronze, smooth, even and luminous'
+};
+
 // 1. AESTHETIC STYLE MAPPING (Gender Specific)
 const AESTHETIC_MAP: Record<string, Record<string, string>> = {
     female: {
@@ -139,7 +149,7 @@ export const buildModelPrompt = (params: any) => {
 
     // --- [SPECTRAL FIDELITY: COLOR CHANNELS] ---
     prompt += `[COLOR SPECTRAL FIDELITY: PRIORITY ALPHA]\n`;
-    prompt += `- SKIN SPECTRUM: Force color output to exact "${params.skinTone}" tone. This is a Spectral Instruction: do NOT allow environment lighting, "Aesthetic Style", or color grading to wash out or shift this skin tone. \n`;
+    prompt += `- SKIN SPECTRUM: Force color output to exact "${SKIN_TONE_DESC_MAP[params.skinTone] ?? params.skinTone}" tone. This is a Spectral Instruction: do NOT allow environment lighting, "Aesthetic Style", or color grading to wash out or shift this skin tone. \n`;
     prompt += `- HAIR SPECTRUM: Force hair color to exact "${params.hairColor}" color. Identity depends on this chromatic consistency. \n\n`;
     if (params.persona) {
         const personaPrefix = hasFaceRef ? "Subject Behavior" : "IP Persona";
@@ -161,12 +171,14 @@ export const buildModelPrompt = (params: any) => {
         // 不符，兩分支從未生效；改比對實際 preset 值（Hank 2026-07-11 拍板順手修）。
         // 注意此處比對「原始中文 preset 值」（service 層不改寫 coreVibe，映射僅在插值處）。
         prompt += `[MICRO-EXPRESSION ENGINE]\n`;
+        // 2026-07-11 美型版（Hank 拍板）：拿掉法令紋/魚尾紋/額頭張力等 authenticity
+        // 措辭——它們會把臉往「普通/顯老」拉，與 premium IP 審美衝突。
         if (params.persona.coreVibe === '高冷超模') {
-            prompt += `- Expression: Subtle "sultry/bored" look. Slightly narrowed eyes, relaxed lips. Micro-tension in the forehead. \n`;
+            prompt += `- Expression: Subtle "sultry/bored" supermodel look. Slightly narrowed elegant eyes, relaxed lips, poised chin. Effortless aloof confidence — flawless editorial beauty, absolutely no frown lines or forehead tension. \n`;
         } else if (params.persona.coreVibe === '清純鄰家') {
-            prompt += `- Expression: Genuine warm smile. Visible nasolabial folds and soft "crow's feet" muscle compression for authenticity. \n`;
+            prompt += `- Expression: Soft genuine smile with a natural gentle eye-smile (crescent eyes). Bright clear luminous eyes, fresh dewy youthful glow, sweet refined charm. Photogenic girl/boy-next-door warmth — youthful and polished, absolutely no smile wrinkles, nasolabial folds, or crow's feet. \n`;
         } else {
-            prompt += `- Expression: Controlled facial tension. Professional model gaze. \n`;
+            prompt += `- Expression: Relaxed composed features. Professional model gaze with soft camera-aware confidence. \n`;
         }
         
         // Catchlight tracking
@@ -301,6 +313,7 @@ export const buildModelPrompt = (params: any) => {
         prompt += `[ATTRACTIVENESS BOUNDARY]\n`;
         prompt += `- This person is naturally attractive in the way a real person can be — NOT surgically enhanced, NOT filter-processed, NOT AI-idealized. Think: the kind of face that stands out on a street in Taipei or Seoul because they are genuinely good-looking, not because they look like a digital render.\n`;
         prompt += `- Maintain beautiful proportions and pleasant features WITHIN the individuality constraints above.\n`;
+        prompt += `- BEAUTY FLOOR (APPLIES TO BOTH GENDERS AND ALL ARCHETYPES): This model is the face of a commercial fashion & social-media IP account. The face must be clearly above-average attractive by contemporary Taiwanese beauty standards — harmonious refined features, clean facial lines, bright expressive eyes, youthful healthy complexion. Realism details (pores, subtle asymmetry) must stay subtle and must NEVER make the face look plain, tired, or aged.\n`;
         const netRedLevel = params.netRedLevel || 2;
         if (netRedLevel === 1) {
             prompt += `[PHOTOGENIC LEVEL: NATURAL]\n`;
@@ -322,7 +335,7 @@ export const buildModelPrompt = (params: any) => {
     } else {
         prompt += `Face: Locked to Reference Images (BIOMETRIC_LOCK: ACTIVE).\n`;
     }
-    prompt += `Skin: Confirming "${params.skinTone}" tone with ${params.skinFinish} finish.\n`;
+    prompt += `Skin: Confirming "${SKIN_TONE_DESC_MAP[params.skinTone] ?? params.skinTone}" tone with ${params.skinFinish} finish.\n`;
     prompt += `Hair: Confirming "${params.hairColor}" color. Style: ${params.hairStyle}.\n`;
     prompt += `Body: ${params.proportionMode} proportions. Height: ${params.height}cm. Head-to-body ratio: ${params.headBodyRatio || 8.0} heads. (Bust ${params.bust}, Waist ${params.waist}, Hip ${params.hip}).\n\n`;
 

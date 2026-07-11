@@ -416,12 +416,14 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
         - Visual Identity Hints: ${JSON.stringify(visualIdentityHint)}
         - Location Base: ${primaryCity}
         - Personal Interests: ${interests.join(', ')}
+        - Selected Appearance Presets (the description MUST stay consistent with these): skin tone preset = ${formState.skinTone}, hair color = ${formState.hairColor}, face archetype = ${formState.archetype}
 
         Requirements for Output:
         1. Length: Exactly 2-3 sentences.
         2. Content: Focus on precise facial architecture (e.g., eye shape, bone structure), specific gaze aura (e.g., distant, sharp, warm), and a signature style anchor.
         3. Language: PURE ENGLISH. No headers, no JSON, no Markdown.
         4. Quality: Sophisticated, editorial, and technical for AI image synthesis.
+        5. AESTHETIC BASELINE: This is the face of a premium commercial fashion IP — it must align with contemporary Taiwanese beauty standards (refined harmonious features, bright expressive eyes, luminous complexion). FORBIDDEN: aging markers (nasolabial folds, crow's feet, wrinkles), unflattering features (wide nostrils, sagging), moles/freckles/spots/marks, and any skin tone wording that conflicts with the selected skin tone preset (e.g. do NOT write olive, tan, or dusky undertones when the preset is fair or medium).
       `;
 
       const response = await client.models.generateContent({

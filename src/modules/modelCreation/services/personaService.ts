@@ -108,6 +108,7 @@ Output requirements:
 5. Total length: 80-150 words, comma-separated phrases.
 6. NO subjective beauty words like "pretty", "beautiful", "stunning". Only objective features.
 7. NO clothing, accessories, background descriptions. Face only.
+8. IDENTITY ANCHOR SCOPE: Record PERMANENT structural features only. Do NOT record transient expression artifacts (e.g. "nasolabial folds when smiling", smile lines, temporary creases) — those are expressions, not identity. Do NOT use aging or unflattering vocabulary (nasolabial folds, crow's feet, wrinkles, sagging, wide nostrils, dull skin). This descriptor anchors a premium commercial fashion IP: phrase every feature in refined, neutral-to-flattering technical vocabulary.
 
 Output the string directly, nothing else.
         `;

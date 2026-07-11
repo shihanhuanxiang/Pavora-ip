@@ -193,7 +193,7 @@ export const CORE_VIBE_OPTIONS = [
 export const CORE_VIBE_EN_MAP: Record<string, string> = {
     '優雅時尚': 'Elegant Fashion',
     '活力街頭': 'Vibrant Street',
-    '清純鄰家': 'Pure & Sweet, approachable next-door charm',
+    '清純鄰家': 'Pure & Sweet, fresh youthful charm',
     '高冷超模': 'Aloof High-Fashion Supermodel',
     '文藝復古': 'Retro Artsy',
     '機能未來': 'Tech-Future Functional'
