@@ -38,6 +38,16 @@ export const getGeminiClient = async (isPaidModel: boolean = false) => {
     });
 };
 
+// P0 2026-07-11: /api/gemini-video 掛 authGuard 後，前端 fetch 需帶同一份 Firebase token。
+// REQUIRE_AUTH 未開（本地開發）時 headers 為空，行為不變。
+export const fetchWithAuth = async (input: RequestInfo | URL, init: RequestInit = {}): Promise<Response> => {
+    const headers = await getAuthHeaders();
+    return fetch(input, {
+        ...init,
+        headers: { ...((init.headers as Record<string, string>) || {}), ...(headers || {}) },
+    });
+};
+
 // Stage 28-1: 供各模組 catch 區辨識 server 端 quota 拒絕（429 + code: QUOTA_EXCEEDED），
 // 命中時 dispatch 'imagenQuotaExceeded' 事件觸發既有 QuotaErrorModal。
 export const isServerQuotaError = (err: unknown): boolean => {

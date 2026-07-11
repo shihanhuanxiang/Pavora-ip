@@ -1,6 +1,7 @@
 
 import { imageDB } from '../services/imageDB';
 import { savePortfolioItem } from '../services/storageService';
+import { fetchWithAuth } from '../services/core/geminiClient';
 
 // Helper: File to Base64
 export const fileToBase64 = (file: File): Promise<{ data: string; mimeType: string }> => {
@@ -123,7 +124,7 @@ export const downloadImage = async (url: string, filename: string, sourceModule?
         // Case 2: Gemini API Video URL (proxied server-side, key never reaches browser)
         else if (url.includes('generativelanguage.googleapis.com') && !url.includes('data:')) {
             try {
-                const response = await fetch(`/api/gemini-video?fileUri=${encodeURIComponent(url)}`);
+                const response = await fetchWithAuth(`/api/gemini-video?fileUri=${encodeURIComponent(url)}`);
                 if (response.ok) {
                     const blob = await response.blob();
                     downloadUrl = URL.createObjectURL(blob);

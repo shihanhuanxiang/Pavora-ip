@@ -2,6 +2,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { generateVideo, getFriendlyErrorMessage, extractVideoFrames, fileToBase64, imageUrlToimageData, constructDirectorPrompt, generateVideoPromptFromImage, analyzeImageForDirector, generateStoryboardFromScript, generateImageAsset } from '../../shared/services/geminiService';
 import { ensureEnglishPrompt } from '../../shared/services/promptTranslation';
+import { fetchWithAuth } from '../../shared/services/core/geminiClient';
 import { savePortfolioItem } from '../../shared/services/storageService';
 import type { DirectorScene } from '../../shared/types/types';
 import { DIRECTOR_STYLES, LENS_LANGUAGES, ACTION_RHYTHMS, LIGHTING_VIBES, COMPOSITION_FOCUSES, CAMERA_MOVEMENTS, SUBJECT_ACTIONS, TRANSITION_STYLES, MASTER_PRESETS } from '../../shared/constants/constants';
@@ -361,7 +362,7 @@ const DirectorMode: React.FC<DirectorModeProps> = ({ onGoHome, initialImage, ini
         try {
             setLoadingMessage('準備下載中...');
             setIsLoading(true);
-            const response = await fetch(`/api/gemini-video?fileUri=${encodeURIComponent(activeScene.generatedVideoUrl)}`);
+            const response = await fetchWithAuth(`/api/gemini-video?fileUri=${encodeURIComponent(activeScene.generatedVideoUrl)}`);
             if (!response.ok) throw new Error('Network response was not ok');
             const blob = await response.blob();
             const url = URL.createObjectURL(blob);

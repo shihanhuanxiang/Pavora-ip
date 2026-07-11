@@ -109,7 +109,10 @@ function appendUsageLog(record: {
   }
 }
 
-app.get('/api/gemini-video', originGuard, rateLimit, async (req: express.Request, res: express.Response) => {
+// P0 2026-07-11：補掛 authGuard（此端點消耗 GEMINI_API_KEY，不可匿名直打）。
+// 不掛 quotaGuard：這是「下載已生成影片」的位元組代理，非生成呼叫，路徑也不含 /models/。
+// 前端 4 個呼叫點已改用 fetchWithAuth 帶 token（geminiClient.ts）。
+app.get('/api/gemini-video', originGuard, rateLimit, authGuard, async (req: express.Request, res: express.Response) => {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return res.status(500).json({ error: 'GEMINI_API_KEY not configured' });
@@ -169,6 +172,14 @@ app.get('/api/gemini-video', originGuard, rateLimit, async (req: express.Request
 initQuotaFromLog(USAGE_LOG_PATH);
 logAuthQuotaConfig();
 
+// P0 部署閘（2026-07-11）：REQUIRE_AUTH 預設 fail-open 是為了本地開發，
+// 但 production 下漏設＝整站無認證。這裡直接拒絕啟動，把「忘記設 env」變成大聲的失敗。
+if (process.env.NODE_ENV === 'production' && process.env.REQUIRE_AUTH !== 'true') {
+  console.error('[P0] NODE_ENV=production 但 REQUIRE_AUTH 未設為 true：整站將無認證、全員共用額度。');
+  console.error('[P0] 請在部署環境變數設定 REQUIRE_AUTH=true 後重新啟動。拒絕啟動。');
+  process.exit(1);
+}
+
 app.use('/api/gemini-proxy', originGuard, rateLimit, authGuard, quotaGuard, geminiAllowlist, async (req: express.Request, res: express.Response) => {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
@@ -224,7 +235,10 @@ app.use('/api/gemini-proxy', originGuard, rateLimit, authGuard, quotaGuard, gemi
   }
 });
 
-app.get('/api/auth/google/url', (req, res) => {
+// P0 2026-07-11：auth/drive 路由補 rateLimit（OAuth 與 Drive API 都是有成本操作）。
+// originGuard 只掛 POST（同源 fetch 必帶 Origin）；OAuth callback 是 Google 頂層跳轉、
+// referer 為 google 網域，掛 originGuard 會擋掉合法登入，故不掛。
+app.get('/api/auth/google/url', rateLimit, (req, res) => {
   console.log('GET /api/auth/google/url');
   // AI Studio 優先使用動態偵測 buildRedirectUri(req)，確保跳轉網址正確
   const finalRedirectUri = buildRedirectUri(req);
@@ -242,7 +256,7 @@ app.get('/api/auth/google/url', (req, res) => {
   res.json({ url });
 });
 
-app.get('/api/auth/google/callback', async (req, res) => {
+app.get('/api/auth/google/callback', rateLimit, async (req, res) => {
   console.log('GET /api/auth/google/callback - Code received:', !!req.query.code);
   const { code, error } = req.query;
 
@@ -336,19 +350,19 @@ app.get('/api/auth/google/callback', async (req, res) => {
   }
 });
 
-app.get('/api/auth/status', (req, res) => {
+app.get('/api/auth/status', rateLimit, (req, res) => {
   console.log('GET /api/auth/status');
   const refreshToken = req.cookies.google_refresh_token;
   res.json({ connected: !!refreshToken });
 });
 
-app.post('/api/auth/logout', (req, res) => {
+app.post('/api/auth/logout', originGuard, rateLimit, (req, res) => {
   console.log('POST /api/auth/logout');
   res.clearCookie('google_refresh_token');
   res.json({ success: true });
 });
 
-app.post('/api/drive/sync', async (req, res) => {
+app.post('/api/drive/sync', originGuard, rateLimit, async (req, res) => {
   console.log('POST /api/drive/sync');
   const refreshToken = req.cookies.google_refresh_token;
   if (!refreshToken) {
@@ -410,7 +424,7 @@ app.post('/api/drive/sync', async (req, res) => {
   }
 });
 
-app.post('/api/drive/folders', async (req, res) => {
+app.post('/api/drive/folders', originGuard, rateLimit, async (req, res) => {
   console.log('POST /api/drive/folders');
   const refreshToken = req.cookies.google_refresh_token;
   if (!refreshToken) {
@@ -444,7 +458,7 @@ app.post('/api/drive/folders', async (req, res) => {
   }
 });
 
-app.get('/api/drive/folders', async (req, res) => {
+app.get('/api/drive/folders', rateLimit, async (req, res) => {
   console.log('GET /api/drive/folders');
   const refreshToken = req.cookies.google_refresh_token;
   if (!refreshToken) {
@@ -484,7 +498,7 @@ app.get('/api/drive/folders', async (req, res) => {
   }
 });
 
-app.get('/api/drive/files', async (req, res) => {
+app.get('/api/drive/files', rateLimit, async (req, res) => {
   console.log('GET /api/drive/files');
   const refreshToken = req.cookies.google_refresh_token;
   if (!refreshToken) {
@@ -521,7 +535,7 @@ app.get('/api/drive/files', async (req, res) => {
   }
 });
 
-app.get('/api/drive/file/:fileId', async (req, res) => {
+app.get('/api/drive/file/:fileId', rateLimit, async (req, res) => {
   console.log('GET /api/drive/file/:fileId');
   const refreshToken = req.cookies.google_refresh_token;
   if (!refreshToken) {
@@ -564,7 +578,7 @@ app.get('/api/drive/file/:fileId', async (req, res) => {
   }
 });
 
-app.get('/api/drive/image/:fileId', async (req, res) => {
+app.get('/api/drive/image/:fileId', rateLimit, async (req, res) => {
   console.log('GET /api/drive/image/:fileId');
   const refreshToken = req.cookies.google_refresh_token;
   if (!refreshToken) {

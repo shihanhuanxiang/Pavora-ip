@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { fetchWithAuth } from '../../services/core/geminiClient';
 
 interface VideoPlayerProps {
     src: string;
@@ -40,7 +41,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 
                 // Case 2: Gemini API Video URL (proxied server-side, key never reaches browser)
                 if (src.includes('generativelanguage.googleapis.com')) {
-                    const response = await fetch(`/api/gemini-video?fileUri=${encodeURIComponent(src)}`);
+                    const response = await fetchWithAuth(`/api/gemini-video?fileUri=${encodeURIComponent(src)}`);
 
                     if (!response.ok) throw new Error(`Video load failed: ${response.status}`);
                     const blob = await response.blob();

@@ -1,5 +1,5 @@
 
-import { getGeminiClient } from "../../../shared/services/core/geminiClient";
+import { getGeminiClient, fetchWithAuth } from "../../../shared/services/core/geminiClient";
 import { ensureEnglishPrompt } from "../../../shared/services/promptTranslation";
 import type { DirectorScene } from "../../../shared/types/types";
 import { buildDirectorPrompt, VIDEO_PROMPT_ANALYSIS, SCRIPT_TO_STORYBOARD_PROMPT, IMAGE_VISUAL_ANALYSIS_PROMPT } from "../../../prompts/director";
@@ -270,7 +270,7 @@ export const extractVideoFrames = async (videoUrl: string, type: 'first' | 'last
     if (videoUrl.startsWith('http')) {
         try {
             // E0: video bytes 一律走 server-side proxy，key 不出 server（見 PAVORA_E_SECURITY_PLAN.md E0）
-            const resp = await fetch(`/api/gemini-video?fileUri=${encodeURIComponent(videoUrl)}`);
+            const resp = await fetchWithAuth(`/api/gemini-video?fileUri=${encodeURIComponent(videoUrl)}`);
             if (resp.ok) {
                 const blob = await resp.blob();
                 blobUrl = URL.createObjectURL(blob);
