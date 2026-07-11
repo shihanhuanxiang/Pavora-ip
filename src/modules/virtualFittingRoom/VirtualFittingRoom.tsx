@@ -153,6 +153,10 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
     const faceAnchorInputRef = useRef<HTMLInputElement>(null);
     const apparelSectionRef = useRef<HTMLDivElement>(null);
     const [selectedVtoCategory, setSelectedVtoCategory] = useState<string | null>(null);
+    // T13: 快速模式檔案上傳的待套用分類。存 ref 而非閉包——舊寫法在點分類當下賦值
+    // input.onchange，閉包抓到過期的 handleApplyApparel（baseImage=null），造成
+    // 「先點分類→後傳模特→選服飾」誤報「請先選擇或上傳一位模特兒」。
+    const pendingVtoCategoryRef = useRef<{ category: string; subCategory?: string } | null>(null);
     
     const [quality, setQuality] = useState<QualityLevel>('standard');
     const [restorationModel, setRestorationModel] = useState<'flash' | 'pro'>('pro');
@@ -929,6 +933,12 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
                                     <SimpleVTOCategorySelector 
                                         selectedCategory={selectedVtoCategory}
                                         onSelect={async (category, subCategory) => {
+                                            // 2026-07-11 Hank 拍板：快速模式下沒有模特時，點分類不跳選檔窗，
+                                            // 先提示上傳模特（避免選了服飾檔才吃到錯誤）。
+                                            if (!isAdvancedMode && !generatedLook && !baseImage?.url) {
+                                                setError('請先選擇或上傳一位模特兒，再選擇服飾分類。');
+                                                return;
+                                            }
                                             setSelectedVtoCategory(category);
                                             
                                             // Scroll to upload section
@@ -937,18 +947,10 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
                                             }
 
                                             if (!isAdvancedMode) {
-                                                const input = document.getElementById('apparel-file-input') as HTMLInputElement;
-                                                if (input) {
-                                                    input.onchange = async (e) => {
-                                                        const f = (e.target as HTMLInputElement).files?.[0];
-                                                        if (f) {
-                                                            const base64 = await fileToBase64(f);
-                                                            const fullCategory = subCategory ? `${category} (${subCategory})` : category;
-                                                            handleApplyApparel(base64, fullCategory, true);
-                                                        }
-                                                    };
-                                                    input.click();
-                                                }
+                                                // T13 fix: 不再 imperative 賦值 onchange（stale closure 源頭）。
+                                                // 分類存 ref，由 input 的 React onChange 讀取當下最新 handler。
+                                                pendingVtoCategoryRef.current = { category, subCategory };
+                                                fileInputRef.current?.click();
                                             }
                                         }}
                                     />
@@ -1028,7 +1030,23 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
                                     )
                                 ) : (
                                     <>
-                                        <input type="file" id="apparel-file-input" ref={fileInputRef} className="hidden" accept="image/*" />
+                                        <input
+                                            type="file"
+                                            id="apparel-file-input"
+                                            ref={fileInputRef}
+                                            className="hidden"
+                                            accept="image/*"
+                                            onChange={async (e) => {
+                                                // T13: React 受控 onChange——每次 render 綁最新 handleApplyApparel，無 stale closure。
+                                                const f = e.target.files?.[0];
+                                                e.target.value = ''; // 清空 value，讓下次重選同一檔案仍觸發 change（2026-07-11 實測坑）
+                                                const pending = pendingVtoCategoryRef.current;
+                                                if (!f || !pending) return;
+                                                const base64 = await fileToBase64(f);
+                                                const fullCategory = pending.subCategory ? `${pending.category} (${pending.subCategory})` : pending.category;
+                                                handleApplyApparel(base64, fullCategory, true);
+                                            }}
+                                        />
                                         
                                         {wardrobe.length > 0 && (
                                             <div className="mt-4">
