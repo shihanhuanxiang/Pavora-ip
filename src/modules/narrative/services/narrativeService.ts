@@ -1,6 +1,7 @@
 import { getGeminiClient } from "../../../shared/services/core/geminiClient";
 import { transformImage } from "../../../shared/services/geminiService";
 import { runPromptPipeline } from "../../../promptPipeline";
+import { ensureEnglishPrompt } from "../../../shared/services/promptTranslation";
 import type { Model, DiaryEntry, OutfitV2, ExtendedScene, NonVisualPersona } from "../../../shared/types/types";
 import { useModelStore } from "../../../shared/stores/useModelStore";
 import { LOCALIZED_SCENES, getScenesByCity } from "../constants/localizedScenes";
@@ -2153,11 +2154,17 @@ export const generateCarouselVariation = async (
 
     const variationDesc = variationInstructions[variationType] || variationInstructions['surprise'];
 
-    const variationPrompt =
+    // 語言邊界：originalPrompt 來自呼叫端的 editablePrompt（使用者可編輯），
+    // 先翻譯（無中文零成本，失敗 throw 由呼叫端 catch）再過 enforce 管線後才送生圖。
+    const safeOriginalPrompt = await ensureEnglishPrompt(originalPrompt, 'narrative:carouselVariation');
+
+    const variationPrompt = runPromptPipeline(
         `Use the supplied image as exact reference for character identity, outfit, and background. ` +
         `Change ONLY: ${variationDesc}. Keep all other details identical. ` +
         `Maintain the same lighting, background, clothing, and facial identity. ` +
-        `Original scene context for consistency: ${originalPrompt}`;
+        `Original scene context for consistency: ${safeOriginalPrompt}`,
+        { source: 'narrative:carouselVariation', mode: 'enforce' }
+    ).prompt;
 
     return await transformImage(
         { data: imageData, mimeType },
