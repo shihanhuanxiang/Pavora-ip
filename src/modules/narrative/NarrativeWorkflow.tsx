@@ -16,6 +16,7 @@ import { recordGeneration, checkQuota } from '../../domains/ipContent/usageRecor
 import { isServerQuotaError } from '../../shared/services/core/geminiClient';
 import { ensureEnglishPrompt } from '../../shared/services/promptTranslation';
 import { runPromptPipeline } from '../../promptPipeline';
+import { isSceneCombinationSafe } from '../../domains/scene/sceneSafeMatrix';
 
 import ImagePreviewModal from '../../shared/components/common/ImagePreviewModal';
 import { WardrobeManager } from './components/WardrobeManager';
@@ -728,7 +729,12 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             }
         } catch (e) {
             console.error(e);
-            addNotification({ type: 'error', message: '靈魂同步失敗', description: '無法提取敘事數據，請重試。' });
+            const msg = e instanceof Error ? e.message : String(e);
+            if (msg.includes('SCENE_COMBINATION_UNSAFE')) {
+                addNotification({ type: 'error', message: '場景組合不合理', description: `${msg.replace('SCENE_COMBINATION_UNSAFE: ', '')}——請修改事件內容或換一個場景。` });
+            } else {
+                addNotification({ type: 'error', message: '靈魂同步失敗', description: '無法提取敘事數據，請重試。' });
+            }
         } finally {
             setIsGenerating(false);
         }
@@ -1104,7 +1110,12 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     const handleChangeScene = () => {
         const city = model.lifeCircuit?.primaryCity || '台北市';
         const pool = ALL_EXTENDED_SCENES.filter(s => s.city === city || s.city === 'any');
-        const targetPool = pool.length > 0 ? pool : ALL_EXTENDED_SCENES;
+        const cityPool = pool.length > 0 ? pool : ALL_EXTENDED_SCENES;
+        const safePool = cityPool.filter(s => isSceneCombinationSafe(s).ok);
+        const targetPool = safePool.length > 0 ? safePool : cityPool; // 寧漏擋不誤殺：全滅時退回原池
+        if (safePool.length === 0) {
+            console.warn('[PAVORA][sceneSafe] 安全過濾後場景池為空，退回未過濾池', { city, poolSize: cityPool.length });
+        }
 
         // 排除目前場景，優先換不同 category
         const currentCategory = ALL_EXTENDED_SCENES.find(s => s.scene_id === currentSceneId)?.category;
@@ -1117,6 +1128,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
 
         setCurrentSceneId(nextScene.scene_id);
         setEventInput(newEventText);
+        setEventSource('random');
         setDiary(null);
         setEditablePrompt('');
         setEditablePromptZH('');

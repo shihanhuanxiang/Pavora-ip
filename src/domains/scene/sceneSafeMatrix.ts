@@ -35,7 +35,9 @@ interface SceneLike {
   scene_context_id?: string;
   outfit_filter?: string[];
   safe_matrix?: SceneSafeMatrix;
-  [key: string]: unknown;
+  // 注意：不要加 [key: string]: unknown 索引簽名——TS 會反過來要求呼叫端的
+  // 具名 interface（NarrativeScene 等）也有索引簽名，導致 TS2345。
+  // 所有欄位皆 optional，結構典型（duck-typing）已足夠。
 }
 
 // ---------------------------------------------------------------------------

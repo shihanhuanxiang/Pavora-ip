@@ -856,7 +856,12 @@ export const generateDynamicEventWithScene = async (model: Model, lastEntry?: { 
         candidates = [...candidates, ...cityFallback];
     }
 
-    const scene = candidates[Math.floor(Math.random() * candidates.length)] || LOCALIZED_SCENES[0];
+    const safeCandidates = candidates.filter(s => isSceneCombinationSafe(s).ok);
+    const effectiveCandidates = safeCandidates.length > 0 ? safeCandidates : candidates; // 寧漏擋不誤殺：全滅時退回原池
+    if (safeCandidates.length === 0) {
+        console.warn('[PAVORA][sceneSafe] 安全過濾後場景池為空，退回未過濾池', { targetCity, targetDistrict, poolSize: candidates.length });
+    }
+    const scene = effectiveCandidates[Math.floor(Math.random() * effectiveCandidates.length)] || LOCALIZED_SCENES[0];
     const sceneId = (scene as any).scene_id || (scene as any).id;
 
     const identityHeader = `
@@ -1119,19 +1124,27 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
             : [contextId];
     contextId = contextCandidates[0] || contextId;
 
+    // C3 升級（2026-07-12）：gate 前移至 outfit 挑選與 recent_outfit_ids 寫回之前。
+    // 隨機池已於抽選端過濾，走到這裡代表使用者指定的事件/場景組合不合理，
+    // 或上游過濾失效——一律 fail loud，不生成荒謬圖。
+    const sceneSafeCheck = isSceneCombinationSafe(sceneContext, contextId);
+    if (!sceneSafeCheck.ok) {
+        throw new Error(`SCENE_COMBINATION_UNSAFE: ${sceneSafeCheck.reason || '場景與動作組合不合理'}`);
+    }
+
     const userOutfits = WardrobeService.getUserOutfits();
     const forcedOutfit = options?.forcedOutfitId
         ? [...OUTFIT_SEEDS_V2, ...userOutfits].find(o => o.outfit_id === options.forcedOutfitId)
         : undefined;
     const outfit = forcedOutfit || pickOutfit(model, contextCandidates, targetTier);
-    
+
     // Update recent_outfit_ids cooldown (keep last 10 for better variety)
     const recentIds = model.preferences?.recent_outfit_ids || [];
     const updatedRecent = [
         outfit.outfit_id,
         ...recentIds.filter((id: string) => id !== outfit.outfit_id)
     ].slice(0, 10);
-    
+
     // P1-1 修正：改用 updateModel 正式寫回 store，確保 React 感知並同步至雲端
     const { updateModel } = useModelStore.getState();
     await updateModel(model.id, {
@@ -1140,13 +1153,6 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
             recent_outfit_ids: updatedRecent
         }
     });
-    
-    // C3 scene-safe matrix（warn-only 階段，見 handoff_docs/PAVORA_C_SERVICE_LAYER_PLAN.md §3 包 C3）：
-    // 只偵測記錄，不 throw、不 re-roll、不改變下面的生成流程。
-    const sceneSafeCheck = isSceneCombinationSafe(sceneContext, contextId);
-    if (!sceneSafeCheck.ok) {
-        console.warn('[PAVORA][sceneSafe] 偵測到可能不合理的場景組合', sceneSafeCheck.reason, { sceneId: sceneContext?.scene_id || sceneContext?.id, contextId });
-    }
 
     // 3. V1.1 Layered Prompt Composition
     const finalVisualPrompt = buildFinalVisualPromptV11(model, sceneContext, outfit, targetTier, options);
@@ -1486,7 +1492,12 @@ export const generateRandomEventWithScene = (model: Model): { text: string; scen
 
     const fallbackScenes = getScenesByCity(targetCity);
     const scenePool = extendedScenes.length > 0 ? extendedScenes : fallbackScenes;
-    const scene = scenePool[Math.floor(Math.random() * scenePool.length)];
+    const safeScenePool = scenePool.filter(s => isSceneCombinationSafe(s).ok);
+    const effectivePool = safeScenePool.length > 0 ? safeScenePool : scenePool; // 寧漏擋不誤殺：全滅時退回原池
+    if (safeScenePool.length === 0) {
+        console.warn('[PAVORA][sceneSafe] 安全過濾後場景池為空，退回未過濾池', { targetCity, poolSize: scenePool.length });
+    }
+    const scene = effectivePool[Math.floor(Math.random() * effectivePool.length)];
     
     const sceneTextForContext = `${scene.category || ""} ${(scene as any).context_id || ""} ${scene.name_zh || ""} ${scene.event || ""} ${scene.city || ""}`;
 
