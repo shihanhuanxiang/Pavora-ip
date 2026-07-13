@@ -153,6 +153,9 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     const [imageReadyAt, setImageReadyAt] = useState<number | null>(null);
     // D3(c)：FINISH 冷卻中（生成完成後 1.8 秒內）——true 時 FINISH 按鈕 disabled，避免誤點
     const [isFinishCooldown, setIsFinishCooldown] = useState(false);
+    // A3（2026-07-14 體檢）：重新生成/換場景會清空未入庫影像——先攔截確認，避免無聲覆蓋
+    const [showDiscardImageConfirm, setShowDiscardImageConfirm] = useState(false);
+    const [pendingDiscardAction, setPendingDiscardAction] = useState<(() => void) | null>(null);
 
     // UI state
     const [showWardrobe, setShowWardrobe] = useState(false);
@@ -166,7 +169,8 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     const isAnyTaskRunning = isGenerating || isGeneratingDynamicEvent || isGeneratingImage || isSyncing || isExtractingMem || isGeneratingPlan;
 
     // D3(b)：是否有「已生成但尚未入庫」的產出——離開攔截的 dirty 判定
-    const hasUnsavedGeneration = Boolean(generatedImageUrl) && !hasFinished;
+    // A2（2026-07-14 體檢）：日記/prompt 文字草稿也納入保護，不再只看影像
+    const hasUnsavedGeneration = (Boolean(diary) || Boolean(generatedImageUrl)) && !hasFinished;
 
     // D3(b)：離開出口統一入口。若有未儲存產出先彈確認 modal，否則直接執行原離開動作。
     const requestLeave = (action: () => void) => {
@@ -676,7 +680,8 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         </motion.button>
     );
 
-    const handleGenerateDiary = async (forcedId?: string, forcedEventText?: string, forcedOutfitId?: string) => {
+    // A3（2026-07-14 體檢）：核心生成邏輯（無守門）。外部一律走 handleGenerateDiary 守門版。
+    const runGenerateDiary = async (forcedId?: string, forcedEventText?: string, forcedOutfitId?: string) => {
         if (isGenerating) return;
         const effectiveEvent = forcedEventText || eventInput;
         if (!effectiveEvent.trim()) return;
@@ -738,6 +743,16 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         } finally {
             setIsGenerating(false);
         }
+    };
+
+    // A3（2026-07-14 體檢）：守門版——偵測未入庫影像時先確認再重新生成，避免無聲覆蓋
+    const handleGenerateDiary = (forcedId?: string, forcedEventText?: string, forcedOutfitId?: string): Promise<void> => {
+        if (generatedImageUrl && !hasFinished) {
+            setPendingDiscardAction(() => () => { void runGenerateDiary(forcedId, forcedEventText, forcedOutfitId); });
+            setShowDiscardImageConfirm(true);
+            return Promise.resolve();
+        }
+        return runGenerateDiary(forcedId, forcedEventText, forcedOutfitId);
     };
 
     const handleSyncPrompt = async () => {
@@ -982,7 +997,11 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                     setPickerAICardText(result.text);
                 }
             }
-        } catch { setPickerAICardScene(null); }
+        } catch {
+            // B1（2026-07-14 體檢）：失敗不得靜默，明確告知操作者可重試
+            setPickerAICardScene(null);
+            addNotification({ type: 'error', message: 'AI 感應失敗', description: '請再點一次「AI 感應」卡片重試' });
+        }
         finally { setIsAICardLoading(false); }
     };
 
@@ -1062,7 +1081,9 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             const caption = await generateIPDiaryCaption(model, diary);
             setIgCaption(caption);
         } catch (e) {
+            // B2（2026-07-14 體檢）：失敗不得靜默；點 Instagram 分頁可重試
             console.error('IG caption failed:', e);
+            addNotification({ type: 'error', message: 'IG 文案生成失敗', description: '點擊 Instagram 分頁可重試' });
         } finally {
             setIsLoadingCaption(false);
         }
@@ -1076,7 +1097,11 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
 
     const handleCaptionTabClick = async (platform: 'ig' | 'fb' | 'threads') => {
         setSelectedPlatform(platform);
-        if (platform === 'ig') return;
+        if (platform === 'ig') {
+            // B2（2026-07-14 體檢）：IG 首次自動生成失敗後，再點分頁可手動重試
+            if (!igCaption && !isLoadingCaption) void handleGenerateIGCaption();
+            return;
+        }
         const existing = platform === 'fb' ? fbCaption : threadsCaption;
         if (existing || !igCaption) return;
         setIsLoadingCaption(true);
@@ -1085,7 +1110,9 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             if (platform === 'fb') setFbCaption(caption);
             else setThreadsCaption(caption);
         } catch (e) {
+            // B2（2026-07-14 體檢）：失敗不得靜默
             console.error('Platform caption failed:', e);
+            addNotification({ type: 'error', message: '文案生成失敗', description: '請再點一次該平台分頁重試' });
         } finally {
             setIsLoadingCaption(false);
         }
@@ -1107,7 +1134,8 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         }
     };
 
-    const handleChangeScene = () => {
+    // A3（2026-07-14 體檢）：核心換場景邏輯（無守門）
+    const runChangeScene = () => {
         const city = model.lifeCircuit?.primaryCity || '台北市';
         const pool = ALL_EXTENDED_SCENES.filter(s => s.city === city || s.city === 'any');
         const cityPool = pool.length > 0 ? pool : ALL_EXTENDED_SCENES;
@@ -1135,7 +1163,17 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         setGeneratedImageUrl(null);
         setSelectedPreviewImageUrl(null);
         setNarrativeStep(1);
-        handleGenerateDiary(nextScene.scene_id, newEventText);
+        void runGenerateDiary(nextScene.scene_id, newEventText);
+    };
+
+    // A3（2026-07-14 體檢）：守門版——偵測未入庫影像時先確認再換場景
+    const handleChangeScene = () => {
+        if (generatedImageUrl && !hasFinished) {
+            setPendingDiscardAction(() => () => runChangeScene());
+            setShowDiscardImageConfirm(true);
+            return;
+        }
+        runChangeScene();
     };
 
     const handleSwapScene = () => {
@@ -1242,6 +1280,15 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             }
             setHasFinished(true); // D3(b)：入庫成功，解除未儲存離開攔截
             onConfirm(diary, generatedImageUrl || undefined);
+        } catch (e) {
+            // A1（2026-07-14 體檢）：入庫是全流程最關鍵一步，失敗必須 fail loud。
+            // 不設 hasFinished、不呼叫 onConfirm，讓離開攔截持續保護未入庫的產出。
+            console.error('Finish (gallery save) failed:', e);
+            addNotification({
+                type: 'error',
+                message: '入庫失敗，作品尚未存入作品集',
+                description: '請再點一次「完成佈署」重試；若持續失敗請回報。'
+            });
         } finally {
             setIsExtractingMem(false);
         }
@@ -1366,26 +1413,8 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     return (
         <div className="narrative-workbench animate-fade-in">
             {previewingImage && <ImagePreviewModal {...previewingImage} onClose={() => setPreviewingImage(null)} />}
-            <div className="hidden">
-                <div className="max-w-[110rem] mx-auto flex justify-between items-center gap-4">
-                    <div className="flex flex-col min-w-0">
-                        <h2 className="text-2xl font-display font-bold uppercase tracking-[0.3em] text-[var(--color-text-main)]">靈魂敘事</h2>
-                        <span className="text-[9px] uppercase tracking-[0.5em] text-[var(--color-gold)] font-light truncate">敘事流程：{model.name}</span>
-                    </div>
-                    <button
-                        onClick={() => requestLeave(onClose)}
-                        disabled={isAnyTaskRunning}
-                        className={`px-4 py-2 rounded-xl border text-[10px] font-bold uppercase tracking-widest transition-all ${
-                            isAnyTaskRunning
-                                ? 'border-white/5 text-gray-600 opacity-40 cursor-not-allowed'
-                                : 'border-white/10 text-gray-400 hover:text-white hover:border-[var(--color-gold)]/50'
-                        }`}
-                    >
-                        返回首頁
-                    </button>
-                </div>
-            </div>
-            
+            {/* M7（2026-07-14 體檢）：原 hidden 死碼區塊（重複標題＋返回首頁鈕）已刪除 */}
+
             <motion.div 
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -1582,8 +1611,10 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                     onClick={() => pickerSceneCards[0]?.scene && confirmScene(pickerSceneCards[0].scene)}
                                                     disabled={!pickerSceneCards[0]?.scene}
                                                     className="narrative-screen-cta"
+                                                    title={pickerSceneCards[0]?.scene?.name_zh ? `將採用清單第 1 張：${pickerSceneCards[0].scene.name_zh}` : undefined}
                                                 >
-                                                    確認場景 →
+                                                    {/* B4（2026-07-14 體檢）：標明此鈕採用清單第一張卡，避免誤認為單純「下一步」 */}
+                                                    採用第 1 張場景 →
                                                 </button>
                                             </div>
                                             {/* Filters */}
@@ -1791,7 +1822,8 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                 <div className="flex justify-center mt-6">
                                                     <button onClick={() => confirmSceneOutfit(confirmedScene, null)}
                                                         className="text-[9px] text-gray-600 hover:text-gray-400 transition-colors">
-                                                        略過，自動搭配
+                                                        {/* B3（2026-07-14 體檢）：文案照實際行為顯示——有殘留鎖定時會沿用，不是重新配對 */}
+                                                        {model.preferences?.active_outfit_id ? '略過（沿用上次鎖定造型）' : '略過，自動搭配'}
                                                     </button>
                                                 </div>
                                             </div>
@@ -1894,20 +1926,53 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         )}
                                                     </div>
                                                 </div>
-                                                {/* Shoot config summary row */}
-                                                <div className="narrative-shoot-summary mt-6 grid grid-cols-5 gap-2 p-4 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl">
-                                                    {[
-                                                        { label: '場景', value: confirmedScene?.name_zh || '—' },
-                                                        { label: '服裝', value: confirmedOutfitId ? '已選' : '自動' },
-                                                        { label: '比例', value: aspectRatio },
-                                                        { label: '畫質', value: quality },
-                                                        { label: '視角', value: isPOV ? '第一人稱' : '第三人稱' },
-                                                    ].map(cell => (
-                                                        <div key={cell.label} className="narrative-shoot-summary-cell flex flex-col items-center gap-1">
-                                                            <span>{cell.label}</span>
-                                                            <strong>{cell.value}</strong>
-                                                        </div>
-                                                    ))}
+                                                {/* Shoot config row。C1（2026-07-14 體檢）：Step 3 視覺控制面板移除後，
+                                                    比例/畫質/視角的「互動控制」收斂到此處（原本只是唯讀摘要，會造成功能回歸）。 */}
+                                                <div className="narrative-shoot-summary mt-6 grid grid-cols-1 md:grid-cols-5 gap-3 p-4 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl">
+                                                    <div className="narrative-shoot-summary-cell flex flex-col items-center gap-1">
+                                                        <span>場景</span>
+                                                        <strong>{confirmedScene?.name_zh || '—'}</strong>
+                                                    </div>
+                                                    <div className="narrative-shoot-summary-cell flex flex-col items-center gap-1">
+                                                        <span>服裝</span>
+                                                        <strong>{confirmedOutfitId ? '已選' : '自動'}</strong>
+                                                    </div>
+                                                    <div className="narrative-shoot-summary-cell flex flex-col items-center gap-1.5">
+                                                        <span>比例</span>
+                                                        <select
+                                                            value={aspectRatio}
+                                                            onChange={(e) => setAspectRatio(e.target.value)}
+                                                            className="w-full text-center text-[11px] font-bold bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-lg py-1.5 outline-none focus:border-[var(--color-gold)]/50 cursor-pointer"
+                                                        >
+                                                            <option value="9:16">9:16 直式短影</option>
+                                                            <option value="4:5">4:5 社群貼文</option>
+                                                            <option value="1:1">1:1 方型</option>
+                                                            <option value="16:9">16:9 寬螢幕</option>
+                                                        </select>
+                                                    </div>
+                                                    <div className="narrative-shoot-summary-cell flex flex-col items-center gap-1.5">
+                                                        <span>畫質</span>
+                                                        <select
+                                                            value={quality}
+                                                            onChange={(e) => setQuality(e.target.value)}
+                                                            className="w-full text-center text-[11px] font-bold bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-lg py-1.5 outline-none focus:border-[var(--color-gold)]/50 cursor-pointer"
+                                                        >
+                                                            <option value="HD">高解析度 1K</option>
+                                                            <option value="Cinematic">電影級 2K</option>
+                                                            <option value="Pro">臉部鎖定 4K</option>
+                                                        </select>
+                                                    </div>
+                                                    <div className="narrative-shoot-summary-cell flex flex-col items-center gap-1.5">
+                                                        <span>視角</span>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setIsPOV(!isPOV)}
+                                                            className="w-full text-[11px] font-bold bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-lg py-1.5 hover:border-[var(--color-gold)]/50 transition-colors"
+                                                            title="點擊切換視角"
+                                                        >
+                                                            {isPOV ? '第一人稱' : '第三人稱'} ⇄
+                                                        </button>
+                                                    </div>
                                                 </div>
                                                 {/* CTA */}
                                                 <button
@@ -2156,7 +2221,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                         </motion.div>
 
 
-                                        <div className="narrative-script-grid order-1 grid grid-cols-1 xl:grid-cols-2 gap-8 pt-0">
+                                        <div className="narrative-script-grid order-1 grid grid-cols-1 gap-8 pt-0">
                                             {/* Left: Narrative Decision 敘事決策區 */}
                                             <div className="narrative-script-panel space-y-10">
                                                 <motion.div 
@@ -2330,255 +2395,9 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                 </motion.div>
                                             </div>
 
-                                            {/* Right: Visual Production 生成控制區 */}
-                                            <motion.div 
-                                                initial={{ opacity: 0, x: 10 }}
-                                                animate={{ opacity: 1, x: 0 }}
-                                                transition={{ delay: 0.4 }}
-                                                className="narrative-control-panel space-y-8 lg:border-l lg:border-white/5 lg:pl-10"
-                                            >
-                                                <div className="space-y-6">
-                                <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em]">視覺轉化控制 (Visual Control)</h3>
-                                
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-4">
-                                        <div className="space-y-2">
-                                            <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">構圖比例</label>
-                                            <div className="grid grid-cols-2 gap-2">
-                                                {[
-                                                    { id: '9:16', label: '直式短影' },
-                                                    { id: '4:5', label: '社群貼文' },
-                                                    { id: '1:1', label: '方型' },
-                                                    { id: '16:9', label: '寬螢幕' }
-                                                ].map(r => (
-                                                    <button
-                                                        key={r.id}
-                                                        onClick={() => setAspectRatio(r.id)}
-                                                        className={`py-3 text-[9px] font-bold rounded-xl border transition-all ${aspectRatio === r.id ? 'bg-[var(--color-gold)]/20 border-[var(--color-gold)] text-[var(--color-gold)] shadow-[0_0_15px_rgba(212,175,55,0.1)]' : 'border-white/5 text-gray-500 hover:border-white/20 hover:bg-white/5'}`}
-                                                    >
-                                                        {r.label}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        <div className="space-y-2">
-                                            <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">鏡頭控制 (Camera Optic POV)</label>
-                        <div className="flex bg-[var(--color-bg-card)] p-1 rounded-xl border border-[var(--color-border)]">
-                            <button 
-                                onClick={() => setIsPOV(true)}
-                                className={`flex-1 py-3 text-[9px] font-bold rounded-lg transition-all ${isPOV ? 'bg-[var(--color-gold)]/20 text-[var(--color-gold)] shadow-lg' : 'text-gray-500 hover:text-gray-300'}`}
-                            >
-                                第一人稱
-                            </button>
-                            <button 
-                                onClick={() => setIsPOV(false)}
-                                className={`flex-1 py-3 text-[9px] font-bold rounded-lg transition-all ${!isPOV ? 'bg-[var(--color-gold)]/20 text-[var(--color-gold)] shadow-lg' : 'text-gray-500 hover:text-gray-300'}`}
-                            >
-                                第三人稱
-                            </button>
-                        </div>
-                                        </div>
-                                    </div>
-                                    <div className="space-y-4">
-                                        <div className="space-y-2">
-                                            <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">畫質與光影預設</label>
-                                            <div className="grid grid-cols-1 gap-2">
-                                                {[
-                                                    { id: 'HD', label: '高解析度還原', desc: '日常產出 1K' },
-                                                    { id: 'Cinematic', label: '電影製片級', desc: '精緻細節 2K' },
-                                                    { id: 'Pro', label: '極致還原', desc: '臉部鎖定 4K' }
-                                                ].map(q => (
-                                                    <button
-                                                        key={q.id}
-                                                        onClick={() => setQuality(q.id)}
-                                                        className={`flex flex-col items-center justify-center py-2.5 rounded-xl border transition-all ${quality === q.id ? 'bg-white/10 border-white/40 text-white shadow-xl shadow-white/5' : 'border-white/5 text-gray-500 hover:border-white/20 hover:bg-white/5'}`}
-                                                    >
-                                                        <span className="text-[9px] font-bold uppercase tracking-wider">{q.label}</span>
-                                                        <span className="text-[7px] opacity-40 mt-0.5 tracking-widest">{q.desc}</span>
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {diary && (
-                                <div className="space-y-3 group">
-                                    <div className="flex justify-between items-center px-1">
-                                        <div className="flex gap-4">
-                                            <button 
-                                                onClick={() => setActivePromptLang('ZH')}
-                                                className={`text-[9px] font-bold uppercase tracking-widest transition-colors ${activePromptLang === 'ZH' ? 'text-[var(--color-gold)] underline' : 'text-gray-500 hover:text-gray-300'}`}
-                                            >
-                                                中文提示詞 (ZH)
-                                            </button>
-                                            <button 
-                                                onClick={() => setActivePromptLang('EN')}
-                                                className={`text-[9px] font-bold uppercase tracking-widest transition-colors ${activePromptLang === 'EN' ? 'text-[var(--color-gold)] underline' : 'text-gray-500 hover:text-gray-300'}`}
-                                            >
-                                                英文提示詞 (EN)
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div className="space-y-4">
-                                        <div className="relative">
-                                            {activePromptLang === 'ZH' ? (
-                                                <div className="space-y-3">
-                                                    <div className="flex items-center justify-between px-2">
-                                                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">分段式編輯 (Modular Edit Mode)</span>
-                                                        <div className="w-2 h-2 rounded-full bg-emerald-500/50 animate-pulse"></div>
-                                                    </div>
-                                                    {hasStructuredPromptZH ? (
-                                                        <div className="grid grid-cols-1 gap-2.5">
-                                                            {promptSectionsZH.map((section) => (
-                                                                <div key={`${section.label}-${section.lineIndex}`} className="group flex flex-col bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-3 hover:border-[var(--color-gold)]/30 transition-all shadow-sm">
-                                                                    <div className="flex justify-between items-center mb-1">
-                                                                        <span className="text-[11px] font-black text-[var(--color-gold)] uppercase tracking-widest pl-1">
-                                                                            {getPromptSectionDisplayLabel(section.label, 'ZH')}
-                                                                        </span>
-                                                                        <div className="w-1 h-1 rounded-full bg-[var(--color-gold)]/20 group-hover:bg-[var(--color-gold)] transition-colors"></div>
-                                                                    </div>
-                                                                    <textarea 
-                                                                        className="w-full bg-transparent border-none p-0 text-[11px] text-[var(--color-text-main)] focus:ring-0 resize-none min-h-[40px] outline-none leading-relaxed placeholder-gray-500"
-                                                                        value={section.value}
-                                                                        onChange={(e) => {
-                                                                            const lines = editablePromptZH.split('\n');
-                                                                            lines[section.lineIndex] = `${section.prefix}${section.separator} ${e.target.value}`;
-                                                                            setEditablePromptZH(lines.join('\n'));
-                                                                        }}
-                                                                    />
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    ) : (
-                                                        <textarea 
-                                                            className="w-full h-40 bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-2xl p-5 text-[10px] font-medium text-[var(--color-text-main)] focus:border-[var(--color-gold)]/50 transition-all resize-none outline-none leading-relaxed"
-                                                            value={editablePromptZH}
-                                                            onChange={(e) => setEditablePromptZH(e.target.value)}
-                                                            disabled={!diary}
-                                                            placeholder={diary ? "修改中文提示詞..." : "同步敘事後產出"}
-                                                        />
-                                                    )}
-                                                </div>
-                                            ) : (
-                                                <div className="space-y-3">
-                                                    <div className="flex items-center justify-between px-2">
-                                                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">Visual DNA Editor (Modular)</span>
-                                                        <div className="w-2 h-2 rounded-full bg-blue-500/50 animate-pulse"></div>
-                                                    </div>
-                                                    {hasStructuredPromptEN ? (
-                                                        <div className="grid grid-cols-1 gap-2.5">
-                                                            {promptSectionsEN.map((section) => (
-                                                                <div key={`${section.label}-${section.lineIndex}`} className="group flex flex-col bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-3 hover:border-blue-500/20 transition-all">
-                                                                    <span className="text-[11px] font-mono font-bold text-blue-400/40 uppercase tracking-widest mb-1 pl-1">
-                                                                        {section.label}
-                                                                    </span>
-                                                                    <textarea 
-                                                                        className="w-full bg-transparent border-none p-0 text-[10px] font-mono text-gray-400 focus:ring-0 resize-none min-h-[45px] outline-none leading-tight"
-                                                                        value={section.value}
-                                                                        onChange={(e) => {
-                                                                            const lines = editablePrompt.split('\n');
-                                                                            lines[section.lineIndex] = `${section.prefix}${section.separator} ${e.target.value}`;
-                                                                            setEditablePrompt(lines.join('\n'));
-                                                                        }}
-                                                                    />
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    ) : (
-                                                        <textarea 
-                                                            className="w-full h-40 bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-2xl p-5 text-[10px] font-mono text-[var(--color-text-main)] focus:border-[var(--color-gold)]/50 transition-all resize-none outline-none leading-relaxed"
-                                                            value={editablePrompt}
-                                                            onChange={(e) => setEditablePrompt(e.target.value)}
-                                                            disabled={!diary}
-                                                            placeholder={diary ? "Edit English prompt..." : "Waiting for narrative..."}
-                                                        />
-                                                    )}
-                                                </div>
-                                            )}
-                                            <div className="flex justify-end gap-2 mt-2">
-                                                <div className="px-2 py-1 bg-[var(--color-bg-input)] rounded-md text-[11px] text-gray-500 border border-[var(--color-border)] uppercase tracking-tighter">
-                                                    結構化編輯模式 // STRUCTURED EDIT
-                                                </div>
-                                                <div className="px-2 py-1 bg-[var(--color-bg-input)] rounded-md text-[11px] text-gray-500 border border-[var(--color-border)] uppercase tracking-tighter">
-                                                    字數統計: {activePromptLang === 'ZH' ? editablePromptZH.length : editablePrompt.length}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                )}
-                                <motion.button 
-                                    whileHover={!diary || isGeneratingImage ? {} : { scale: 1.02 }}
-                                    whileTap={!diary || isGeneratingImage ? {} : { scale: 0.98 }}
-                                    onClick={() => handleGenerateImage()}
-                                    disabled={!diary || isGeneratingImage}
-                                    className={`w-full py-5 text-[12px] tracking-[0.5em] uppercase rounded-3xl transition-all duration-300 ${
-                                        !diary || isGeneratingImage
-                                            ? 'font-semibold bg-white/5 text-gray-500 border border-white/5 cursor-not-allowed opacity-40'
-                                            : 'font-black bg-emerald-500 text-black shadow-[0_20px_40px_rgba(16,185,129,0.15)] hover:shadow-[0_25px_50px_rgba(16,185,129,0.25)]'
-                                    }`}
-                                >
-                                    {isGeneratingImage ? '正在捕捉靈魂切片 (RENDERING...)' : (generatedImageUrl ? '重新生成影像 // REGENERATE' : '生成故事影像 // GENERATE IMAGE')}
-                                </motion.button>
-                            </div>
-
-                            {/* Image Preview Result */}
-                            <div className="aspect-[3/4] rounded-[2rem] overflow-hidden bg-[var(--color-bg-card)] border border-[var(--color-border)] relative group">
-                                                <AnimatePresence mode="wait">
-                                                    {isGeneratingImage ? (
-                                                        <motion.div 
-                                                            key="loader"
-                                                            initial={{ opacity: 0 }}
-                                                            animate={{ opacity: 1 }}
-                                                            exit={{ opacity: 0 }}
-                                                            className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-[var(--color-bg-input)]"
-                                                        >
-                                                            <Loader message="正在生成視覺影像..." />
-                                                            <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] animate-pulse">正在物化意識與光影...</p>
-                                                        </motion.div>
-                                                    ) : generatedImageUrl ? (
-                                                        <div className="relative w-full h-full">
-                                                            <motion.img 
-                                                                key="image"
-                                                                initial={{ opacity: 0 }}
-                                                                animate={{ opacity: 1 }}
-                                                                src={generatedImageUrl}
-                                                                className="w-full h-full object-cover"
-                                                            />
-                                                            <div className="absolute bottom-4 right-4 flex gap-2">
-                                                                <button 
-                                                                    onClick={() => setPreviewingImage({images: [generatedImageUrl], startIndex: 0})}
-                                                                    className="w-10 h-10 flex items-center justify-center rounded-full bg-[var(--color-bg-surface)]/60 hover:bg-white text-[var(--color-text-main)] hover:text-black transition-all backdrop-blur-md border border-[var(--color-border)]"
-                                                                >
-                                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
-                                                                </button>
-                                                                <button 
-                                                                    onClick={() => {
-                                                                        const link = document.createElement('a');
-                                                                        link.href = generatedImageUrl;
-                                                                        link.download = `narrative_${model.name}_${Date.now()}.jpg`;
-                                                                        link.click();
-                                                                    }}
-                                                                    className="w-10 h-10 flex items-center justify-center rounded-full bg-[var(--color-bg-surface)]/60 hover:bg-[var(--color-gold)] text-[var(--color-text-main)] hover:text-black transition-all backdrop-blur-md border border-[var(--color-border)]"
-                                                                >
-                                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    ) : (
-                                                        <div className="absolute inset-0 flex flex-col items-center justify-center p-12 text-center bg-[var(--color-bg-input)]">
-                                                            <svg className="w-12 h-12 text-gray-700 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                            </svg>
-                                                            <p className="text-[10px] text-gray-600 uppercase tracking-[0.2em]">影像尚未生成 // READY</p>
-                                                        </div>
-                                                    )}
-                                                </AnimatePresence>
-                                            </div>
-                                        </motion.div>
+                                            {/* C1（2026-07-14 體檢）：原「Right: Visual Production 生成控制區」整塊移除。
+                                                視覺控制／prompt 編輯／生成影像統一收斂到 Step 4（Prompt Review），
+                                                Step 3 只保留敘事決策（事件描述＋建立拍攝劇本）。依原型「Stage 3 只顯示當前需要的設定」。 */}
                                     </div>
                                 </div>
                             </motion.div>
@@ -2682,6 +2501,48 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                 </div>
                             </div>
                         </motion.div>
+                    )}
+                </AnimatePresence>
+
+                {/* A3（2026-07-14 體檢）：未入庫影像覆蓋攔截 Modal。
+                    依 KNOWN_PITFALLS 第 12 節：narrative 面板 Modal 不用掛載型進場動畫（rAF 凍結會讓內容永遠不可見），故用純 div。 */}
+                <AnimatePresence>
+                    {showDiscardImageConfirm && (
+                        <div
+                            className="absolute inset-0 bg-[var(--color-bg-deep)]/95 backdrop-blur-md z-[100] flex items-center justify-center p-6"
+                        >
+                            <div className="max-w-sm w-full bg-[var(--color-bg-surface)] border border-[var(--color-gold)]/20 p-8 rounded-[2.5rem] space-y-6 shadow-2xl">
+                                <div className="text-center space-y-2">
+                                    <h4 className="text-sm font-bold text-[var(--color-gold)] uppercase tracking-[0.2em] font-display">影像尚未入庫</h4>
+                                    <p className="text-[10px] text-gray-400 font-medium">
+                                        目前的生成影像還沒存入作品集，繼續操作會清除這張影像。確定要繼續嗎？
+                                    </p>
+                                </div>
+
+                                <div className="space-y-3 pt-4">
+                                    <Button
+                                        onClick={() => { setShowDiscardImageConfirm(false); setPendingDiscardAction(null); }}
+                                        className="w-full py-4 text-[10px] tracking-widest uppercase"
+                                    >
+                                        返回，先儲存影像
+                                    </Button>
+                                    <Button
+                                        variant="secondary"
+                                        onClick={() => {
+                                            const action = pendingDiscardAction;
+                                            setShowDiscardImageConfirm(false);
+                                            setPendingDiscardAction(null);
+                                            setGeneratedImageUrl(null);
+                                            setSelectedPreviewImageUrl(null);
+                                            if (action) action();
+                                        }}
+                                        className="w-full py-3 text-[10px] border-white/10 opacity-60 uppercase tracking-widest"
+                                    >
+                                        清除並繼續
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
                     )}
                 </AnimatePresence>
             </motion.div>
