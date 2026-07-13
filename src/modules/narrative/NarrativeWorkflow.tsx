@@ -18,7 +18,6 @@ import { ensureEnglishPrompt } from '../../shared/services/promptTranslation';
 import { runPromptPipeline } from '../../promptPipeline';
 import { isSceneCombinationSafe } from '../../domains/scene/sceneSafeMatrix';
 
-import ImagePreviewModal from '../../shared/components/common/ImagePreviewModal';
 import { WardrobeManager } from './components/WardrobeManager';
 import { StoryProgressBoard } from './components/StoryProgressBoard';
 import { NarrativeSettings } from './components/NarrativeSettings';
@@ -128,7 +127,6 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     // Ensure we are using the latest model data from the store for reactivity
     const model = models.find(m => m.id === propModel.id) || propModel;
     
-    const [previewingImage, setPreviewingImage] = useState<{images: string[], startIndex: number} | null>(null);
     const [eventInput, setEventInput] = useState('');
     const [randomSceneId, setRandomSceneId] = useState<string | null>(null);
     const [isGenerating, setIsGenerating] = useState(false);
@@ -1412,8 +1410,8 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
 
     return (
         <div className="narrative-workbench animate-fade-in">
-            {previewingImage && <ImagePreviewModal {...previewingImage} onClose={() => setPreviewingImage(null)} />}
-            {/* M7（2026-07-14 體檢）：原 hidden 死碼區塊（重複標題＋返回首頁鈕）已刪除 */}
+            {/* M7（2026-07-14 體檢）：原 hidden 死碼區塊（重複標題＋返回首頁鈕）已刪除；
+                ImagePreviewModal 死接點（開啟點隨 C1 面板移除）經 Hank 同意一併刪除，Step 5 lightbox 不受影響 */}
 
             <motion.div 
                 initial={{ opacity: 0, x: 20 }}
@@ -1853,7 +1851,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                 <div className="narrative-review-toolbar">
                                                     <div>
                                                         <p className="narrative-deliver-section-label">同步提示詞</p>
-                                                        <strong>將 Step 3 的比例、畫質、POV、服裝與場景設定同步到中英文 prompt</strong>
+                                                        <strong>將下方的比例、畫質、POV、服裝與場景設定同步到中英文 prompt</strong>
                                                     </div>
                                                     <div className="narrative-review-actions">
                                                         <button

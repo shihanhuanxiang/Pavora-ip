@@ -1074,8 +1074,13 @@
   }
 
   .narrative-script-grid {
+    /* C1（2026-07-14）：右側生成控制面板已移除，雙欄改單欄置中，
+       避免內容縮在左半、右半留白 */
     display: grid !important;
-    grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr) !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    max-width: 62rem;
+    margin-inline: auto;
+    width: 100%;
     gap: 1.35rem !important;
     align-items: stretch;
     order: 1;
@@ -1351,6 +1356,13 @@
 
   /* 設定面板的金色區段標題：全域 h 規則會強制白色，這裡改用深金確保淺紙底可讀 */
   .narrative-settings-panel :is(h1,h2,h3,h4,h5,h6).text-\[var\(--color-gold\)\] {
+    color: #bf8d23 !important;
+  }
+
+  /* 2026-07-14 Chrome 實測：Step 選卡層（narrative-flow-overlay，淺紙底）的金色系文字
+     （場景卡類別小字、AI 感應標題等）被全域 inherit 規則吃成淺灰 rgb(224,224,224)，
+     疊淺紙對比僅約 1.15:1 幾乎隱形。比照上方深金反制模式，用屬性子字串選擇器救回。 */
+  .narrative-flow-overlay [class*="text-[var(--color-gold)"] {
     color: #bf8d23 !important;
   }
 
