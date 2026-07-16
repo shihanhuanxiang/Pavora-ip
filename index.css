@@ -8,6 +8,17 @@
   
   --color-gold: #D4AF37;
   --color-gold-rgb: 212, 175, 55;
+
+  /* Narrative 原型四色（2026-07-17 Hank 拍板，原型 03_靈魂敘事工作台.html） */
+  --color-wine: #6f2735;
+  --color-wine-soft: #8f4452;
+  --color-wine-rgb: 111, 39, 53;
+  --color-brass: #a47b43;
+  --color-brass-rgb: 164, 123, 67;
+  --color-sage: #556a5b;
+  --color-sage-rgb: 85, 106, 91;
+  --color-steel: #465a70;
+  --color-steel-rgb: 70, 90, 112;
   --color-bg-main: #050505;
   --color-bg-surface: #0E0E0E;
   --color-bg-card: #121212;
@@ -99,7 +110,7 @@
     --narrative-bone: #f5efe6;
     --narrative-paper: #fffaf2;
     --narrative-mist: #ede7dd;
-    --narrative-studio-gold: var(--color-gold);
+    --narrative-studio-gold: var(--color-brass);
     --narrative-rail-w: 68px;
     --narrative-topbar-h: 52px;
     --narrative-commandbar-h: 52px;
@@ -149,7 +160,7 @@
     font-weight: 900;
     letter-spacing: 0.25em;
     text-transform: uppercase;
-    color: var(--color-gold);
+    color: var(--color-brass);
     opacity: 0.7;
   }
 
@@ -173,9 +184,9 @@
     justify-content: space-between;
     padding: 0 1.5rem;
     background:
-      linear-gradient(90deg, rgba(212,175,55,0.08), transparent 34%),
+      linear-gradient(90deg, rgba(var(--color-brass-rgb),0.08), transparent 34%),
       var(--narrative-ink);
-    border-bottom: 1px solid rgba(212,175,55,0.16);
+    border-bottom: 1px solid rgba(var(--color-brass-rgb),0.16);
     gap: 1rem;
   }
 
@@ -206,7 +217,7 @@
     font-weight: 700;
     letter-spacing: 0.32em;
     text-transform: uppercase;
-    color: var(--color-gold);
+    color: var(--color-brass);
     opacity: 0.8;
   }
 
@@ -215,11 +226,11 @@
     font-weight: 900;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--color-gold);
-    border: 1px solid rgba(212,175,55,0.3);
+    color: var(--color-brass);
+    border: 1px solid rgba(var(--color-brass-rgb),0.3);
     border-radius: 999px;
     padding: 4px 12px;
-    background: rgba(212,175,55,0.07);
+    background: rgba(var(--color-brass-rgb),0.07);
   }
 
   .narrative-back-button {
@@ -237,7 +248,7 @@
 
   .narrative-back-button:hover {
     color: #fff;
-    border-color: rgba(212,175,55,0.4);
+    border-color: rgba(var(--color-brass-rgb),0.4);
   }
 
   .narrative-stage-track {
@@ -318,18 +329,18 @@
   }
 
   .narrative-stage-node.is-active {
-    color: #17130f;
-    background: linear-gradient(135deg, #f2d27a, var(--color-gold));
-    box-shadow: 0 12px 26px rgba(212,175,55,0.22);
+    color: #fffaf2;
+    background: linear-gradient(135deg, var(--color-wine-soft), var(--color-wine));
+    box-shadow: 0 12px 26px rgba(var(--color-wine-rgb),0.28);
   }
 
   .narrative-stage-node.is-active .narrative-stage-index {
-    border-color: rgba(23,19,15,0.24);
-    background: rgba(23,19,15,0.12);
+    border-color: rgba(255,250,242,0.30);
+    background: rgba(255,250,242,0.14);
   }
 
   .narrative-stage-node.is-active em {
-    color: rgba(23,19,15,0.56);
+    color: rgba(255,250,242,0.62);
   }
 
   /* ── Page & Inner ── */
@@ -361,9 +372,9 @@
     justify-content: space-between;
     padding: 0 1.5rem;
     background:
-      linear-gradient(90deg, rgba(212,175,55,0.08), transparent 38%),
+      linear-gradient(90deg, rgba(var(--color-brass-rgb),0.08), transparent 38%),
       var(--narrative-ink-soft);
-    border-top: 1px solid rgba(212,175,55,0.14);
+    border-top: 1px solid rgba(var(--color-brass-rgb),0.14);
     gap: 0.75rem;
   }
 
@@ -387,9 +398,14 @@
     background: rgba(255,255,255,0.08);
   }
 
-  .narrative-commandbar button[class*="bg-[var(--color-gold)]"],
-  .narrative-commandbar button[class*="bg-emerald-500"] {
-    color: #17130f !important;
+  /* 主要動作（wine 深底）與確認動作（sage 深底）改用淺字，2026-07-17 四色回歸 */
+  .narrative-commandbar button[class*="bg-[var(--color-wine)]"] {
+    color: #fffaf2 !important;
+    font-weight: 950 !important;
+  }
+
+  .narrative-commandbar button[class*="bg-[var(--color-sage)]"] {
+    color: #fffaf2 !important;
     font-weight: 950 !important;
   }
 
@@ -434,7 +450,7 @@
   }
 
   .narrative-step-header p:first-child {
-    color: var(--color-gold) !important;
+    color: var(--color-brass) !important;
   }
 
   .narrative-step-header p:last-child {
@@ -473,7 +489,7 @@
 
   .narrative-screen-head p:first-child {
     margin: 0 0 0.45rem !important;
-    color: var(--color-gold) !important;
+    color: var(--color-brass) !important;
     font-size: 10px !important;
     font-weight: 950 !important;
     letter-spacing: 0.28em !important;
@@ -493,20 +509,22 @@
     min-height: 2.8rem;
     padding: 0 1.25rem;
     border-radius: 999px;
-    border: 1px solid rgba(201,155,55,0.22);
-    background: linear-gradient(135deg, #d9aa33, #bf8d23);
-    color: #17130f !important;
+    /* !important：頁面存在未分層 preflight（button{background:none}）會蓋掉 layered 規則，
+       2026-07-17 實測深金舊版也因此從未渲染出來 */
+    border: 1px solid rgba(var(--color-wine-rgb),0.28) !important;
+    background: linear-gradient(135deg, var(--color-wine-soft), var(--color-wine)) !important;
+    color: #fffaf2 !important;
     font-size: 11px;
     font-weight: 950;
     letter-spacing: 0.04em;
     white-space: nowrap;
-    box-shadow: 0 16px 34px rgba(191,141,35,0.18);
+    box-shadow: 0 16px 34px rgba(var(--color-wine-rgb),0.18);
     transition: transform 180ms ease, box-shadow 180ms ease;
   }
 
   .narrative-screen-cta:hover:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: 0 20px 44px rgba(191,141,35,0.25);
+    box-shadow: 0 20px 44px rgba(var(--color-wine-rgb),0.25);
   }
 
   .narrative-screen-cta:disabled {
@@ -550,7 +568,7 @@
     aspect-ratio: 0.62;
     border-radius: 28px !important;
     background:
-      radial-gradient(circle at 50% 10%, rgba(212,175,55,0.12), transparent 28%),
+      radial-gradient(circle at 50% 10%, rgba(var(--color-brass-rgb),0.12), transparent 28%),
       linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,248,234,0.88)) !important;
     border-color: rgba(23,19,15,0.09) !important;
     box-shadow: 0 30px 70px rgba(43,35,24,0.12);
@@ -572,14 +590,14 @@
     right: 0;
     bottom: 0;
     height: 3px;
-    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+    background: linear-gradient(90deg, transparent, var(--color-brass), transparent);
     opacity: 0;
     transition: opacity 180ms ease;
   }
 
   .narrative-choice-card:hover {
     transform: translateY(-4px) rotate(-0.35deg);
-    border-color: rgba(212,175,55,0.46) !important;
+    border-color: rgba(var(--color-brass-rgb),0.46) !important;
     box-shadow: 0 36px 88px rgba(43,35,24,0.2);
   }
 
@@ -590,9 +608,9 @@
 
   .narrative-choice-card.is-featured {
     background:
-      radial-gradient(circle at 50% 16%, rgba(212,175,55,0.18), transparent 30%),
+      radial-gradient(circle at 50% 16%, rgba(var(--color-brass-rgb),0.18), transparent 30%),
       linear-gradient(180deg, rgba(35,29,23,0.98), rgba(17,16,14,0.98)) !important;
-    border-color: rgba(212,175,55,0.48) !important;
+    border-color: rgba(var(--color-brass-rgb),0.48) !important;
     color: #fff;
     box-shadow: 0 24px 58px rgba(23,19,15,0.2);
   }
@@ -612,12 +630,12 @@
   }
 
   .narrative-choice-card.is-featured .border-t {
-    border-color: rgba(212,175,55,0.2) !important;
+    border-color: rgba(var(--color-brass-rgb),0.2) !important;
   }
 
-  .narrative-step-shell .bg-\[var\(--color-gold\)\] {
-    background: var(--narrative-ink) !important;
-    color: #fff !important;
+  /* 2026-07-17 四色回歸：原「gold 按鈕壓成 ink」反制改為確保 wine 深底淺字（wine 本身夠深，不再壓色） */
+  .narrative-step-shell .bg-\[var\(--color-wine\)\] {
+    color: #fffaf2 !important;
   }
 
   .narrative-step-shell .text-gray-600,
@@ -648,7 +666,7 @@
 
   .narrative-result-shell {
     background:
-      radial-gradient(circle at 16% 8%, rgba(212,175,55,0.13), transparent 28%),
+      radial-gradient(circle at 16% 8%, rgba(var(--color-brass-rgb),0.13), transparent 28%),
       linear-gradient(135deg, rgba(252,248,239,0.98), rgba(229,220,202,0.98)) !important;
     color: var(--narrative-ink);
   }
@@ -659,7 +677,7 @@
   }
 
   .narrative-result-header p:first-child {
-    color: var(--color-gold);
+    color: var(--color-brass);
   }
 
   .narrative-result-header p:last-child {
@@ -688,7 +706,7 @@
   }
 
   .narrative-result-return-row button:hover {
-    border-color: rgba(212,175,55,0.45);
+    border-color: rgba(var(--color-brass-rgb),0.45);
     color: var(--narrative-ink);
     background: rgba(255,255,255,0.78);
   }
@@ -738,8 +756,8 @@
   }
 
   .narrative-deliver-preview-toolbar button:hover {
-    border-color: rgba(212,175,55,0.5);
-    color: var(--color-gold);
+    border-color: rgba(var(--color-brass-rgb),0.5);
+    color: var(--color-brass);
   }
 
   .narrative-deliver-image {
@@ -782,7 +800,7 @@
 
   .narrative-deliver-thumbs button.is-active,
   .narrative-deliver-thumbs button:hover {
-    border-color: var(--color-gold);
+    border-color: var(--color-wine);
     opacity: 1;
   }
 
@@ -826,7 +844,7 @@
   }
 
   .narrative-deliver-kicker {
-    color: #9a6f19 !important;
+    color: var(--color-brass) !important;
     font-size: 11px;
     font-weight: 900;
     letter-spacing: 0.18em;
@@ -960,8 +978,8 @@
   }
 
   .narrative-caption-editor:focus {
-    border-color: rgba(212,175,55,0.58);
-    box-shadow: 0 0 0 3px rgba(212,175,55,0.12);
+    border-color: rgba(var(--color-brass-rgb),0.58);
+    box-shadow: 0 0 0 3px rgba(var(--color-brass-rgb),0.12);
   }
 
   .narrative-caption-loading {
@@ -1005,7 +1023,7 @@
 
   .narrative-deliver-option-grid button:hover:not(:disabled),
   .narrative-deliver-action-grid button:hover:not(:disabled) {
-    border-color: rgba(212,175,55,0.46);
+    border-color: rgba(var(--color-brass-rgb),0.46);
     color: var(--narrative-ink);
     background: rgba(255,255,255,0.78);
   }
@@ -1069,8 +1087,8 @@
     letter-spacing: 0 !important;
   }
 
-  .narrative-script-summary .text-emerald-500 {
-    color: #0f9f6e !important;
+  .narrative-script-summary .text-\[var\(--color-sage\)\] {
+    color: var(--color-sage) !important;
   }
 
   .narrative-script-grid {
@@ -1102,7 +1120,7 @@
   }
 
   .narrative-stage3-confirm-label {
-    background: rgba(212,175,55,0.12) !important;
+    background: rgba(var(--color-brass-rgb),0.12) !important;
   }
 
   .narrative-stage3-confirm-label span {
@@ -1229,9 +1247,13 @@
 
   .narrative-review-grid .text-white,
   .narrative-review-grid .text-\[var\(--color-text-main\)\],
-  .narrative-review-grid .text-gray-400,
-  .narrative-review-grid .text-blue-400 {
+  .narrative-review-grid .text-gray-400 {
     color: var(--narrative-ink) !important;
+  }
+
+  /* 2026-07-17 四色回歸：steel 在淺紙底可讀，不再壓成 ink，保留語意色 */
+  .narrative-review-grid .text-\[var\(--color-steel\)\] {
+    color: var(--color-steel) !important;
   }
 
   .narrative-shoot-summary {
@@ -1323,8 +1345,8 @@
   .narrative-script-panel textarea:focus,
   .narrative-control-panel button:focus-visible {
     outline: none;
-    border-color: rgba(212,175,55,0.58) !important;
-    box-shadow: 0 0 0 3px rgba(212,175,55,0.12) !important;
+    border-color: rgba(var(--color-brass-rgb),0.58) !important;
+    box-shadow: 0 0 0 3px rgba(var(--color-brass-rgb),0.12) !important;
   }
 
   .narrative-script-panel > div,
@@ -1354,16 +1376,29 @@
     color: var(--color-narrative-ink-soft) !important;
   }
 
-  /* 設定面板的金色區段標題：全域 h 規則會強制白色，這裡改用深金確保淺紙底可讀 */
-  .narrative-settings-panel :is(h1,h2,h3,h4,h5,h6).text-\[var\(--color-gold\)\] {
-    color: #bf8d23 !important;
+  /* 設定面板的 brass/wine 區段標題：全域 h 規則會強制白色，反制確保淺紙底可讀
+     （2026-07-17 四色回歸：原深金 #bf8d23 反制改 brass/wine，brass 色階較深、對比達標） */
+  .narrative-settings-panel :is(h1,h2,h3,h4,h5,h6).text-\[var\(--color-brass\)\] {
+    color: var(--color-brass) !important;
+  }
+  .narrative-settings-panel :is(h1,h2,h3,h4,h5,h6).text-\[var\(--color-wine\)\] {
+    color: var(--color-wine) !important;
   }
 
-  /* 2026-07-14 Chrome 實測：Step 選卡層（narrative-flow-overlay，淺紙底）的金色系文字
+  /* 2026-07-14 Chrome 實測：Step 選卡層（narrative-flow-overlay，淺紙底）的強調色文字
      （場景卡類別小字、AI 感應標題等）被全域 inherit 規則吃成淺灰 rgb(224,224,224)，
-     疊淺紙對比僅約 1.15:1 幾乎隱形。比照上方深金反制模式，用屬性子字串選擇器救回。 */
-  .narrative-flow-overlay [class*="text-[var(--color-gold)"] {
-    color: #bf8d23 !important;
+     疊淺紙對比僅約 1.15:1 幾乎隱形。用屬性子字串選擇器救回（2026-07-17 改四色）。 */
+  .narrative-flow-overlay [class*="text-[var(--color-brass)"] {
+    color: var(--color-brass) !important;
+  }
+  .narrative-flow-overlay [class*="text-[var(--color-wine)"] {
+    color: var(--color-wine) !important;
+  }
+  .narrative-flow-overlay [class*="text-[var(--color-sage)"] {
+    color: var(--color-sage) !important;
+  }
+  .narrative-flow-overlay [class*="text-[var(--color-steel)"] {
+    color: var(--color-steel) !important;
   }
 
   /* F3：ink 家族「本文」反制。全域 inherit 規則（p/span/div → color:inherit，0,1,1）
@@ -1400,10 +1435,10 @@
     border-color: rgba(23,19,15,0.1) !important;
   }
 
-  .narrative-script-panel .bg-\[var\(--color-gold\)\],
-  .narrative-script-panel button.bg-\[var\(--color-gold\)\] {
-    background: var(--narrative-ink) !important;
-    color: #fff !important;
+  /* 2026-07-17 四色回歸：wine 主動作鈕本身夠深，僅確保淺字，不再壓成 ink */
+  .narrative-script-panel .bg-\[var\(--color-wine\)\],
+  .narrative-script-panel button.bg-\[var\(--color-wine\)\] {
+    color: #fffaf2 !important;
   }
 
   .narrative-control-panel {
@@ -1445,10 +1480,10 @@
     color: rgba(23,19,15,0.72) !important;
   }
 
-  .narrative-control-panel button.bg-\[var\(--color-gold\)\]\/20,
+  .narrative-control-panel button.bg-\[var\(--color-brass\)\]\/20,
   .narrative-control-panel button.bg-white\/10 {
-    border-color: rgba(212,175,55,0.58) !important;
-    background: rgba(212,175,55,0.16) !important;
+    border-color: rgba(var(--color-brass-rgb),0.58) !important;
+    background: rgba(var(--color-brass-rgb),0.16) !important;
     color: var(--narrative-ink) !important;
   }
 
@@ -1472,18 +1507,14 @@
     background: rgba(255,255,255,0.55) !important;
   }
 
-  /* Settings panel accent / identifier colors: the global inherit rule eats these blue /
-     emerald / purple spans & p's on the warm paper (they render as inherited light grey).
-     Restore each IN-USE accent with a scoped !important. All these sit on light surfaces;
-     the dark [#0a0a0a] add-arc / add-thread forms do NOT use these text classes (they use
-     text-white + bg-blue-600/emerald-600), so the panel scope is safe. */
-  .narrative-settings-panel .text-purple-700 { color: rgb(126 34 206) !important; }
-  .narrative-settings-panel .text-blue-700 { color: rgb(29 78 216) !important; }
-  .narrative-settings-panel .text-blue-700\/80 { color: rgb(29 78 216 / 0.8) !important; }
-  .narrative-settings-panel .text-blue-500\/70 { color: rgb(59 130 246 / 0.7) !important; }
-  .narrative-settings-panel .text-emerald-700 { color: rgb(4 120 87) !important; }
-  .narrative-settings-panel .text-emerald-700\/80 { color: rgb(4 120 87 / 0.8) !important; }
-  .narrative-settings-panel .text-emerald-500\/70 { color: rgb(16 185 129 / 0.7) !important; }
+  /* Settings panel accent / identifier colors: the global inherit rule eats accent
+     spans & p's on the warm paper (they render as inherited light grey).
+     Restore each IN-USE accent with a scoped !important.
+     2026-07-17 四色回歸：purple/blue/emerald 反制改為 brass/steel/sage/wine。 */
+  .narrative-settings-panel [class*="text-[var(--color-brass)"] { color: var(--color-brass) !important; }
+  .narrative-settings-panel [class*="text-[var(--color-steel)"] { color: var(--color-steel) !important; }
+  .narrative-settings-panel [class*="text-[var(--color-sage)"] { color: var(--color-sage) !important; }
+  .narrative-settings-panel [class*="text-[var(--color-wine)"] { color: var(--color-wine) !important; }
 
   /* Stage 05 final color lock: keep the delivery desk readable on warm paper. */
   .narrative-result-shell .narrative-deliver-preview-toolbar,
@@ -1534,9 +1565,9 @@
   }
 
   .narrative-result-shell .narrative-platform-tabs button.is-active {
-    background: var(--color-gold) !important;
-    border-color: var(--color-gold) !important;
-    color: var(--narrative-ink) !important;
+    background: var(--color-wine) !important;
+    border-color: var(--color-wine) !important;
+    color: #fffaf2 !important;
     font-weight: 950;
   }
 

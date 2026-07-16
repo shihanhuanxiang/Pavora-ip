@@ -517,9 +517,9 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         <div className="bg-white/[0.03] border border-[var(--color-border)] rounded-[1.5rem] backdrop-blur-md overflow-hidden">
             <button onClick={() => setIsExpanded(v => !v)} className="w-full flex justify-between items-center px-5 py-3 hover:bg-white/5 transition-colors">
                 <div className="flex items-center gap-2.5">
-                    <div className="w-1 h-3 bg-[var(--color-gold)] rounded-full"></div>
-                    <span className="text-[9px] font-black text-[var(--color-gold)] tracking-[0.3em] uppercase">拍攝卡</span>
-                    {diary && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_6px_rgba(16,185,129,0.5)]"></span>}
+                    <div className="w-1 h-3 bg-[var(--color-brass)] rounded-full"></div>
+                    <span className="text-[9px] font-black text-[var(--color-brass)] tracking-[0.3em] uppercase">拍攝卡</span>
+                    {diary && <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-sage)] animate-pulse shadow-[0_0_6px_rgba(85,106,91,0.5)]"></span>}
                 </div>
                 <div className="flex items-center gap-2">
                     {!isExpanded && diary && <span className="text-[8px] text-gray-500 font-mono">{aspectRatio} · {quality} · {isPOV ? '第一人稱' : '第三人稱'}</span>}
@@ -532,7 +532,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                 {/* 1. MATERIAL */}
                 <div className="space-y-4">
                     <div className="flex items-center gap-2">
-                        <p className="text-[9px] text-[var(--color-gold)] font-black uppercase tracking-widest pl-2 border-l-2 border-[var(--color-gold)]">素材</p>
+                        <p className="text-[9px] text-[var(--color-brass)] font-black uppercase tracking-widest pl-2 border-l-2 border-[var(--color-brass)]">素材</p>
                     </div>
                     <div className="grid grid-cols-2 gap-x-4 gap-y-3 pl-3">
                         <div className="space-y-1">
@@ -558,7 +558,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                         <div className="space-y-1 col-span-2">
                             <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest">臉部基準圖</p>
                             <div className="flex flex-wrap items-center gap-2">
-                                <span className={`px-2 py-0.5 rounded-full border text-[8px] font-black uppercase tracking-widest ${faceReferenceCount > 0 ? 'border-emerald-400/30 bg-emerald-400/10 text-emerald-300' : 'border-white/10 bg-white/5 text-gray-500'}`}>
+                                <span className={`px-2 py-0.5 rounded-full border text-[8px] font-black uppercase tracking-widest ${faceReferenceCount > 0 ? 'border-[var(--color-sage)]/30 bg-[var(--color-sage)]/10 text-[var(--color-sage)]' : 'border-white/10 bg-white/5 text-gray-500'}`}>
                                     {faceReferenceCount}/4
                                 </span>
                                 <span className={`text-[9px] font-medium ${faceReferenceCount > 0 ? 'text-white' : 'text-gray-500'}`}>
@@ -572,14 +572,14 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                 {/* 2. SCENE */}
                 <div className="space-y-4">
                     <div className="flex items-center gap-2">
-                        <p className="text-[9px] text-[var(--color-gold)] font-black uppercase tracking-widest pl-2 border-l-2 border-[var(--color-gold)]">場景</p>
-                        {getLockedSceneId() && <div className="w-1 h-1 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>}
+                        <p className="text-[9px] text-[var(--color-brass)] font-black uppercase tracking-widest pl-2 border-l-2 border-[var(--color-brass)]">場景</p>
+                        {getLockedSceneId() && <div className="w-1 h-1 rounded-full bg-[var(--color-sage)] shadow-[0_0_8px_rgba(85,106,91,0.5)]"></div>}
                     </div>
                     <div className="space-y-3 pl-3">
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-1">
                                 <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest">來源</p>
-                                <p className={`text-[10px] font-black italic ${eventSource === 'none' ? 'text-gray-600' : 'text-[var(--color-gold)]'}`}>
+                                <p className={`text-[10px] font-black italic ${eventSource === 'none' ? 'text-gray-600' : 'text-[var(--color-brass)]'}`}>
                                     {getEventSourceLabel(eventSource)}
                                 </p>
                             </div>
@@ -592,7 +592,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                         </div>
                         <div className="space-y-1">
                             <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest">場景識別碼</p>
-                            <p className={`text-[9px] font-mono truncate ${getLockedSceneId() ? 'text-[var(--color-gold)]' : 'text-gray-600'}`}>
+                            <p className={`text-[9px] font-mono truncate ${getLockedSceneId() ? 'text-[var(--color-brass)]' : 'text-gray-600'}`}>
                                 {getLockedSceneId() || '系統自動抽選'}
                             </p>
                         </div>
@@ -608,8 +608,8 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                 {/* 3. STYLING */}
                 <div className="space-y-4">
                     <div className="flex items-center gap-2">
-                        <p className="text-[9px] text-[var(--color-gold)] font-black uppercase tracking-widest pl-2 border-l-2 border-[var(--color-gold)]">造型</p>
-                        {model.preferences?.active_outfit_id && <div className="w-1 h-1 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>}
+                        <p className="text-[9px] text-[var(--color-brass)] font-black uppercase tracking-widest pl-2 border-l-2 border-[var(--color-brass)]">造型</p>
+                        {model.preferences?.active_outfit_id && <div className="w-1 h-1 rounded-full bg-[var(--color-sage)] shadow-[0_0_8px_rgba(85,106,91,0.5)]"></div>}
                     </div>
                     <div className="pl-3 space-y-1">
                         <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest">服裝鎖定策略</p>
@@ -622,8 +622,8 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                 {/* 4. RENDER */}
                 <div className="space-y-4">
                     <div className="flex items-center gap-2">
-                        <p className="text-[9px] text-[var(--color-gold)] font-black uppercase tracking-widest pl-2 border-l-2 border-[var(--color-gold)]">生成</p>
-                        {diary && <div className="w-1 h-1 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] animate-pulse"></div>}
+                        <p className="text-[9px] text-[var(--color-brass)] font-black uppercase tracking-widest pl-2 border-l-2 border-[var(--color-brass)]">生成</p>
+                        {diary && <div className="w-1 h-1 rounded-full bg-[var(--color-sage)] shadow-[0_0_8px_rgba(85,106,91,0.5)] animate-pulse"></div>}
                     </div>
                     <div className="grid grid-cols-2 gap-y-4 gap-x-4 pl-3">
                         <div className="space-y-1">
@@ -644,7 +644,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                         </div>
                         <div className="space-y-1">
                             <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest">提示詞狀態</p>
-                            <p className={`text-[9px] font-medium ${editablePrompt ? 'text-emerald-500' : 'text-gray-600'}`}>
+                            <p className={`text-[9px] font-medium ${editablePrompt ? 'text-[var(--color-sage)]' : 'text-gray-600'}`}>
                                 {editablePrompt ? '已準備生成' : '尚未同步'}
                             </p>
                         </div>
@@ -672,7 +672,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             {active && (
                 <motion.div 
                     layoutId="active-indicator"
-                    className="absolute -left-1 top-2 bottom-2 w-1 bg-[#c79b4b] rounded-full shadow-[0_0_10px_rgba(199,155,75,0.55)]"
+                    className="absolute -left-1 top-2 bottom-2 w-1 bg-[var(--color-brass)] rounded-full shadow-[0_0_10px_rgba(164,123,67,0.55)]"
                 />
             )}
         </motion.button>
@@ -1356,7 +1356,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             exit={{ opacity: 0, y: -4 }}
             className={`rounded-2xl border px-4 py-3 space-y-2.5 transition-all ${
                 isConfigLocked
-                    ? 'border-[var(--color-gold)]/30 bg-[var(--color-gold)]/[0.03]'
+                    ? 'border-[var(--color-wine)]/30 bg-[var(--color-wine)]/[0.03]'
                     : 'border-white/5 bg-white/[0.02]'
             }`}
         >
@@ -1365,7 +1365,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                 <div className="space-y-0.5 min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                         <span className="text-[10px] text-gray-600 uppercase tracking-wider shrink-0">場景</span>
-                        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${isConfigLocked ? 'bg-[var(--color-gold)] shadow-[0_0_6px_rgba(212,175,55,0.4)]' : 'bg-white/20'}`} />
+                        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${isConfigLocked ? 'bg-[var(--color-wine)] shadow-[0_0_6px_rgba(111,39,53,0.4)]' : 'bg-white/20'}`} />
                         <span className="text-[12px] font-bold text-white truncate">{previewScene?.name_zh || previewScene?.scene_id || '—'}</span>
                     </div>
                     <p className="text-[10px] text-gray-600 pl-6 truncate">
@@ -1373,7 +1373,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                         {previewScene?.category ? ` · ${previewScene.category}` : ''}{' · '}{isConfigLocked ? '已鎖定' : '推測'}
                     </p>
                 </div>
-                <button onClick={handleSwapScene} className="shrink-0 ml-3 flex items-center gap-1 text-[11px] text-gray-500 hover:text-[var(--color-gold)] transition-colors group">
+                <button onClick={handleSwapScene} className="shrink-0 ml-3 flex items-center gap-1 text-[11px] text-gray-500 hover:text-[var(--color-brass)] transition-colors group">
                     <svg className="w-3 h-3 group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
                     換
                 </button>
@@ -1383,7 +1383,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                 <div className="space-y-1 min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                         <span className="text-[10px] text-gray-600 uppercase tracking-wider shrink-0">服裝</span>
-                        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${isOutfitCooling ? 'bg-amber-400' : 'bg-emerald-500'}`} />
+                        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${isOutfitCooling ? 'bg-[var(--color-steel)]' : 'bg-[var(--color-sage)]'}`} />
                         <span className="text-[12px] font-bold text-white truncate">{STYLE_ARCHETYPE_MAP[previewOutfit?.style_archetype || ''] || previewOutfit?.style_archetype || '—'}</span>
                     </div>
                     {previewOutfit?.pillars && (() => {
@@ -1398,7 +1398,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                     })()}
                     <p className="text-[10px] text-gray-600 pl-6">{isOutfitCooling ? '冷卻中（最近使用）' : '可用'}</p>
                 </div>
-                <button onClick={handleSwapOutfit} className="shrink-0 ml-3 flex items-center gap-1 text-[11px] text-gray-500 hover:text-[var(--color-gold)] transition-colors group">
+                <button onClick={handleSwapOutfit} className="shrink-0 ml-3 flex items-center gap-1 text-[11px] text-gray-500 hover:text-[var(--color-brass)] transition-colors group">
                     <svg className="w-3 h-3 group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
                     換
                 </button>
@@ -1430,7 +1430,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                     <NavIconButton active={showWardrobe} onClick={() => { setShowWardrobe(true); setShowSettings(false); setShowPlan(false); }} icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>} label="劇組衣櫃" />
                     <NavIconButton active={showSettings} onClick={() => { setShowSettings(true); setShowWardrobe(false); setShowPlan(false); }} icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.754 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-.940-1.543.826-3.31 2.37-2.37a1.724 1.724 0 001.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.940-1.543.826-3.31 2.37-2.37a1.724 1.724 0 002.572-1.065z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>} label="系統設定" />
                     <div className="mt-auto pb-8">
-                        <button onClick={() => requestLeave(onClose)} disabled={isAnyTaskRunning} title={isAnyTaskRunning ? "生圖進行中，請稍候..." : "返回首頁"} className={`p-3 transition-colors rounded-full group ${isAnyTaskRunning ? "opacity-30 cursor-not-allowed bg-white/5 text-gray-600" : "text-gray-600 hover:text-white bg-white/5 hover:bg-[var(--color-gold)]/20"}`}>
+                        <button onClick={() => requestLeave(onClose)} disabled={isAnyTaskRunning} title={isAnyTaskRunning ? "生圖進行中，請稍候..." : "返回首頁"} className={`p-3 transition-colors rounded-full group ${isAnyTaskRunning ? "opacity-30 cursor-not-allowed bg-white/5 text-gray-600" : "text-gray-600 hover:text-white bg-white/5 hover:bg-[var(--color-brass)]/20"}`}>
                             <svg className="w-5 h-5 group-hover:rotate-90 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
                         </button>
                     </div>
@@ -1479,7 +1479,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                     <div className="flex justify-between items-center">
                                         <div className="space-y-1">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-1.5 h-4 bg-[var(--color-gold)] rounded-full shadow-[0_0_12px_rgba(var(--color-gold-rgb),0.4)]"></div>
+                                                <div className="w-1.5 h-4 bg-[var(--color-brass)] rounded-full shadow-[0_0_12px_rgba(164,123,67,0.4)]"></div>
                                                 <h3 className="text-2xl font-black text-narrative-ink tracking-[0.3em] uppercase italic">靈魂週計畫</h3>
                                             </div>
                                         </div>
@@ -1491,10 +1491,10 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             <div
                                                 key={idx}
                                                 className={`p-8 rounded-[2.5rem] border transition-all relative overflow-hidden group shadow-sm ${
-                                                    brief.isArcScene 
-                                                    ? 'bg-[var(--color-gold)]/[0.08] border-[var(--color-gold)]/40' 
-                                                    : brief.isThreadScene 
-                                                    ? 'bg-emerald-500/[0.08] border-emerald-500/40' 
+                                                    brief.isArcScene
+                                                    ? 'bg-[var(--color-wine)]/[0.08] border-[var(--color-wine)]/40'
+                                                    : brief.isThreadScene
+                                                    ? 'bg-[var(--color-sage)]/[0.08] border-[var(--color-sage)]/40'
                                                     : 'bg-white border-narrative-mist hover:border-narrative-ink/30'
                                                 }`}
                                             >
@@ -1503,15 +1503,15 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         <p className="text-[11px] text-narrative-ink-soft/80 font-black uppercase tracking-widest leading-none mb-1">第 {idx + 1} 天</p>
                                                         <h4 className="text-sm font-black text-narrative-ink uppercase tracking-tight italic">{brief.title}</h4>
                                                     </div>
-                                                    {brief.isArcScene && <span className="px-2.5 py-1 bg-[var(--color-gold)] text-black text-[11px] font-black rounded-md">故事環節</span>}
-                                                    {brief.isThreadScene && <span className="px-2.5 py-1 bg-emerald-500 text-black text-[11px] font-black rounded-md">發展線</span>}
+                                                    {brief.isArcScene && <span className="px-2.5 py-1 bg-[var(--color-wine)] text-white text-[11px] font-black rounded-md">故事環節</span>}
+                                                    {brief.isThreadScene && <span className="px-2.5 py-1 bg-[var(--color-sage)] text-black text-[11px] font-black rounded-md">發展線</span>}
                                                 </div>
 
                                                 <div className="space-y-4 mb-8">
                                                     <div className="space-y-2">
                                                         {brief.scripts.map((script, sIdx) => (
                                                             <div key={sIdx} className="flex gap-3 items-start group/line">
-                                                                <div className="w-1.5 h-1.5 rounded-full bg-narrative-ink-soft/30 mt-1.5 group-hover/line:bg-[var(--color-gold)] transition-colors"></div>
+                                                                <div className="w-1.5 h-1.5 rounded-full bg-narrative-ink-soft/30 mt-1.5 group-hover/line:bg-[var(--color-brass)] transition-colors"></div>
                                                                 <span className="text-[12px] text-narrative-ink-soft font-medium leading-normal italic group-hover/line:text-narrative-ink">{script}</span>
                                                             </div>
                                                         ))}
@@ -1545,10 +1545,10 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         addNotification({ type: 'success', message: '靈魂與計畫對齊', description: '生成引擎已載入劇本標題與子任務。' });
                                                     }}
                                                     className={`w-full py-4.5 rounded-[1.5rem] text-[13px] font-black uppercase tracking-[0.25em] transition-all relative z-10 ${
-                                                        brief.isArcScene 
-                                                        ? 'bg-[var(--color-gold)] text-black shadow-xl shadow-[var(--color-gold)]/20 hover:bg-[var(--color-gold)]/90' 
-                                                        : brief.isThreadScene 
-                                                        ? 'bg-emerald-500 text-black shadow-xl shadow-emerald-500/20 hover:bg-emerald-500/90' 
+                                                        brief.isArcScene
+                                                        ? 'bg-[var(--color-wine)] text-white shadow-xl shadow-[var(--color-wine)]/20 hover:bg-[var(--color-wine)]/90'
+                                                        : brief.isThreadScene
+                                                        ? 'bg-[var(--color-sage)] text-black shadow-xl shadow-[var(--color-sage)]/20 hover:bg-[var(--color-sage)]/90'
                                                         : 'bg-transparent text-[var(--narrative-ink-soft)] border border-[var(--narrative-ink)]/20 hover:bg-[var(--narrative-ink)] hover:text-white hover:border-[var(--narrative-ink)]'
                                                     }`}
                                                 >
@@ -1569,7 +1569,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                     <div className="flex justify-between items-center">
                                         <div className="space-y-1">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-1.5 h-4 bg-blue-500 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.4)]"></div>
+                                                <div className="w-1.5 h-4 bg-[var(--color-steel)] rounded-full shadow-[0_0_15px_rgba(70,90,112,0.4)]"></div>
                                                 <h3 className="text-2xl font-black text-narrative-ink tracking-[0.3em] uppercase italic">敘事矩陣設定</h3>
                                             </div>
                                         </div>
@@ -1597,7 +1597,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             {/* Header */}
                                             <div className="narrative-step-header narrative-screen-head px-8 py-5 border-b border-white/10 shrink-0">
                                                 <div>
-                                                    <p className="text-[12px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">第一步 · 場景選角</p>
+                                                    <p className="text-[12px] font-black text-[var(--color-brass)] uppercase tracking-[0.5em]">第一步 · 場景選角</p>
                                                     <h2>先替今天的靈魂<br />選一個真實現場</h2>
                                                     <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">地區 / 類別篩選、固定場景卡、AI 感應場景、換一批。點擊場景後進入服裝搭配。</p>
                                                 </div>
@@ -1626,7 +1626,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                     ] as Array<{label: string; value: string | null}>).map(r => (
                                                         <button key={String(r.value)}
                                                             onClick={() => setPickerRegion(r.value)}
-                                                            className={`px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wide transition-all ${pickerRegion === r.value ? 'bg-[var(--color-gold)] text-black' : 'bg-white/5 text-gray-400 hover:text-white'}`}>
+                                                            className={`px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wide transition-all ${pickerRegion === r.value ? 'bg-[var(--color-wine)] text-white' : 'bg-white/5 text-gray-400 hover:text-white'}`}>
                                                             {r.label}
                                                         </button>
                                                     ))}
@@ -1643,7 +1643,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                     ] as Array<{label: string; value: string | null}>).map(c => (
                                                         <button key={String(c.value)}
                                                             onClick={() => setPickerCategory(c.value)}
-                                                            className={`px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wide transition-all ${pickerCategory === c.value ? 'bg-[var(--color-gold)] text-black' : 'bg-white/5 text-gray-400 hover:text-white'}`}>
+                                                            className={`px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wide transition-all ${pickerCategory === c.value ? 'bg-[var(--color-wine)] text-white' : 'bg-white/5 text-gray-400 hover:text-white'}`}>
                                                             {c.label}
                                                         </button>
                                                     ))}
@@ -1666,7 +1666,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         return (
                                                             <div key={card.scene.scene_id}
                                                                 onClick={() => confirmScene(card.scene)}
-                                                                className="narrative-choice-card bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-[14px] p-3.5 flex flex-col cursor-pointer hover:border-[var(--color-gold)]/40 hover:bg-white/5 transition-all active:scale-[0.98] min-h-[240px]">
+                                                                className="narrative-choice-card bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-[14px] p-3.5 flex flex-col cursor-pointer hover:border-[var(--color-brass)]/40 hover:bg-white/5 transition-all active:scale-[0.98] min-h-[240px]">
                                                                 {/* 頂部 badge 區 */}
                                                                 <div className="flex gap-1.5 flex-wrap mb-3">
                                                                     <span className="text-[11px] font-bold text-gray-500 bg-white/5 px-2 py-0.5 rounded-full">{regionLabel[(card.scene as any).region] || '全台'}</span>
@@ -1676,20 +1676,20 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                 <p className="text-[16px] font-black text-white leading-tight mb-auto">{card.scene.name_zh}</p>
                                                                 {/* 分隔線 + 事件描述（完整內容） */}
                                                                 <div className="mt-4">
-                                                                    <div className="border-t border-[var(--color-gold)]/10 mb-3" />
+                                                                    <div className="border-t border-[var(--color-brass)]/10 mb-3" />
                                                                     <p className="text-[12px] text-gray-400 leading-relaxed mb-3">{card.eventText}</p>
-                                                                    <p className="text-[11px] text-[var(--color-gold)]/50 font-bold uppercase tracking-widest">{ctxLabel[primaryCtx] || primaryCtx}</p>
+                                                                    <p className="text-[11px] text-[var(--color-brass)]/50 font-bold uppercase tracking-widest">{ctxLabel[primaryCtx] || primaryCtx}</p>
                                                                 </div>
                                                             </div>
                                                         );
                                                     })}
                                                     {/* AI Card（懶載入，點擊才呼叫 API） */}
-                                                    <div className="narrative-choice-card is-featured bg-[var(--color-bg-card)] border border-[var(--color-gold)]/30 rounded-[14px] p-3.5 flex flex-col cursor-pointer hover:border-[var(--color-gold)]/60 hover:bg-white/5 transition-all active:scale-[0.98] min-h-[240px]"
+                                                    <div className="narrative-choice-card is-featured bg-[var(--color-bg-card)] border border-[var(--color-brass)]/30 rounded-[14px] p-3.5 flex flex-col cursor-pointer hover:border-[var(--color-brass)]/60 hover:bg-white/5 transition-all active:scale-[0.98] min-h-[240px]"
                                                         onClick={() => {
                                                             if (pickerAICardScene) confirmScene(pickerAICardScene);
                                                             else if (!isAICardLoading) void handleLoadAICard();
                                                         }}>
-                                                        <span className="text-[11px] font-black text-[var(--color-gold)] uppercase tracking-widest mb-3">✦ AI 感應</span>
+                                                        <span className="text-[11px] font-black text-[var(--color-brass)] uppercase tracking-widest mb-3">✦ AI 感應</span>
                                                         {isAICardLoading ? (
                                                             <div className="flex-1 space-y-2 animate-pulse">
                                                                 <div className="h-2.5 bg-white/10 rounded-full w-3/4"/>
@@ -1700,18 +1700,18 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                             <>
                                                                 <p className="text-[16px] font-black text-white leading-tight mb-auto">{pickerAICardScene.name_zh}</p>
                                                                 <div className="mt-4">
-                                                                    <div className="border-t border-[var(--color-gold)]/10 mb-3" />
+                                                                    <div className="border-t border-[var(--color-brass)]/10 mb-3" />
                                                                     <p className="text-[12px] text-gray-400 leading-relaxed mb-3">{pickerAICardText}</p>
-                                                                    <p className="text-[11px] text-[var(--color-gold)]/50 font-bold uppercase tracking-widest">靈魂導向</p>
+                                                                    <p className="text-[11px] text-[var(--color-brass)]/50 font-bold uppercase tracking-widest">靈魂導向</p>
                                                                 </div>
                                                             </>
                                                         ) : (
                                                             <>
                                                                 <div className="flex-1 flex flex-col items-center justify-center text-center gap-2">
-                                                                    <span className="text-[28px] text-[var(--color-gold)]/15">✦</span>
+                                                                    <span className="text-[28px] text-[var(--color-brass)]/15">✦</span>
                                                                     <p className="text-[12px] text-gray-500 italic leading-relaxed">點擊讓<br/>AI 感應</p>
                                                                 </div>
-                                                                <p className="text-[11px] text-[var(--color-gold)]/30 font-bold uppercase tracking-widest">靈魂導向</p>
+                                                                <p className="text-[11px] text-[var(--color-brass)]/30 font-bold uppercase tracking-widest">靈魂導向</p>
                                                             </>
                                                         )}
                                                     </div>
@@ -1733,7 +1733,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             {/* Header */}
                                             <div className="narrative-step-header narrative-screen-head px-8 py-5 border-b border-white/10 shrink-0 flex items-center justify-between">
                                                 <div>
-                                                    <p className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">第二步 · 服裝選角</p>
+                                                    <p className="text-[10px] font-black text-[var(--color-brass)] uppercase tracking-[0.5em]">第二步 · 服裝選角</p>
                                                     <h2>服裝不是裝飾，<br />是角色今天的語氣</h2>
                                                     <p className="text-[9px] text-gray-400 mt-0.5">{confirmedScene?.name_zh} · 場景適配穿搭、AI top pick、替代方案與自動搭配。</p>
                                                 </div>
@@ -1757,16 +1757,16 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                     {pickerOutfitOptions.alternatives.map((outfit: any) => (
                                                         <div key={outfit.outfit_id}
                                                             onClick={() => confirmSceneOutfit(confirmedScene, outfit.outfit_id)}
-                                                            className="narrative-choice-card bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-[14px] p-3.5 flex flex-col cursor-pointer hover:border-[var(--color-gold)]/40 hover:bg-white/5 transition-all active:scale-[0.98] min-h-[240px]">
+                                                            className="narrative-choice-card bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-[14px] p-3.5 flex flex-col cursor-pointer hover:border-[var(--color-brass)]/40 hover:bg-white/5 transition-all active:scale-[0.98] min-h-[240px]">
                                                             <p className="text-[16px] font-black text-white leading-tight mb-2">
                                                                 {STYLE_ARCHETYPE_MAP[outfit.style_archetype] || outfit.style_archetype}
                                                             </p>
-                                                            <div className="border-t border-[var(--color-gold)]/10 mt-1 mb-3" />
+                                                            <div className="border-t border-[var(--color-brass)]/10 mt-1 mb-3" />
                                                             <div className="flex flex-col gap-1.5 flex-1">
                                                                 {(['top','bottom','shoes','accessories'] as const).map(k =>
                                                                     outfit.pillars?.[k] ? (
                                                                         <div key={k} className="flex items-start gap-1.5">
-                                                                            <span className="text-[11px] font-bold text-[var(--color-gold)]/60 shrink-0 w-6">
+                                                                            <span className="text-[11px] font-bold text-[var(--color-brass)]/60 shrink-0 w-6">
                                                                                 {k === 'top' ? '上身' : k === 'bottom' ? '下身' : k === 'shoes' ? '鞋款' : '配件'}
                                                                             </span>
                                                                             <span className="text-[12px] text-gray-400 leading-relaxed">{translateClothing(outfit.pillars[k])}</span>
@@ -1774,7 +1774,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                     ) : null
                                                                 )}
                                                             </div>
-                                                            <p className="text-[11px] text-[var(--color-gold)]/50 font-bold uppercase tracking-widest mt-3">
+                                                            <p className="text-[11px] text-[var(--color-brass)]/50 font-bold uppercase tracking-widest mt-3">
                                                                 {outfit.season?.toLowerCase() === 'summer' ? '夏季' :
                                                                  outfit.season?.toLowerCase() === 'winter' ? '冬季' :
                                                                  outfit.season?.toLowerCase() === 'spring' ? '春季' :
@@ -1786,17 +1786,17 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                     {/* AI 推薦（topPick） */}
                                                     <div
                                                         onClick={() => confirmSceneOutfit(confirmedScene, pickerOutfitOptions.topPick.outfit_id)}
-                                                        className="narrative-choice-card is-featured bg-[var(--color-bg-card)] border border-[var(--color-gold)]/30 rounded-[14px] p-3.5 flex flex-col cursor-pointer hover:border-[var(--color-gold)]/60 hover:bg-white/5 transition-all active:scale-[0.98] min-h-[240px]">
-                                                        <span className="text-[11px] font-black text-[var(--color-gold)] uppercase tracking-widest mb-2">✦ AI 推薦</span>
+                                                        className="narrative-choice-card is-featured bg-[var(--color-bg-card)] border border-[var(--color-brass)]/30 rounded-[14px] p-3.5 flex flex-col cursor-pointer hover:border-[var(--color-brass)]/60 hover:bg-white/5 transition-all active:scale-[0.98] min-h-[240px]">
+                                                        <span className="text-[11px] font-black text-[var(--color-brass)] uppercase tracking-widest mb-2">✦ AI 推薦</span>
                                                         <p className="text-[16px] font-black text-white leading-tight mb-2">
                                                             {STYLE_ARCHETYPE_MAP[pickerOutfitOptions.topPick.style_archetype] || pickerOutfitOptions.topPick.style_archetype}
                                                         </p>
-                                                        <div className="border-t border-[var(--color-gold)]/10 mt-1 mb-3" />
+                                                        <div className="border-t border-[var(--color-brass)]/10 mt-1 mb-3" />
                                                         <div className="flex flex-col gap-1.5 flex-1">
                                                             {(['top','bottom','shoes','accessories'] as const).map(k =>
                                                                 pickerOutfitOptions.topPick.pillars?.[k] ? (
                                                                     <div key={k} className="flex items-start gap-1.5">
-                                                                        <span className="text-[11px] font-bold text-[var(--color-gold)]/60 shrink-0 w-6">
+                                                                        <span className="text-[11px] font-bold text-[var(--color-brass)]/60 shrink-0 w-6">
                                                                             {k === 'top' ? '上身' : k === 'bottom' ? '下身' : k === 'shoes' ? '鞋款' : '配件'}
                                                                         </span>
                                                                         <span className="text-[12px] text-gray-400 leading-relaxed">{translateClothing(pickerOutfitOptions.topPick.pillars[k])}</span>
@@ -1804,7 +1804,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                 ) : null
                                                             )}
                                                         </div>
-                                                        <p className="text-[11px] text-[var(--color-gold)]/50 font-bold uppercase tracking-widest mt-3">
+                                                        <p className="text-[11px] text-[var(--color-brass)]/50 font-bold uppercase tracking-widest mt-3">
                                                             {pickerOutfitOptions.topPick.season?.toLowerCase() === 'summer' ? '夏季' :
                                                              pickerOutfitOptions.topPick.season?.toLowerCase() === 'winter' ? '冬季' :
                                                              pickerOutfitOptions.topPick.season?.toLowerCase() === 'spring' ? '春季' :
@@ -1831,7 +1831,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             {/* Header */}
                                             <div className="narrative-step-header narrative-screen-head px-8 py-5 border-b border-white/10 shrink-0 flex items-center justify-between">
                                                 <div>
-                                                    <p className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">第四步 · 提示詞審閱</p>
+                                                    <p className="text-[10px] font-black text-[var(--color-brass)] uppercase tracking-[0.5em]">第四步 · 提示詞審閱</p>
                                                     <h2>雙語提示詞審片台</h2>
                                                     <p className="text-[12px] text-gray-500 uppercase tracking-widest mt-0.5">中文提示詞、英文 final prompt、分段模組、雙向同步與生成影像 CTA。</p>
                                                 </div>
@@ -1863,13 +1863,13 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                 <div className="narrative-review-grid grid grid-cols-1 lg:grid-cols-2 gap-6">
                                                     {/* ZH Column */}
                                                     <div className="space-y-3">
-                                                        <p className="text-[9px] font-black text-[var(--color-gold)] uppercase tracking-widest">中文提示詞</p>
+                                                        <p className="text-[9px] font-black text-[var(--color-brass)] uppercase tracking-widest">中文提示詞</p>
                                                         {hasStructuredPromptZH ? (
                                                             <div className="space-y-2">
                                                                 {getReviewPromptSections('ZH').map((section) => (
                                                                     <div key={`zh-${section.label}-${section.lineIndex}`}
-                                                                        className="flex flex-col bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-3 hover:border-[var(--color-gold)]/30 transition-all">
-                                                                        <span className="text-[11px] font-black text-[var(--color-gold)] uppercase tracking-widest mb-1 pl-1">
+                                                                        className="flex flex-col bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-3 hover:border-[var(--color-brass)]/30 transition-all">
+                                                                        <span className="text-[11px] font-black text-[var(--color-brass)] uppercase tracking-widest mb-1 pl-1">
                                                                             {getPromptSectionDisplayLabel(section.label, 'ZH')}
                                                                         </span>
                                                                         <textarea
@@ -1883,7 +1883,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                             </div>
                                                         ) : (
                                                             <textarea
-                                                                className="w-full h-48 bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-2xl p-4 text-[10px] text-[var(--color-text-main)] focus:border-[var(--color-gold)]/50 transition-all resize-none outline-none leading-relaxed"
+                                                                className="w-full h-48 bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-2xl p-4 text-[10px] text-[var(--color-text-main)] focus:border-[var(--color-brass)]/50 transition-all resize-none outline-none leading-relaxed"
                                                                 value={editablePromptZH}
                                                                 onChange={(e) => setEditablePromptZH(e.target.value)}
                                                                 disabled={isGeneratingImage}
@@ -1892,13 +1892,13 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                     </div>
                                                     {/* EN Column */}
                                                     <div className="space-y-3">
-                                                        <p className="text-[9px] font-black text-blue-400 uppercase tracking-widest">英文提示詞</p>
+                                                        <p className="text-[9px] font-black text-[var(--color-steel)] uppercase tracking-widest">英文提示詞</p>
                                                         {hasStructuredPromptEN ? (
                                                             <div className="space-y-2">
                                                                 {getReviewPromptSections('EN').map((section) => (
                                                                     <div key={`en-${section.label}-${section.lineIndex}`}
-                                                                        className={`flex flex-col bg-[var(--color-bg-card)] border rounded-2xl p-3 transition-all ${section.value ? 'border-[var(--color-border)] hover:border-blue-500/20' : 'border-dashed border-blue-400/20'}`}>
-                                                                        <span className="text-[11px] font-mono font-bold text-blue-400/50 uppercase tracking-widest mb-1 pl-1">
+                                                                        className={`flex flex-col bg-[var(--color-bg-card)] border rounded-2xl p-3 transition-all ${section.value ? 'border-[var(--color-border)] hover:border-[var(--color-steel)]/20' : 'border-dashed border-[var(--color-steel)]/20'}`}>
+                                                                        <span className="text-[11px] font-mono font-bold text-[var(--color-steel)]/50 uppercase tracking-widest mb-1 pl-1">
                                                                             {section.label}
                                                                         </span>
                                                                         <textarea
@@ -1913,7 +1913,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                             </div>
                                                         ) : (
                                                             <textarea
-                                                                className="w-full h-48 bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-2xl p-4 text-[10px] font-mono text-[var(--color-text-main)] focus:border-blue-500/50 transition-all resize-none outline-none leading-relaxed"
+                                                                className="w-full h-48 bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-2xl p-4 text-[10px] font-mono text-[var(--color-text-main)] focus:border-[var(--color-steel)]/50 transition-all resize-none outline-none leading-relaxed"
                                                                 value={editablePrompt}
                                                                 onChange={(e) => setEditablePrompt(e.target.value)}
                                                                 disabled={isGeneratingImage}
@@ -1937,7 +1937,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         <select
                                                             value={aspectRatio}
                                                             onChange={(e) => setAspectRatio(e.target.value)}
-                                                            className="w-full text-center text-[11px] font-bold bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-lg py-1.5 outline-none focus:border-[var(--color-gold)]/50 cursor-pointer"
+                                                            className="w-full text-center text-[11px] font-bold bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-lg py-1.5 outline-none focus:border-[var(--color-brass)]/50 cursor-pointer"
                                                         >
                                                             <option value="9:16">9:16 直式短影</option>
                                                             <option value="4:5">4:5 社群貼文</option>
@@ -1950,7 +1950,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         <select
                                                             value={quality}
                                                             onChange={(e) => setQuality(e.target.value)}
-                                                            className="w-full text-center text-[11px] font-bold bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-lg py-1.5 outline-none focus:border-[var(--color-gold)]/50 cursor-pointer"
+                                                            className="w-full text-center text-[11px] font-bold bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-lg py-1.5 outline-none focus:border-[var(--color-brass)]/50 cursor-pointer"
                                                         >
                                                             <option value="HD">高解析度 1K</option>
                                                             <option value="Cinematic">電影級 2K</option>
@@ -1962,7 +1962,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         <button
                                                             type="button"
                                                             onClick={() => setIsPOV(!isPOV)}
-                                                            className="w-full text-[11px] font-bold bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-lg py-1.5 hover:border-[var(--color-gold)]/50 transition-colors"
+                                                            className="w-full text-[11px] font-bold bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-lg py-1.5 hover:border-[var(--color-brass)]/50 transition-colors"
                                                             title="點擊切換視角"
                                                         >
                                                             {isPOV ? '第一人稱' : '第三人稱'} ⇄
@@ -1976,7 +1976,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                     className={`w-full mt-6 py-5 text-[12px] font-black tracking-[0.5em] uppercase rounded-3xl transition-all duration-300 ${
                                                         !diary || isGeneratingImage
                                                             ? 'bg-white/5 text-gray-600 border border-white/5 cursor-not-allowed opacity-50'
-                                                            : 'bg-emerald-500 text-black shadow-[0_20px_40px_rgba(16,185,129,0.15)] hover:shadow-[0_25px_50px_rgba(16,185,129,0.25)]'
+                                                            : 'bg-[var(--color-sage)] text-black shadow-[0_20px_40px_rgba(85,106,91,0.15)] hover:shadow-[0_25px_50px_rgba(85,106,91,0.25)]'
                                                     }`}
                                                 >
                                                     {isGeneratingImage ? '正在捕捉靈魂切片...' : '生成敘事影像'}
@@ -2176,14 +2176,14 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                         <motion.div 
                                             animate={{ y: [0, 1000] }}
                                             transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-                                            className="absolute top-0 left-0 right-0 h-[250px] bg-gradient-to-b from-transparent via-[var(--color-gold)]/5 to-transparent opacity-40 shadow-[0_40px_40px_rgba(212,175,55,0.02)]"
+                                            className="absolute top-0 left-0 right-0 h-[250px] bg-gradient-to-b from-transparent via-[var(--color-brass)]/5 to-transparent opacity-40 shadow-[0_40px_40px_rgba(164,123,67,0.02)]"
                                         />
                                     </div>
 
                                     <div className={`${narrativeStep === 3 ? 'narrative-script-stage relative z-10 flex flex-col gap-8 pb-16 text-left' : 'hidden'}`}>
                                         <div className="narrative-screen-head narrative-script-head">
                                             <div>
-                                                <p className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">第三步 · 敘事腳本</p>
+                                                <p className="text-[10px] font-black text-[var(--color-brass)] uppercase tracking-[0.5em]">第三步 · 敘事腳本</p>
                                                 <h2>把場景變成<br />一段可拍攝的生活</h2>
                                                 <p>事件描述、場景 / 服裝確認卡、生成日記、拍攝設定與視覺控制。</p>
                                             </div>
@@ -2196,7 +2196,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                         >
                                             <div className="space-y-1.5 border-r border-[var(--color-border)] pr-6">
                                                 <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black">人格內核</p>
-                                                <p className="text-base text-[var(--color-gold)] font-black italic">{model.persona?.mbti || 'N/A'}</p>
+                                                <p className="text-base text-[var(--color-brass)] font-black italic">{model.persona?.mbti || 'N/A'}</p>
                                             </div>
                                             <div className="space-y-1.5 border-r border-[var(--color-border)] px-6">
                                                 <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black">核心氛圍</p>
@@ -2208,8 +2208,8 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             </div>
                                             <div className="space-y-1.5 pl-6">
                                                 <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black">生理對齊</p>
-                                                <p className="text-base text-emerald-500 font-black flex items-center gap-3">
-                                                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.6)] animate-pulse"></span>
+                                                <p className="text-base text-[var(--color-sage)] font-black flex items-center gap-3">
+                                                    <span className="w-2.5 h-2.5 rounded-full bg-[var(--color-sage)] shadow-[0_0_12px_rgba(85,106,91,0.6)] animate-pulse"></span>
                                                     已上線
                                                 </p>
                                             </div>
@@ -2253,7 +2253,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                     whileHover={{ scale: 1.05, y: -2 }}
                                                                     whileTap={{ scale: 0.95 }}
                                                                     onClick={() => setNarrativeStep(1)}
-                                                                    className="text-[10px] text-[var(--color-gold)] font-black uppercase tracking-[0.2em] border-b border-[var(--color-gold)]/40 hover:border-[var(--color-gold)] transition-all flex items-center gap-2"
+                                                                    className="text-[10px] text-[var(--color-brass)] font-black uppercase tracking-[0.2em] border-b border-[var(--color-brass)]/40 hover:border-[var(--color-brass)] transition-all flex items-center gap-2"
                                                                 >
                                                                     <span>✨</span> {eventInput.trim() ? '更換場景' : '選場景'}
                                                                 </motion.button>
@@ -2265,8 +2265,8 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             <div className="narrative-stage3-confirm-card border border-[var(--color-border)] rounded-2xl overflow-hidden mb-2">
                                                 {/* 場景列 */}
                                                 <div className="flex items-stretch border-b border-[var(--color-border)]">
-                                                    <div className="narrative-stage3-confirm-label w-12 flex items-center justify-center bg-[var(--color-gold)]/8 border-r border-[var(--color-border)] shrink-0">
-                                                        <span className="text-[8px] font-black text-[var(--color-gold)] uppercase tracking-widest">場景</span>
+                                                    <div className="narrative-stage3-confirm-label w-12 flex items-center justify-center bg-[var(--color-brass)]/8 border-r border-[var(--color-border)] shrink-0">
+                                                        <span className="text-[8px] font-black text-[var(--color-brass)] uppercase tracking-widest">場景</span>
                                                     </div>
                                                     <div className="flex-1 px-4 py-2.5">
                                                         <p className="text-[13px] font-black text-[var(--color-text-title)] leading-tight">{confirmedScene.name_zh}</p>
@@ -2275,14 +2275,14 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         </p>
                                                     </div>
                                                     <button onClick={() => setNarrativeStep(1)}
-                                                        className="px-4 text-[9px] text-gray-600 hover:text-[var(--color-gold)] font-black transition-colors border-l border-[var(--color-border)] shrink-0">
+                                                        className="px-4 text-[9px] text-gray-600 hover:text-[var(--color-brass)] font-black transition-colors border-l border-[var(--color-border)] shrink-0">
                                                         ← 換
                                                     </button>
                                                 </div>
                                                 {/* 服裝列 */}
                                                 <div className="flex items-stretch">
-                                                    <div className="narrative-stage3-confirm-label w-12 flex items-center justify-center bg-blue-500/5 border-r border-[var(--color-border)] shrink-0">
-                                                        <span className="text-[8px] font-black text-blue-400 uppercase tracking-widest">服裝</span>
+                                                    <div className="narrative-stage3-confirm-label w-12 flex items-center justify-center bg-[var(--color-steel)]/5 border-r border-[var(--color-border)] shrink-0">
+                                                        <span className="text-[8px] font-black text-[var(--color-steel)] uppercase tracking-widest">服裝</span>
                                                     </div>
                                                     <div className="flex-1 px-4 py-2.5">
                                                         {confirmedOutfitId ? (
@@ -2306,7 +2306,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         )}
                                                     </div>
                                                     <button onClick={() => setNarrativeStep(2)}
-                                                        className="px-4 text-[9px] text-gray-600 hover:text-blue-400 font-black transition-colors border-l border-[var(--color-border)] shrink-0">
+                                                        className="px-4 text-[9px] text-gray-600 hover:text-[var(--color-steel)] font-black transition-colors border-l border-[var(--color-border)] shrink-0">
                                                         ← 換
                                                     </button>
                                                 </div>
@@ -2316,7 +2316,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         <div className="group relative">
                                                             <label className="text-[9px] font-black text-gray-500 uppercase tracking-widest block mb-2">事件描述（可調整）</label>
                                                             <textarea 
-                                                                className="w-full min-h-[220px] bg-black/5 dark:bg-black/40 border border-black/5 dark:border-white/5 rounded-[2.5rem] p-6 text-sm text-gray-800 dark:text-gray-200 focus:border-[var(--color-gold)]/30 focus:shadow-[0_0_40px_rgba(212,175,55,0.05)] transition-all resize-vertical font-medium leading-relaxed outline-none shadow-inner"
+                                                                className="w-full min-h-[220px] bg-black/5 dark:bg-black/40 border border-black/5 dark:border-white/5 rounded-[2.5rem] p-6 text-sm text-gray-800 dark:text-gray-200 focus:border-[var(--color-brass)]/30 focus:shadow-[0_0_40px_rgba(164,123,67,0.05)] transition-all resize-vertical font-medium leading-relaxed outline-none shadow-inner"
                                                                 placeholder="描繪此刻的情境... 靈魂敘事將以此為軸心展開。"
                                                                 value={eventInput}
                                                                 onChange={(e) => {
@@ -2326,7 +2326,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                     setEventSource('manual');
                                                                 }}
                                                             />
-                                                            <div className="absolute bottom-6 right-6 w-12 h-0.5 bg-gradient-to-r from-transparent to-[var(--color-gold)]/20 opacity-0 group-focus-within:opacity-100 transition-opacity"></div>
+                                                            <div className="absolute bottom-6 right-6 w-12 h-0.5 bg-gradient-to-r from-transparent to-[var(--color-brass)]/20 opacity-0 group-focus-within:opacity-100 transition-opacity"></div>
                                         </div>
                                         <motion.button 
                                             whileHover={!eventInput.trim() || isGenerating ? {} : { scale: 1.02 }}
@@ -2336,7 +2336,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                             className={`w-full py-5 text-[12px] font-black tracking-[0.5em] uppercase rounded-3xl transition-all duration-300 ${
                                                                 !eventInput.trim() || isGenerating
                                                                     ? 'bg-white/5 text-gray-600 border border-white/5 cursor-not-allowed opacity-50'
-                                                                    : 'bg-[var(--color-gold)] text-black shadow-[0_20px_40px_rgba(212,175,55,0.15)] hover:shadow-[0_25px_50px_rgba(212,175,55,0.25)]'
+                                                                    : 'bg-[var(--color-wine)] text-white shadow-[0_20px_40px_rgba(111,39,53,0.15)] hover:shadow-[0_25px_50px_rgba(111,39,53,0.25)]'
                                                             }`}
                                                         >
                                                             {isGenerating ? '正在編織命運線...' : '建立拍攝劇本'}
@@ -2351,8 +2351,8 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                 className="space-y-4"
                                                             >
                                                                 <div className="flex items-center gap-3">
-                                                                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-gold)] animate-pulse"></div>
-                                                                    <span className="text-[10px] font-bold text-[var(--color-gold)] uppercase tracking-[0.3em]">{model.name} 的敘事日記</span>
+                                                                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-brass)] animate-pulse"></div>
+                                                                    <span className="text-[10px] font-bold text-[var(--color-brass)] uppercase tracking-[0.3em]">{model.name} 的敘事日記</span>
                                                                 </div>
                                                                 
                                                                 {currentSceneId && (
@@ -2366,7 +2366,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                         <button 
                                                                             onClick={() => handleChangeScene()}
                                                                             disabled={isGenerating}
-                                                                            className="text-[9px] text-[var(--color-gold)] font-bold uppercase tracking-widest hover:underline flex items-center gap-1 disabled:opacity-30"
+                                                                            className="text-[9px] text-[var(--color-brass)] font-bold uppercase tracking-widest hover:underline flex items-center gap-1 disabled:opacity-30"
                                                                         >
                                                                             {isGenerating ? '切換中...' : '🔄 換一個場景'}
                                                                         </button>
@@ -2377,7 +2377,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                     「{diary.content}」
                                                                 </div>
                                                                 <div className="flex flex-wrap gap-2">
-                                                                    <span className="px-3 py-1 bg-[var(--narrative-ink)] border border-[var(--narrative-ink)] rounded-full text-[9px] font-bold text-[var(--color-gold)] uppercase">
+                                                                    <span className="px-3 py-1 bg-[var(--narrative-ink)] border border-[var(--narrative-ink)] rounded-full text-[9px] font-bold text-[var(--color-brass)] uppercase">
                                                                         情緒狀態：{diary.mood}
                                                                     </span>
                                                                     <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[9px] font-bold text-gray-400 uppercase">
@@ -2429,9 +2429,9 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                             animate={{ opacity: 1 }}
                             className="absolute inset-0 bg-[var(--color-bg-deep)]/95 backdrop-blur-md z-[100] flex items-center justify-center p-6"
                         >
-                            <div className="max-w-sm w-full bg-[var(--color-bg-surface)] border border-[var(--color-gold)]/20 p-8 rounded-[2.5rem] space-y-6 shadow-2xl">
+                            <div className="max-w-sm w-full bg-[var(--color-bg-surface)] border border-[var(--color-brass)]/20 p-8 rounded-[2.5rem] space-y-6 shadow-2xl">
                                 <div className="text-center space-y-2">
-                                    <h4 className="text-sm font-bold text-[var(--color-gold)] uppercase tracking-[0.2em] font-display">核心記憶同步</h4>
+                                    <h4 className="text-sm font-bold text-[var(--color-brass)] uppercase tracking-[0.2em] font-display">核心記憶同步</h4>
                                     <p className="text-[10px] text-gray-400 font-medium">
                                         系統偵測到了新的生活細節與記憶碎片。是否要將這些內容永久存入其靈魂底座？
                                     </p>
@@ -2439,7 +2439,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                 
                                 <div className="flex flex-wrap gap-2 justify-center">
                                     {newMemories.map((mem, i) => (
-                                        <div key={i} className="px-4 py-2 bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/30 rounded-xl text-[10px] text-[var(--color-gold)] font-bold">
+                                        <div key={i} className="px-4 py-2 bg-[var(--color-brass)]/10 border border-[var(--color-brass)]/30 rounded-xl text-[10px] text-[var(--color-brass)] font-bold">
                                             {mem}
                                         </div>
                                     ))}
@@ -2466,9 +2466,9 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                             animate={{ opacity: 1 }}
                             className="absolute inset-0 bg-[var(--color-bg-deep)]/95 backdrop-blur-md z-[100] flex items-center justify-center p-6"
                         >
-                            <div className="max-w-sm w-full bg-[var(--color-bg-surface)] border border-[var(--color-gold)]/20 p-8 rounded-[2.5rem] space-y-6 shadow-2xl">
+                            <div className="max-w-sm w-full bg-[var(--color-bg-surface)] border border-[var(--color-brass)]/20 p-8 rounded-[2.5rem] space-y-6 shadow-2xl">
                                 <div className="text-center space-y-2">
-                                    <h4 className="text-sm font-bold text-[var(--color-gold)] uppercase tracking-[0.2em] font-display">尚未儲存</h4>
+                                    <h4 className="text-sm font-bold text-[var(--color-brass)] uppercase tracking-[0.2em] font-display">尚未儲存</h4>
                                     <p className="text-[10px] text-gray-400 font-medium">
                                         本次產出尚未儲存至作品集，確定離開？
                                     </p>
@@ -2506,9 +2506,9 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                         <div
                             className="absolute inset-0 bg-[var(--color-bg-deep)]/95 backdrop-blur-md z-[100] flex items-center justify-center p-6"
                         >
-                            <div className="max-w-sm w-full bg-[var(--color-bg-surface)] border border-[var(--color-gold)]/20 p-8 rounded-[2.5rem] space-y-6 shadow-2xl">
+                            <div className="max-w-sm w-full bg-[var(--color-bg-surface)] border border-[var(--color-brass)]/20 p-8 rounded-[2.5rem] space-y-6 shadow-2xl">
                                 <div className="text-center space-y-2">
-                                    <h4 className="text-sm font-bold text-[var(--color-gold)] uppercase tracking-[0.2em] font-display">影像尚未入庫</h4>
+                                    <h4 className="text-sm font-bold text-[var(--color-brass)] uppercase tracking-[0.2em] font-display">影像尚未入庫</h4>
                                     <p className="text-[10px] text-gray-400 font-medium">
                                         目前的生成影像還沒存入作品集，繼續操作會清除這張影像。確定要繼續嗎？
                                     </p>

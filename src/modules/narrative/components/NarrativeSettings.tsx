@@ -189,7 +189,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                 className="space-y-6 text-left"
             >
                 <div className="flex items-center gap-3">
-                    <div className="w-1.5 h-4 bg-[var(--color-gold)] rounded-full shadow-[0_0_12px_rgba(var(--color-gold-rgb),0.4)]"></div>
+                    <div className="w-1.5 h-4 bg-[var(--color-brass)] rounded-full shadow-[0_0_12px_rgba(164,123,67,0.4)]"></div>
                     <span className="text-[11px] font-black uppercase tracking-widest text-narrative-ink">
                         視覺風格預設
                     </span>
@@ -206,7 +206,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                         })}
                         className={`p-4 rounded-2xl border text-left transition-all ${
                             !model.preferences?.visual_preset_id
-                                ? 'border-[var(--color-gold)] bg-[var(--color-gold)]/10'
+                                ? 'border-[var(--color-wine)] bg-[var(--color-wine)]/10'
                                 : 'border-white/10 bg-white/[0.02] hover:border-white/20'
                         }`}
                     >
@@ -223,14 +223,14 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                 onClick={() => applyVisualPreset(model, preset.preset_id, onUpdate)}
                                 className={`p-4 rounded-2xl border text-left transition-all ${
                                     isActive
-                                        ? 'border-[var(--color-gold)] bg-[var(--color-gold)]/10 shadow-[0_0_20px_rgba(var(--color-gold-rgb),0.15)]'
+                                        ? 'border-[var(--color-wine)] bg-[var(--color-wine)]/10 shadow-[0_0_20px_rgba(111,39,53,0.15)]'
                                         : 'border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/5'
                                 }`}
                             >
                                 <div className="flex items-center justify-between mb-1">
                                     <div className="text-[11px] font-black uppercase tracking-widest text-narrative-ink">{preset.label_zh}</div>
                                     {isActive && (
-                                        <div className="text-[11px] font-black text-[var(--color-gold)] uppercase tracking-widest animate-pulse">啟用中</div>
+                                        <div className="text-[11px] font-black text-[var(--color-wine)] uppercase tracking-widest animate-pulse">啟用中</div>
                                     )}
                                 </div>
                                 <div className="text-[12px] text-narrative-ink line-clamp-2">
@@ -244,11 +244,11 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                 {/* Preset Summary */}
                 {currentPreset && (
                     <div
-                        className="p-4 rounded-2xl bg-[var(--color-gold)]/5 border border-[var(--color-gold)]/20 text-[12px] text-narrative-ink space-y-1 overflow-hidden"
+                        className="p-4 rounded-2xl bg-[var(--color-brass)]/5 border border-[var(--color-brass)]/20 text-[12px] text-narrative-ink space-y-1 overflow-hidden"
                     >
-                        <div><span className="text-[var(--color-gold)] font-black">色調</span>：{currentPreset.visualConstants.colorTone}</div>
-                        <div><span className="text-[var(--color-gold)] font-black">表情</span>：{currentPreset.visualConstants.expressionStyle}</div>
-                        <div><span className="text-[var(--color-gold)] font-black">姿勢能量</span>：{currentPreset.visualConstants.poseEnergy}</div>
+                        <div><span className="text-[var(--color-brass)] font-black">色調</span>：{currentPreset.visualConstants.colorTone}</div>
+                        <div><span className="text-[var(--color-brass)] font-black">表情</span>：{currentPreset.visualConstants.expressionStyle}</div>
+                        <div><span className="text-[var(--color-brass)] font-black">姿勢能量</span>：{currentPreset.visualConstants.poseEnergy}</div>
                         <div className="pt-1 text-[12px] text-narrative-ink-soft italic">此預設已優化層次：Layer 1, 7.5, 8.5, 9</div>
                     </div>
                 )}
@@ -260,27 +260,27 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                 className="space-y-6 text-left"
             >
                 <div className="flex items-center gap-3">
-                    <div className="w-1.5 h-4 bg-[var(--color-gold)] rounded-full shadow-[0_0_12px_rgba(var(--color-gold-rgb),0.4)]"></div>
-                    <h4 className="text-[11px] font-black text-[var(--color-gold)] uppercase tracking-[0.3em]">IP 風格聖經</h4>
+                    <div className="w-1.5 h-4 bg-[var(--color-brass)] rounded-full shadow-[0_0_12px_rgba(164,123,67,0.4)]"></div>
+                    <h4 className="text-[11px] font-black text-[var(--color-brass)] uppercase tracking-[0.3em]">IP 風格聖經</h4>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {contentTargetInputs.map((item) => (
                         <div key={item.key} className="space-y-2 group">
-                            <label className="text-[11px] text-gray-700 font-bold uppercase tracking-widest group-focus-within:text-[var(--color-gold)] transition-colors inline-block">{item.label}</label>
+                            <label className="text-[11px] text-gray-700 font-bold uppercase tracking-widest group-focus-within:text-[var(--color-brass)] transition-colors inline-block">{item.label}</label>
                             <input
                                 type="number"
                                 min="0"
                                 max="100"
                                 value={styleTargets[item.key] ?? item.fallback}
                                 onChange={e => handleUpdateStyleTarget(item.key, e.target.value)}
-                                className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-4 py-3 text-sm text-[var(--color-narrative-ink)] focus:border-[var(--color-gold)] outline-none transition-all"
+                                className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-4 py-3 text-sm text-[var(--color-narrative-ink)] focus:border-[var(--color-brass)] outline-none transition-all"
                             />
                         </div>
                     ))}
                 </div>
 
-                <div className="p-4 rounded-2xl bg-[var(--color-gold)]/5 border border-[var(--color-gold)]/20 text-[12px] text-narrative-ink leading-relaxed">
+                <div className="p-4 rounded-2xl bg-[var(--color-brass)]/5 border border-[var(--color-brass)]/20 text-[12px] text-narrative-ink leading-relaxed">
                     目前目標比例：生活感 {styleTargets.lifestyle ?? 50}% / 曲線感 {styleTargets.curve ?? 30}% / 戲劇張力 {styleTargets.drama ?? 20}%
                 </div>
             </motion.div>
@@ -292,8 +292,8 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                 className="space-y-6 text-left"
             >
                 <div className="flex items-center gap-3">
-                    <div className="w-1.5 h-4 bg-[var(--color-gold)] rounded-full shadow-[0_0_12px_rgba(var(--color-gold-rgb),0.4)]"></div>
-                    <h4 className="text-[11px] font-black text-[var(--color-gold)] uppercase tracking-[0.3em]">角色擴展設定</h4>
+                    <div className="w-1.5 h-4 bg-[var(--color-brass)] rounded-full shadow-[0_0_12px_rgba(164,123,67,0.4)]"></div>
+                    <h4 className="text-[11px] font-black text-[var(--color-brass)] uppercase tracking-[0.3em]">角色擴展設定</h4>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -303,12 +303,12 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                         { label: '閨蜜稱呼', key: 'best_friend_name', placeholder: '例如：Kiki' }
                     ].map((item) => (
                         <div key={item.key} className="space-y-2 group">
-                            <label className="text-[11px] text-gray-700 font-bold uppercase tracking-widest group-focus-within:text-[var(--color-gold)] transition-colors inline-block">{item.label}</label>
+                            <label className="text-[11px] text-gray-700 font-bold uppercase tracking-widest group-focus-within:text-[var(--color-brass)] transition-colors inline-block">{item.label}</label>
                             <input
                                 value={(extensions as any)[item.key] || ''}
                                 onChange={e => setExtensions({...extensions, [item.key]: e.target.value})}
                                 placeholder={item.placeholder}
-                                className="w-full bg-black/5 dark:bg-white/[0.03] border border-black/5 dark:border-white/5 rounded-2xl px-5 py-3 text-xs text-gray-800 dark:text-white focus:border-[var(--color-gold)]/50 focus:bg-black/10 dark:focus:bg-white/[0.05] transition-all outline-none shadow-inner"
+                                className="w-full bg-black/5 dark:bg-white/[0.03] border border-black/5 dark:border-white/5 rounded-2xl px-5 py-3 text-xs text-gray-800 dark:text-white focus:border-[var(--color-brass)]/50 focus:bg-black/10 dark:focus:bg-white/[0.05] transition-all outline-none shadow-inner"
                             />
                         </div>
                     ))}
@@ -317,7 +317,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                 <div className="flex justify-end pt-2">
                     <button 
                         onClick={handleSaveExtensions}
-                        className="px-8 py-3 bg-black/5 dark:bg-white/5 text-gray-700 dark:text-white border border-black/10 dark:border-white/10 text-[13px] font-black rounded-full hover:bg-[var(--color-gold)] hover:text-black hover:border-[var(--color-gold)] hover:scale-105 active:scale-95 transition-all uppercase tracking-widest shadow-xl italic"
+                        className="px-8 py-3 bg-black/5 dark:bg-white/5 text-gray-700 dark:text-white border border-black/10 dark:border-white/10 text-[13px] font-black rounded-full hover:bg-[var(--color-wine)] hover:text-white hover:border-[var(--color-wine)] hover:scale-105 active:scale-95 transition-all uppercase tracking-widest shadow-xl italic"
                     >
                         儲存敘事設定
                     </button>
@@ -331,15 +331,15 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                 className="space-y-6 text-left"
             >
                 <div className="flex items-center gap-3">
-                    <div className="w-1.5 h-4 bg-purple-500 rounded-full shadow-[0_0_12px_rgba(168,85,247,0.4)]"></div>
-                    <h4 className="text-[11px] font-black text-purple-700 uppercase tracking-[0.3em]">美學參數對齊</h4>
+                    <div className="w-1.5 h-4 bg-[var(--color-brass)] rounded-full shadow-[0_0_12px_rgba(164,123,67,0.4)]"></div>
+                    <h4 className="text-[11px] font-black text-[var(--color-brass)] uppercase tracking-[0.3em]">美學參數對齊</h4>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                     <div className="space-y-4">
                         <div className="flex justify-between items-center">
                             <label className="text-[11px] text-gray-700 font-bold uppercase tracking-widest">美學階層區間</label>
-                            <span className="text-[11px] font-mono font-bold text-purple-700 truncate">
+                            <span className="text-[11px] font-mono font-bold text-[var(--color-brass)] truncate">
                                 階層 {model.preferences?.aesthetic_tier_min || 1} - {model.preferences?.aesthetic_tier_max || 5}
                             </span>
                         </div>
@@ -360,7 +360,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                             } 
                                         });
                                     }}
-                                    className="w-full h-1.5 bg-black/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                                    className="w-full h-1.5 bg-black/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-[var(--color-brass)]"
                                 />
                             </div>
                             <div className="flex flex-col gap-2">
@@ -379,7 +379,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                             } 
                                         });
                                     }}
-                                    className="w-full h-1.5 bg-black/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                                    className="w-full h-1.5 bg-black/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-[var(--color-brass)]"
                                 />
                             </div>
                         </div>
@@ -388,9 +388,9 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                     <div className="space-y-4 p-6 bg-white/[0.02] border border-white/5 rounded-2xl">
                         <p className="text-[12px] text-narrative-ink font-medium italic leading-relaxed uppercase">
                             系統將根據「氣場階層」自動切換提示詞引擎：<br/>
-                            <span className="text-purple-700">階層 1-2</span>：日常抓拍、寫實氛圍<br/>
-                            <span className="text-purple-700">階層 3-4</span>：時尚大片、專業佈光<br/>
-                            <span className="text-purple-700">階層 5</span>：藝術核心、極致氛圍、靈魂敘事特寫
+                            <span className="text-[var(--color-brass)]">階層 1-2</span>：日常抓拍、寫實氛圍<br/>
+                            <span className="text-[var(--color-brass)]">階層 3-4</span>：時尚大片、專業佈光<br/>
+                            <span className="text-[var(--color-brass)]">階層 5</span>：藝術核心、極致氛圍、靈魂敘事特寫
                         </p>
                     </div>
                 </div>
@@ -401,11 +401,11 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
             {/* Story Arcs */}
             <div className="space-y-6 text-left">
                 <div className="flex justify-between items-center bg-white/[0.02] p-6 rounded-[2rem] border border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.3)] backdrop-blur-xl relative overflow-hidden group">
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-steel)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <div className="flex items-center gap-8 relative z-10">
                         <div className="space-y-1.5">
                             <div className="flex items-center gap-3">
-                                <div className="w-1.5 h-4 bg-blue-500 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.6)]"></div>
+                                <div className="w-1.5 h-4 bg-[var(--color-steel)] rounded-full shadow-[0_0_15px_rgba(70,90,112,0.6)]"></div>
                                 <h4 className="text-sm font-black text-[var(--color-narrative-ink)] uppercase tracking-[0.3em]">
                                     故事弧管理
                                 </h4>
@@ -415,7 +415,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                             <button 
                                 type="button"
                                 onClick={() => toggleMaster('enable_story_arcs')}
-                                className={`relative inline-flex h-7 w-12 items-center rounded-full transition-all duration-500 focus:outline-none cursor-pointer group/toggle ${model.preferences?.enable_story_arcs !== false ? 'bg-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.5)]' : 'bg-white/10'}`}
+                                className={`relative inline-flex h-7 w-12 items-center rounded-full transition-all duration-500 focus:outline-none cursor-pointer group/toggle ${model.preferences?.enable_story_arcs !== false ? 'bg-[var(--color-steel)] shadow-[0_0_20px_rgba(70,90,112,0.5)]' : 'bg-white/10'}`}
                             >
                                 <motion.span 
                                     layout
@@ -423,24 +423,24 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                     className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-xl ${model.preferences?.enable_story_arcs !== false ? 'translate-x-6' : 'translate-x-1'}`} 
                                 />
                             </button>
-                            <span className={`text-[11px] font-black uppercase tracking-[0.2em] transition-colors ${model.preferences?.enable_story_arcs !== false ? 'text-blue-700' : 'text-narrative-ink-soft'}`}>
+                            <span className={`text-[11px] font-black uppercase tracking-[0.2em] transition-colors ${model.preferences?.enable_story_arcs !== false ? 'text-[var(--color-steel)]' : 'text-narrative-ink-soft'}`}>
                                 {model.preferences?.enable_story_arcs !== false ? '已啟動' : '已離線'}
                             </span>
                         </div>
                     </div>
                     {model.preferences?.enable_story_arcs !== false && (
-                        <motion.button 
-                            whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(59,130,246,0.3)' }}
+                        <motion.button
+                            whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(70,90,112,0.3)' }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => setIsAddingArc(!isAddingArc)}
-                            className="group relative px-6 py-2.5 overflow-hidden rounded-sm bg-white/5 border border-white/10 transition-all hover:border-blue-500/50"
+                            className="group relative px-6 py-2.5 overflow-hidden rounded-sm bg-white/5 border border-white/10 transition-all hover:border-[var(--color-steel)]/50"
                         >
-                            <span className="relative z-10 text-[12px] font-black text-blue-700 uppercase tracking-widest">
+                            <span className="relative z-10 text-[12px] font-black text-[var(--color-steel)] uppercase tracking-widest">
                                 {isAddingArc ? '關閉' : '+ 新增弧線'}
                             </span>
                             {/* Matrix logic decoration */}
-                            <div className="absolute top-0 left-0 w-1 h-1 border-t border-l border-blue-500/50 group-hover:border-blue-500"></div>
-                            <div className="absolute bottom-0 right-0 w-1 h-1 border-b border-r border-blue-500/50 group-hover:border-blue-500"></div>
+                            <div className="absolute top-0 left-0 w-1 h-1 border-t border-l border-[var(--color-steel)]/50 group-hover:border-[var(--color-steel)]"></div>
+                            <div className="absolute bottom-0 right-0 w-1 h-1 border-b border-r border-[var(--color-steel)]/50 group-hover:border-[var(--color-steel)]"></div>
                         </motion.button>
                     )}
                 </div>
@@ -458,7 +458,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                             placeholder="例如：銀河邊際的誓言" 
                                             value={newArc.name_zh}
                                             onChange={e => setNewArc({...newArc, name_zh: e.target.value})}
-                                            className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white focus:border-blue-500/50 outline-none"
+                                            className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white focus:border-[var(--color-steel)]/50 outline-none"
                                         />
                                     </div>
                                     <div className="space-y-2">
@@ -467,7 +467,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                             placeholder="Galaxy Edge Oath" 
                                             value={newArc.name_en}
                                             onChange={e => setNewArc({...newArc, name_en: e.target.value})}
-                                            className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white focus:border-blue-500/50 outline-none"
+                                            className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white focus:border-[var(--color-steel)]/50 outline-none"
                                         />
                                     </div>
                                 </div>
@@ -477,12 +477,12 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                         placeholder="描述此故事弧的發展計畫與角色動機..."
                                         value={newArc.rationale}
                                         onChange={e => setNewArc({...newArc, rationale: e.target.value})}
-                                        className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white h-24 outline-none focus:border-blue-500/50 resize-none"
+                                        className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white h-24 outline-none focus:border-[var(--color-steel)]/50 resize-none"
                                     />
                                 </div>
-                                <button 
+                                <button
                                     onClick={handleAddCustomArc}
-                                    className="w-full py-4 bg-blue-600 text-white text-[12px] font-black rounded-2xl uppercase tracking-[0.3em] shadow-[0_15px_30px_rgba(37,99,235,0.3)] active:scale-[0.98] transition-transform"
+                                    className="w-full py-4 bg-[var(--color-steel)] text-white text-[12px] font-black rounded-2xl uppercase tracking-[0.3em] shadow-[0_15px_30px_rgba(70,90,112,0.3)] active:scale-[0.98] transition-transform"
                                 >
                                     注入故事矩陣
                                 </button>
@@ -499,17 +499,17 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                     <motion.div 
                                         key={arc.arc_id}
                                         layout
-                                        whileHover={{ y: -5, borderColor: 'rgba(59, 130, 246, 0.4)' }}
+                                        whileHover={{ y: -5, borderColor: 'rgba(70, 90, 112, 0.4)' }}
                                         className={`group cursor-pointer p-8 rounded-[2.5rem] border transition-all relative overflow-hidden flex flex-col h-full ${
-                                            isActive 
-                                            ? 'bg-blue-500/[0.08] border-blue-500/40 shadow-[0_25px_60px_rgba(0,0,0,0.4)] ring-1 ring-blue-500/20'
+                                            isActive
+                                            ? 'bg-[var(--color-steel)]/[0.08] border-[var(--color-steel)]/40 shadow-[0_25px_60px_rgba(0,0,0,0.4)] ring-1 ring-[var(--color-steel)]/20'
                                             : 'bg-white/40 border-white/5 opacity-60 hover:opacity-100'
                                         }`}
                                         onClick={() => handleToggleArc(arc.arc_id)}
                                     >
                                         <div className="absolute top-0 right-0 p-6 z-20">
                                             {isActive ? (
-                                                <div className="w-2.5 h-2.5 bg-blue-400 rounded-full animate-pulse shadow-[0_0_15px_rgba(96,165,250,1)]"></div>
+                                                <div className="w-2.5 h-2.5 bg-[var(--color-steel)] rounded-full animate-pulse shadow-[0_0_15px_rgba(70,90,112,1)]"></div>
                                             ) : (
                                                 <div className="w-2 h-2 border-2 border-white/20 rounded-full"></div>
                                             )}
@@ -526,7 +526,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                         <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
                                             <div className="flex gap-1">
                                                 {arc.phases.map((_, i) => (
-                                                    <div key={i} className={`w-3 h-1 rounded-full ${isActive ? 'bg-blue-500' : 'bg-white/10'}`} />
+                                                    <div key={i} className={`w-3 h-1 rounded-full ${isActive ? 'bg-[var(--color-steel)]' : 'bg-white/10'}`} />
                                                 ))}
                                             </div>
                                             {isCustom && (
@@ -554,7 +554,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                     <div className="flex items-center gap-8 relative z-10">
                         <div className="space-y-1.5">
                             <div className="flex items-center gap-3">
-                                <div className="w-1.5 h-4 bg-emerald-500 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.6)]"></div>
+                                <div className="w-1.5 h-4 bg-[var(--color-sage)] rounded-full shadow-[0_0_15px_rgba(85,106,91,0.6)]"></div>
                                 <h4 className="text-sm font-black text-[var(--color-narrative-ink)] uppercase tracking-[0.3em]">
                                     身份線管理
                                 </h4>
@@ -564,7 +564,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                             <button 
                                 type="button"
                                 onClick={() => toggleMaster('enable_identity_threads')}
-                                className={`relative inline-flex h-7 w-12 items-center rounded-full transition-all duration-500 focus:outline-none cursor-pointer group/toggle ${model.preferences?.enable_identity_threads !== false ? 'bg-emerald-600 shadow-[0_0_20px_rgba(16,185,129,0.5)]' : 'bg-white/10'}`}
+                                className={`relative inline-flex h-7 w-12 items-center rounded-full transition-all duration-500 focus:outline-none cursor-pointer group/toggle ${model.preferences?.enable_identity_threads !== false ? 'bg-[var(--color-sage)] shadow-[0_0_20px_rgba(85,106,91,0.5)]' : 'bg-white/10'}`}
                             >
                                 <motion.span 
                                     layout
@@ -572,24 +572,24 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                     className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-xl ${model.preferences?.enable_identity_threads !== false ? 'translate-x-6' : 'translate-x-1'}`} 
                                 />
                             </button>
-                            <span className={`text-[11px] font-black uppercase tracking-[0.2em] transition-colors ${model.preferences?.enable_identity_threads !== false ? 'text-emerald-700' : 'text-narrative-ink-soft'}`}>
+                            <span className={`text-[11px] font-black uppercase tracking-[0.2em] transition-colors ${model.preferences?.enable_identity_threads !== false ? 'text-[var(--color-sage)]' : 'text-narrative-ink-soft'}`}>
                                 {model.preferences?.enable_identity_threads !== false ? '已啟動' : '已離線'}
                             </span>
                         </div>
                     </div>
                     {model.preferences?.enable_identity_threads !== false && (
-                        <motion.button 
-                            whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(16,185,129,0.3)' }}
+                        <motion.button
+                            whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(85,106,91,0.3)' }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => setIsAddingThread(!isAddingThread)}
-                            className="group relative px-6 py-2.5 overflow-hidden rounded-sm bg-white/5 border border-white/10 transition-all hover:border-emerald-500/50"
+                            className="group relative px-6 py-2.5 overflow-hidden rounded-sm bg-white/5 border border-white/10 transition-all hover:border-[var(--color-sage)]/50"
                         >
-                            <span className="relative z-10 text-[12px] font-black text-emerald-700 uppercase tracking-widest">
+                            <span className="relative z-10 text-[12px] font-black text-[var(--color-sage)] uppercase tracking-widest">
                                 {isAddingThread ? '關閉' : '+ 開發線'}
                             </span>
                             {/* Matrix logic decoration */}
-                            <div className="absolute top-0 left-0 w-1 h-1 border-t border-l border-emerald-500/50 group-hover:border-emerald-500"></div>
-                            <div className="absolute bottom-0 right-0 w-1 h-1 border-b border-r border-emerald-500/50 group-hover:border-emerald-500"></div>
+                            <div className="absolute top-0 left-0 w-1 h-1 border-t border-l border-[var(--color-sage)]/50 group-hover:border-[var(--color-sage)]"></div>
+                            <div className="absolute bottom-0 right-0 w-1 h-1 border-b border-r border-[var(--color-sage)]/50 group-hover:border-[var(--color-sage)]"></div>
                         </motion.button>
                     )}
                 </div>
@@ -607,7 +607,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                             placeholder="例如：冷酷殺手、溫柔咖啡師" 
                                             value={newThread.name_zh}
                                             onChange={e => setNewThread({...newThread, name_zh: e.target.value})}
-                                            className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white focus:border-emerald-500/50 outline-none"
+                                            className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white focus:border-[var(--color-sage)]/50 outline-none"
                                         />
                                     </div>
                                     <div className="space-y-2">
@@ -616,7 +616,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                             placeholder="Coldest Killer / Gentle Barista" 
                                             value={newThread.name_en}
                                             onChange={e => setNewThread({...newThread, name_en: e.target.value})}
-                                            className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white focus:border-emerald-500/50 outline-none"
+                                            className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white focus:border-[var(--color-sage)]/50 outline-none"
                                         />
                                     </div>
                                 </div>
@@ -626,12 +626,12 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                         placeholder="描述此身份線如何影響角色的長期行為與核心設定..."
                                         value={newThread.rationale}
                                         onChange={e => setNewThread({...newThread, rationale: e.target.value})}
-                                        className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white h-24 outline-none focus:border-emerald-500/50 resize-none"
+                                        className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white h-24 outline-none focus:border-[var(--color-sage)]/50 resize-none"
                                     />
                                 </div>
-                                <button 
+                                <button
                                     onClick={handleAddCustomThread}
-                                    className="w-full py-4 bg-emerald-600 text-white text-[12px] font-black rounded-2xl uppercase tracking-[0.3em] shadow-[0_15px_30px_rgba(16,185,129,0.3)] active:scale-[0.98] transition-transform"
+                                    className="w-full py-4 bg-[var(--color-sage)] text-white text-[12px] font-black rounded-2xl uppercase tracking-[0.3em] shadow-[0_15px_30px_rgba(85,106,91,0.3)] active:scale-[0.98] transition-transform"
                                 >
                                     啟動人格演進
                                 </button>
@@ -648,17 +648,17 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                     <motion.div 
                                         key={thread.thread_id}
                                         layout
-                                        whileHover={{ y: -5, borderColor: 'rgba(16, 185, 129, 0.4)' }}
+                                        whileHover={{ y: -5, borderColor: 'rgba(85, 106, 91, 0.4)' }}
                                         className={`group cursor-pointer p-8 rounded-[2.5rem] border transition-all relative overflow-hidden flex flex-col h-full ${
-                                            isActive 
-                                            ? 'bg-emerald-500/[0.08] border-emerald-500/40 shadow-[0_25px_60px_rgba(0,0,0,0.4)] ring-1 ring-emerald-500/20'
+                                            isActive
+                                            ? 'bg-[var(--color-sage)]/[0.08] border-[var(--color-sage)]/40 shadow-[0_25px_60px_rgba(0,0,0,0.4)] ring-1 ring-[var(--color-sage)]/20'
                                             : 'bg-white/40 border-white/5 opacity-60 hover:opacity-100'
                                         }`}
                                         onClick={() => handleToggleThread(thread.thread_id)}
                                     >
                                         <div className="absolute top-0 right-0 p-6 z-20">
                                             {isActive ? (
-                                                <div className="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_15px_rgba(52,211,153,1)]"></div>
+                                                <div className="w-2.5 h-2.5 bg-[var(--color-sage)] rounded-full animate-pulse shadow-[0_0_15px_rgba(85,106,91,1)]"></div>
                                             ) : (
                                                 <div className="w-2 h-2 border-2 border-white/20 rounded-full"></div>
                                             )}
@@ -667,7 +667,6 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                         <div className="space-y-4 mb-auto">
                                             <div className="space-y-1">
                                                 <h5 className={`text-lg font-black tracking-tight leading-tight uppercase italic transition-colors ${isActive ? 'text-narrative-ink' : 'text-narrative-ink-soft group-hover:text-narrative-ink'}`}>{thread.name_zh}</h5>
-                                                <p className="text-[10px] text-emerald-500/70 font-mono font-black uppercase tracking-[0.2em]">{thread.thread_id.split('-')[0]} // IP EVOLUTION</p>
                                             </div>
                                             
                                             <p className="text-[11px] text-narrative-ink leading-relaxed line-clamp-3 font-medium italic group-hover:text-gray-900 transition-colors">「{thread.rationale}」</p>
@@ -675,7 +674,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
 
                                         <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
                                             <div className="flex items-center gap-2">
-                                                <div className={`px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-widest ${isActive ? 'bg-emerald-500/20 text-emerald-700' : 'bg-white/5 text-narrative-ink-soft'}`}>
+                                                <div className={`px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-widest ${isActive ? 'bg-[var(--color-sage)]/20 text-[var(--color-sage)]' : 'bg-white/5 text-narrative-ink-soft'}`}>
                                                     {thread.duration_weeks} 週
                                                 </div>
                                             </div>

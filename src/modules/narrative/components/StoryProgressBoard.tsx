@@ -27,7 +27,7 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
     const styleTargets = model.styleBible?.contentTargets || {};
     const categoryMeta: Record<ContentCategory, { label: string; target: number; color: string; glow: string }> = {
         lifestyle: { label: '生活感', target: styleTargets.lifestyle ?? 50, color: 'bg-sky-400', glow: 'shadow-[0_0_12px_rgba(56,189,248,0.35)]' },
-        curve: { label: '曲線感', target: styleTargets.curve ?? 30, color: 'bg-rose-400', glow: 'shadow-[0_0_12px_rgba(251,113,133,0.35)]' },
+        curve: { label: '曲線感', target: styleTargets.curve ?? 30, color: 'bg-[var(--color-brass)]', glow: 'shadow-[0_0_12px_rgba(164,123,67,0.35)]' },
         drama: { label: '戲劇張力', target: styleTargets.drama ?? 20, color: 'bg-violet-400', glow: 'shadow-[0_0_12px_rgba(167,139,250,0.35)]' }
     };
     const targetLabel = contentCategories.map(category => categoryMeta[category].target).join(' / ');
@@ -53,7 +53,7 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
             >
                 <div className="absolute -top-8 -left-8 w-24 h-24 bg-sky-400/[0.03] rounded-full blur-[50px]"></div>
                 <div className="relative z-10 flex items-center justify-between gap-2">
-                    <h4 className="text-[9px] font-black text-[var(--color-gold)] uppercase tracking-[0.3em]">內容比例 // {targetLabel}</h4>
+                    <h4 className="text-[9px] font-black text-[var(--color-brass)] uppercase tracking-[0.3em]">內容比例 // {targetLabel}</h4>
                     <span className="text-[8px] text-gray-600 font-bold">{categorizedTotal} 張已分類</span>
                 </div>
 
@@ -92,12 +92,12 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                     className="relative bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-4 space-y-3 overflow-hidden"
                 >
                     {/* Background glow accent */}
-                    <div className="absolute -top-10 -right-10 w-32 h-32 bg-[var(--color-gold)]/5 rounded-full blur-[60px] group-hover:bg-[var(--color-gold)]/10 transition-all duration-700"></div>
+                    <div className="absolute -top-10 -right-10 w-32 h-32 bg-[var(--color-brass)]/5 rounded-full blur-[60px] group-hover:bg-[var(--color-brass)]/10 transition-all duration-700"></div>
 
                     <div className="flex justify-between items-center relative z-10">
                         <div className="flex items-center gap-3">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-gold)] animate-pulse shadow-[0_0_10px_rgba(212,175,55,1)]"></div>
-                            <h4 className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.4em] italic">核心故事弧</h4>
+                            <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-brass)] animate-pulse shadow-[0_0_10px_rgba(164,123,67,1)]"></div>
+                            <h4 className="text-[10px] font-black text-[var(--color-brass)] uppercase tracking-[0.4em] italic">核心故事弧</h4>
                         </div>
                         <div className="flex items-center gap-2 px-3 py-1 bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-full">
                             <span className="text-[9px] text-gray-500 font-black uppercase tracking-tighter">環節</span>
@@ -109,7 +109,7 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                         <div className="flex justify-between items-end">
                             <div className="space-y-1">
                                 <h5 className="text-2xl font-black text-[var(--color-text-title)] tracking-tight uppercase leading-none">{activeArc.name_zh}</h5>
-                                <p className="text-[10px] text-[var(--color-gold)] font-bold tracking-[0.2em] uppercase opacity-70">{activeArc.arc_id.replace(/_/g, ' ')}</p>
+                                <p className="text-[10px] text-[var(--color-brass)] font-bold tracking-[0.2em] uppercase opacity-70">{activeArc.arc_id.replace(/_/g, ' ')}</p>
                             </div>
                             <div className="text-right">
                                 <span className="text-[10px] text-[var(--color-text-title)] font-black italic tracking-widest bg-[var(--color-bg-input)] px-4 py-1.5 rounded-full border border-[var(--color-border)]">{activeArc.phases[arcPhaseIdx]}</span>
@@ -122,8 +122,8 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                                 <div key={i} className="flex-1 relative group/phase">
                                     <div 
                                         className={`absolute inset-0 rounded-full transition-all duration-700 ${
-                                            i <= arcPhaseIdx 
-                                            ? 'bg-[var(--color-gold)] shadow-[0_0_15px_rgba(212,175,55,0.3)]' 
+                                            i <= arcPhaseIdx
+                                            ? 'bg-[var(--color-brass)] shadow-[0_0_15px_rgba(164,123,67,0.3)]'
                                             : 'bg-[var(--color-bg-input)]'
                                         }`}
                                     />
@@ -136,7 +136,7 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                     </div>
                     
                     <div className="relative pt-2">
-                        <div className="absolute left-0 top-2 bottom-0 w-1 bg-gradient-to-b from-[var(--color-gold)]/40 to-transparent rounded-full"></div>
+                        <div className="absolute left-0 top-2 bottom-0 w-1 bg-gradient-to-b from-[var(--color-brass)]/40 to-transparent rounded-full"></div>
                         <p className="text-[11px] text-gray-400 leading-relaxed italic ml-5 font-medium tracking-wide">
                             「{activeArc.rationale}」
                         </p>
@@ -165,23 +165,23 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                                 transition={{ delay: idx * 0.1 }}
                                 className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-3 space-y-3 relative group overflow-hidden"
                             >
-                                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                
+                                <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-sage)]/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
                                 <div className="flex justify-between items-start relative z-10">
                                     <div className="space-y-1">
                                         <div className="flex items-center gap-2">
-                                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,1)]"></div>
-                                            <span className="text-[9px] font-black text-emerald-500 uppercase tracking-[0.3em]">身分發展線</span>
+                                            <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-sage)] animate-pulse shadow-[0_0_8px_rgba(85,106,91,1)]"></div>
+                                            <span className="text-[9px] font-black text-[var(--color-sage)] uppercase tracking-[0.3em]">身分發展線</span>
                                         </div>
                                         <h6 className="text-lg font-black text-[var(--color-text-title)] tracking-tight uppercase leading-none">{thread.name_zh}</h6>
                                     </div>
-                                    <div className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
-                                        <span className="text-[9px] text-emerald-500 font-black tracking-widest uppercase italic">LV.{threadState.current_milestone_index + 1}</span>
+                                    <div className="px-3 py-1 bg-[var(--color-sage)]/10 border border-[var(--color-sage)]/20 rounded-full">
+                                        <span className="text-[9px] text-[var(--color-sage)] font-black tracking-widest uppercase italic">LV.{threadState.current_milestone_index + 1}</span>
                                     </div>
                                 </div>
-                                    
+
                                 <div className="space-y-3 relative z-10">
-                                    <p className="text-[10px] text-gray-400 font-medium tracking-wide line-clamp-1 border-l-2 border-emerald-500/20 pl-3 italic">
+                                    <p className="text-[10px] text-gray-400 font-medium tracking-wide line-clamp-1 border-l-2 border-[var(--color-sage)]/20 pl-3 italic">
                                         {thread.milestones[threadState.current_milestone_index]}
                                     </p>
                                     
@@ -190,7 +190,7 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                                             initial={{ width: 0 }}
                                             animate={{ width: `${progress}%` }}
                                             transition={{ duration: 1, ease: "easeOut" }}
-                                            className="absolute inset-y-0 left-0 bg-gradient-to-r from-emerald-600 to-emerald-400 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.3)]"
+                                            className="absolute inset-y-0 left-0 bg-gradient-to-r from-[var(--color-sage)] to-[var(--color-sage)]/60 rounded-full shadow-[0_0_10px_rgba(85,106,91,0.3)]"
                                         />
                                     </div>
                                 </div>
@@ -206,7 +206,7 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                             onClick={onInitializeThread}
                             className="bg-[var(--color-bg-card)] border border-dashed border-[var(--color-border)] rounded-xl p-3 flex items-center gap-2.5 opacity-50 hover:opacity-90 transition-all cursor-pointer group"
                         >
-                            <div className="w-6 h-6 rounded-md bg-[var(--color-bg-input)] border border-[var(--color-border)] flex items-center justify-center font-black group-hover:bg-[var(--color-gold)] group-hover:text-black transition-all shrink-0 text-sm text-gray-400">+</div>
+                            <div className="w-6 h-6 rounded-md bg-[var(--color-bg-input)] border border-[var(--color-border)] flex items-center justify-center font-black group-hover:bg-[var(--color-wine)] group-hover:text-white transition-all shrink-0 text-sm text-gray-400">+</div>
                             <span className="text-[9px] font-black text-gray-500 uppercase tracking-[0.2em] group-hover:text-white transition-colors">啟動新的身份線</span>
                         </motion.div>
                     )}
