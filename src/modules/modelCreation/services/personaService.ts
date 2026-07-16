@@ -1,5 +1,6 @@
 import { getGeminiClient } from "../../../shared/services/core/geminiClient";
 import type { GoogleGenAI } from "@google/genai";
+import { HARDCODED_SUBJECT_TERMS } from "../../../shared/services/promptSanitizer";
 
 export interface PersonaSeed {
     name: string;
@@ -73,6 +74,75 @@ export const generatePersonaTraits = async (seed: PersonaSeed) => {
     };
 };
 
+const escapeRegExpForSubjectTerm = (value: string): string => {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
+
+const buildHardcodedSubjectTermPattern = (term: string): RegExp => {
+    const escapedTerm = escapeRegExpForSubjectTerm(term).replace(/\s+/g, '\\s+');
+    return new RegExp(`\\b${escapedTerm}\\b`, 'gi');
+};
+
+const normalizeDescriptorSpacing = (value: string): string => {
+    return value
+        .replace(/\s+([,.;:])/g, '$1')
+        .replace(/([,.;:]){2,}/g, '$1')
+        .replace(/\s{2,}/g, ' ')
+        .trim();
+};
+
+const resolveNeutralGenderLabel = (genderHint?: string): string => {
+    const normalized = (genderHint || '').toString().trim().toUpperCase();
+    if (normalized === 'M' || normalized === 'MALE') return 'male virtual IP model';
+    if (normalized === 'F' || normalized === 'FEMALE') return 'female virtual IP model';
+    return 'virtual IP model';
+};
+
+/**
+ * Rewrites LLM-authored hardcoded ethnic/gender subject terms (e.g. "Asian woman",
+ * "Korean woman") into neutral "[gender] virtual IP model" wording.
+ *
+ * Motivation: generateFacialDescriptor asks a Gemini vision model to freely write a
+ * locked_descriptor string. The LLM sometimes writes hardcoded terms like
+ * "Asian woman" into that string, which is stored verbatim on
+ * model.persona.locked_descriptor and later read unconditionally by
+ * narrativeService.buildSubjectToken into the final (English) image-generation
+ * prompt. promptSanitizer.ts's HARDCODED_SUBJECT_TERMS list only *detects* this
+ * residue (Stage 19B note: detector signatures, not a removal list) — sanitizer
+ * behavior is intentionally left untouched by this change. This helper is the
+ * source-side rewrite: it runs where the descriptor is produced/stored so the
+ * hardcoded wording never reaches the final prompt in the first place.
+ *
+ * Gender for each replacement is read primarily from the matched term itself —
+ * every current HARDCODED_SUBJECT_TERMS entry explicitly encodes man/boy vs
+ * woman/girl — falling back to the caller-supplied genderHint (seed.gender /
+ * model.gender) only if a future term carried no explicit gender signal, and
+ * finally to a fully neutral label ('virtual IP model') if gender cannot be
+ * determined at all.
+ */
+export const sanitizeHardcodedSubjectTerms = (descriptor: string, genderHint?: string): string => {
+    if (!descriptor) return descriptor;
+
+    let sanitized = descriptor;
+    for (const term of HARDCODED_SUBJECT_TERMS) {
+        const pattern = buildHardcodedSubjectTermPattern(term);
+        if (!pattern.test(sanitized)) continue;
+
+        let replacement: string;
+        if (/\b(man|boy)\b/i.test(term)) {
+            replacement = 'male virtual IP model';
+        } else if (/\b(woman|girl)\b/i.test(term)) {
+            replacement = 'female virtual IP model';
+        } else {
+            replacement = resolveNeutralGenderLabel(genderHint);
+        }
+
+        sanitized = sanitized.replace(pattern, replacement);
+    }
+
+    return normalizeDescriptorSpacing(sanitized);
+};
+
 export interface FacialDescriptorSeed {
     name: string;
     gender: string;
@@ -142,7 +212,8 @@ Output the string directly, nothing else.
 
         // 驗證:必須以 name + gender + age 開頭,長度合理
         if (cleaned.length >= 50 && cleaned.length <= 800 && cleaned.includes(seed.name)) {
-            return cleaned;
+            // 清洗:LLM 可能自由寫出 "Asian woman" 等硬編碼主體詞,存進 locked_descriptor 前先中性化
+            return sanitizeHardcodedSubjectTerms(cleaned, seed.gender);
         }
 
         console.warn("generateFacialDescriptor returned invalid format, using fallback");

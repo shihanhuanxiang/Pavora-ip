@@ -170,21 +170,21 @@ export const buildStructuredOutfitLabel = (value: string, type: string): string 
 
 
 export const STYLE_ARCHETYPE_MAP: Record<string, string> = {
-    'feminine_sweet': '甜美少女風格 // SWEET',
-    'feminine_mature': '成熟御姐風格 // MATURE',
-    'korean_chic': '韓系時髦風格 // KOREAN CHIC',
-    'street_edgy': '街頭辣妹風格 // STREET',
-    'sporty_active': '運動元氣風格 // SPORTY',
-    'vintage_retro': '復古懷舊風格 // VINTAGE',
-    'minimalist': '極簡清爽風格 // MINIMAL',
-    'tomboy': '率性中性風格 // TOMBOY',
-    'masculine_clean': '清爽男友風格 // CLEAN',
-    'masculine_rugged': '硬朗戶外風格 // RUGGED',
-    'masculine_formal': '都會正裝風格 // FORMAL',
-    'feminine_office': '職場精英風格 // OFFICE',
-    'dandy_refined': '雅痞紳士風格 // DANDY',
-    'cultural_traditional': '文化深蘊風格 // CULTURAL',
-    'street_techwear': '街頭機能風格 // TECHWEAR'
+    'feminine_sweet': '甜美少女風格',
+    'feminine_mature': '成熟御姐風格',
+    'korean_chic': '韓系時髦風格',
+    'street_edgy': '街頭辣妹風格',
+    'sporty_active': '運動元氣風格',
+    'vintage_retro': '復古懷舊風格',
+    'minimalist': '極簡清爽風格',
+    'tomboy': '率性中性風格',
+    'masculine_clean': '清爽男友風格',
+    'masculine_rugged': '硬朗戶外風格',
+    'masculine_formal': '都會正裝風格',
+    'feminine_office': '職場精英風格',
+    'dandy_refined': '雅痞紳士風格',
+    'cultural_traditional': '文化深蘊風格',
+    'street_techwear': '街頭機能風格'
 };
 
 const WEAR_STATE_MAP: Record<string, { label: string, width: string }> = {
@@ -379,11 +379,11 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                         <div className="flex items-center gap-3">
                             <div className="w-1.5 h-5 bg-[var(--color-gold)] rounded-full shadow-[0_0_15px_rgba(212,175,55,0.4)]"></div>
                             <h3 className="text-2xl font-black text-[var(--color-narrative-ink)] tracking-[0.3em] uppercase">
-                                角色劇組衣櫃 <span className="opacity-70 ml-2 font-light">WARDROBE</span>
+                                角色劇組衣櫃
                             </h3>
                         </div>
                         <p className="text-[11px] text-[var(--color-gold)] font-bold uppercase tracking-[0.5em] ml-5 italic opacity-70">
-                            角色數位資產矩陣 // ENTITY VISUAL ASSETS
+                            角色數位資產矩陣
                         </p>
                     </div>
 
@@ -463,7 +463,7 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                     {!isActive && (
                                         <div className="absolute top-16 right-6 opacity-0 group-hover:opacity-70 transition-opacity duration-300 pointer-events-none">
                                             <span className="text-[11px] font-bold tracking-widest uppercase text-gray-600 leading-none">
-                                                點擊鎖定 // CLICK TO LOCK
+                                                點擊鎖定
                                             </span>
                                         </div>
                                     )}
@@ -484,8 +484,8 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                                 <span className="text-[11px] font-black text-gray-500 uppercase tracking-widest">{outfit.outfit_id}</span>
                                             </div>
                                             <div className="flex gap-2">
-                                                <span className={`px-3 py-1 bg-[var(--color-bg-input)] border border-[var(--color-border)] text-[11px] font-black rounded-full uppercase tracking-tighter ${isActive ? 'text-[var(--color-gold)]' : 'text-gray-500'}`}>美學階層 // TIER {outfit.aesthetic_tier}</span>
-                                                {isSeed && <span className="px-2 py-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[11px] font-bold rounded-md uppercase tracking-tighter">系統核心 // CORE</span>}
+                                                <span className={`px-3 py-1 bg-[var(--color-bg-input)] border border-[var(--color-border)] text-[11px] font-black rounded-full uppercase tracking-tighter ${isActive ? 'text-[var(--color-gold)]' : 'text-gray-500'}`}>美學階層 {outfit.aesthetic_tier}</span>
+                                                {isSeed && <span className="px-2 py-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[11px] font-bold rounded-md uppercase tracking-tighter">系統核心</span>}
                                             </div>
                                         </div>
 
@@ -499,22 +499,22 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                         <div className="grid grid-cols-2 gap-4 text-[11px]">
                                             <div className="space-y-3">
                                                 <div className="space-y-1">
-                                                    <p className="text-gray-400 dark:text-gray-600 font-bold uppercase text-[11px] tracking-widest">上裝 // TOP</p>
+                                                    <p className="text-gray-400 dark:text-gray-600 font-bold uppercase text-[11px] tracking-widest">上裝</p>
                                                     <p className="text-gray-800 dark:text-white font-medium line-clamp-1">{getTopDisplayText(outfit)}</p>
                                                 </div>
                                                 <div className="space-y-1">
-                                                    <p className="text-gray-400 dark:text-gray-600 font-bold uppercase text-[11px] tracking-widest">鞋履 // SHOES</p>
+                                                    <p className="text-gray-400 dark:text-gray-600 font-bold uppercase text-[11px] tracking-widest">鞋履</p>
                                                     <p className="text-gray-800 dark:text-white font-medium line-clamp-1">{getOutfitDisplayText(outfit.pillars.shoes, 'shoes')}</p>
                                                 </div>
                                             </div>
                                             <div className="space-y-3">
                                                 <div className="space-y-1">
-                                                    <p className="text-gray-400 dark:text-gray-600 font-bold uppercase text-[11px] tracking-widest">下裝 // BOTTOM</p>
+                                                    <p className="text-gray-400 dark:text-gray-600 font-bold uppercase text-[11px] tracking-widest">下裝</p>
                                                     <p className="text-gray-800 dark:text-white font-medium line-clamp-1">{getOutfitDisplayText(outfit.pillars.bottom, 'bottom')}</p>
                                                 </div>
                                                 <div className="space-y-1">
                                                     <div className="flex justify-between items-center mb-1">
-                                                        <p className="text-gray-600 font-bold uppercase text-[11px] tracking-widest">物理磨損狀態 // CONDITION</p>
+                                                        <p className="text-gray-600 font-bold uppercase text-[11px] tracking-widest">物理磨損狀態</p>
                                                         <span className={`text-[11px] font-black uppercase ${
                                                         outfit.wear_state === 'worn_in' ? 'text-red-500' : 'text-[var(--color-gold)]'
                                                         }`}>
@@ -541,11 +541,11 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                                 ? 'bg-[var(--color-gold)] text-black shadow-[0_0_15px_rgba(212,175,55,0.4)] animate-pulse'
                                                 : 'bg-[var(--color-bg-input)] text-gray-500'
                                             }`}>
-                                                {isActive ? '當前著裝方案 // ACTIVE SCHEME' : '庫存保管中 // IN STORAGE'}
+                                                {isActive ? '當前著裝方案' : '庫存保管中'}
                                             </div>
                                         </div>
                                         <span className="text-[11px] text-gray-400 dark:text-gray-600 font-bold uppercase tracking-[0.3em]">
-                                            {outfit.gender === 'F' ? '女性模組 // FEMALE' : outfit.gender === 'M' ? '男性模組 // MALE' : '全性別適用 // UNISEX'}
+                                            {outfit.gender === 'F' ? '女性模組' : outfit.gender === 'M' ? '男性模組' : '全性別適用'}
                                         </span>
                                     </div>
                                 </div>
@@ -565,8 +565,8 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                         
                         <div className="flex justify-between items-start mb-10 relative z-10">
                             <div className="space-y-1">
-                                <h3 className="text-2xl font-black text-[var(--color-text-title)] tracking-widest uppercase italic">新增矩陣穿搭 <span className="text-[var(--color-gold)]">// Asset Creation</span></h3>
-                                <p className="text-[11px] text-gray-500 font-bold tracking-[0.4em] uppercase">配置您的 AI 數位模組視覺組件 // CONFIG COMPONENTS</p>
+                                <h3 className="text-2xl font-black text-[var(--color-text-title)] tracking-widest uppercase italic">新增矩陣穿搭</h3>
+                                <p className="text-[11px] text-gray-500 font-bold tracking-[0.4em] uppercase">配置您的 AI 數位模組視覺組件</p>
                             </div>
                             <button onClick={() => setShowForm(false)} className="p-3 bg-white/5 hover:bg-white/10 rounded-2xl transition-all">
                                 <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -579,11 +579,11 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                 <div className="space-y-6">
                                     <div className="flex items-center gap-3">
                                         <div className="w-1 h-3 bg-white/20 rounded-full"></div>
-                                        <h4 className="text-[11px] font-black text-white/40 uppercase tracking-[0.3em]">基礎識別 (IDENTITY)</h4>
+                                        <h4 className="text-[11px] font-black text-white/40 uppercase tracking-[0.3em]">基礎識別</h4>
                                     </div>
                                     <div className="grid grid-cols-2 gap-6">
                                         <div className="group space-y-2">
-                                            <label className="text-[11px] text-gray-500 font-bold uppercase tracking-widest group-focus-within:text-[var(--color-gold)] transition-colors">穿搭編碼 (Outfit UID)</label>
+                                            <label className="text-[11px] text-gray-500 font-bold uppercase tracking-widest group-focus-within:text-[var(--color-gold)] transition-colors">穿搭編碼</label>
                                             <input 
                                                 type="text" 
                                                 className="w-full bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-2xl px-5 py-3 text-xs text-[var(--color-text-main)] focus:border-[var(--color-gold)]/50 transition-all outline-none"
@@ -593,21 +593,21 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                             />
                                         </div>
                                         <div className="group space-y-2">
-                                            <label className="text-[11px] text-gray-500 font-bold uppercase tracking-widest">風格原型 (Archetype)</label>
+                                            <label className="text-[11px] text-gray-500 font-bold uppercase tracking-widest">風格原型</label>
                                             <select 
                                                 className="w-full bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-2xl px-5 py-3 text-xs text-[var(--color-text-main)] focus:border-[var(--color-gold)]/50 outline-none appearance-none cursor-pointer"
                                                 value={newOutfit.style_archetype}
                                                 onChange={e => setNewOutfit({ ...newOutfit, style_archetype: e.target.value })}
                                             >
-                                                <option value="feminine_sweet">甜美少女風格 // FEMININE SWEET</option>
-                                                <option value="feminine_mature">成熟御姐風格 // FEMININE MATURE</option>
-                                                <option value="masculine_clean">清爽簡約風格 // MASCULINE CLEAN</option>
-                                                <option value="masculine_rugged">硬朗粗獷風格 // MASCULINE RUGGED</option>
-                                                <option value="masculine_formal">商務正裝風格 // MASCULINE FORMAL</option>
-                                                <option value="tomboy">率性中性風格 // TOMBOY</option>
-                                                <option value="minimalist">極簡主義風格 // MINIMALIST</option>
-                                                <option value="vintage_retro">復古懷舊風格 // VINTAGE</option>
-                                                <option value="street_techwear">街頭機能風格 // TECHWEAR</option>
+                                                <option value="feminine_sweet">甜美少女風格</option>
+                                                <option value="feminine_mature">成熟御姐風格</option>
+                                                <option value="masculine_clean">清爽簡約風格</option>
+                                                <option value="masculine_rugged">硬朗粗獷風格</option>
+                                                <option value="masculine_formal">商務正裝風格</option>
+                                                <option value="tomboy">率性中性風格</option>
+                                                <option value="minimalist">極簡主義風格</option>
+                                                <option value="vintage_retro">復古懷舊風格</option>
+                                                <option value="street_techwear">街頭機能風格</option>
                                             </select>
                                         </div>
                                     </div>
@@ -617,14 +617,14 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                 <div className="space-y-6">
                                     <div className="flex items-center gap-3">
                                         <div className="w-1 h-3 bg-white/20 rounded-full"></div>
-                                        <h4 className="text-[11px] font-black text-white/40 uppercase tracking-[0.3em]">穿搭四大支柱 (COMPONENTS)</h4>
+                                        <h4 className="text-[11px] font-black text-white/40 uppercase tracking-[0.3em]">穿搭四大支柱</h4>
                                     </div>
                                     <div className="grid grid-cols-2 gap-6">
                                         {[
-                                            { label: '上身單品 (TOP)', key: 'top', placeholder: '例如：寬鬆奶油色針織衫...' },
-                                            { label: '下身單品 (BOTTOM)', key: 'bottom', placeholder: '例如：高腰亞麻寬褲...' },
-                                            { label: '鞋履配備 (SHOES)', key: 'shoes', placeholder: '例如：極簡皮革涼鞋...' },
-                                            { label: '外層疊穿 (OUTER)', key: 'layer_outer', placeholder: '例如：長版絲質長袍...' }
+                                            { label: '上身單品', key: 'top', placeholder: '例如：寬鬆奶油色針織衫...' },
+                                            { label: '下身單品', key: 'bottom', placeholder: '例如：高腰亞麻寬褲...' },
+                                            { label: '鞋履配備', key: 'shoes', placeholder: '例如：極簡皮革涼鞋...' },
+                                            { label: '外層疊穿', key: 'layer_outer', placeholder: '例如：長版絲質長袍...' }
                                         ].map((pillar) => (
                                             <div key={pillar.label} className="group space-y-2">
                                                 <label className="text-[11px] text-gray-500 font-bold uppercase tracking-widest">{pillar.label}</label>
@@ -645,15 +645,15 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-3">
                                             <div className="w-1 h-3 bg-white/20 rounded-full"></div>
-                                            <h4 className="text-[11px] font-black text-white/40 uppercase tracking-[0.3em]">物理細節：磨損與質地 (PHYSICS)</h4>
+                                            <h4 className="text-[11px] font-black text-white/40 uppercase tracking-[0.3em]">物理細節：磨損與質地</h4>
                                         </div>
-                                        <span className="text-[11px] text-[var(--color-gold)] font-mono animate-pulse tracking-widest">寫實渲染引擎已啟動 // REALISM ENGINE ON</span>
+                                        <span className="text-[11px] text-[var(--color-gold)] font-mono animate-pulse tracking-widest">寫實渲染引擎已啟動</span>
                                     </div>
                                     <div className="grid grid-cols-2 gap-4">
                                         {[
-                                            { id: 'barely_worn', label: '幾乎全新・極致平整', desc: '極致正式 // PRISTINE' },
-                                            { id: 'well_loved', label: '穿過・自然褶皺', desc: '寫實主義 // WELL LOVED' },
-                                            { id: 'worn_in', label: '略舊・明顯磨損', desc: '明顯磨損 // WORN IN' }
+                                            { id: 'barely_worn', label: '幾乎全新・極致平整', desc: '極致正式' },
+                                            { id: 'well_loved', label: '穿過・自然褶皺', desc: '寫實主義' },
+                                            { id: 'worn_in', label: '略舊・明顯磨損', desc: '明顯磨損' }
                                         ].map(state => (
                                             <motion.button
                                                 key={state.id}
@@ -678,14 +678,14 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                             <div className="md:col-span-4 space-y-10 border-l border-white/5 pl-10">
                                 {/* Aesthetic Tier Selector */}
                                 <div className="space-y-6">
-                                    <h4 className="text-[11px] font-black text-white/40 uppercase tracking-[0.3em]">美學階層 // AESTHETIC TIER</h4>
+                                    <h4 className="text-[11px] font-black text-white/40 uppercase tracking-[0.3em]">美學階層</h4>
                                     <div className="space-y-4">
                                         {[
-                                            { id: 1, label: '階層 1：日常 // DAILY', desc: '日常寫實' },
-                                            { id: 2, label: '階層 2：流行 // POP', desc: '精緻流行' },
-                                            { id: 3, label: '階層 3：攝影 // STUDIO', desc: '商業棚拍' },
-                                            { id: 4, label: '階層 4：奢華 // LUXE', desc: '奢華美學' },
-                                            { id: 5, label: '階層 5：雜誌 // VOGUE', desc: '雜誌封面' }
+                                            { id: 1, label: '階層 1：日常', desc: '日常寫實' },
+                                            { id: 2, label: '階層 2：流行', desc: '精緻流行' },
+                                            { id: 3, label: '階層 3：攝影', desc: '商業棚拍' },
+                                            { id: 4, label: '階層 4：奢華', desc: '奢華美學' },
+                                            { id: 5, label: '階層 5：雜誌', desc: '雜誌封面' }
                                         ].map(tier => (
                                             <button
                                                 key={tier.id}
@@ -711,7 +711,7 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                 <div className="p-6 bg-[var(--color-gold)]/[0.03] border border-[var(--color-gold)]/10 rounded-[2rem] space-y-4">
                                     <div className="flex items-center gap-2">
                                         <svg className="w-4 h-4 text-[var(--color-gold)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                        <span className="text-[11px] text-[var(--color-gold)] font-black uppercase tracking-widest">矩陣建議 // TIPS</span>
+                                        <span className="text-[11px] text-[var(--color-gold)] font-black uppercase tracking-widest">矩陣建議</span>
                                     </div>
                                     <p className="text-[12px] text-gray-400 leading-relaxed font-medium">
                                         {newOutfit.aesthetic_tier && newOutfit.aesthetic_tier >= 4 
@@ -727,13 +727,13 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                 onClick={() => setShowForm(false)} 
                                 className="flex-1 py-4 bg-white/[0.03] hover:bg-white/[0.08] text-white/60 hover:text-white transition-all rounded-2xl font-black text-[12px] tracking-widest uppercase border border-white/5 italic"
                             >
-                                取消變更 // CANCEL
+                                取消變更
                             </button>
                             <button
                                 onClick={handleSave}
                                 className="flex-[2] py-4 bg-[var(--color-gold)] hover:bg-[var(--color-gold)]/90 text-black transition-all rounded-2xl font-black text-[13px] tracking-[0.3em] uppercase shadow-[0_20px_50px_rgba(212,175,55,0.3)] active:scale-[0.98] italic"
                             >
-                                儲存衣櫃資產 // SAVE ASSET
+                                儲存衣櫃資產
                             </button>
                         </div>
                     </div>

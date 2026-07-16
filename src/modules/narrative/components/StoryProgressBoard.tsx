@@ -83,7 +83,7 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
             {/* Story Arc Section */}
             {!isArcEnabled ? (
                 <div className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-[2rem] p-6 text-center opacity-40 group hover:opacity-60 transition-all">
-                    <p className="text-[10px] text-gray-500 uppercase tracking-[0.4em] font-black italic">故事弧引擎 // STORY ARC ENGINE OFFLINE</p>
+                    <p className="text-[10px] text-gray-500 uppercase tracking-[0.4em] font-black italic">故事弧引擎</p>
                 </div>
             ) : activeArc && (
                 <motion.div 
@@ -97,10 +97,10 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                     <div className="flex justify-between items-center relative z-10">
                         <div className="flex items-center gap-3">
                             <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-gold)] animate-pulse shadow-[0_0_10px_rgba(212,175,55,1)]"></div>
-                            <h4 className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.4em] italic">核心故事弧 // ACTIVE ARC</h4>
+                            <h4 className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.4em] italic">核心故事弧</h4>
                         </div>
                         <div className="flex items-center gap-2 px-3 py-1 bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-full">
-                            <span className="text-[9px] text-gray-500 font-black uppercase tracking-tighter">環節 // PHASE</span>
+                            <span className="text-[9px] text-gray-500 font-black uppercase tracking-tighter">環節</span>
                             <span className="text-[9px] text-[var(--color-text-main)] font-black">{arcPhaseIdx + 1} / {activeArc.phases.length}</span>
                         </div>
                     </div>
@@ -147,7 +147,7 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
             {/* Identity Threads Section */}
             {!isThreadsEnabled ? (
                 <div className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-[2rem] p-6 text-center opacity-40">
-                    <p className="text-[10px] text-gray-500 uppercase tracking-[0.4em] font-black italic">身分線程引擎 // IDENTITY THREADS DISABLED</p>
+                    <p className="text-[10px] text-gray-500 uppercase tracking-[0.4em] font-black italic">身分線程引擎</p>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -171,7 +171,7 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                                     <div className="space-y-1">
                                         <div className="flex items-center gap-2">
                                             <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,1)]"></div>
-                                            <span className="text-[9px] font-black text-emerald-500 uppercase tracking-[0.3em]">身分發展線 // IDENTITY THREAD</span>
+                                            <span className="text-[9px] font-black text-emerald-500 uppercase tracking-[0.3em]">身分發展線</span>
                                         </div>
                                         <h6 className="text-lg font-black text-[var(--color-text-title)] tracking-tight uppercase leading-none">{thread.name_zh}</h6>
                                     </div>

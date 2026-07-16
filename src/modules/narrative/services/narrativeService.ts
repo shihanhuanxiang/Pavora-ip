@@ -15,6 +15,7 @@ import { COMPOSER_INJECTION_RULES } from "../constants/injectionRules";
 import { WardrobeService } from "./wardrobeService";
 import { getPresetById } from '../constants/visualPresets';
 import { isSceneCombinationSafe } from "../../../domains/scene/sceneSafeMatrix";
+import { sanitizeHardcodedSubjectTerms } from "../../modelCreation/services/personaService";
 
 /**
  * 將 Visual Preset 的值填入 model 的對應欄位
@@ -345,7 +346,9 @@ const getFabricSafeguard = (outfit: OutfitV2): string => {
 const buildSubjectToken = (model: Model): string => {
     const locked = model.persona?.locked_descriptor?.trim();
     if (locked) {
-        return locked;
+        // 清洗既有已污染的舊 model 資料:locked_descriptor 可能存有 LLM 早期寫入的
+        // 硬編碼主體詞(如 "Asian woman"),讀出後一律中性化再組進 final prompt。
+        return sanitizeHardcodedSubjectTerms(locked, model.gender);
     }
 
     const hint = model.visualIdentityHint;

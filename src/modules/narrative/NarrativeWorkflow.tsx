@@ -761,9 +761,9 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             const result = await syncPrompts(textToSync, activePromptLang);
             setEditablePrompt(result.EN);
             setEditablePromptZH(result.ZH);
-            addNotification({ type: 'success', message: '提示詞雙語同步完成 (Sync Complete)' });
+            addNotification({ type: 'success', message: '提示詞雙語同步完成' });
         } catch (e) {
-            addNotification({ type: 'error', message: '同步失敗 (Sync Failed)' });
+            addNotification({ type: 'error', message: '同步失敗' });
         } finally {
             setIsSyncing(false);
         }
@@ -861,7 +861,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             setNarrativeStep(5);
             setHasFinished(false); // D3(b)：新影像生成後視為尚未入庫，重新開啟未儲存攔截
             setImageReadyAt(Date.now()); // D3(c)：記錄生成完成時間，供 FINISH 防誤點判斷
-            addNotification({ type: 'success', message: '靈魂視覺化成功 (Visualization Success)', description: '影像已生成並包含身分內碼 (Image generated with identity metadata).' });
+            addNotification({ type: 'success', message: '靈魂視覺化成功', description: '影像已生成並包含身分內碼。' });
             recordGeneration({ module: 'narrative', kind: 'image', model_id: model.id, ok: true });
         } catch (e) {
             console.error(e);
@@ -870,7 +870,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             if (isServerQuotaError(e)) {
                 window.dispatchEvent(new Event('imagenQuotaExceeded'));
             } else {
-                addNotification({ type: 'error', message: '影像生成失敗 (Generation Failed)', description: 'AI 算力調度異常，請稍後再試 (AI engine error, please try again later).' });
+                addNotification({ type: 'error', message: '影像生成失敗', description: 'AI 算力調度異常，請稍後再試。' });
             }
             recordGeneration({ module: 'narrative', kind: 'image', model_id: model.id, ok: false });
         } finally {
@@ -907,7 +907,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             setSelectedBrief(null);
             setEventSource('ai');
 
-            addNotification({ type: 'success', message: '靈魂與現世已對齊 (Context Aligned)', description: '及時場景與故事弧邏輯已啟動 (Real-time scene and story arc logic active).' });
+            addNotification({ type: 'success', message: '靈魂與現世已對齊', description: '及時場景與故事弧邏輯已啟動。' });
         } catch (e) {
             addNotification({ type: 'error', message: '靈感獲取失敗' });
         } finally {
@@ -1216,7 +1216,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             setWeeklyPlan(plan);
             setShowPlan(true);
         } catch (e) {
-            addNotification({ type: 'error', message: '計畫獲取失敗 (Plan Failed)' });
+            addNotification({ type: 'error', message: '計畫獲取失敗' });
         } finally {
             setIsGeneratingPlan(false);
         }
@@ -1302,7 +1302,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                         longTermMemories: [...currentMems, ...selectedMems]
                     }
                 } as any);
-                addNotification({ type: 'success', message: '核心記憶已存儲 (Memory Stored)', description: '模特兒的靈魂一致性得到加固 (Model consistency reinforced).' });
+                addNotification({ type: 'success', message: '核心記憶已存儲', description: '模特兒的靈魂一致性得到加固。' });
             }
             setShowMemoryConfirm(false);
             if (diary) onConfirm(diary, generatedImageUrl || undefined);
@@ -1453,7 +1453,6 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                     <span className="narrative-stage-index">{stage.step}</span>
                                     <span className="narrative-stage-copy">
                                         <strong>{stage.label}</strong>
-                                        <em>{stage.caption}</em>
                                     </span>
                                 </div>
                             ))}
@@ -1483,7 +1482,6 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                 <div className="w-1.5 h-4 bg-[var(--color-gold)] rounded-full shadow-[0_0_12px_rgba(var(--color-gold-rgb),0.4)]"></div>
                                                 <h3 className="text-2xl font-black text-narrative-ink tracking-[0.3em] uppercase italic">靈魂週計畫</h3>
                                             </div>
-                                            <p className="text-[11px] text-[#bf8d23] font-black uppercase tracking-[0.6em] ml-4 italic px-1">Predictive Narrative Architecture</p>
                                         </div>
                                         <button onClick={() => setShowPlan(false)} className="text-[12px] text-narrative-ink-soft hover:text-narrative-ink transition-colors uppercase tracking-widest font-black border-b border-narrative-ink/20 pb-1">返回敘事</button>
                                     </div>
@@ -1574,7 +1572,6 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                 <div className="w-1.5 h-4 bg-blue-500 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.4)]"></div>
                                                 <h3 className="text-2xl font-black text-narrative-ink tracking-[0.3em] uppercase italic">敘事矩陣設定</h3>
                                             </div>
-                                            <p className="text-[10px] text-[#bf8d23] font-black uppercase tracking-[0.6em] ml-4 italic">Persona Parameter Control</p>
                                         </div>
                                     </div>
                                     <NarrativeSettings model={model} onUpdate={(u) => updateModel(model.id, u)} />
@@ -1600,7 +1597,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             {/* Header */}
                                             <div className="narrative-step-header narrative-screen-head px-8 py-5 border-b border-white/10 shrink-0">
                                                 <div>
-                                                    <p className="text-[12px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">Stage 01 · Scene Casting</p>
+                                                    <p className="text-[12px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">第一步 · 場景選角</p>
                                                     <h2>先替今天的靈魂<br />選一個真實現場</h2>
                                                     <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">地區 / 類別篩選、固定場景卡、AI 感應場景、換一批。點擊場景後進入服裝搭配。</p>
                                                 </div>
@@ -1736,7 +1733,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             {/* Header */}
                                             <div className="narrative-step-header narrative-screen-head px-8 py-5 border-b border-white/10 shrink-0 flex items-center justify-between">
                                                 <div>
-                                                    <p className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">Stage 02 · Wardrobe Casting</p>
+                                                    <p className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">第二步 · 服裝選角</p>
                                                     <h2>服裝不是裝飾，<br />是角色今天的語氣</h2>
                                                     <p className="text-[9px] text-gray-400 mt-0.5">{confirmedScene?.name_zh} · 場景適配穿搭、AI top pick、替代方案與自動搭配。</p>
                                                 </div>
@@ -1834,7 +1831,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             {/* Header */}
                                             <div className="narrative-step-header narrative-screen-head px-8 py-5 border-b border-white/10 shrink-0 flex items-center justify-between">
                                                 <div>
-                                                    <p className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">Stage 04 · Prompt Review</p>
+                                                    <p className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">第四步 · 提示詞審閱</p>
                                                     <h2>雙語提示詞審片台</h2>
                                                     <p className="text-[12px] text-gray-500 uppercase tracking-widest mt-0.5">中文提示詞、英文 final prompt、分段模組、雙向同步與生成影像 CTA。</p>
                                                 </div>
@@ -1895,7 +1892,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                     </div>
                                                     {/* EN Column */}
                                                     <div className="space-y-3">
-                                                        <p className="text-[9px] font-black text-blue-400 uppercase tracking-widest">English Prompt</p>
+                                                        <p className="text-[9px] font-black text-blue-400 uppercase tracking-widest">英文提示詞</p>
                                                         {hasStructuredPromptEN ? (
                                                             <div className="space-y-2">
                                                                 {getReviewPromptSections('EN').map((section) => (
@@ -1909,7 +1906,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                             value={section.value}
                                                                             onChange={(e) => updateReviewPromptSection('EN', section, e.target.value)}
                                                                             disabled={isGeneratingImage}
-                                                                            placeholder={section.value === '' ? `No ${section.label.toLowerCase()} content — run ⇄ Sync to populate` : ''}
+                                                                            placeholder={section.value === '' ? '尚無內容，點擊上方「⇄ 雙向同步」自動生成' : ''}
                                                                         />
                                                                     </div>
                                                                 ))}
@@ -2010,7 +2007,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             <div className="narrative-deliver-layout flex-1 overflow-hidden">
                                                 <div className="narrative-deliver-preview">
                                                     <div className="narrative-deliver-preview-toolbar">
-                                                        <span>Image Preview</span>
+                                                        <span>影像預覽</span>
                                                         <button onClick={() => setShowLightbox(true)}>↗ 放大</button>
                                                     </div>
                                                     <button
@@ -2037,7 +2034,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                 </div>
 
                                                 <div className="narrative-deliver-panel">
-                                                    <p className="narrative-deliver-kicker">Stage 05 · Delivery Desk</p>
+                                                    <p className="narrative-deliver-kicker">第五步 · 成果交付</p>
                                                     <h2 className="narrative-deliver-heading">影像已生成，準備發布</h2>
                                                     {(model.persona?.coreVibe || model.persona?.mbti) && (
                                                         <p className="narrative-deliver-persona">
@@ -2186,7 +2183,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                     <div className={`${narrativeStep === 3 ? 'narrative-script-stage relative z-10 flex flex-col gap-8 pb-16 text-left' : 'hidden'}`}>
                                         <div className="narrative-screen-head narrative-script-head">
                                             <div>
-                                                <p className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">Stage 03 · Narrative Script</p>
+                                                <p className="text-[10px] font-black text-[var(--color-gold)] uppercase tracking-[0.5em]">第三步 · 敘事腳本</p>
                                                 <h2>把場景變成<br />一段可拍攝的生活</h2>
                                                 <p>事件描述、場景 / 服裝確認卡、生成日記、拍攝設定與視覺控制。</p>
                                             </div>
@@ -2355,7 +2352,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                             >
                                                                 <div className="flex items-center gap-3">
                                                                     <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-gold)] animate-pulse"></div>
-                                                                    <span className="text-[10px] font-bold text-[var(--color-gold)] uppercase tracking-[0.3em]">{model.name} 的敘事日記 (Narrative Diary)</span>
+                                                                    <span className="text-[10px] font-bold text-[var(--color-gold)] uppercase tracking-[0.3em]">{model.name} 的敘事日記</span>
                                                                 </div>
                                                                 
                                                                 {currentSceneId && (
@@ -2381,10 +2378,10 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                 </div>
                                                                 <div className="flex flex-wrap gap-2">
                                                                     <span className="px-3 py-1 bg-[var(--narrative-ink)] border border-[var(--narrative-ink)] rounded-full text-[9px] font-bold text-[var(--color-gold)] uppercase">
-                                                                        情緒狀態 (Mood): {diary.mood}
+                                                                        情緒狀態：{diary.mood}
                                                                     </span>
                                                                     <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[9px] font-bold text-gray-400 uppercase">
-                                                                        場景類型 (Scene): {diary.generatedPromptParams?.locationType}
+                                                                        場景類型：{diary.generatedPromptParams?.locationType}
                                                                     </span>
                                                                 </div>
                                                             </motion.div>
@@ -2406,7 +2403,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     {/* Footer and Finish - Sticky at the bottom of Content Hub */}
     <div className="p-8 bg-[var(--color-bg-surface)]/60 border-t border-[var(--color-border)] flex justify-between items-center backdrop-blur-md">
                     <span className="text-[8px] text-gray-600 uppercase tracking-[0.5em] font-light">
-                        Antigravity 靈魂視覺引擎已上線 // ENGINE ACTIVE
+                        Antigravity 靈魂視覺引擎已上線
                     </span>
                     <div className="flex gap-4">
                         {generatedImageUrl && (
@@ -2417,7 +2414,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                             title={isFinishCooldown ? '影像剛生成，請稍候片刻再確認送出' : undefined}
                             className="px-10 text-[11px] font-bold tracking-[0.4em] uppercase italic"
                         >
-                            完成佈署 // FINISH
+                            完成佈署
                         </Button>
                         )}
                     </div>
@@ -2434,7 +2431,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                         >
                             <div className="max-w-sm w-full bg-[var(--color-bg-surface)] border border-[var(--color-gold)]/20 p-8 rounded-[2.5rem] space-y-6 shadow-2xl">
                                 <div className="text-center space-y-2">
-                                    <h4 className="text-sm font-bold text-[var(--color-gold)] uppercase tracking-[0.2em] font-display">核心記憶同步 // CORE MEMORY SYNC</h4>
+                                    <h4 className="text-sm font-bold text-[var(--color-gold)] uppercase tracking-[0.2em] font-display">核心記憶同步</h4>
                                     <p className="text-[10px] text-gray-400 font-medium">
                                         系統偵測到了新的生活細節與記憶碎片。是否要將這些內容永久存入其靈魂底座？
                                     </p>
@@ -2450,10 +2447,10 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
 
                                 <div className="space-y-3 pt-4">
                                     <Button onClick={() => handleConfirmMemories(newMemories)} className="w-full py-4 text-[10px] tracking-widest uppercase italic">
-                                        存入長期記憶 // SAVE MEMORY 🧠
+                                        存入長期記憶 🧠
                                     </Button>
                                     <Button variant="secondary" onClick={() => handleConfirmMemories([])} className="w-full py-3 text-[10px] border-white/10 opacity-60 uppercase italic tracking-widest">
-                                        不儲存跳過 // SKIP
+                                        不儲存跳過
                                     </Button>
                                 </div>
                             </div>
@@ -2471,7 +2468,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                         >
                             <div className="max-w-sm w-full bg-[var(--color-bg-surface)] border border-[var(--color-gold)]/20 p-8 rounded-[2.5rem] space-y-6 shadow-2xl">
                                 <div className="text-center space-y-2">
-                                    <h4 className="text-sm font-bold text-[var(--color-gold)] uppercase tracking-[0.2em] font-display">尚未儲存 // UNSAVED WORK</h4>
+                                    <h4 className="text-sm font-bold text-[var(--color-gold)] uppercase tracking-[0.2em] font-display">尚未儲存</h4>
                                     <p className="text-[10px] text-gray-400 font-medium">
                                         本次產出尚未儲存至作品集，確定離開？
                                     </p>
@@ -2482,7 +2479,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                         onClick={() => { setShowUnsavedLeaveConfirm(false); setPendingLeaveAction(null); }}
                                         className="w-full py-4 text-[10px] tracking-widest uppercase italic"
                                     >
-                                        返回儲存 // BACK TO SAVE
+                                        返回儲存
                                     </Button>
                                     <Button
                                         variant="secondary"
@@ -2494,7 +2491,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                         }}
                                         className="w-full py-3 text-[10px] border-white/10 opacity-60 uppercase italic tracking-widest"
                                     >
-                                        放棄並離開 // DISCARD & LEAVE
+                                        放棄並離開
                                     </Button>
                                 </div>
                             </div>

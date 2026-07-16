@@ -159,9 +159,9 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
     const styleBible = model.styleBible || {};
     const styleTargets = styleBible.contentTargets || {};
     const contentTargetInputs: { key: 'lifestyle' | 'curve' | 'drama'; label: string; fallback: number }[] = [
-        { key: 'lifestyle', label: '生活感 // LIFESTYLE', fallback: 50 },
-        { key: 'curve', label: '曲線感 // CURVE', fallback: 30 },
-        { key: 'drama', label: '戲劇張力 // DRAMA', fallback: 20 }
+        { key: 'lifestyle', label: '生活感', fallback: 50 },
+        { key: 'curve', label: '曲線感', fallback: 30 },
+        { key: 'drama', label: '戲劇張力', fallback: 20 }
     ];
 
     const handleUpdateStyleTarget = (category: 'lifestyle' | 'curve' | 'drama', value: string) => {
@@ -191,7 +191,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                 <div className="flex items-center gap-3">
                     <div className="w-1.5 h-4 bg-[var(--color-gold)] rounded-full shadow-[0_0_12px_rgba(var(--color-gold-rgb),0.4)]"></div>
                     <span className="text-[11px] font-black uppercase tracking-widest text-narrative-ink">
-                        視覺風格預設 // VISUAL PRESET
+                        視覺風格預設
                     </span>
                 </div>
 
@@ -210,7 +210,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                 : 'border-white/10 bg-white/[0.02] hover:border-white/20'
                         }`}
                     >
-                        <div className="text-[11px] font-black uppercase tracking-widest text-narrative-ink mb-1">自訂 // CUSTOM</div>
+                        <div className="text-[11px] font-black uppercase tracking-widest text-narrative-ink mb-1">自訂</div>
                         <div className="text-[12px] text-narrative-ink">不套用預設，手動設定所有選項</div>
                     </button>
 
@@ -230,7 +230,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                 <div className="flex items-center justify-between mb-1">
                                     <div className="text-[11px] font-black uppercase tracking-widest text-narrative-ink">{preset.label_zh}</div>
                                     {isActive && (
-                                        <div className="text-[11px] font-black text-[var(--color-gold)] uppercase tracking-widest animate-pulse">ACTIVE</div>
+                                        <div className="text-[11px] font-black text-[var(--color-gold)] uppercase tracking-widest animate-pulse">啟用中</div>
                                     )}
                                 </div>
                                 <div className="text-[12px] text-narrative-ink line-clamp-2">
@@ -261,7 +261,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
             >
                 <div className="flex items-center gap-3">
                     <div className="w-1.5 h-4 bg-[var(--color-gold)] rounded-full shadow-[0_0_12px_rgba(var(--color-gold-rgb),0.4)]"></div>
-                    <h4 className="text-[11px] font-black text-[var(--color-gold)] uppercase tracking-[0.3em]">IP 風格聖經 // STYLE BIBLE</h4>
+                    <h4 className="text-[11px] font-black text-[var(--color-gold)] uppercase tracking-[0.3em]">IP 風格聖經</h4>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -293,14 +293,14 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
             >
                 <div className="flex items-center gap-3">
                     <div className="w-1.5 h-4 bg-[var(--color-gold)] rounded-full shadow-[0_0_12px_rgba(var(--color-gold-rgb),0.4)]"></div>
-                    <h4 className="text-[11px] font-black text-[var(--color-gold)] uppercase tracking-[0.3em]">角色擴展設定 (Persona Extensions)</h4>
+                    <h4 className="text-[11px] font-black text-[var(--color-gold)] uppercase tracking-[0.3em]">角色擴展設定</h4>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {[
-                        { label: '出生地 // HOMETOWN', key: 'hometown', placeholder: '例如：台南市 (Tainan City)' },
-                        { label: '寵物稱呼 // PET NAME', key: 'pet_name', placeholder: '例如：饅頭 (Mantou)' },
-                        { label: '閨蜜稱呼 // BESTIE NAME', key: 'best_friend_name', placeholder: '例如：Kiki' }
+                        { label: '出生地', key: 'hometown', placeholder: '例如：台南市 (Tainan City)' },
+                        { label: '寵物稱呼', key: 'pet_name', placeholder: '例如：饅頭 (Mantou)' },
+                        { label: '閨蜜稱呼', key: 'best_friend_name', placeholder: '例如：Kiki' }
                     ].map((item) => (
                         <div key={item.key} className="space-y-2 group">
                             <label className="text-[11px] text-gray-700 font-bold uppercase tracking-widest group-focus-within:text-[var(--color-gold)] transition-colors inline-block">{item.label}</label>
@@ -319,7 +319,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                         onClick={handleSaveExtensions}
                         className="px-8 py-3 bg-black/5 dark:bg-white/5 text-gray-700 dark:text-white border border-black/10 dark:border-white/10 text-[13px] font-black rounded-full hover:bg-[var(--color-gold)] hover:text-black hover:border-[var(--color-gold)] hover:scale-105 active:scale-95 transition-all uppercase tracking-widest shadow-xl italic"
                     >
-                        儲存敘事設定 // SAVE CONTINUITY
+                        儲存敘事設定
                     </button>
                 </div>
             </motion.div>
@@ -332,20 +332,20 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
             >
                 <div className="flex items-center gap-3">
                     <div className="w-1.5 h-4 bg-purple-500 rounded-full shadow-[0_0_12px_rgba(168,85,247,0.4)]"></div>
-                    <h4 className="text-[11px] font-black text-purple-700 uppercase tracking-[0.3em]">美學參數對齊 (Aesthetic Matrix Control)</h4>
+                    <h4 className="text-[11px] font-black text-purple-700 uppercase tracking-[0.3em]">美學參數對齊</h4>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                     <div className="space-y-4">
                         <div className="flex justify-between items-center">
-                            <label className="text-[11px] text-gray-700 font-bold uppercase tracking-widest">美學階層區間 // TIER RANGE</label>
+                            <label className="text-[11px] text-gray-700 font-bold uppercase tracking-widest">美學階層區間</label>
                             <span className="text-[11px] font-mono font-bold text-purple-700 truncate">
-                                TIER {model.preferences?.aesthetic_tier_min || 1} - {model.preferences?.aesthetic_tier_max || 5}
+                                階層 {model.preferences?.aesthetic_tier_min || 1} - {model.preferences?.aesthetic_tier_max || 5}
                             </span>
                         </div>
                         <div className="space-y-6 pt-2">
                             <div className="flex flex-col gap-2">
-                                <span className="text-[11px] text-narrative-ink-soft uppercase font-black">Min Tier (最小階層)</span>
+                                <span className="text-[11px] text-narrative-ink-soft uppercase font-black">最小階層</span>
                                 <input 
                                     type="range" min="1" max="5" 
                                     value={model.preferences?.aesthetic_tier_min || 1}
@@ -364,7 +364,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                 />
                             </div>
                             <div className="flex flex-col gap-2">
-                                <span className="text-[11px] text-narrative-ink-soft uppercase font-black">Max Tier (最大階層)</span>
+                                <span className="text-[11px] text-narrative-ink-soft uppercase font-black">最大階層</span>
                                 <input 
                                     type="range" min="1" max="5" 
                                     value={model.preferences?.aesthetic_tier_max || 5}
@@ -388,9 +388,9 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                     <div className="space-y-4 p-6 bg-white/[0.02] border border-white/5 rounded-2xl">
                         <p className="text-[12px] text-narrative-ink font-medium italic leading-relaxed uppercase">
                             系統將根據「氣場階層」自動切換提示詞引擎：<br/>
-                            <span className="text-purple-700">Tier 1-2</span>: 日常抓拍、寫實氛圍<br/>
-                            <span className="text-purple-700">Tier 3-4</span>: 時尚大片、專業佈光<br/>
-                            <span className="text-purple-700">Tier 5</span>: 藝術核心、極致氛圍、靈魂敘事特寫
+                            <span className="text-purple-700">階層 1-2</span>：日常抓拍、寫實氛圍<br/>
+                            <span className="text-purple-700">階層 3-4</span>：時尚大片、專業佈光<br/>
+                            <span className="text-purple-700">階層 5</span>：藝術核心、極致氛圍、靈魂敘事特寫
                         </p>
                     </div>
                 </div>
@@ -407,10 +407,9 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                             <div className="flex items-center gap-3">
                                 <div className="w-1.5 h-4 bg-blue-500 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.6)]"></div>
                                 <h4 className="text-sm font-black text-[var(--color-narrative-ink)] uppercase tracking-[0.3em]">
-                                    故事弧管理 <span className="opacity-70 font-light ml-1 font-sans">STORY ARCS</span>
+                                    故事弧管理
                                 </h4>
                             </div>
-                            <p className="text-[11px] text-blue-700/80 font-bold uppercase tracking-[0.4em] ml-4 italic">Narrative Matrix Architecture</p>
                         </div>
                         <div className="flex items-center gap-4 pl-8 border-l border-white/5">
                             <button 
@@ -425,7 +424,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                 />
                             </button>
                             <span className={`text-[11px] font-black uppercase tracking-[0.2em] transition-colors ${model.preferences?.enable_story_arcs !== false ? 'text-blue-700' : 'text-narrative-ink-soft'}`}>
-                                {model.preferences?.enable_story_arcs !== false ? '已啟動 // ENGAGED' : '已離線 // OFFLINE'}
+                                {model.preferences?.enable_story_arcs !== false ? '已啟動' : '已離線'}
                             </span>
                         </div>
                     </div>
@@ -437,7 +436,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                             className="group relative px-6 py-2.5 overflow-hidden rounded-sm bg-white/5 border border-white/10 transition-all hover:border-blue-500/50"
                         >
                             <span className="relative z-10 text-[12px] font-black text-blue-700 uppercase tracking-widest">
-                                {isAddingArc ? 'Close // 關閉' : '+ New Arc // 新增弧線'}
+                                {isAddingArc ? '關閉' : '+ 新增弧線'}
                             </span>
                             {/* Matrix logic decoration */}
                             <div className="absolute top-0 left-0 w-1 h-1 border-t border-l border-blue-500/50 group-hover:border-blue-500"></div>
@@ -454,7 +453,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                             >
                                 <div className="grid grid-cols-2 gap-6">
                                     <div className="space-y-2">
-                                        <label className="text-[11px] text-gray-500 font-black uppercase tracking-widest">故事名稱 (ZH)</label>
+                                        <label className="text-[11px] text-gray-500 font-black uppercase tracking-widest">故事名稱</label>
                                         <input 
                                             placeholder="例如：銀河邊際的誓言" 
                                             value={newArc.name_zh}
@@ -463,7 +462,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-[11px] text-gray-500 font-black uppercase tracking-widest">故事英文名稱 // ARC NAME (EN)</label>
+                                        <label className="text-[11px] text-gray-500 font-black uppercase tracking-widest">故事英文名稱</label>
                                         <input 
                                             placeholder="Galaxy Edge Oath" 
                                             value={newArc.name_en}
@@ -473,7 +472,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[11px] text-gray-500 font-black uppercase tracking-widest">故事背景動機 // RATIONALE</label>
+                                    <label className="text-[11px] text-gray-500 font-black uppercase tracking-widest">故事背景動機</label>
                                     <textarea 
                                         placeholder="描述此故事弧的發展計畫與角色動機..."
                                         value={newArc.rationale}
@@ -485,7 +484,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                     onClick={handleAddCustomArc}
                                     className="w-full py-4 bg-blue-600 text-white text-[12px] font-black rounded-2xl uppercase tracking-[0.3em] shadow-[0_15px_30px_rgba(37,99,235,0.3)] active:scale-[0.98] transition-transform"
                                 >
-                                    注入故事矩陣 (CONFIRM CREATION)
+                                    注入故事矩陣
                                 </button>
                             </div>
                         )}
@@ -519,7 +518,6 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                         <div className="space-y-4 mb-auto">
                                             <div className="space-y-1">
                                                 <h5 className={`text-lg font-black tracking-tight leading-tight uppercase italic transition-colors ${isActive ? 'text-narrative-ink' : 'text-narrative-ink-soft group-hover:text-narrative-ink'}`}>{arc.name_zh}</h5>
-                                                <p className="text-[10px] text-blue-500/70 font-mono font-black uppercase tracking-[0.2em]">{arc.arc_id.split('-')[0]} // IP CORE</p>
                                             </div>
                                             
                                             <p className="text-[11px] text-narrative-ink leading-relaxed line-clamp-3 font-medium italic group-hover:text-gray-900 transition-colors">「{arc.rationale}」</p>
@@ -558,10 +556,9 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                             <div className="flex items-center gap-3">
                                 <div className="w-1.5 h-4 bg-emerald-500 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.6)]"></div>
                                 <h4 className="text-sm font-black text-[var(--color-narrative-ink)] uppercase tracking-[0.3em]">
-                                    身份線管理 <span className="opacity-70 font-light ml-1 font-sans">IDENTITY THREADS</span>
+                                    身份線管理
                                 </h4>
                             </div>
-                            <p className="text-[11px] text-emerald-700/80 font-bold uppercase tracking-[0.4em] ml-4 italic">Continuous Evolution Matrix</p>
                         </div>
                         <div className="flex items-center gap-4 pl-8 border-l border-white/5">
                             <button 
@@ -576,7 +573,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                 />
                             </button>
                             <span className={`text-[11px] font-black uppercase tracking-[0.2em] transition-colors ${model.preferences?.enable_identity_threads !== false ? 'text-emerald-700' : 'text-narrative-ink-soft'}`}>
-                                {model.preferences?.enable_identity_threads !== false ? '已啟動 // ENGAGED' : '已離線 // OFFLINE'}
+                                {model.preferences?.enable_identity_threads !== false ? '已啟動' : '已離線'}
                             </span>
                         </div>
                     </div>
@@ -588,7 +585,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                             className="group relative px-6 py-2.5 overflow-hidden rounded-sm bg-white/5 border border-white/10 transition-all hover:border-emerald-500/50"
                         >
                             <span className="relative z-10 text-[12px] font-black text-emerald-700 uppercase tracking-widest">
-                                {isAddingThread ? 'Close // 關閉' : '+ New Thread // 開發線'}
+                                {isAddingThread ? '關閉' : '+ 開發線'}
                             </span>
                             {/* Matrix logic decoration */}
                             <div className="absolute top-0 left-0 w-1 h-1 border-t border-l border-emerald-500/50 group-hover:border-emerald-500"></div>
@@ -605,7 +602,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                             >
                                 <div className="grid grid-cols-2 gap-6">
                                     <div className="space-y-2">
-                                        <label className="text-[11px] text-gray-500 font-black uppercase tracking-widest">身份線名稱 (ZH)</label>
+                                        <label className="text-[11px] text-gray-500 font-black uppercase tracking-widest">身份線名稱</label>
                                         <input 
                                             placeholder="例如：冷酷殺手、溫柔咖啡師" 
                                             value={newThread.name_zh}
@@ -614,7 +611,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-[11px] text-gray-500 font-black uppercase tracking-widest">身份線英文名稱 // THREAD NAME (EN)</label>
+                                        <label className="text-[11px] text-gray-500 font-black uppercase tracking-widest">身份線英文名稱</label>
                                         <input 
                                             placeholder="Coldest Killer / Gentle Barista" 
                                             value={newThread.name_en}
@@ -624,7 +621,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[11px] text-gray-500 font-black uppercase tracking-widest">長期演進動機 // RATIONALE</label>
+                                    <label className="text-[11px] text-gray-500 font-black uppercase tracking-widest">長期演進動機</label>
                                     <textarea 
                                         placeholder="描述此身份線如何影響角色的長期行為與核心設定..."
                                         value={newThread.rationale}
@@ -636,7 +633,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                     onClick={handleAddCustomThread}
                                     className="w-full py-4 bg-emerald-600 text-white text-[12px] font-black rounded-2xl uppercase tracking-[0.3em] shadow-[0_15px_30px_rgba(16,185,129,0.3)] active:scale-[0.98] transition-transform"
                                 >
-                                    啟動人格演進 (START EVOLUTION)
+                                    啟動人格演進
                                 </button>
                             </div>
                         )}
@@ -679,7 +676,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                         <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
                                             <div className="flex items-center gap-2">
                                                 <div className={`px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-widest ${isActive ? 'bg-emerald-500/20 text-emerald-700' : 'bg-white/5 text-narrative-ink-soft'}`}>
-                                                    {thread.duration_weeks} 週 // WEEKS
+                                                    {thread.duration_weeks} 週
                                                 </div>
                                             </div>
                                             {isCustom && (
