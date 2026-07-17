@@ -19,6 +19,10 @@
   --color-sage-rgb: 85, 106, 91;
   --color-steel: #465a70;
   --color-steel-rgb: 70, 90, 112;
+  --color-danger: #9b3d36;
+  --color-danger-rgb: 155, 61, 54;
+  --color-ok: #506f58;
+  --color-ok-rgb: 80, 111, 88;
   --color-bg-main: #050505;
   --color-bg-surface: #0E0E0E;
   --color-bg-card: #121212;
@@ -1838,4 +1842,45 @@
       line-height: 1.14;
     }
   }
+
+  /* ══════════════════════════════════════════════════════════════
+     Marketing Factory 換皮（2026-07-17，原型 07_行銷工廠.html）
+     只作用在 .home-workbench 內，四色與 danger/ok 沿用既有 @theme token。
+     ══════════════════════════════════════════════════════════════ */
+
+  /* sub-header：邊到邊淺紙橫幅（取代 glass-panel），只留底部分隔線 */
+  .home-workbench .mf-subheader {
+    background: rgba(255,250,242,.92) !important;
+    border-bottom: 1px solid var(--home-line) !important;
+    backdrop-filter: blur(16px);
+  }
+
+  /* 步驟徽章：比照原型 .step-num——預設 paper-2 底，首要步驟 wine 態 */
+  .home-workbench .mf-step-badge {
+    background: var(--home-paper-2) !important;
+  }
+  .home-workbench .mf-step-badge-active {
+    background: var(--color-wine) !important;
+  }
+
+  /* 2026-07-17 unlayered preflight 反制：index.html 的未分層 button{background:none} 與
+     *{border-color:#e5e7eb} 永遠贏過 @layer 內的 Tailwind utility（bg-wine、border-brass…），
+     導致按鈕選中態透明、四色邊框變預設灰。在紙感工作台範圍內逐一還原。 */
+  .home-workbench button.bg-wine { background: var(--color-wine) !important; }
+  .home-workbench button.bg-brass { background: var(--color-brass) !important; }
+  .home-workbench button.bg-ok { background: var(--color-ok) !important; }
+  .home-workbench .border-wine { border-color: var(--color-wine) !important; }
+  .home-workbench .border-brass { border-color: var(--color-brass) !important; }
+  .home-workbench .border-brass\/20 { border-color: rgba(var(--color-brass-rgb),0.2) !important; }
+  .home-workbench .border-brass\/30 { border-color: rgba(var(--color-brass-rgb),0.3) !important; }
+  .home-workbench .border-brass\/40 { border-color: rgba(var(--color-brass-rgb),0.4) !important; }
+  .home-workbench .border-brass\/50 { border-color: rgba(var(--color-brass-rgb),0.5) !important; }
+  .home-workbench .border-brass\/60 { border-color: rgba(var(--color-brass-rgb),0.6) !important; }
+  .home-workbench .border-danger\/20 { border-color: rgba(var(--color-danger-rgb),0.2) !important; }
+
+  /* 同族反制：narrative 工作台的 arbitrary 形式按鈕底色 */
+  .narrative-workbench button[class*="bg-[var(--color-wine)]"] { background: var(--color-wine) !important; }
+  .narrative-workbench button[class*="bg-[var(--color-sage)]"] { background: var(--color-sage) !important; }
+  .narrative-workbench button.bg-\[var\(--color-wine\)\]\/90 { background: rgba(var(--color-wine-rgb),0.9) !important; }
+  .narrative-workbench button.bg-\[var\(--color-sage\)\]\/90 { background: rgba(var(--color-sage-rgb),0.9) !important; }
 }

@@ -41,8 +41,8 @@ type Step = 'UPLOAD' | 'DIAGNOSIS' | 'FINETUNE' | 'RESULT';
 
 const SummaryItem: React.FC<{ title: string; content?: string }> = ({ title, content }) => (
     <div>
-        <h4 className="font-semibold text-[var(--color-text-dim)]">{title}</h4>
-        <p className="text-[var(--color-text-main)] mt-1">{content || 'N/A'}</p>
+        <h4 className="font-semibold text-[var(--home-muted)]">{title}</h4>
+        <p className="text-[var(--home-ink)] mt-1">{content || '無資料'}</p>
     </div>
 );
 
@@ -65,39 +65,40 @@ const FinetuneGroup = <T,>({ label, value, onChange, defaultOption, altOptions, 
   const isDefaultSelected = isSelected(defaultOption?.prompt || "");
 
   return (
-    <div className="border-b border-[var(--color-border)] pb-8 mb-8 last:border-0 animate-fade-in">
-      <label className="block text-lg font-bold text-[var(--color-gold)] mb-4 tracking-wider">{label}</label>
-      
+    <div className="border-b border-[var(--home-line)] pb-8 mb-8 last:border-0 animate-fade-in">
+      <label className="block text-lg font-bold text-brass mb-4 tracking-wider">{label}</label>
+
       <div className="mb-5">
           <div className="flex justify-between items-end mb-2">
-            <span className="text-[10px] text-[var(--color-text-dim)] uppercase tracking-[0.2em] font-bold">當前提示詞 (Prompt Override)</span>
-            <span className="text-[9px] text-gray-600 italic">手動修改內容按鈕會取消反白</span>
+            <span className="text-[10px] text-[var(--home-muted)] uppercase tracking-[0.2em] font-bold">當前提示詞</span>
+            <span className="text-[9px] text-[var(--home-muted)] italic">手動修改內容按鈕會取消反白</span>
           </div>
           <textarea
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            className="w-full bg-black/40 border border-gray-700 text-gray-200 p-4 rounded-lg text-xs font-mono focus:border-[var(--color-gold)] focus:ring-1 focus:ring-[var(--color-gold)] outline-none transition-all leading-relaxed"
+            className="w-full bg-white/50 border border-[var(--home-line)] text-[var(--home-ink)] p-4 rounded-lg text-xs font-mono focus:outline-none focus:ring-2 focus:ring-brass transition-all leading-relaxed"
             rows={3}
             placeholder="提示詞將在此處連動更新..."
           />
       </div>
-      
+
       <div className="space-y-3">
         <button
           onClick={() => onChange(defaultOption.prompt)}
+          style={isDefaultSelected ? { background: 'rgba(111,39,53,0.08)' } : undefined}
           className={`w-full text-left p-4 rounded-xl transition-all duration-500 border ${
-            isDefaultSelected 
-              ? 'bg-[var(--color-gold)]/10 text-[var(--color-gold)] border-[var(--color-gold)] shadow-[0_0_20px_rgba(212,175,55,0.1)]' 
-              : 'bg-white/5 text-gray-400 border-gray-800 hover:border-gray-600'
+            isDefaultSelected
+              ? 'text-wine border-wine'
+              : 'bg-white/40 text-[var(--home-muted)] border-[var(--home-line)] hover:border-brass/40'
           }`}
         >
           <div className="flex justify-between items-center">
             <p className="font-bold text-sm tracking-wide">{(defaultOption.label_zh)}</p>
-            {isDefaultSelected && <div className="w-2 h-2 rounded-full bg-[var(--color-gold)] shadow-[0_0_8px_var(--color-gold)]" />}
+            {isDefaultSelected && <div className="w-2 h-2 rounded-full bg-wine" />}
           </div>
           <p className="text-[10px] opacity-60 mt-1.5 leading-relaxed">{defaultOption.purpose_zh}</p>
         </button>
-        
+
         {altOptions.map((option, index) => {
           const { label_zh, purpose_zh, prompt } = getOptionProps(option);
           const active = isSelected(prompt);
@@ -105,15 +106,16 @@ const FinetuneGroup = <T,>({ label, value, onChange, defaultOption, altOptions, 
             <button
               key={index}
               onClick={() => onChange(prompt)}
+              style={active ? { background: 'rgba(111,39,53,0.08)' } : undefined}
               className={`w-full text-left p-4 rounded-xl transition-all duration-500 border ${
                 active
-                  ? 'bg-[var(--color-gold)]/10 text-[var(--color-gold)] border-[var(--color-gold)] shadow-[0_0_20px_rgba(212,175,55,0.1)]' 
-                  : 'bg-white/5 text-gray-400 border-gray-800 hover:border-gray-600'
+                  ? 'text-wine border-wine'
+                  : 'bg-white/40 text-[var(--home-muted)] border-[var(--home-line)] hover:border-brass/40'
               }`}
             >
               <div className="flex justify-between items-center">
                 <p className="font-bold text-sm tracking-wide">{label_zh}</p>
-                {active && <div className="w-2 h-2 rounded-full bg-[var(--color-gold)] shadow-[0_0_8px_var(--color-gold)]" />}
+                {active && <div className="w-2 h-2 rounded-full bg-wine" />}
               </div>
               <p className="text-[10px] opacity-60 mt-1.5 leading-relaxed">{purpose_zh}</p>
             </button>
@@ -441,13 +443,13 @@ const ProductPosterEngine: React.FC<ProductPosterEngineProps> = ({ onGoBack, onG
 
   const renderUploadStep = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in">
-        <Card>
+        <Card className="home-card">
             <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-bold">1. 上傳主體影像 (支援多選)</h3>
+                <h3 className="text-xl font-bold">1. 上傳主體影像（支援多選）</h3>
                 {imagePreviews.length > 0 && (
-                    <button 
+                    <button
                         onClick={handleClearAllImages}
-                        className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase tracking-widest transition-colors"
+                        className="text-[10px] text-danger hover:opacity-80 font-bold uppercase tracking-widest transition-colors"
                     >
                         全部刪除
                     </button>
@@ -458,32 +460,34 @@ const ProductPosterEngine: React.FC<ProductPosterEngineProps> = ({ onGoBack, onG
 
             {imagePreviews.length > 0 ? (
                 <div className="space-y-4">
-                    <div className="relative group w-full aspect-square bg-[var(--color-bg-deep)]/20 rounded-xl overflow-hidden border border-[var(--color-border)]">
+                    <div className="relative group w-full aspect-square bg-[var(--home-paper-2)]/40 rounded-xl overflow-hidden border border-[var(--home-line)]">
                         <img src={imagePreviews[0]} alt="Subject preview" className="w-full h-full object-contain cursor-pointer" onClick={() => fileInputRef.current?.click()} />
-                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none text-[var(--color-text-title)] font-bold">
+                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none text-white font-bold">
                             點擊更換/新增圖片
                         </div>
-                        <button 
+                        <button
                             onClick={(e) => { e.stopPropagation(); handleRemoveImage(0); }}
-                            className="absolute top-2 left-2 bg-red-600/80 hover:bg-red-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs transition-colors z-20"
+                            style={{ background: 'rgba(155,61,54,0.85)' }}
+                            className="absolute top-2 left-2 hover:opacity-90 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs transition-colors z-20"
                         >
                             &times;
                         </button>
                         {form.isModel && (
-                             <div className="absolute top-2 right-2 w-20 h-20 bg-[var(--color-bg-deep)] border border-[var(--color-border)] rounded-md overflow-hidden shadow-lg z-10">
+                             <div className="absolute top-2 right-2 w-20 h-20 bg-[var(--home-paper)] border border-[var(--home-line)] rounded-md overflow-hidden shadow-lg z-10">
                                 {faceAnchor ? (
                                     <>
                                         <img src={faceAnchor.url} alt="Face Anchor" className="w-full h-full object-cover" />
-                                        <button 
+                                        <button
                                             onClick={(e) => { e.stopPropagation(); setFaceAnchor(null); }}
-                                            className="absolute top-0 right-0 bg-red-600 text-white w-5 h-5 flex items-center justify-center text-xs"
+                                            style={{ background: 'rgba(155,61,54,0.9)' }}
+                                            className="absolute top-0 right-0 text-white w-5 h-5 flex items-center justify-center text-xs"
                                         >&times;</button>
-                                        <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-[10px] text-center text-[var(--color-text-title)]">臉部錨定</div>
+                                        <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-[10px] text-center text-white">臉部錨定</div>
                                     </>
                                 ) : (
-                                    <div className="w-full h-full flex flex-col items-center justify-center cursor-pointer hover:bg-[var(--color-bg-surface)]/30" onClick={(e) => { e.stopPropagation(); faceAnchorInputRef.current?.click(); }}>
-                                        <span className="text-xl text-[var(--color-text-dim)]">+</span>
-                                        <span className="text-[10px] text-[var(--color-text-dim)]">臉部錨定</span>
+                                    <div className="w-full h-full flex flex-col items-center justify-center cursor-pointer hover:bg-[var(--home-paper-2)]/50" onClick={(e) => { e.stopPropagation(); faceAnchorInputRef.current?.click(); }}>
+                                        <span className="text-xl text-[var(--home-muted)]">+</span>
+                                        <span className="text-[10px] text-[var(--home-muted)]">臉部錨定</span>
                                     </div>
                                 )}
                             </div>
@@ -492,54 +496,56 @@ const ProductPosterEngine: React.FC<ProductPosterEngineProps> = ({ onGoBack, onG
                     {imagePreviews.length > 1 && (
                         <div className="grid grid-cols-4 gap-2">
                             {imagePreviews.slice(1, 5).map((url, i) => (
-                                <div key={i} className="relative aspect-square rounded-lg overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg-deep)]/20 group">
+                                <div key={i} className="relative aspect-square rounded-lg overflow-hidden border border-[var(--home-line)] bg-[var(--home-paper-2)]/40 group">
                                     <img src={url} alt={`Preview ${i}`} className="w-full h-full object-cover opacity-60" />
-                                    <button 
+                                    <button
                                         onClick={() => handleRemoveImage(i + 1)}
-                                        className="absolute inset-0 bg-red-600/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-bold"
+                                        style={{ background: 'rgba(155,61,54,0.4)' }}
+                                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-bold"
                                     >
                                         刪除
                                     </button>
                                 </div>
                             ))}
                             {imagePreviews.length > 5 && (
-                                <div className="aspect-square rounded-lg bg-[var(--color-bg-surface)]/5 flex items-center justify-center text-xs text-[var(--color-text-dim)] border border-dashed border-[var(--color-border)]">
+                                <div className="aspect-square rounded-lg bg-white/30 flex items-center justify-center text-xs text-[var(--home-muted)] border border-dashed border-[var(--home-line)]">
                                     +{imagePreviews.length - 5}
                                 </div>
                             )}
                         </div>
                     )}
-                    <p className="text-center text-[10px] text-[var(--color-text-dim)] uppercase tracking-widest">已選取 {imagePreviews.length} 張圖片</p>
+                    <p className="text-center text-[10px] text-[var(--home-muted)] uppercase tracking-widest">已選取 {imagePreviews.length} 張圖片</p>
                 </div>
             ) : (
-                <div onClick={() => fileInputRef.current?.click()} className="w-full border-2 border-dashed border-[var(--color-border)] rounded-lg p-16 text-center cursor-pointer hover:border-[var(--color-gold)] flex flex-col items-center justify-center transition-all bg-[var(--color-bg-surface)]/10">
-                    <PhotoIcon className="w-16 h-16 text-[var(--color-text-dim)] mb-4" />
-                    <p className="text-lg text-[var(--color-text-dim)] font-display uppercase">Upload Images</p>
-                    <p className="text-xs text-[var(--color-text-dim)] mt-2">支援批次上傳多張人物或商品圖片</p>
+                <div onClick={() => fileInputRef.current?.click()} className="w-full border-2 border-dashed border-brass/40 rounded-lg p-16 text-center cursor-pointer hover:bg-brass/10 flex flex-col items-center justify-center transition-all">
+                    <PhotoIcon className="w-16 h-16 text-[var(--home-muted)] mb-4" />
+                    <p className="text-lg text-[var(--home-ink)] font-display">點擊上傳圖片</p>
+                    <p className="text-xs text-[var(--home-muted)] mt-2">支援批次上傳多張人物或商品圖片</p>
                 </div>
             )}
         </Card>
-        <Card>
+        <Card className="home-card">
             <h3 className="text-xl font-bold mb-4">2. 輸出設定</h3>
             <div className="space-y-6">
                 <div>
-                    <label className="block text-[11px] font-bold text-[var(--color-text-dim)] mb-2 uppercase tracking-[0.1em] font-display">Subject Type</label>
+                    <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-2 uppercase tracking-[0.1em] font-display">主體類型</label>
                     <div className="flex gap-2">
-                        <Button onClick={() => setForm(p => ({...p, isModel: true}))} variant={form.isModel ? 'light' : 'secondary'} className="flex-1">人物 (Person)</Button>
-                        <Button onClick={() => { setForm(p => ({...p, isModel: false})); setFaceAnchor(null); }} variant={!form.isModel ? 'light' : 'secondary'} className="flex-1">產品 (Product)</Button>
+                        <Button onClick={() => setForm(p => ({...p, isModel: true}))} variant={form.isModel ? 'light' : 'secondary'} className="flex-1">人物</Button>
+                        <Button onClick={() => { setForm(p => ({...p, isModel: false})); setFaceAnchor(null); }} variant={!form.isModel ? 'light' : 'secondary'} className="flex-1">產品</Button>
                     </div>
                 </div>
-                <Select label="長寬比 (Aspect Ratio)" options={[{value: '9:16', label: '9:16 (直式手機)'}, {value: '3:4', label: '3:4 (時尚人像)'}, {value: '1:1', label: '1:1 (正方形)'}, {value: '4:3', label: '4:3 (標準橫式)'}, {value: '16:9', label: '16:9 (寬螢幕)'}]} value={form.ratio} onChange={e => setForm(p => ({...p, ratio: e.target.value as PCPERatio}))} />
-                <Select label="生成品質 (Rendering)" options={[{value: 'standard', label: '標準 (Standard)'}, {value: 'high', label: '高畫質 (High-End 4K)'}]} value={form.quality || 'standard'} onChange={e => setForm(p => ({...p, quality: e.target.value as 'standard' | 'high'}))} />
-                
+                <Select label="長寬比" options={[{value: '9:16', label: '9:16（直式手機）'}, {value: '3:4', label: '3:4（時尚人像）'}, {value: '1:1', label: '1:1（正方形）'}, {value: '4:3', label: '4:3（標準橫式）'}, {value: '16:9', label: '16:9（寬螢幕）'}]} value={form.ratio} onChange={e => setForm(p => ({...p, ratio: e.target.value as PCPERatio}))} />
+                <Select label="生成品質" options={[{value: 'standard', label: '標準'}, {value: 'high', label: '高畫質（4K）'}]} value={form.quality || 'standard'} onChange={e => setForm(p => ({...p, quality: e.target.value as 'standard' | 'high'}))} />
+
                 <div className="space-y-3">
-                    <label className="block text-[11px] font-bold text-[var(--color-text-dim)] uppercase tracking-[0.1em] font-display">生成張數 (Image Count)</label>
+                    <label className="block text-[11px] font-bold text-[var(--home-muted)] uppercase tracking-[0.1em] font-display">生成張數</label>
                     <div className="grid grid-cols-4 gap-2">
                         {[1, 2, 3, 4].map(n => (
                             <button
                                 key={n}
                                 onClick={() => setImageCount(n)}
-                                className={`py-2 rounded-lg text-xs font-bold border transition-all ${imageCount === n ? 'bg-[var(--color-gold)] text-black border-[var(--color-gold)]' : 'bg-white/5 text-gray-400 border-gray-800 hover:border-gray-600'}`}
+                                style={imageCount === n ? { background: 'var(--color-wine)' } : undefined}
+                                className={`py-2 rounded-lg text-xs font-bold border transition-all ${imageCount === n ? 'text-white border-wine' : 'bg-white/40 text-[var(--home-muted)] border-[var(--home-line)] hover:border-brass/40'}`}
                             >
                                 {n}
                             </button>
@@ -555,14 +561,14 @@ const ProductPosterEngine: React.FC<ProductPosterEngineProps> = ({ onGoBack, onG
 
   const renderDiagnosisStep = () => (
     <div className="animate-fade-in pt-12">
-        <div className="flex justify-between items-center mb-6 border-b border-[var(--color-border)] pb-4">
-            <h2 className="text-3xl font-bold uppercase tracking-widest">AI 診斷與創意方向</h2>
+        <div className="flex justify-between items-center mb-6 border-b border-[var(--home-line)] pb-4">
+            <h2 className="text-3xl font-bold tracking-widest">AI 診斷與創意方向</h2>
             <Button onClick={() => setStep('UPLOAD')} variant="secondary">重新上傳</Button>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <Card className="lg:col-span-4 space-y-5 text-sm">
-                <div className="flex justify-between items-center border-b border-[var(--color-border)] pb-3">
-                    <h3 className="text-xl font-bold text-[var(--color-gold)]">視覺診斷摘要</h3>
+            <Card className="home-card lg:col-span-4 space-y-5 text-sm">
+                <div className="flex justify-between items-center border-b border-[var(--home-line)] pb-3">
+                    <h3 className="text-xl font-bold text-brass">視覺診斷摘要</h3>
                     <Button variant="secondary" className="text-[10px] py-1 px-3" onClick={() => setIsDiagnosisOverlayOpen(true)}>完整報告</Button>
                 </div>
                 <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
@@ -575,16 +581,16 @@ const ProductPosterEngine: React.FC<ProductPosterEngineProps> = ({ onGoBack, onG
                 </div>
             </Card>
             <div className="lg:col-span-8">
-                <h3 className="text-xl font-bold mb-4 uppercase tracking-widest">選擇創意概念卡</h3>
+                <h3 className="text-xl font-bold mb-4 tracking-widest">選擇創意概念卡</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {cards.map(card => (
                         <button key={card.id} className="text-left group" onClick={() => handleCardSelect(card)}>
-                            <Card className="h-full p-5 space-y-3 hover:border-[var(--color-gold)] transition-all duration-300">
+                            <Card className="home-card h-full p-5 space-y-3 hover:border-brass/50 transition-all duration-300">
                                 <div className="flex justify-between items-center">
-                                    <h4 className="font-bold text-xl group-hover:text-[var(--color-gold)] transition-colors">{card.title}</h4>
-                                    <span className="text-[10px] font-mono text-[var(--color-text-dim)]">#CONCEPT</span>
+                                    <h4 className="font-bold text-xl group-hover:text-brass transition-colors">{card.title}</h4>
+                                    <span className="text-[10px] font-mono text-[var(--home-muted)]">概念</span>
                                 </div>
-                                <p className="text-xs text-[var(--color-text-dim)] leading-relaxed">{card.why}</p>
+                                <p className="text-xs text-[var(--home-muted)] leading-relaxed">{card.why}</p>
                             </Card>
                         </button>
                     ))}
@@ -596,29 +602,29 @@ const ProductPosterEngine: React.FC<ProductPosterEngineProps> = ({ onGoBack, onG
 
   const renderFinetuneStep = () => (
     <div className="animate-fade-in">
-      <div className="flex justify-between items-center mb-6 border-b border-[var(--color-border)] pb-4">
-        <h2 className="text-3xl font-bold uppercase tracking-widest">參數微調與渲染發送</h2>
+      <div className="flex justify-between items-center mb-6 border-b border-[var(--home-line)] pb-4">
+        <h2 className="text-3xl font-bold tracking-widest">參數微調與渲染發送</h2>
         <Button onClick={() => setStep('DIAGNOSIS')} variant="secondary">返回概念卡</Button>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start pt-12">
-        <Card className="space-y-2 max-h-[85vh] overflow-y-auto pr-4 custom-scrollbar">
-            <div className="flex justify-between items-center mb-6 border-b border-[var(--color-border)] pb-4">
-                <h3 className="text-2xl font-bold">Director Controls</h3>
+        <Card className="home-card space-y-2 max-h-[85vh] overflow-y-auto pr-4 custom-scrollbar">
+            <div className="flex justify-between items-center mb-6 border-b border-[var(--home-line)] pb-4">
+                <h3 className="text-2xl font-bold">導演控制台</h3>
                 <Button variant="secondary" className="text-xs py-1" onClick={() => setShowSavePreset(!showSavePreset)}>
                     {showSavePreset ? '取消儲存' : '儲存為品牌風格'}
                 </Button>
             </div>
 
             {showSavePreset && (
-                <div className="bg-[var(--color-gold)]/5 border border-[var(--color-gold)]/30 p-4 rounded-xl mb-8 animate-fade-in">
-                    <label className="block text-[10px] font-bold text-[var(--color-gold)] mb-2 uppercase tracking-widest">新風格名稱</label>
+                <div className="bg-brass/5 border border-brass/30 p-4 rounded-xl mb-8 animate-fade-in">
+                    <label className="block text-[10px] font-bold text-brass mb-2 uppercase tracking-widest">新風格名稱</label>
                     <div className="flex gap-2">
-                        <input 
-                            type="text" 
-                            value={newPresetName} 
+                        <input
+                            type="text"
+                            value={newPresetName}
                             onChange={e => setNewPresetName(e.target.value)}
                             placeholder="例如：極簡白牆風格"
-                            className="flex-1 bg-[var(--color-bg-deep)]/40 border-[var(--color-border)] rounded-lg px-3 py-2 text-sm"
+                            className="flex-1 bg-white/60 border border-[var(--home-line)] rounded-lg px-3 py-2 text-sm text-[var(--home-ink)]"
                         />
                         <Button onClick={handleSavePreset} className="px-4 py-2 text-sm">確認儲存</Button>
                     </div>
@@ -627,19 +633,20 @@ const ProductPosterEngine: React.FC<ProductPosterEngineProps> = ({ onGoBack, onG
 
             {presets.length > 0 && (
                 <div className="mb-8">
-                    <label className="block text-[10px] font-bold text-[var(--color-text-dim)] mb-3 uppercase tracking-widest">已儲存的品牌風格</label>
+                    <label className="block text-[10px] font-bold text-[var(--home-muted)] mb-3 uppercase tracking-widest">已儲存的品牌風格</label>
                     <div className="flex flex-wrap gap-2">
                         {presets.map(p => (
                             <div key={p.id} className="group relative">
-                                <button 
+                                <button
                                     onClick={() => handleApplyPreset(p)}
-                                    className="px-4 py-2 bg-[var(--color-bg-surface)]/5 border border-[var(--color-border)] rounded-full text-xs hover:border-[var(--color-gold)] hover:text-[var(--color-gold)] transition-all"
+                                    className="px-4 py-2 bg-white/40 border border-[var(--home-line)] rounded-full text-xs hover:border-brass/50 hover:text-brass transition-all"
                                 >
                                     {p.name}
                                 </button>
-                                <button 
+                                <button
                                     onClick={() => handleDeletePreset(p.id)}
-                                    className="absolute -top-1 -right-1 w-4 h-4 bg-red-900 text-white rounded-full text-[8px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                    style={{ background: 'var(--color-danger)' }}
+                                    className="absolute -top-1 -right-1 w-4 h-4 text-white rounded-full text-[8px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                                 >
                                     &times;
                                 </button>
@@ -749,16 +756,17 @@ const ProductPosterEngine: React.FC<ProductPosterEngineProps> = ({ onGoBack, onG
                }} 
              />
 
-             <div className="mt-10 pt-8 border-t border-[var(--color-border)]">
+             <div className="mt-10 pt-8 border-t border-[var(--home-line)]">
                  <div className="flex items-center justify-between mb-6">
                      <div>
                          <h4 className="text-lg font-bold flex items-center gap-2">
-                             色彩鎖定技術 <span className="text-[10px] bg-[var(--color-gold)]/20 text-[var(--color-gold)] px-2 py-0.5 rounded uppercase">Experimental</span>
+                             色彩鎖定技術 <span className="text-[10px] bg-brass/20 text-brass px-2 py-0.5 rounded">實驗性</span>
                          </h4>
-                         <p className="text-xs text-[var(--color-text-dim)] mt-1">強制 AI 鎖定商品核心色，防止環境光導致色差</p>
+                         <p className="text-xs text-[var(--home-muted)] mt-1">強制 AI 鎖定商品核心色，防止環境光導致色差</p>
                      </div>
-                     <div 
-                         className={`w-12 h-6 rounded-full p-1 cursor-pointer transition-colors ${useColorLock ? 'bg-[var(--color-gold)]' : 'bg-[var(--color-bg-input)]'}`}
+                     <div
+                         style={{ background: useColorLock ? 'var(--color-wine)' : undefined }}
+                         className={`w-12 h-6 rounded-full p-1 cursor-pointer transition-colors ${useColorLock ? '' : 'bg-[var(--home-paper-2)]'}`}
                          onClick={() => setUseColorLock(!useColorLock)}
                      >
                          <div className={`w-4 h-4 bg-white rounded-full transition-transform ${useColorLock ? 'translate-x-6' : 'translate-x-0'}`} />
@@ -766,32 +774,33 @@ const ProductPosterEngine: React.FC<ProductPosterEngineProps> = ({ onGoBack, onG
                  </div>
 
                  {useColorLock && (
-                     <div className="animate-fade-in flex flex-col md:flex-row gap-6 items-center bg-[var(--color-bg-surface)]/5 p-6 rounded-2xl border border-[var(--color-border)]">
+                     <div className="animate-fade-in flex flex-col md:flex-row gap-6 items-center bg-white/30 p-6 rounded-2xl border border-[var(--home-line)]">
                          <ColorPicker color={colorLock} onChange={setColorLock} />
                          <div className="flex-1 space-y-3">
-                             <div className="text-xs text-[var(--color-text-dim)] leading-relaxed">
+                             <div className="text-xs text-[var(--home-muted)] leading-relaxed">
                                  <p>• 建議吸取商品最亮面的顏色</p>
-                                 <p>• 系統將在生成時注入 [COLOR REFERENCE LOCK] 指令</p>
+                                 <p>• 系統將在生成時注入色彩參照鎖定指令</p>
                                  <p>• 適用於對色準要求極高的電商場景</p>
                              </div>
-                             <div className="flex items-center gap-3 p-3 bg-[var(--color-bg-deep)]/40 rounded-lg border border-[var(--color-border)]">
+                             <div className="flex items-center gap-3 p-3 bg-white/50 rounded-lg border border-[var(--home-line)]">
                                  <div className="w-6 h-6 rounded shadow-inner" style={{ backgroundColor: colorLock }} />
-                                 <span className="font-mono text-sm uppercase">{colorLock}</span>
+                                 <span className="font-mono text-sm uppercase text-[var(--home-ink)]">{colorLock}</span>
                              </div>
                          </div>
                      </div>
                  )}
 
-                 <div className="mt-8 pt-8 border-t border-[var(--color-border)]">
+                 <div className="mt-8 pt-8 border-t border-[var(--home-line)]">
                      <div className="flex items-center justify-between">
                          <div>
                              <h4 className="text-lg font-bold flex items-center gap-2">
-                                 自動優化流水線 <span className="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded uppercase">Auto-Cleanup</span>
+                                 自動優化流水線 <span className="text-[10px] bg-steel/20 text-steel px-2 py-0.5 rounded">自動清理</span>
                              </h4>
-                             <p className="text-xs text-[var(--color-text-dim)] mt-1">生成前自動去背、移除雜物並優化主體細節</p>
+                             <p className="text-xs text-[var(--home-muted)] mt-1">生成前自動去背、移除雜物並優化主體細節</p>
                          </div>
-                         <div 
-                             className={`w-12 h-6 rounded-full p-1 cursor-pointer transition-colors ${useAutoCleanup ? 'bg-blue-500' : 'bg-[var(--color-bg-input)]'}`}
+                         <div
+                             style={{ background: useAutoCleanup ? 'var(--color-steel)' : undefined }}
+                             className={`w-12 h-6 rounded-full p-1 cursor-pointer transition-colors ${useAutoCleanup ? '' : 'bg-[var(--home-paper-2)]'}`}
                              onClick={() => setUseAutoCleanup(!useAutoCleanup)}
                          >
                              <div className={`w-4 h-4 bg-white rounded-full transition-transform ${useAutoCleanup ? 'translate-x-6' : 'translate-x-0'}`} />
@@ -799,24 +808,24 @@ const ProductPosterEngine: React.FC<ProductPosterEngineProps> = ({ onGoBack, onG
                      </div>
                  </div>
              </div>
-            
-            <div className="pt-6 sticky bottom-0 bg-[var(--color-bg-deep)] py-4 -mx-4 px-4 border-t border-[var(--color-border)] z-10">
+
+            <div className="pt-6 sticky bottom-0 bg-[var(--home-paper)] py-4 -mx-4 px-4 border-t border-[var(--home-line)] z-10">
                 <Button onClick={handleGenerate} isLoading={isLoading} className="w-full text-xl py-5 shadow-xl">
-                    <SparklesIcon className="w-6 h-6 mr-2" /> 執行最終渲染 (Final Render)
+                    <SparklesIcon className="w-6 h-6 mr-2" /> 執行最終渲染
                 </Button>
             </div>
         </Card>
-        
+
         <div className="sticky top-24 flex flex-col items-center gap-6">
-            <h3 className="text-xl font-bold text-[var(--color-text-dim)] font-display uppercase tracking-widest">Subject Reference</h3>
-            <div className="w-full relative bg-[var(--color-bg-surface)]/5 p-4 rounded-xl border border-[var(--color-border)] shadow-2xl">
+            <h3 className="text-xl font-bold text-[var(--home-muted)] font-display tracking-widest">主體參照</h3>
+            <div className="w-full relative bg-white/30 p-4 rounded-xl border border-[var(--home-line)] shadow-2xl">
                 {imagePreviews[0] && <img src={imagePreviews[0]} alt="Subject" className="w-full max-h-[65vh] object-contain rounded-lg" />}
                 <div className="absolute top-4 left-4 z-10">
-                     <span className="text-[10px] text-[var(--color-gold)] font-bold bg-[var(--color-bg-deep)]/90 px-3 py-1 rounded border border-[var(--color-gold)]/30 tracking-widest uppercase">Batch Reference</span>
+                     <span className="text-[10px] text-brass font-bold bg-[var(--home-paper)]/90 px-3 py-1 rounded border border-brass/30 tracking-widest uppercase">批次參照</span>
                 </div>
             </div>
-            <div className="p-4 bg-[var(--color-bg-panel)] rounded-lg border border-[var(--color-border)] w-full text-center">
-                <p className="text-xs text-[var(--color-text-dim)] italic">"正在將主體融合至「{selectedCard?.title}」場景，並套用您選定的微調參數。"</p>
+            <div className="p-4 bg-white/40 rounded-lg border border-[var(--home-line)] w-full text-center">
+                <p className="text-xs text-[var(--home-muted)] italic">「正在將主體融合至「{selectedCard?.title}」場景，並套用您選定的微調參數。」</p>
             </div>
         </div>
       </div>
@@ -825,29 +834,30 @@ const ProductPosterEngine: React.FC<ProductPosterEngineProps> = ({ onGoBack, onG
   
   const renderResultStep = () => (
     <div className="text-center animate-fade-in">
-        <div className="p-4 border-b border-[var(--color-border)] bg-[var(--color-bg-surface)]/5 flex justify-between items-center mb-8 rounded-xl glass-panel">
-            <span className="text-[10px] font-mono text-[var(--color-text-dim)] bg-[var(--color-bg-deep)]/40 px-3 py-1 rounded-full border border-[var(--color-border)] uppercase tracking-widest">Batch Production // 批次生成</span>
-            <h3 className="text-xl font-bold tracking-[0.2em] uppercase text-[var(--color-text-title)]">生成結果</h3>
+        <div className="p-4 border-b border-[var(--home-line)] bg-white/50 flex justify-between items-center mb-8 rounded-xl mf-subheader">
+            <span className="text-[10px] font-mono text-[var(--home-muted)] bg-[var(--home-paper-2)]/40 px-3 py-1 rounded-full border border-[var(--home-line)] tracking-widest uppercase">批次生成</span>
+            <h3 className="text-xl font-bold tracking-[0.2em] text-[var(--home-ink)]">生成結果</h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {generatedImages.map((url, index) => (
-                <div 
-                    key={index} 
-                    className={`relative group cursor-pointer bg-[var(--color-bg-surface)]/5 p-2 rounded-xl border transition-all duration-300 ${selectedImageIndex === index ? 'border-[var(--color-gold)] shadow-[0_0_30px_rgba(212,175,55,0.2)]' : 'border-[var(--color-border)] shadow-xl'}`} 
+                <div
+                    key={index}
+                    className={`relative group cursor-pointer bg-white/40 p-2 rounded-xl border transition-all duration-300 ${selectedImageIndex === index ? 'border-wine shadow-xl' : 'border-[var(--home-line)] shadow-xl'}`}
                     onClick={() => setSelectedImageIndex(index)}
                 >
                     <img src={url} alt={`Generated Poster ${index}`} className="w-full rounded-lg transition-transform duration-500 group-hover:scale-[1.02]" crossOrigin="anonymous" />
                     <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button 
+                        <button
                             onClick={(e) => { e.stopPropagation(); setSelectedImageIndex(index); setIsPreviewModalOpen(true); }}
-                            className="w-8 h-8 bg-[var(--color-bg-deep)]/60 backdrop-blur-md rounded-full flex items-center justify-center text-[var(--color-text-title)] hover:bg-[var(--color-gold)] transition-colors"
+                            style={{ background: 'rgba(33,31,29,0.55)' }}
+                            className="w-8 h-8 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:opacity-80 transition-colors"
                         >
                             <ExpandIcon className="w-4 h-4" />
                         </button>
                     </div>
                     {selectedImageIndex === index && (
-                        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[var(--color-gold)] text-black text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-lg">
-                            Selected
+                        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-wine text-white text-[10px] font-bold px-3 py-1 rounded-full tracking-widest uppercase shadow-lg">
+                            已選取
                         </div>
                     )}
                 </div>
@@ -858,41 +868,41 @@ const ProductPosterEngine: React.FC<ProductPosterEngineProps> = ({ onGoBack, onG
             <Button onClick={resetState} variant="secondary" className="px-8">重新開始</Button>
             <Button onClick={handleSaveToPortfolio} className="px-8">全部儲存至作品集</Button>
         </div>
-        <Card className="max-w-2xl mx-auto p-8 border-t-4 border-[var(--color-gold)]">
-            <div className="flex justify-between items-center mb-6 border-b border-[var(--color-border)] pb-4">
-                <h3 className="text-2xl font-bold font-display tracking-widest">EXPORT SELECTED (#{selectedImageIndex + 1})</h3>
-                <span className="text-xs text-[var(--color-text-dim)]">點擊上方圖片切換選取</span>
+        <Card className="home-card max-w-2xl mx-auto p-8 border-t-4 border-wine">
+            <div className="flex justify-between items-center mb-6 border-b border-[var(--home-line)] pb-4">
+                <h3 className="text-2xl font-bold font-display tracking-widest">匯出所選圖片（#{selectedImageIndex + 1}）</h3>
+                <span className="text-xs text-[var(--home-muted)]">點擊上方圖片切換選取</span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Button onClick={() => handleDownload('JPG', 'standard')} variant="secondary" className="text-sm font-bold" disabled={generatedImages.length === 0}>下載 JPG (標準)</Button>
-                <Button onClick={() => handleDownload('JPG', 'high')} variant="light" className="text-sm font-bold" disabled={generatedImages.length === 0}>下載 JPG (Pro 4K)</Button>
-                <Button onClick={() => handleDownload('PDF', 'high')} variant="light" className="sm:col-span-2 text-sm font-bold" disabled={generatedImages.length === 0}>下載 PDF (專業格式)</Button>
+                <Button onClick={() => handleDownload('JPG', 'standard')} variant="secondary" className="text-sm font-bold" disabled={generatedImages.length === 0}>下載 JPG（標準）</Button>
+                <Button onClick={() => handleDownload('JPG', 'high')} variant="light" className="text-sm font-bold" disabled={generatedImages.length === 0}>下載 JPG（Pro 4K）</Button>
+                <Button onClick={() => handleDownload('PDF', 'high')} variant="light" className="sm:col-span-2 text-sm font-bold" disabled={generatedImages.length === 0}>下載 PDF（專業格式）</Button>
             </div>
-            <p className="text-[10px] text-[var(--color-text-dim)] mt-6 font-mono tracking-widest">Pavora PCPE Engine v2.1 - Batch Mode Active</p>
+            <p className="text-[10px] text-[var(--home-muted)] mt-6 font-mono tracking-widest">Pavora 影像總監引擎 v2.1</p>
         </Card>
     </div>
   );
 
   return (
-    <div className="container mx-auto p-4 md:p-8 max-w-[1400px] animate-fade-in pb-20">
+    <div className="home-workbench container mx-auto p-4 md:p-8 max-w-[1400px] animate-fade-in pb-20">
         {isLoading && <Loader message={loadingMessage} />}
         <ImageAnalysisOverlay diagnosis={diagnosis} isOpen={isDiagnosisOverlayOpen} onClose={() => setIsDiagnosisOverlayOpen(false)} />
         {generatedImages.length > 0 && isPreviewModalOpen && <ImagePreviewModal images={generatedImages} startIndex={selectedImageIndex} onClose={() => setIsPreviewModalOpen(false)} />}
-        
+
         {/* Header */}
-        <div className="sticky top-[80px] z-30 glass-panel border-x-0 border-t-0 px-6 py-4 mb-16">
+        <div className="sticky top-[80px] z-30 mf-subheader border-x-0 border-t-0 px-6 py-4 mb-16">
             <div className="max-w-[110rem] mx-auto flex justify-between items-center">
                 <div className="flex flex-col">
-                    <h2 className="text-2xl font-display font-bold uppercase tracking-[0.3em] text-[var(--color-text-main)]">影像總監</h2>
-                    <span className="text-[9px] uppercase tracking-[0.5em] text-[var(--color-gold)] font-light">Product Poster Engine (PCPE)</span>
+                    <h2 className="text-2xl font-display font-bold tracking-[0.3em] text-[var(--home-ink)]">影像總監</h2>
+                    <span className="text-[9px] uppercase tracking-[0.5em] text-brass font-light">產品海報引擎</span>
                 </div>
                 <div className="flex items-center gap-4">
                     {onGoHome && <Button onClick={onGoHome} variant="secondary" className="text-[10px] font-bold tracking-widest">返回首頁</Button>}
                 </div>
             </div>
         </div>
-        
-        {error && <div className="text-center text-red-500 p-4 bg-red-900/10 border border-red-500/30 rounded-lg mb-8">{error}</div>}
+
+        {error && <div className="text-center text-danger p-4 bg-danger/10 border border-danger/20 rounded-lg mb-8">{error}</div>}
 
         {step === 'UPLOAD' && renderUploadStep()}
         {step === 'DIAGNOSIS' && renderDiagnosisStep()}

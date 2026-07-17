@@ -316,67 +316,67 @@ const FashionArchitect: React.FC<FashionArchitectProps> = ({ onGoHome }) => {
             <input type="file" ref={styleRefInputRef} className="hidden" accept="image/*" onChange={handleStyleRefChange} />
 
             {/* Header */}
-            <div className="sticky top-[80px] z-30 glass-panel border-x-0 border-t-0 px-6 py-4 mb-8">
+            <div className="sticky top-[80px] z-30 mf-subheader border-x-0 border-t-0 px-6 py-4 mb-8">
                 <div className="max-w-[110rem] mx-auto flex justify-between items-center">
                     <div className="flex flex-col">
-                        <h2 className="text-2xl font-display font-bold uppercase tracking-[0.3em] text-[var(--color-text-main)] flex items-center gap-3">
+                        <h2 className="text-2xl font-display font-bold tracking-[0.3em] text-[var(--home-ink)] flex items-center gap-3">
                             <ArchitectIcon className="w-8 h-8" />
                             時尚視覺架構師
                         </h2>
-                        <span className="text-[9px] uppercase tracking-[0.5em] text-[var(--color-gold)] font-light">Fashion Visual Architect</span>
+                        <span className="text-[9px] uppercase tracking-[0.5em] text-brass font-light">時尚視覺架構引擎</span>
                     </div>
                     <div className="flex items-center gap-4">
                         {onGoHome && <Button onClick={onGoHome} variant="secondary" className="text-[10px] font-bold tracking-widest">返回首頁</Button>}
                     </div>
                 </div>
             </div>
-            <p className="text-center text-[var(--color-text-dim)] mb-8">上傳人物與單品照片，AI 將為您重塑影像並生成專業的時尚分析拼貼。</p>
-            
-            {error && <div className="text-center text-red-500 p-3 bg-red-900/20 rounded-md mb-6">{error}</div>}
+            <p className="text-center text-[var(--home-muted)] mb-8">上傳人物與單品照片，AI 將為您重塑影像並生成專業的時尚分析拼貼。</p>
+
+            {error && <div className="text-center text-danger p-3 bg-danger/10 border border-danger/20 rounded-md mb-6">{error}</div>}
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 {/* Left Column: Inputs */}
                 <div className="lg:col-span-3 flex flex-col gap-6">
-                    <Card>
-                        <h3 className="text-xl font-bold text-[var(--color-text-title)] mb-4">1. 人物主圖 (必填)</h3>
+                    <Card className="home-card">
+                        <h3 className="text-xl font-bold text-[var(--home-ink)] mb-4">1. 人物主圖（必填）</h3>
                         {personImage ? (
                             <div className="relative group w-full mb-4">
                                 <img src={personImage.url} alt="Main" className="w-full h-64 object-cover object-top rounded-md" />
                                 <Button onClick={() => personInputRef.current?.click()} className="absolute bottom-2 right-2 text-xs py-1 px-2" variant="secondary">更換</Button>
                             </div>
                         ) : (
-                            <div onClick={() => personInputRef.current?.click()} className="w-full h-48 border-2 border-dashed border-[var(--color-border)] rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-[var(--color-gold)] mb-4">
-                                <PhotoIcon className="w-8 h-8 text-[var(--color-text-dim)] mb-2"/>
-                                <span className="text-[var(--color-text-dim)]">點擊上傳照片</span>
+                            <div onClick={() => personInputRef.current?.click()} className="w-full h-48 border-2 border-dashed border-brass/40 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:bg-brass/10 mb-4">
+                                <PhotoIcon className="w-8 h-8 text-[var(--home-muted)] mb-2"/>
+                                <span className="text-[var(--home-muted)]">點擊上傳照片</span>
                             </div>
                         )}
                     </Card>
 
-                    <Card>
-                        <h3 className="text-xl font-bold text-[var(--color-text-title)] mb-4">2. 風格參考圖 (選填)</h3>
+                    <Card className="home-card">
+                        <h3 className="text-xl font-bold text-[var(--home-ink)] mb-4">2. 風格參考圖（選填）</h3>
                         {styleReferenceImage ? (
                             <div className="relative group w-full mb-4">
-                                <img src={styleReferenceImage.url} alt="Style Ref" className="w-full h-32 object-cover rounded-md border border-[var(--color-border)]" />
+                                <img src={styleReferenceImage.url} alt="Style Ref" className="w-full h-32 object-cover rounded-md border border-[var(--home-line)]" />
                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 rounded-md">
                                     <Button onClick={() => styleRefInputRef.current?.click()} className="text-[10px] py-1 px-2" variant="secondary">更換</Button>
-                                    <Button onClick={() => setStyleReferenceImage(null)} className="text-[10px] py-1 px-2 bg-red-500/20 hover:bg-red-500/40 text-red-500 border-red-500/50">移除</Button>
+                                    <Button onClick={() => setStyleReferenceImage(null)} className="text-[10px] py-1 px-2 bg-danger/20 hover:bg-danger/40 text-danger border-danger/20">移除</Button>
                                 </div>
                             </div>
                         ) : (
-                            <div onClick={() => styleRefInputRef.current?.click()} className="w-full h-24 border-2 border-dashed border-[var(--color-border)] rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-[var(--color-gold)] mb-4 group">
-                                <SparklesIcon className="w-6 h-6 text-[var(--color-text-dim)] mb-1 group-hover:text-[var(--color-gold)] transition-colors"/>
-                                <span className="text-[10px] text-[var(--color-text-dim)] uppercase tracking-widest">上傳品牌視覺參考</span>
+                            <div onClick={() => styleRefInputRef.current?.click()} className="w-full h-24 border-2 border-dashed border-brass/40 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:bg-brass/10 mb-4 group">
+                                <SparklesIcon className="w-6 h-6 text-[var(--home-muted)] mb-1 group-hover:text-brass transition-colors"/>
+                                <span className="text-[10px] text-[var(--home-muted)] uppercase tracking-widest">上傳品牌視覺參考</span>
                             </div>
                         )}
-                        <p className="text-[10px] text-[var(--color-text-dim)] leading-relaxed">AI 將提取此圖的顆粒感、濾鏡與色調，確保拼貼風格一致。</p>
+                        <p className="text-[10px] text-[var(--home-muted)] leading-relaxed">AI 將提取此圖的顆粒感、濾鏡與色調，確保拼貼風格一致。</p>
                     </Card>
 
-                    <Card>
-                        <h3 className="text-xl font-bold text-[var(--color-text-title)] mb-4">3. 單品配件 ({fashionItems.length})</h3>
+                    <Card className="home-card">
+                        <h3 className="text-xl font-bold text-[var(--home-ink)] mb-4">3. 單品配件（{fashionItems.length}）</h3>
                         <div className="space-y-3 max-h-64 overflow-y-auto pr-1 mb-4 custom-scrollbar">
                             <AnimatePresence mode="popLayout">
                                 {fashionItems.map((item, i) => (
-                                    <motion.div 
+                                    <motion.div
                                         key={item.id}
                                         layout
                                         initial={{ opacity: 0, x: -20 }}
@@ -384,131 +384,133 @@ const FashionArchitect: React.FC<FashionArchitectProps> = ({ onGoHome }) => {
                                         exit={{ opacity: 0, scale: 0.9 }}
                                         onMouseEnter={() => setHoveredItemIndex(i)}
                                         onMouseLeave={() => setHoveredItemIndex(null)}
-                                        className={`flex items-center gap-2 bg-[var(--color-bg-surface)] p-2 rounded border transition-all ${hoveredItemIndex === i ? 'border-[var(--color-gold)] shadow-lg shadow-[var(--color-gold)]/10 translate-x-1' : 'border-transparent'}`}
+                                        className={`flex items-center gap-2 bg-white/40 p-2 rounded border transition-all ${hoveredItemIndex === i ? 'border-brass/50 translate-x-1' : 'border-transparent'}`}
                                     >
-                                        <div className="flex flex-col gap-0.5 shrink-0 bg-[var(--color-bg-panel)] rounded-md p-1 border border-[var(--color-border)]">
-                                            <button 
+                                        <div className="flex flex-col gap-0.5 shrink-0 bg-white/50 rounded-md p-1 border border-[var(--home-line)]">
+                                            <button
                                                 onClick={() => handleMoveItem(item.id, 'up')}
                                                 disabled={i === 0}
-                                                className="p-1 text-[var(--color-text-dim)] hover:text-[var(--color-gold)] disabled:opacity-20 transition-all hover:bg-[var(--color-bg-surface)] rounded"
+                                                className="p-1 text-[var(--home-muted)] hover:text-brass disabled:opacity-20 transition-all hover:bg-white/60 rounded"
                                                 title="上移"
                                             >
                                                 <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 15l7-7 7 7" /></svg>
                                             </button>
-                                            <button 
+                                            <button
                                                 onClick={() => handleMoveItem(item.id, 'down')}
                                                 disabled={i === fashionItems.length - 1}
-                                                className="p-1 text-[var(--color-text-dim)] hover:text-[var(--color-gold)] disabled:opacity-20 transition-all hover:bg-[var(--color-bg-surface)] rounded"
+                                                className="p-1 text-[var(--home-muted)] hover:text-brass disabled:opacity-20 transition-all hover:bg-white/60 rounded"
                                                 title="下移"
                                             >
                                                 <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" /></svg>
                                             </button>
                                         </div>
-                                        <div className="w-10 h-10 bg-[var(--color-bg-input)] rounded overflow-hidden shrink-0 border border-[var(--color-border)]">
+                                        <div className="w-10 h-10 bg-[var(--home-paper-2)] rounded overflow-hidden shrink-0 border border-[var(--home-line)]">
                                             {item.previewUrl ? (
                                                 <img src={item.previewUrl} className="w-full h-full object-cover" alt={item.name} />
                                             ) : (
-                                                <div className="w-full h-full bg-[var(--color-bg-deep)] flex items-center justify-center text-xs text-[var(--color-text-title)]">{i+1}</div>
+                                                <div className="w-full h-full bg-[var(--home-paper-2)] flex items-center justify-center text-xs text-[var(--home-ink)]">{i+1}</div>
                                             )}
                                         </div>
-                                        <input 
-                                            value={item.name} 
+                                        <input
+                                            value={item.name}
                                             onChange={(e) => handleLabelChange(item.id, e.target.value)}
-                                            className="bg-transparent border-b border-[var(--color-border)] text-sm text-[var(--color-text-title)] flex-grow focus:outline-none focus:border-[var(--color-gold)] font-medium"
+                                            className="bg-transparent border-b border-[var(--home-line)] text-sm text-[var(--home-ink)] flex-grow focus:outline-none focus:border-brass font-medium"
                                             placeholder="輸入名稱..."
                                         />
-                                        <button onClick={() => handleRemoveItem(item.id)} className="text-red-500 hover:text-red-400 text-lg px-1">&times;</button>
+                                        <button onClick={() => handleRemoveItem(item.id)} className="text-danger hover:opacity-80 text-lg px-1">&times;</button>
                                     </motion.div>
                                 ))}
                             </AnimatePresence>
                         </div>
-                        <Button onClick={() => itemInputRef.current?.click()} variant="secondary" className="w-full text-sm">+ 新增單品 (可多選)</Button>
+                        <Button onClick={() => itemInputRef.current?.click()} variant="secondary" className="w-full text-sm">+ 新增單品（可多選）</Button>
                     </Card>
 
-                    <Card>
+                    <Card className="home-card">
                         <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-xl font-bold text-[var(--color-text-title)]">4. 設定與生成</h3>
+                            <h3 className="text-xl font-bold text-[var(--home-ink)]">4. 設定與生成</h3>
                             <Button onClick={handleAnalyzeLayout} disabled={!personImage} variant="secondary" className="text-xs px-2 py-1 flex items-center gap-1">
                                 <SparklesIcon className="w-3 h-3" /> 風格分析
                             </Button>
                         </div>
-                        
+
                         {/* Analysis Preview */}
                         {layoutAnalysis && (
-                            <div className="mb-4 p-3 bg-[var(--color-bg-surface)] border border-[var(--color-border)] rounded-md">
+                            <div className="mb-4 p-3 bg-white/40 border border-[var(--home-line)] rounded-md">
                                 <div className="flex items-center justify-between mb-3">
-                                    <span className="text-xs font-bold text-[var(--color-gold)] uppercase tracking-widest">Style Analysis</span>
-                                    <span className="text-[10px] text-[var(--color-text-dim)] capitalize">{layoutAnalysis.layoutStyle}</span>
+                                    <span className="text-xs font-bold text-brass uppercase tracking-widest">風格分析</span>
+                                    <span className="text-[10px] text-[var(--home-muted)] capitalize">{layoutAnalysis.layoutStyle}</span>
                                 </div>
-                                
+
                                 {layoutAnalysis.colorPalette ? (
                                     <div className="flex flex-wrap gap-2 mb-3">
                                         {layoutAnalysis.colorPalette.map((c, i) => (
                                             <div key={i} className="group relative">
                                                 <div className="w-6 h-6 rounded-full border border-white/10 shadow-sm cursor-help" style={{ backgroundColor: c.hex }} />
-                                                <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:block bg-black text-[8px] px-1 rounded whitespace-nowrap z-10">{c.name}</span>
+                                                <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:block bg-black text-white text-[8px] px-1 rounded whitespace-nowrap z-10">{c.name}</span>
                                             </div>
                                         ))}
                                     </div>
                                 ) : (
                                     <div className="flex items-center gap-2 mb-3">
-                                        <div className="w-4 h-4 rounded-full border border-[var(--color-border)]" style={{backgroundColor: layoutAnalysis.backgroundColor}} title="Background"></div>
-                                        <div className="w-4 h-4 rounded-full border border-[var(--color-border)]" style={{backgroundColor: layoutAnalysis.fontColor}} title="Font"></div>
-                                        <div className="w-4 h-4 rounded-full border border-[var(--color-border)]" style={{backgroundColor: layoutAnalysis.accentColor}} title="Accent"></div>
+                                        <div className="w-4 h-4 rounded-full border border-[var(--home-line)]" style={{backgroundColor: layoutAnalysis.backgroundColor}} title="背景"></div>
+                                        <div className="w-4 h-4 rounded-full border border-[var(--home-line)]" style={{backgroundColor: layoutAnalysis.fontColor}} title="字體"></div>
+                                        <div className="w-4 h-4 rounded-full border border-[var(--home-line)]" style={{backgroundColor: layoutAnalysis.accentColor}} title="強調色"></div>
                                     </div>
                                 )}
 
                                 {layoutAnalysis.lighting && (
-                                    <div className="flex flex-col gap-2 mt-2 pt-2 border-t border-[var(--color-border)]/50">
+                                    <div className="flex flex-col gap-2 mt-2 pt-2 border-t border-[var(--home-line)]/50">
                                         <div className="flex items-center justify-between">
-                                            <span className="text-[10px] text-[var(--color-text-dim)] uppercase tracking-tighter">Lighting: {layoutAnalysis.lighting.direction} / {layoutAnalysis.lighting.temperature}</span>
+                                            <span className="text-[10px] text-[var(--home-muted)] uppercase tracking-tighter">光影：{layoutAnalysis.lighting.direction} / {layoutAnalysis.lighting.temperature}</span>
                                             <div className="flex items-center gap-1">
-                                                <div className="w-1 h-1 rounded-full bg-[var(--color-gold)] animate-ping" />
-                                                <span className="text-[9px] text-[var(--color-gold)] font-bold uppercase">AI Fusion Active</span>
+                                                <div className="w-1 h-1 rounded-full bg-wine animate-ping" />
+                                                <span className="text-[9px] text-wine font-bold uppercase">AI 融合中</span>
                                             </div>
                                         </div>
                                         <div className="flex gap-2">
-                                            <span className="text-[8px] px-1 bg-[var(--color-bg-panel)] border border-[var(--color-border)] rounded text-[var(--color-text-dim)]">Contact Shadows</span>
-                                            <span className="text-[8px] px-1 bg-[var(--color-bg-panel)] border border-[var(--color-border)] rounded text-[var(--color-text-dim)]">Tone Sync</span>
-                                            {styleReferenceImage && <span className="text-[8px] px-1 bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/30 rounded text-[var(--color-gold)]">Style Transfer</span>}
+                                            <span className="text-[8px] px-1 bg-white/50 border border-[var(--home-line)] rounded text-[var(--home-muted)]">接觸陰影</span>
+                                            <span className="text-[8px] px-1 bg-white/50 border border-[var(--home-line)] rounded text-[var(--home-muted)]">色調同步</span>
+                                            {styleReferenceImage && <span className="text-[8px] px-1 bg-brass/10 border border-brass/30 rounded text-brass">風格轉移</span>}
                                         </div>
                                     </div>
                                 )}
-                                <p className="text-[10px] text-[var(--color-text-dim)] mt-2 italic opacity-70">AI 已偵測配色、排版與光影環境</p>
+                                <p className="text-[10px] text-[var(--home-muted)] mt-2 italic opacity-70">AI 已偵測配色、排版與光影環境</p>
                             </div>
                         )}
 
                         <div className="space-y-4">
                             <div>
-                                <label className="block text-sm text-[var(--color-text-main)] mb-1">拼貼標題</label>
-                                <input value={collageTitle} onChange={e => setCollageTitle(e.target.value)} className="w-full bg-[var(--color-bg-input)] p-2 rounded text-sm text-[var(--color-text-title)]" />
+                                <label className="block text-sm text-[var(--home-ink)] mb-1">拼貼標題</label>
+                                <input value={collageTitle} onChange={e => setCollageTitle(e.target.value)} className="w-full bg-white/50 border border-[var(--home-line)] p-2 rounded text-sm text-[var(--home-ink)]" />
                             </div>
                             <div>
-                                <label className="block text-sm text-[var(--color-text-main)] mb-1">風格備註</label>
-                                <textarea value={styleNotes} onChange={e => setStyleNotes(e.target.value)} className="w-full bg-[var(--color-bg-input)] p-2 rounded text-sm text-[var(--color-text-title)]" rows={2} placeholder="例如：極簡、高對比..." />
+                                <label className="block text-sm text-[var(--home-ink)] mb-1">風格備註</label>
+                                <textarea value={styleNotes} onChange={e => setStyleNotes(e.target.value)} className="w-full bg-white/50 border border-[var(--home-line)] p-2 rounded text-sm text-[var(--home-ink)]" rows={2} placeholder="例如：極簡、高對比..." />
                             </div>
                             <div>
-                                <label className="block text-sm text-[var(--color-text-main)] mb-1">視覺風格 (Mood)</label>
+                                <label className="block text-sm text-[var(--home-ink)] mb-1">視覺風格</label>
                                 <div className="grid grid-cols-2 gap-2">
                                     {Object.keys(MOOD_CONFIGS).map(m => (
-                                        <button 
+                                        <button
                                             key={m}
                                             onClick={() => setSelectedMood(m as any)}
-                                            className={`py-2 px-1 text-[10px] font-bold rounded border transition-all ${selectedMood === m ? 'border-[var(--color-gold)] bg-[var(--color-gold)]/10 text-[var(--color-gold)]' : 'border-[var(--color-border)] text-[var(--color-text-dim)] hover:border-[var(--color-text-dim)]'}`}
+                                            style={selectedMood === m ? { background: 'rgba(111,39,53,0.08)' } : undefined}
+                                            className={`py-2 px-1 text-[10px] font-bold rounded border transition-all ${selectedMood === m ? 'border-wine text-wine' : 'border-[var(--home-line)] text-[var(--home-muted)] hover:border-brass/40'}`}
                                         >
-                                            {m === 'AUTO' ? 'AI 自動偵測' : m === 'MINIMAL' ? '極簡白 (Minimal)' : m === 'CYBER' ? '賽博黑 (Cyber)' : '大地色 (Organic)'}
+                                            {m === 'AUTO' ? 'AI 自動偵測' : m === 'MINIMAL' ? '極簡白' : m === 'CYBER' ? '賽博黑' : '大地色'}
                                         </button>
                                     ))}
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-sm text-[var(--color-text-main)] mb-1">輸出比例 (Ratio)</label>
+                                <label className="block text-sm text-[var(--home-ink)] mb-1">輸出比例</label>
                                 <div className="grid grid-cols-4 gap-2">
                                     {(['A4', '9:16', '4:5', '1:1'] as FashionArchitectRatio[]).map(r => (
-                                        <button 
+                                        <button
                                             key={r}
                                             onClick={() => setSelectedRatio(r)}
-                                            className={`py-2 px-1 text-[10px] font-bold rounded border transition-all ${selectedRatio === r ? 'border-[var(--color-gold)] bg-[var(--color-gold)]/10 text-[var(--color-gold)]' : 'border-[var(--color-border)] text-[var(--color-text-dim)] hover:border-[var(--color-text-dim)]'}`}
+                                            style={selectedRatio === r ? { background: 'rgba(111,39,53,0.08)' } : undefined}
+                                            className={`py-2 px-1 text-[10px] font-bold rounded border transition-all ${selectedRatio === r ? 'border-wine text-wine' : 'border-[var(--home-line)] text-[var(--home-muted)] hover:border-brass/40'}`}
                                         >
                                             {r}
                                         </button>
@@ -516,13 +518,14 @@ const FashionArchitect: React.FC<FashionArchitectProps> = ({ onGoHome }) => {
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-sm text-[var(--color-text-main)] mb-1">排版佈局 (Layout)</label>
+                                <label className="block text-sm text-[var(--home-ink)] mb-1">排版佈局</label>
                                 <div className="grid grid-cols-3 gap-2">
                                     {(['CLASSIC', 'MODERN', 'AVANT_GARDE', 'L_FRAME', 'TRIPTYCH', 'STEPPED'] as FashionArchitectLayout[]).map(l => (
-                                        <button 
+                                        <button
                                             key={l}
                                             onClick={() => setSelectedLayout(l)}
-                                            className={`py-2 px-1 text-[10px] font-bold rounded border transition-all ${selectedLayout === l ? 'border-[var(--color-gold)] bg-[var(--color-gold)]/10 text-[var(--color-gold)]' : 'border-[var(--color-border)] text-[var(--color-text-dim)] hover:border-[var(--color-text-dim)]'}`}
+                                            style={selectedLayout === l ? { background: 'rgba(111,39,53,0.08)' } : undefined}
+                                            className={`py-2 px-1 text-[10px] font-bold rounded border transition-all ${selectedLayout === l ? 'border-wine text-wine' : 'border-[var(--home-line)] text-[var(--home-muted)] hover:border-brass/40'}`}
                                         >
                                             {l === 'CLASSIC' ? '經典' : l === 'MODERN' ? '現代' : l === 'AVANT_GARDE' ? '前衛' : l === 'L_FRAME' ? 'L型' : l === 'TRIPTYCH' ? '三聯' : '階梯'}
                                         </button>
@@ -530,12 +533,12 @@ const FashionArchitect: React.FC<FashionArchitectProps> = ({ onGoHome }) => {
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-sm text-[var(--color-text-main)] mb-1">輸出解析度</label>
-                                <Select 
-                                    label="" 
-                                    options={[{value: 'HD', label: 'HD (快速/免費)'}, {value: '2K', label: '2K (Pro)'}, {value: '4K', label: '4K (Pro)'}]} 
-                                    value={resolution} 
-                                    onChange={(e) => setResolution(e.target.value as any)} 
+                                <label className="block text-sm text-[var(--home-ink)] mb-1">輸出解析度</label>
+                                <Select
+                                    label=""
+                                    options={[{value: 'HD', label: 'HD（快速／免費）'}, {value: '2K', label: '2K（Pro）'}, {value: '4K', label: '4K（Pro）'}]}
+                                    value={resolution}
+                                    onChange={(e) => setResolution(e.target.value as any)}
                                 />
                             </div>
                             <Button onClick={handleProcess} disabled={!personImage || isLoading} className="w-full text-lg py-3">
@@ -555,22 +558,22 @@ const FashionArchitect: React.FC<FashionArchitectProps> = ({ onGoHome }) => {
                             className="w-full flex flex-col items-center"
                         >
                             <div className="w-full flex flex-wrap justify-between items-center mb-4 gap-4">
-                                <div className="flex items-center gap-4 px-4 bg-[var(--color-bg-surface)] rounded-full py-1">
-                                    <div className="flex items-center gap-2 mr-2 border-r border-[var(--color-border)] pr-4">
-                                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                                        <span className="text-[10px] uppercase font-bold tracking-widest text-green-500/80">Live Preview</span>
+                                <div className="flex items-center gap-4 px-4 bg-white/10 rounded-full py-1">
+                                    <div className="flex items-center gap-2 mr-2 border-r border-white/20 pr-4">
+                                        <div className="w-2 h-2 rounded-full bg-ok animate-pulse" />
+                                        <span className="text-[10px] uppercase font-bold tracking-widest text-ok/80">即時預覽</span>
                                     </div>
-                                    <span className="text-xs text-[var(--color-text-dim)]">預覽縮放</span>
-                                    <input 
-                                        type="range" 
-                                        min="0.2" 
-                                        max="1.0" 
-                                        step="0.1" 
-                                        value={previewScale} 
+                                    <span className="text-xs text-white/60">預覽縮放</span>
+                                    <input
+                                        type="range"
+                                        min="0.2"
+                                        max="1.0"
+                                        step="0.1"
+                                        value={previewScale}
                                         onChange={(e) => setPreviewScale(Number(e.target.value))}
-                                        className="w-32 h-2 bg-[var(--color-bg-panel)] rounded-lg appearance-none cursor-pointer"
+                                        className="w-32 h-2 bg-white/20 rounded-lg appearance-none cursor-pointer"
                                     />
-                                    <span className="text-xs text-[var(--color-text-title)]">{Math.round(previewScale * 100)}%</span>
+                                    <span className="text-xs text-white">{Math.round(previewScale * 100)}%</span>
                                 </div>
                                 <div className="flex gap-2">
                                     <Button variant="secondary" onClick={() => downloadSingle(fullBodyResult, 'fullbody')}>下載全身圖</Button>
@@ -623,7 +626,7 @@ const FashionArchitect: React.FC<FashionArchitectProps> = ({ onGoHome }) => {
                                                     <g key={i} className="transition-all duration-300">
                                                         <line 
                                                             x1={p.x1} y1={p.y1} x2={p.x2} y2={p.y2} 
-                                                            stroke={hoveredItemIndex === i ? 'var(--color-gold)' : themeAccent} 
+                                                            stroke={hoveredItemIndex === i ? 'var(--color-wine)' : themeAccent}
                                                             strokeWidth={hoveredItemIndex === i ? "2" : "1"} 
                                                             strokeDasharray={hoveredItemIndex === i ? "none" : "5,5"} 
                                                             opacity={hoveredItemIndex === i ? "1" : "0.5"} 
@@ -632,7 +635,7 @@ const FashionArchitect: React.FC<FashionArchitectProps> = ({ onGoHome }) => {
                                                         <circle 
                                                             cx={p.x2} cy={p.y2} 
                                                             r={hoveredItemIndex === i ? "5" : "3"} 
-                                                            fill={hoveredItemIndex === i ? 'var(--color-gold)' : themeAccent} 
+                                                            fill={hoveredItemIndex === i ? 'var(--color-wine)' : themeAccent}
                                                             className="transition-all duration-300"
                                                         />
                                                     </g>
@@ -654,7 +657,7 @@ const FashionArchitect: React.FC<FashionArchitectProps> = ({ onGoHome }) => {
                                                 <input 
                                                    value={collageTitle}
                                                    onChange={e => setCollageTitle(e.target.value)}
-                                                   className="text-6xl font-black uppercase tracking-tight bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)] rounded-lg px-2 w-full"
+                                                   className="text-6xl font-black uppercase tracking-tight bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-brass rounded-lg px-2 w-full"
                                                    style={{ color: themeText, fontFamily: themeFont, textShadow: '0 2px 4px rgba(0,0,0,0.1)', letterSpacing: '-0.02em' }}
                                                 />
                                                 <p className="text-xl mt-2 uppercase tracking-[0.3em] font-light" style={{ color: themeAccent, textShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>Wardrobe Deconstruction & Style Profile</p>
@@ -705,7 +708,7 @@ const FashionArchitect: React.FC<FashionArchitectProps> = ({ onGoHome }) => {
                                                                     <input 
                                                                         value={item.name}
                                                                         onChange={(e) => handleLabelChange(item.id, e.target.value)}
-                                                                        className="font-bold text-sm uppercase truncate bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-[var(--color-gold)] rounded px-1 w-full cursor-text"
+                                                                        className="font-bold text-sm uppercase truncate bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-brass rounded px-1 w-full cursor-text"
                                                                         style={{ color: themeText }}
                                                                     />
                                                                     <span className="text-[10px] font-mono opacity-50 ml-2">#{i + 1}</span>
@@ -772,7 +775,7 @@ const FashionArchitect: React.FC<FashionArchitectProps> = ({ onGoHome }) => {
                                                                 ref={el => itemRefs.current[i] = el} 
                                                                 onMouseEnter={() => setHoveredItemIndex(i)}
                                                                 onMouseLeave={() => setHoveredItemIndex(null)}
-                                                                className={`aspect-square bg-[var(--color-bg-surface)] border border-[var(--color-border)] p-4 transition-all duration-300 ${hoveredItemIndex === i ? 'scale-105 z-30 border-[var(--color-gold)]' : ''}`}
+                                                                className={`aspect-square bg-[var(--color-bg-surface)] border border-[var(--color-border)] p-4 transition-all duration-300 ${hoveredItemIndex === i ? 'scale-105 z-30 border-wine' : ''}`}
                                                             >
                                                                 {item.processedUrl && <img src={item.processedUrl} className="w-full h-full object-contain" />}
                                                             </div>
@@ -785,7 +788,7 @@ const FashionArchitect: React.FC<FashionArchitectProps> = ({ onGoHome }) => {
                                                                 ref={el => itemRefs.current[i + 2] = el} 
                                                                 onMouseEnter={() => setHoveredItemIndex(i + 2)}
                                                                 onMouseLeave={() => setHoveredItemIndex(null)}
-                                                                className={`flex-1 aspect-square bg-[var(--color-bg-surface)] border border-[var(--color-border)] p-4 transition-all duration-300 ${hoveredItemIndex === i + 2 ? 'scale-105 z-30 border-[var(--color-gold)]' : ''}`}
+                                                                className={`flex-1 aspect-square bg-[var(--color-bg-surface)] border border-[var(--color-border)] p-4 transition-all duration-300 ${hoveredItemIndex === i + 2 ? 'scale-105 z-30 border-wine' : ''}`}
                                                             >
                                                                 {item.processedUrl && <img src={item.processedUrl} className="w-full h-full object-contain" />}
                                                             </div>
@@ -804,7 +807,7 @@ const FashionArchitect: React.FC<FashionArchitectProps> = ({ onGoHome }) => {
                                                                 ref={el => itemRefs.current[i] = el} 
                                                                 onMouseEnter={() => setHoveredItemIndex(i)}
                                                                 onMouseLeave={() => setHoveredItemIndex(null)}
-                                                                className={`aspect-square bg-[var(--color-bg-surface)] border border-[var(--color-border)] p-4 transition-all duration-300 ${hoveredItemIndex === i ? 'scale-105 z-30 border-[var(--color-gold)]' : ''} ${i % 3 === 0 ? 'translate-y-8' : ''}`}
+                                                                className={`aspect-square bg-[var(--color-bg-surface)] border border-[var(--color-border)] p-4 transition-all duration-300 ${hoveredItemIndex === i ? 'scale-105 z-30 border-wine' : ''} ${i % 3 === 0 ? 'translate-y-8' : ''}`}
                                                             >
                                                                 {item.processedUrl && <img src={item.processedUrl} className="w-full h-full object-contain" />}
                                                             </div>
@@ -858,7 +861,7 @@ const FashionArchitect: React.FC<FashionArchitectProps> = ({ onGoHome }) => {
                                                                     <input 
                                                                         value={item.name}
                                                                         onChange={(e) => handleLabelChange(item.id, e.target.value)}
-                                                                        className="font-bold text-lg uppercase truncate bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-[var(--color-gold)] rounded px-1 w-full cursor-text"
+                                                                        className="font-bold text-lg uppercase truncate bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-brass rounded px-1 w-full cursor-text"
                                                                         style={{ color: themeText }}
                                                                     />
                                                                     <span className="text-xs font-mono opacity-50 ml-2">ITEM {String(i + 1).padStart(2, '0')}</span>

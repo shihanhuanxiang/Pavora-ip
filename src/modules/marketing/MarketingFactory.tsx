@@ -1,6 +1,4 @@
 import React, { useState, useRef, useCallback } from 'react';
-import Button from '../../shared/components/common/Button';
-import Card from '../../shared/components/common/Card';
 import Loader from '../../shared/components/common/Loader';
 import { useBrandStore } from '../../shared/stores/useBrandStore';
 import { 
@@ -473,11 +471,11 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
     };
 
     return (
-        <div className="min-h-screen bg-[var(--color-bg-deep)] text-[var(--color-text-main)] pb-20 flex flex-col">
-            {/* Image Zoom Modal */}
+        <div className="home-workbench min-h-screen pb-20 flex flex-col">
+            {/* Image Zoom Modal（圖片展示深底合理，比照結果矩陣慣例保留） */}
             {selectedImage && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[var(--color-bg-deep)]/95 p-4 animate-fade-in" onClick={() => setSelectedImage(null)}>
-                    <button className="absolute top-8 right-8 p-3 bg-[var(--color-bg-surface)]/10 rounded-full hover:bg-[var(--color-bg-surface)]/20 transition-all">
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[var(--color-bg-deep)]/95 text-white p-4 animate-fade-in" onClick={() => setSelectedImage(null)}>
+                    <button className="absolute top-8 right-8 p-3 bg-white/10 rounded-full hover:bg-white/20 transition-all text-white">
                         <CloseIcon className="w-6 h-6" />
                     </button>
                     <img src={selectedImage} className="max-w-full max-h-full object-contain shadow-2xl rounded-lg" onClick={(e) => e.stopPropagation()} />
@@ -485,29 +483,28 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
             )}
 
             {isLoading && <Loader message={loadingMessage} />}
-            
+
             {/* Hub Sub-Header */}
-            <div className="glass-panel border-x-0 border-t-0 sticky top-[80px] z-30 px-4 lg:px-8 py-4">
+            <div className="mf-subheader sticky top-[80px] z-30 px-4 lg:px-8 py-4">
                 <div className="max-w-[110rem] mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
                     <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-lg bg-[var(--color-gold)]/10 flex items-center justify-center text-[var(--color-gold)]">
+                        <div className="w-10 h-10 rounded-lg bg-wine/10 flex items-center justify-center text-wine">
                             <PosterEngineIcon />
                         </div>
                         <div>
-                            <h1 className="text-xl font-bold tracking-tight">行銷素材工廠</h1>
-                            <p className="text-[var(--color-gold)] text-[9px] uppercase tracking-[0.2em] font-display">Marketing Content Factory</p>
+                            <h1 className="text-xl font-bold tracking-tight text-[var(--home-ink)]">行銷素材工廠</h1>
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-2 bg-[var(--color-bg-deep)]/20 p-1 rounded-xl border border-[var(--color-border)]">
+                    <div className="flex items-center gap-2 home-pill-group p-1">
                         {tabs.map((tab) => (
                             <button
                                 key={tab.id}
                                 onClick={() => setCurrentView(tab.id as any)}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all duration-300 ${
-                                    currentView === tab.id 
-                                        ? 'bg-[var(--color-gold)] text-[var(--color-bg-deep)] shadow-lg' 
-                                        : 'text-[var(--color-text-dim)] hover:text-[var(--color-text-title)] hover:bg-[var(--color-bg-surface)]/5'
+                                className={`home-pill flex items-center gap-2 px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all duration-300 ${
+                                    currentView === tab.id
+                                        ? 'home-pill-active'
+                                        : 'hover:text-[var(--home-ink)] hover:bg-white/40'
                                 }`}
                             >
                                 <span className="[&_svg]:w-4 [&_svg]:h-4">{tab.icon}</span>
@@ -517,7 +514,7 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <Button onClick={onGoHome} variant="secondary" className="text-[10px] font-bold tracking-widest">返回首頁</Button>
+                        <button onClick={onGoHome} className="home-btn-secondary px-4 py-2 rounded-lg text-[10px] font-bold tracking-widest transition-all">返回首頁</button>
                     </div>
                 </div>
             </div>
@@ -532,24 +529,23 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
                     <main className="max-w-[110rem] mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
                 {/* Left Column: Production Line Control */}
                 <div className="lg:col-span-4 space-y-8">
-                    <Card className="p-6 border-[var(--color-gold)]/20 bg-[var(--color-gold)]/5">
+                    <div className="home-card home-card-accent p-6">
                         <div className="flex items-center gap-3 mb-6">
-                            <div className="w-10 h-10 rounded-full bg-[var(--color-gold)] flex items-center justify-center text-[var(--color-bg-deep)]">
+                            <div className="w-10 h-10 rounded-full mf-step-badge-active flex items-center justify-center text-[var(--home-paper)]">
                                 <PosterEngineIcon />
                             </div>
                             <div>
-                                <h3 className="text-lg font-bold">1. 同一商品多角度上傳</h3>
-                                <p className="text-[10px] text-[var(--color-text-dim)] uppercase tracking-widest">Single Product Multi-Angle Ingestion</p>
+                                <h3 className="text-lg font-bold text-[var(--home-ink)]">1. 同一商品多角度上傳</h3>
                             </div>
                         </div>
 
-                        <div 
+                        <div
                             onClick={() => fileInputRef.current?.click()}
-                            className="w-full aspect-video border-2 border-dashed border-[var(--color-gold)]/30 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:bg-[var(--color-gold)]/10 transition-all group"
+                            className="w-full aspect-video border-2 border-dashed border-brass/40 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:bg-brass/10 transition-all group"
                         >
-                            <PhotoIcon className="w-12 h-12 text-[var(--color-gold)]/50 group-hover:text-[var(--color-gold)] mb-4" />
-                            <p className="text-sm font-bold text-[var(--color-gold)]">點擊上傳商品多角度圖片</p>
-                            <p className="text-[10px] text-[var(--color-text-dim)] mt-2">請提供同一件商品的各角度照片 (如包袋的正、側、背面)</p>
+                            <PhotoIcon className="w-12 h-12 text-brass/60 group-hover:text-brass mb-4" />
+                            <p className="text-sm font-bold text-brass">點擊上傳商品多角度圖片</p>
+                            <p className="text-[10px] text-[var(--home-muted)] mt-2">請提供同一件商品的各角度照片 (如包袋的正、側、背面)</p>
                             <input type="file" ref={fileInputRef} multiple className="hidden" accept="image/*" onChange={handleFileUpload} />
                         </div>
 
@@ -557,29 +553,29 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
                             <div className="mt-6 grid grid-cols-4 gap-3 max-h-80 overflow-y-auto pr-2 custom-scrollbar">
                                 {batchItems.map((item) => (
                                     <div key={item.id} className="relative group">
-                                        <div className="aspect-square rounded-lg overflow-hidden border border-[var(--color-border)] relative">
+                                        <div className="aspect-square rounded-lg overflow-hidden border border-[var(--home-line)] relative">
                                             <img src={item.processedUrl || item.originalUrl} className={`w-full h-full object-cover ${item.status === 'processing' ? 'opacity-30' : ''}`} />
                                             {item.status === 'processing' && (
                                                 <div className="absolute inset-0 flex items-center justify-center">
-                                                    <div className="w-4 h-4 border-2 border-[var(--color-gold)] border-t-transparent rounded-full animate-spin" />
+                                                    <div className="w-4 h-4 border-2 border-brass border-t-transparent rounded-full animate-spin" />
                                                 </div>
                                             )}
                                             {item.status === 'ready' && (
-                                                <div className="absolute top-1 right-1 bg-green-500 text-[var(--color-text-title)] w-4 h-4 rounded-full flex items-center justify-center text-[8px]">
+                                                <div className="absolute top-1 right-1 bg-ok text-[var(--home-paper)] w-4 h-4 rounded-full flex items-center justify-center text-[8px]">
                                                     <CheckIcon className="w-2 h-2" />
                                                 </div>
                                             )}
-                                            <button 
+                                            <button
                                                 onClick={() => removeItem(item.id)}
                                                 className="absolute top-1 left-1 bg-[var(--color-bg-deep)]/60 text-[var(--color-text-title)] w-4 h-4 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                                             >
                                                 <CloseIcon className="w-2 h-2" />
                                             </button>
                                         </div>
-                                        <select 
+                                        <select
                                             value={item.view}
                                             onChange={(e) => updateItemView(item.id, e.target.value as any)}
-                                            className="mt-1 w-full bg-[var(--color-bg-deep)]/40 border border-[var(--color-border)] rounded text-[9px] text-[var(--color-text-dim)] py-0.5 px-1 focus:outline-none focus:border-[var(--color-gold)]/50"
+                                            className="mt-1 w-full bg-white/50 border border-[var(--home-line)] rounded text-[9px] text-[var(--home-muted)] py-0.5 px-1 focus:outline-none focus:border-brass/60"
                                         >
                                             <option value="front">正面 (Front)</option>
                                             <option value="back">反面 (Back)</option>
@@ -590,16 +586,15 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
                                 ))}
                             </div>
                         )}
-                    </Card>
+                    </div>
 
-                    <Card className="p-6">
+                    <div className="home-card p-6">
                         <div className="flex items-center gap-3 mb-6">
-                            <div className="w-10 h-10 rounded-full bg-[var(--color-bg-surface)]/5 flex items-center justify-center">
-                                <SparklesIcon className="text-[var(--color-gold)]" />
+                            <div className="w-10 h-10 rounded-full mf-step-badge flex items-center justify-center text-brass">
+                                <SparklesIcon />
                             </div>
                             <div>
-                                <h3 className="text-lg font-bold">2. 選擇生產模式</h3>
-                                <p className="text-[10px] text-[var(--color-text-dim)] uppercase tracking-widest">Production Mode Selection</p>
+                                <h3 className="text-lg font-bold text-[var(--home-ink)]">2. 選擇生產模式</h3>
                             </div>
                         </div>
 
@@ -615,68 +610,67 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
                                 <button
                                     key={mode.id}
                                     onClick={() => setSelectedMode(mode.id as ProductionMode)}
-                                    className={`w-full p-4 rounded-2xl border text-left transition-all ${selectedMode === mode.id ? 'border-[var(--color-gold)] bg-[var(--color-gold)]/5 shadow-[0_0_20px_rgba(212,175,55,0.1)]' : 'border-[var(--color-border)] hover:border-[var(--color-text-main)]/20'}`}
+                                    className={`w-full p-4 rounded-2xl border text-left transition-all ${selectedMode === mode.id ? 'border-wine bg-wine/5' : 'border-[var(--home-line)] bg-white/30 hover:border-[var(--home-line-strong)]'}`}
                                 >
                                     <div className="flex items-center gap-4">
-                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${selectedMode === mode.id ? 'bg-[var(--color-gold)] text-[var(--color-bg-deep)]' : 'bg-[var(--color-bg-surface)]/5 text-[var(--color-text-dim)]'}`}>
+                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${selectedMode === mode.id ? 'bg-wine text-[var(--home-paper)]' : 'bg-white/50 text-brass'}`}>
                                             {mode.icon}
                                         </div>
                                         <div>
-                                            <h4 className="font-bold text-sm">{mode.label}</h4>
-                                            <p className="text-[10px] text-[var(--color-text-dim)]">{mode.desc}</p>
+                                            <h4 className="font-bold text-sm text-[var(--home-ink)]">{mode.label}</h4>
+                                            <p className="text-[10px] text-[var(--home-muted)]">{mode.desc}</p>
                                         </div>
                                     </div>
                                 </button>
                             ))}
                         </div>
-                    </Card>
+                    </div>
 
-                    <Card className="p-6">
+                    <div className="home-card p-6">
                         <div className="flex items-center gap-3 mb-6">
-                            <div className="w-10 h-10 rounded-full bg-[var(--color-bg-surface)]/5 flex items-center justify-center">
-                                <Face3DIcon className="text-[var(--color-gold)]" />
+                            <div className="w-10 h-10 rounded-full mf-step-badge flex items-center justify-center text-brass">
+                                <Face3DIcon />
                             </div>
                             <div>
-                                <h3 className="text-lg font-bold">3. 品牌一致性鎖定</h3>
-                                <p className="text-[10px] text-[var(--color-text-dim)] uppercase tracking-widest">Brand Consistency Lock</p>
+                                <h3 className="text-lg font-bold text-[var(--home-ink)]">3. 品牌一致性鎖定</h3>
                             </div>
                         </div>
 
                         {activeAmbassador ? (
                             <div className="space-y-4">
-                                <div className="flex items-center gap-4 p-3 bg-[var(--color-bg-surface)]/5 rounded-xl border border-[var(--color-gold)]/30">
+                                <div className="flex items-center gap-4 p-3 bg-white/40 rounded-xl border border-brass/30">
                                     <div className="w-12 h-12 rounded-lg overflow-hidden">
                                         <AsyncImage src={activeAmbassador.imageUrl} className="w-full h-full object-cover" />
                                     </div>
                                     <div className="flex-1">
-                                        <h4 className="text-xs font-bold">{activeAmbassador.name}</h4>
-                                        <p className="text-[9px] text-[var(--color-gold)] uppercase tracking-widest">當前品牌代言人</p>
+                                        <h4 className="text-xs font-bold text-[var(--home-ink)]">{activeAmbassador.name}</h4>
+                                        <p className="text-[9px] text-brass uppercase tracking-widest">當前品牌代言人</p>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <span className="text-[9px] text-[var(--color-text-dim)]">套用</span>
-                                        <input 
-                                            type="checkbox" 
-                                            checked={useAmbassador} 
+                                        <span className="text-[9px] text-[var(--home-muted)]">套用</span>
+                                        <input
+                                            type="checkbox"
+                                            checked={useAmbassador}
                                             onChange={(e) => setUseAmbassador(e.target.checked)}
-                                            className="w-4 h-4 rounded border-[var(--color-border)] bg-[var(--color-bg-surface)]/5 text-[var(--color-gold)] focus:ring-[var(--color-gold)]"
+                                            className="w-4 h-4 rounded border-[var(--home-line)] bg-white/50 text-wine focus:ring-wine"
                                         />
                                     </div>
                                 </div>
                             </div>
                         ) : (
-                            <div className="p-4 bg-red-500/5 rounded-xl border border-red-500/20 text-center">
-                                <p className="text-[10px] text-red-500/70">尚未設定品牌代言人，系統將使用通用模特兒。</p>
+                            <div className="p-4 bg-danger/5 rounded-xl border border-danger/20 text-center">
+                                <p className="text-[10px] text-danger/80">尚未設定品牌代言人，系統將使用通用模特兒。</p>
                             </div>
                         )}
 
                         <div className="mt-6 space-y-3">
-                            <h4 className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-dim)]">生成張數</h4>
+                            <h4 className="text-[10px] font-bold uppercase tracking-widest text-[var(--home-muted)]">生成張數</h4>
                             <div className="grid grid-cols-4 gap-2">
                                 {[1, 2, 3, 4].map((n) => (
                                     <button
                                         key={n}
                                         onClick={() => setImageCount(n)}
-                                        className={`py-2 rounded-lg text-[10px] font-bold border transition-all ${imageCount === n ? 'bg-[var(--color-gold)] text-[var(--color-bg-deep)] border-[var(--color-gold)]' : 'bg-[var(--color-bg-surface)]/5 text-[var(--color-text-dim)] border-[var(--color-border)] hover:border-[var(--color-text-main)]/20'}`}
+                                        className={`py-2 rounded-lg text-[10px] font-bold border transition-all ${imageCount === n ? 'bg-wine text-[var(--home-paper)] border-wine' : 'bg-white/40 text-[var(--home-muted)] border-[var(--home-line)] hover:border-[var(--home-line-strong)]'}`}
                                     >
                                         {n} 張
                                     </button>
@@ -685,62 +679,62 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
                         </div>
 
                         <div className="mt-6 space-y-3">
-                            <h4 className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-dim)]">生產畫質設定</h4>
+                            <h4 className="text-[10px] font-bold uppercase tracking-widest text-[var(--home-muted)]">生產畫質設定</h4>
                             <div className="grid grid-cols-3 gap-2">
                                 {(['FAST', 'STANDARD', 'MAX'] as const).map((q) => (
                                     <button
                                         key={q}
                                         onClick={() => setQuality(q)}
-                                        className={`py-2 rounded-lg text-[9px] font-bold border transition-all ${quality === q ? 'bg-[var(--color-gold)] text-[var(--color-bg-deep)] border-[var(--color-gold)]' : 'bg-[var(--color-bg-surface)]/5 text-[var(--color-text-dim)] border-[var(--color-border)] hover:border-[var(--color-text-main)]/20'}`}
+                                        className={`py-2 rounded-lg text-[9px] font-bold border transition-all ${quality === q ? 'bg-wine text-[var(--home-paper)] border-wine' : 'bg-white/40 text-[var(--home-muted)] border-[var(--home-line)] hover:border-[var(--home-line-strong)]'}`}
                                     >
-                                        {q === 'FAST' ? '快速 (Fast)' : q === 'STANDARD' ? '標準 (Std)' : '極致 (4K)'}
+                                        {q === 'FAST' ? '快速' : q === 'STANDARD' ? '標準' : '極致 4K'}
                                     </button>
                                 ))}
                             </div>
                         </div>
 
-                        <Button 
-                            onClick={runProduction} 
+                        <button
+                            onClick={runProduction}
                             disabled={!selectedMode || batchItems.filter(i => i.status === 'ready').length === 0 || isLoading}
-                            className="w-full mt-8 py-5 text-lg shadow-2xl"
+                            className="home-btn-primary w-full mt-8 py-5 text-lg rounded-xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            <SparklesIcon className="w-5 h-5 mr-2" /> 啟動高階影像生產線
-                        </Button>
-                    </Card>
+                            <SparklesIcon className="w-5 h-5" /> 啟動高階影像生產線
+                        </button>
+                    </div>
                 </div>
 
                 {/* Right Column: Results Grid */}
                 <div className="lg:col-span-8">
-                    <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8 border-b border-[var(--color-border)] pb-6">
+                    <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8 border-b border-[var(--home-line)] pb-6">
                         <div className="flex flex-col">
-                            <h3 className="text-2xl font-display font-bold uppercase tracking-[0.2em] text-[var(--color-text-title)]">
+                            <h3 className="text-2xl font-display font-bold uppercase tracking-[0.2em] text-[var(--home-ink)]">
                                 {campaign ? '行銷全案輸出' : '生產輸出矩陣'}
                             </h3>
-                            <span className="text-[9px] uppercase tracking-[0.4em] text-[var(--color-gold)] font-light">
+                            <span className="text-[9px] uppercase tracking-[0.4em] text-brass font-light">
                                 {campaign ? 'Campaign Output Matrix' : 'Production Output Matrix'}
                             </span>
                         </div>
                         <div className="flex gap-3">
                             {campaign && (
-                                <div className="flex bg-[var(--color-bg-surface)]/5 rounded-lg p-1 border border-[var(--color-border)]">
-                                    <button 
+                                <div className="flex home-pill-group p-1">
+                                    <button
                                         onClick={() => setActiveCampaignTab('assets')}
-                                        className={`px-4 py-1.5 rounded-md text-[10px] font-bold transition-all ${activeCampaignTab === 'assets' ? 'bg-[var(--color-gold)] text-[var(--color-bg-deep)]' : 'text-[var(--color-text-dim)] hover:text-[var(--color-text-title)]'}`}
+                                        className={`home-pill px-4 py-1.5 rounded-md text-[10px] font-bold transition-all ${activeCampaignTab === 'assets' ? 'home-pill-active' : 'hover:text-[var(--home-ink)]'}`}
                                     >
                                         素材矩陣
                                     </button>
-                                    <button 
+                                    <button
                                         onClick={() => setActiveCampaignTab('strategy')}
-                                        className={`px-4 py-1.5 rounded-md text-[10px] font-bold transition-all ${activeCampaignTab === 'strategy' ? 'bg-[var(--color-gold)] text-[var(--color-bg-deep)]' : 'text-[var(--color-text-dim)] hover:text-[var(--color-text-title)]'}`}
+                                        className={`home-pill px-4 py-1.5 rounded-md text-[10px] font-bold transition-all ${activeCampaignTab === 'strategy' ? 'home-pill-active' : 'hover:text-[var(--home-ink)]'}`}
                                     >
                                         行銷策略
                                     </button>
                                 </div>
                             )}
                             {results.length > 0 && (
-                                <Button variant="secondary" className="text-[10px] font-bold tracking-widest" onClick={() => results.forEach(r => downloadImage(r.url, `pavora_factory_${r.type}.jpg`, 'MarketingFactory'))}>
-                                    <DownloadIcon className="w-4 h-4 mr-2" /> 批次下載全案
-                                </Button>
+                                <button className="home-btn-secondary px-4 py-2 rounded-lg text-[10px] font-bold tracking-widest transition-all flex items-center gap-2" onClick={() => results.forEach(r => downloadImage(r.url, `pavora_factory_${r.type}.jpg`, 'MarketingFactory'))}>
+                                    <DownloadIcon className="w-4 h-4" /> 批次下載全案
+                                </button>
                             )}
                         </div>
                     </div>
@@ -749,7 +743,7 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
                         activeCampaignTab === 'assets' ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-fade-in">
                                 {results.map((res) => (
-                                    <Card key={res.id} className="p-0 overflow-hidden group relative border-[var(--color-border)] hover:border-[var(--color-gold)]/50 transition-all">
+                                    <div key={res.id} className="home-card p-0 overflow-hidden group relative hover:border-brass/50 transition-all">
                                         <div className="aspect-[3/4] bg-[var(--color-bg-deep)]/20 cursor-zoom-in" onClick={() => res.mediaType === 'image' && setSelectedImage(res.url)}>
                                             {res.mediaType === 'video' ? (
                                                 <VideoPlayer src={res.url} className="w-full h-full object-cover" controls />
@@ -757,24 +751,24 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
                                                 <img src={res.url} className="w-full h-full object-cover" />
                                             )}
                                         </div>
-                                        <div className="p-5 bg-[var(--color-bg-panel)]">
+                                        <div className="p-5">
                                             <div className="flex justify-between items-center mb-4">
                                                 <div>
-                                                    <h4 className="text-xs font-bold uppercase tracking-widest text-[var(--color-gold)]">{res.type}</h4>
-                                                    <p className="text-[10px] text-[var(--color-text-dim)] uppercase mt-1">Generated by Pavora Factory</p>
+                                                    <h4 className="text-xs font-bold uppercase tracking-widest text-brass">{res.type}</h4>
+                                                    <p className="text-[10px] text-[var(--home-muted)] mt-1">由 PAVORA 行銷工廠生成</p>
                                                 </div>
-                                                <button onClick={() => downloadImage(res.url, `pavora_${res.type}.jpg`, 'MarketingFactory')} className="p-2.5 rounded-full bg-[var(--color-bg-surface)]/5 hover:bg-[var(--color-gold)] hover:text-[var(--color-bg-deep)] transition-all">
+                                                <button onClick={() => downloadImage(res.url, `pavora_${res.type}.jpg`, 'MarketingFactory')} className="p-2.5 rounded-full bg-white/40 hover:bg-brass hover:text-[var(--home-paper)] transition-all text-[var(--home-muted)]">
                                                     <DownloadIcon className="w-5 h-5" />
                                                 </button>
                                             </div>
-                                            
+
                                             {campaign && (
                                                 <div className="flex gap-2 mb-4 overflow-x-auto pb-2 custom-scrollbar">
                                                     {(['Instagram', 'TikTok', 'Facebook'] as const).map(p => (
                                                         <button
                                                             key={p}
                                                             onClick={() => setActivePlatform(p)}
-                                                            className={`px-3 py-1 rounded-full text-[10px] font-bold whitespace-nowrap transition-all ${activePlatform === p ? 'bg-[var(--color-gold)] text-[var(--color-bg-deep)]' : 'bg-[var(--color-bg-surface)]/5 text-[var(--color-text-dim)]'}`}
+                                                            className={`px-3 py-1 rounded-full text-[10px] font-bold whitespace-nowrap transition-all ${activePlatform === p ? 'bg-wine text-[var(--home-paper)]' : 'bg-white/40 text-[var(--home-muted)]'}`}
                                                         >
                                                             {p}
                                                         </button>
@@ -783,27 +777,27 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
                                             )}
 
                                             {(res.copy || (campaign && campaign.copy[activePlatform])) && (
-                                                <div className="mt-2 p-4 bg-[var(--color-bg-deep)]/40 rounded-xl text-xs text-[var(--color-text-dim)] leading-relaxed max-h-48 overflow-y-auto custom-scrollbar border border-[var(--color-border)]">
+                                                <div className="mt-2 p-4 bg-white/40 rounded-xl text-xs text-[var(--home-muted)] leading-relaxed max-h-48 overflow-y-auto custom-scrollbar border border-[var(--home-line)]">
                                                     <div className="whitespace-pre-wrap">
                                                         {campaign ? campaign.copy[activePlatform] : res.copy}
                                                     </div>
                                                 </div>
                                             )}
                                         </div>
-                                    </Card>
+                                    </div>
                                 ))}
                             </div>
                         ) : (
                             <div className="space-y-6 animate-fade-in">
                                 {campaign?.strategy && (
-                                    <Card className="p-8 border-[var(--color-gold)]/20 bg-[var(--color-bg-deep)]/40">
-                                        <div className="flex items-center gap-4 mb-8 border-b border-[var(--color-border)] pb-4">
-                                            <div className="w-12 h-12 rounded-full bg-[var(--color-gold)]/20 flex items-center justify-center text-[var(--color-gold)]">
+                                    <div className="home-card p-8">
+                                        <div className="flex items-center gap-4 mb-8 border-b border-[var(--home-line)] pb-4">
+                                            <div className="w-12 h-12 rounded-full bg-wine/15 flex items-center justify-center text-wine">
                                                 <SparklesIcon className="w-6 h-6" />
                                             </div>
                                             <div>
-                                                <h4 className="text-xl font-bold text-[var(--color-text-title)]">{campaign.strategy.campaign_name || '3 日行銷攻勢策略'}</h4>
-                                                <p className="text-xs text-[var(--color-gold)] uppercase tracking-widest">3-Day Integrated Marketing Strategy</p>
+                                                <h4 className="text-xl font-bold text-[var(--home-ink)]">{campaign.strategy.campaign_name || '3 日行銷攻勢策略'}</h4>
+                                                <p className="text-xs text-brass uppercase tracking-widest">3-Day Integrated Marketing Strategy</p>
                                             </div>
                                         </div>
 
@@ -812,17 +806,17 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
                                                 const dayData = campaign.strategy[day];
                                                 if (!dayData) return null;
                                                 return (
-                                                    <div key={day} className="space-y-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-[var(--color-gold)]/30 transition-all">
+                                                    <div key={day} className="home-card-sub space-y-4 p-4 hover:border-brass/40 transition-all">
                                                         <div className="flex items-center justify-between">
-                                                            <span className="text-[10px] font-black bg-[var(--color-gold)] text-black px-2 py-0.5 rounded">DAY 0{idx + 1}</span>
-                                                            <span className="text-[10px] text-gray-500 uppercase font-bold tracking-tighter">{dayData.theme}</span>
+                                                            <span className="text-[10px] font-black bg-brass text-[var(--home-paper)] px-2 py-0.5 rounded">DAY 0{idx + 1}</span>
+                                                            <span className="text-[10px] text-[var(--home-muted)] uppercase font-bold tracking-tighter">{dayData.theme}</span>
                                                         </div>
-                                                        <h5 className="font-bold text-sm text-[var(--color-text-title)] border-l-2 border-[var(--color-gold)] pl-2">{dayData.goal}</h5>
+                                                        <h5 className="font-bold text-sm text-[var(--home-ink)] border-l-2 border-brass pl-2">{dayData.goal}</h5>
                                                         <div className="space-y-2">
-                                                            <p className="text-[11px] text-gray-400 leading-relaxed">{dayData.action}</p>
-                                                            <div className="pt-2 border-t border-white/5">
-                                                                <p className="text-[9px] text-[var(--color-gold)] font-bold uppercase">關鍵指標 (KPI)</p>
-                                                                <p className="text-[10px] text-gray-500">{dayData.kpi}</p>
+                                                            <p className="text-[11px] text-[var(--home-muted)] leading-relaxed">{dayData.action}</p>
+                                                            <div className="pt-2 border-t border-[var(--home-line)]">
+                                                                <p className="text-[9px] text-brass font-bold uppercase">關鍵指標 (KPI)</p>
+                                                                <p className="text-[10px] text-[var(--home-muted)]">{dayData.kpi}</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -830,21 +824,21 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
                                             })}
                                         </div>
 
-                                        <div className="mt-8 p-4 rounded-xl bg-[var(--color-gold)]/5 border border-[var(--color-gold)]/10">
-                                            <h5 className="text-xs font-bold text-[var(--color-gold)] mb-2 uppercase tracking-widest">核心行銷訊息 (Core Message)</h5>
-                                            <p className="text-sm text-gray-300 italic">"{campaign.strategy.core_message}"</p>
+                                        <div className="mt-8 p-4 rounded-xl bg-brass/5 border border-brass/20">
+                                            <h5 className="text-xs font-bold text-brass mb-2 uppercase tracking-widest">核心行銷訊息 (Core Message)</h5>
+                                            <p className="text-sm text-[var(--home-ink)] italic opacity-80">"{campaign.strategy.core_message}"</p>
                                         </div>
-                                    </Card>
+                                    </div>
                                 )}
                             </div>
                         )
                     ) : (
-                        <div className="h-[70vh] rounded-3xl border-4 border-dashed border-[var(--color-border)] flex flex-col items-center justify-center text-center p-12 bg-white/2">
-                            <div className="w-24 h-24 rounded-full bg-white/5 flex items-center justify-center text-[var(--color-text-dim)] mb-8 opacity-20">
+                        <div className="h-[70vh] rounded-3xl border-4 border-dashed border-[var(--home-line)] flex flex-col items-center justify-center text-center p-12 bg-white/20">
+                            <div className="w-24 h-24 rounded-full bg-white/40 flex items-center justify-center text-[var(--home-muted)] mb-8 opacity-60">
                                 <PosterEngineIcon />
                             </div>
-                            <h4 className="text-xl font-bold mb-2 text-[var(--color-text-dim)]">生產線待命中</h4>
-                            <p className="text-sm text-[var(--color-text-dim)] max-w-md">
+                            <h4 className="text-xl font-bold mb-2 text-[var(--home-muted)]">生產線待命中</h4>
+                            <p className="text-sm text-[var(--home-muted)] max-w-md">
                                 請在上傳同一商品的各角度素材並選擇生產模式後，點擊「啟動高階影像生產線」開始產出極致細節的行銷內容。
                             </p>
                         </div>
