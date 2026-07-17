@@ -183,13 +183,13 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
     };
 
     return (
-        <div className="narrative-settings-panel space-y-12 p-10 bg-white/60 border border-narrative-ink/10 rounded-[3rem]">
+        <div className="narrative-settings-panel space-y-12 p-2">
             {/* Visual Presets Selection */}
             <motion.div
                 className="space-y-6 text-left"
             >
                 <div className="flex items-center gap-3">
-                    <div className="w-1.5 h-4 bg-[var(--color-brass)] rounded-full shadow-[0_0_12px_rgba(164,123,67,0.4)]"></div>
+                    <div className="w-1.5 h-4 bg-[var(--color-brass)] rounded-full"></div>
                     <span className="text-[11px] font-black uppercase tracking-widest text-narrative-ink">
                         視覺風格預設
                     </span>
@@ -223,7 +223,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                 onClick={() => applyVisualPreset(model, preset.preset_id, onUpdate)}
                                 className={`p-4 rounded-2xl border text-left transition-all ${
                                     isActive
-                                        ? 'border-[var(--color-wine)] bg-[var(--color-wine)]/10 shadow-[0_0_20px_rgba(111,39,53,0.15)]'
+                                        ? 'border-[var(--color-wine)] bg-[var(--color-wine)]/10'
                                         : 'border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/5'
                                 }`}
                             >
@@ -260,7 +260,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                 className="space-y-6 text-left"
             >
                 <div className="flex items-center gap-3">
-                    <div className="w-1.5 h-4 bg-[var(--color-brass)] rounded-full shadow-[0_0_12px_rgba(164,123,67,0.4)]"></div>
+                    <div className="w-1.5 h-4 bg-[var(--color-brass)] rounded-full"></div>
                     <h4 className="text-[11px] font-black text-[var(--color-brass)] uppercase tracking-[0.3em]">IP 風格聖經</h4>
                 </div>
 
@@ -292,7 +292,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                 className="space-y-6 text-left"
             >
                 <div className="flex items-center gap-3">
-                    <div className="w-1.5 h-4 bg-[var(--color-brass)] rounded-full shadow-[0_0_12px_rgba(164,123,67,0.4)]"></div>
+                    <div className="w-1.5 h-4 bg-[var(--color-brass)] rounded-full"></div>
                     <h4 className="text-[11px] font-black text-[var(--color-brass)] uppercase tracking-[0.3em]">角色擴展設定</h4>
                 </div>
                 
@@ -317,7 +317,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                 <div className="flex justify-end pt-2">
                     <button 
                         onClick={handleSaveExtensions}
-                        className="px-8 py-3 bg-black/5 dark:bg-white/5 text-gray-700 dark:text-white border border-black/10 dark:border-white/10 text-[13px] font-black rounded-full hover:bg-[var(--color-wine)] hover:text-white hover:border-[var(--color-wine)] hover:scale-105 active:scale-95 transition-all uppercase tracking-widest shadow-xl italic"
+                        className="px-8 py-3 bg-black/5 dark:bg-white/5 text-gray-700 dark:text-white border border-black/10 dark:border-white/10 text-[13px] font-black rounded-full hover:bg-[var(--color-wine)] hover:text-white hover:border-[var(--color-wine)] active:scale-95 transition-all tracking-widest shadow-xl"
                     >
                         儲存敘事設定
                     </button>
@@ -331,7 +331,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                 className="space-y-6 text-left"
             >
                 <div className="flex items-center gap-3">
-                    <div className="w-1.5 h-4 bg-[var(--color-brass)] rounded-full shadow-[0_0_12px_rgba(164,123,67,0.4)]"></div>
+                    <div className="w-1.5 h-4 bg-[var(--color-brass)] rounded-full"></div>
                     <h4 className="text-[11px] font-black text-[var(--color-brass)] uppercase tracking-[0.3em]">美學參數對齊</h4>
                 </div>
 
@@ -405,7 +405,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                     <div className="flex items-center gap-8 relative z-10">
                         <div className="space-y-1.5">
                             <div className="flex items-center gap-3">
-                                <div className="w-1.5 h-4 bg-[var(--color-steel)] rounded-full shadow-[0_0_15px_rgba(70,90,112,0.6)]"></div>
+                                <div className="w-1.5 h-4 bg-[var(--color-steel)] rounded-full"></div>
                                 <h4 className="text-sm font-black text-[var(--color-narrative-ink)] uppercase tracking-[0.3em]">
                                     故事弧管理
                                 </h4>
@@ -415,7 +415,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                             <button 
                                 type="button"
                                 onClick={() => toggleMaster('enable_story_arcs')}
-                                className={`relative inline-flex h-7 w-12 items-center rounded-full transition-all duration-500 focus:outline-none cursor-pointer group/toggle ${model.preferences?.enable_story_arcs !== false ? 'bg-[var(--color-steel)] shadow-[0_0_20px_rgba(70,90,112,0.5)]' : 'bg-white/10'}`}
+                                className={`relative inline-flex h-7 w-12 items-center rounded-full transition-all duration-500 focus:outline-none cursor-pointer group/toggle ${model.preferences?.enable_story_arcs !== false ? 'bg-[var(--color-steel)]' : 'bg-white/10'}`}
                             >
                                 <motion.span 
                                     layout
@@ -509,7 +509,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                     >
                                         <div className="absolute top-0 right-0 p-6 z-20">
                                             {isActive ? (
-                                                <div className="w-2.5 h-2.5 bg-[var(--color-steel)] rounded-full animate-pulse shadow-[0_0_15px_rgba(70,90,112,1)]"></div>
+                                                <div className="w-2.5 h-2.5 bg-[var(--color-steel)] rounded-full animate-pulse"></div>
                                             ) : (
                                                 <div className="w-2 h-2 border-2 border-white/20 rounded-full"></div>
                                             )}
@@ -517,7 +517,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                         
                                         <div className="space-y-4 mb-auto">
                                             <div className="space-y-1">
-                                                <h5 className={`text-lg font-black tracking-tight leading-tight uppercase italic transition-colors ${isActive ? 'text-narrative-ink' : 'text-narrative-ink-soft group-hover:text-narrative-ink'}`}>{arc.name_zh}</h5>
+                                                <h5 className={`text-lg font-black tracking-tight leading-tight transition-colors ${isActive ? 'text-narrative-ink' : 'text-narrative-ink-soft group-hover:text-narrative-ink'}`}>{arc.name_zh}</h5>
                                             </div>
                                             
                                             <p className="text-[11px] text-narrative-ink leading-relaxed line-clamp-3 font-medium italic group-hover:text-gray-900 transition-colors">「{arc.rationale}」</p>
@@ -554,7 +554,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                     <div className="flex items-center gap-8 relative z-10">
                         <div className="space-y-1.5">
                             <div className="flex items-center gap-3">
-                                <div className="w-1.5 h-4 bg-[var(--color-sage)] rounded-full shadow-[0_0_15px_rgba(85,106,91,0.6)]"></div>
+                                <div className="w-1.5 h-4 bg-[var(--color-sage)] rounded-full"></div>
                                 <h4 className="text-sm font-black text-[var(--color-narrative-ink)] uppercase tracking-[0.3em]">
                                     身份線管理
                                 </h4>
@@ -564,7 +564,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                             <button 
                                 type="button"
                                 onClick={() => toggleMaster('enable_identity_threads')}
-                                className={`relative inline-flex h-7 w-12 items-center rounded-full transition-all duration-500 focus:outline-none cursor-pointer group/toggle ${model.preferences?.enable_identity_threads !== false ? 'bg-[var(--color-sage)] shadow-[0_0_20px_rgba(85,106,91,0.5)]' : 'bg-white/10'}`}
+                                className={`relative inline-flex h-7 w-12 items-center rounded-full transition-all duration-500 focus:outline-none cursor-pointer group/toggle ${model.preferences?.enable_identity_threads !== false ? 'bg-[var(--color-sage)]' : 'bg-white/10'}`}
                             >
                                 <motion.span 
                                     layout
@@ -658,7 +658,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                     >
                                         <div className="absolute top-0 right-0 p-6 z-20">
                                             {isActive ? (
-                                                <div className="w-2.5 h-2.5 bg-[var(--color-sage)] rounded-full animate-pulse shadow-[0_0_15px_rgba(85,106,91,1)]"></div>
+                                                <div className="w-2.5 h-2.5 bg-[var(--color-sage)] rounded-full animate-pulse"></div>
                                             ) : (
                                                 <div className="w-2 h-2 border-2 border-white/20 rounded-full"></div>
                                             )}
@@ -666,7 +666,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                         
                                         <div className="space-y-4 mb-auto">
                                             <div className="space-y-1">
-                                                <h5 className={`text-lg font-black tracking-tight leading-tight uppercase italic transition-colors ${isActive ? 'text-narrative-ink' : 'text-narrative-ink-soft group-hover:text-narrative-ink'}`}>{thread.name_zh}</h5>
+                                                <h5 className={`text-lg font-black tracking-tight leading-tight transition-colors ${isActive ? 'text-narrative-ink' : 'text-narrative-ink-soft group-hover:text-narrative-ink'}`}>{thread.name_zh}</h5>
                                             </div>
                                             
                                             <p className="text-[11px] text-narrative-ink leading-relaxed line-clamp-3 font-medium italic group-hover:text-gray-900 transition-colors">「{thread.rationale}」</p>

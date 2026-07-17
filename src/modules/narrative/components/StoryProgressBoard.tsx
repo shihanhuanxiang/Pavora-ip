@@ -26,9 +26,9 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
     const contentCategories: ContentCategory[] = ['lifestyle', 'curve', 'drama'];
     const styleTargets = model.styleBible?.contentTargets || {};
     const categoryMeta: Record<ContentCategory, { label: string; target: number; color: string; glow: string }> = {
-        lifestyle: { label: '生活感', target: styleTargets.lifestyle ?? 50, color: 'bg-sky-400', glow: 'shadow-[0_0_12px_rgba(56,189,248,0.35)]' },
-        curve: { label: '曲線感', target: styleTargets.curve ?? 30, color: 'bg-[var(--color-brass)]', glow: 'shadow-[0_0_12px_rgba(164,123,67,0.35)]' },
-        drama: { label: '戲劇張力', target: styleTargets.drama ?? 20, color: 'bg-violet-400', glow: 'shadow-[0_0_12px_rgba(167,139,250,0.35)]' }
+        lifestyle: { label: '生活感', target: styleTargets.lifestyle ?? 50, color: 'bg-[var(--color-steel)]', glow: '' },
+        curve: { label: '曲線感', target: styleTargets.curve ?? 30, color: 'bg-[var(--color-brass)]', glow: '' },
+        drama: { label: '戲劇張力', target: styleTargets.drama ?? 20, color: 'bg-[var(--color-wine)]', glow: '' }
     };
     const targetLabel = contentCategories.map(category => categoryMeta[category].target).join(' / ');
     const categorizedTotal = galleryEntries.filter(item => Boolean(item.contentCategory)).length;
@@ -51,7 +51,7 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                 animate={{ opacity: 1, y: 0 }}
                 className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-4 space-y-3 relative overflow-hidden"
             >
-                <div className="absolute -top-8 -left-8 w-24 h-24 bg-sky-400/[0.03] rounded-full blur-[50px]"></div>
+                <div className="absolute -top-8 -left-8 w-24 h-24 bg-[var(--color-steel)]/[0.03] rounded-full blur-[50px]"></div>
                 <div className="relative z-10 flex items-center justify-between gap-2">
                     <h4 className="text-[9px] font-black text-[var(--color-brass)] uppercase tracking-[0.3em]">內容比例 // {targetLabel}</h4>
                     <span className="text-[8px] text-gray-600 font-bold">{categorizedTotal} 張已分類</span>
@@ -83,7 +83,7 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
             {/* Story Arc Section */}
             {!isArcEnabled ? (
                 <div className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-[2rem] p-6 text-center opacity-40 group hover:opacity-60 transition-all">
-                    <p className="text-[10px] text-gray-500 uppercase tracking-[0.4em] font-black italic">故事弧引擎</p>
+                    <p className="text-[10px] text-gray-500 tracking-[0.4em] font-black">故事弧引擎</p>
                 </div>
             ) : activeArc && (
                 <motion.div 
@@ -96,8 +96,8 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
 
                     <div className="flex justify-between items-center relative z-10">
                         <div className="flex items-center gap-3">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-brass)] animate-pulse shadow-[0_0_10px_rgba(164,123,67,1)]"></div>
-                            <h4 className="text-[10px] font-black text-[var(--color-brass)] uppercase tracking-[0.4em] italic">核心故事弧</h4>
+                            <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-brass)] animate-pulse"></div>
+                            <h4 className="text-[10px] font-black text-[var(--color-brass)] tracking-[0.4em]">核心故事弧</h4>
                         </div>
                         <div className="flex items-center gap-2 px-3 py-1 bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-full">
                             <span className="text-[9px] text-gray-500 font-black uppercase tracking-tighter">環節</span>
@@ -112,7 +112,7 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                                 <p className="text-[10px] text-[var(--color-brass)] font-bold tracking-[0.2em] uppercase opacity-70">{activeArc.arc_id.replace(/_/g, ' ')}</p>
                             </div>
                             <div className="text-right">
-                                <span className="text-[10px] text-[var(--color-text-title)] font-black italic tracking-widest bg-[var(--color-bg-input)] px-4 py-1.5 rounded-full border border-[var(--color-border)]">{activeArc.phases[arcPhaseIdx]}</span>
+                                <span className="text-[10px] text-[var(--color-text-title)] font-black tracking-widest bg-[var(--color-bg-input)] px-4 py-1.5 rounded-full border border-[var(--color-border)]">{activeArc.phases[arcPhaseIdx]}</span>
                             </div>
                         </div>
                         
@@ -123,7 +123,7 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                                     <div 
                                         className={`absolute inset-0 rounded-full transition-all duration-700 ${
                                             i <= arcPhaseIdx
-                                            ? 'bg-[var(--color-brass)] shadow-[0_0_15px_rgba(164,123,67,0.3)]'
+                                            ? 'bg-[var(--color-brass)]'
                                             : 'bg-[var(--color-bg-input)]'
                                         }`}
                                     />
@@ -147,7 +147,7 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
             {/* Identity Threads Section */}
             {!isThreadsEnabled ? (
                 <div className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-[2rem] p-6 text-center opacity-40">
-                    <p className="text-[10px] text-gray-500 uppercase tracking-[0.4em] font-black italic">身分線程引擎</p>
+                    <p className="text-[10px] text-gray-500 tracking-[0.4em] font-black">身分線程引擎</p>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -170,13 +170,13 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                                 <div className="flex justify-between items-start relative z-10">
                                     <div className="space-y-1">
                                         <div className="flex items-center gap-2">
-                                            <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-sage)] animate-pulse shadow-[0_0_8px_rgba(85,106,91,1)]"></div>
+                                            <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-sage)] animate-pulse"></div>
                                             <span className="text-[9px] font-black text-[var(--color-sage)] uppercase tracking-[0.3em]">身分發展線</span>
                                         </div>
                                         <h6 className="text-lg font-black text-[var(--color-text-title)] tracking-tight uppercase leading-none">{thread.name_zh}</h6>
                                     </div>
                                     <div className="px-3 py-1 bg-[var(--color-sage)]/10 border border-[var(--color-sage)]/20 rounded-full">
-                                        <span className="text-[9px] text-[var(--color-sage)] font-black tracking-widest uppercase italic">LV.{threadState.current_milestone_index + 1}</span>
+                                        <span className="text-[9px] text-[var(--color-sage)] font-black tracking-widest">LV.{threadState.current_milestone_index + 1}</span>
                                     </div>
                                 </div>
 
@@ -190,7 +190,7 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                                             initial={{ width: 0 }}
                                             animate={{ width: `${progress}%` }}
                                             transition={{ duration: 1, ease: "easeOut" }}
-                                            className="absolute inset-y-0 left-0 bg-gradient-to-r from-[var(--color-sage)] to-[var(--color-sage)]/60 rounded-full shadow-[0_0_10px_rgba(85,106,91,0.3)]"
+                                            className="absolute inset-y-0 left-0 bg-gradient-to-r from-[var(--color-sage)] to-[var(--color-sage)]/60 rounded-full"
                                         />
                                     </div>
                                 </div>

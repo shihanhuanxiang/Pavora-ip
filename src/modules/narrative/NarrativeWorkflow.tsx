@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { Model, DiaryEntry } from '../../shared/types/types';
 import Button from '../../shared/components/common/Button';
 import Loader from '../../shared/components/common/Loader';
-import { generateIPDiary, generateRandomEvent, syncPrompts, generateDynamicEvent, extractNewMemories, generateRandomEventWithScene, generateDynamicEventWithScene, previewShootConfig, getOutfitOptionsForScene, generateIPDiaryCaption, generatePlatformCaption, generateCarouselVariation } from './services/narrativeService';
+import { generateIPDiary, generateRandomEvent, syncPrompts, generateDynamicEvent, extractNewMemories, generateRandomEventWithScene, generateDynamicEventWithScene, previewShootConfig, getOutfitOptionsForScene, generateIPDiaryCaption, generatePlatformCaption, generateCarouselVariation, withTimeout } from './services/narrativeService';
 import { buildStructuredOutfitLabel, STYLE_ARCHETYPE_MAP } from './components/WardrobeManager';
 import { ALL_EXTENDED_SCENES } from './constants/extendedScenes';
 import { OrchestratorService } from './services/orchestratorService';
@@ -309,7 +309,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
 
         // 找出「實際佔比 - 目標佔比」差距最大 (最負) 的類別
         const mostNeeded = deviations.reduce((prev, curr) => prev.gap < curr.gap ? prev : curr);
-        return `📊 內容建議：目前 ${mostNeeded.key} 偏少，建議本次選擇${mostNeeded.label}場景`;
+        return `內容建議：目前 ${mostNeeded.key} 偏少，建議本次選擇${mostNeeded.label}場景`;
     })();
 
     type PromptSection = {
@@ -519,7 +519,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                 <div className="flex items-center gap-2.5">
                     <div className="w-1 h-3 bg-[var(--color-brass)] rounded-full"></div>
                     <span className="text-[9px] font-black text-[var(--color-brass)] tracking-[0.3em] uppercase">拍攝卡</span>
-                    {diary && <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-sage)] animate-pulse shadow-[0_0_6px_rgba(85,106,91,0.5)]"></span>}
+                    {diary && <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-sage)] animate-pulse"></span>}
                 </div>
                 <div className="flex items-center gap-2">
                     {!isExpanded && diary && <span className="text-[8px] text-gray-500 font-mono">{aspectRatio} · {quality} · {isPOV ? '第一人稱' : '第三人稱'}</span>}
@@ -573,7 +573,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                 <div className="space-y-4">
                     <div className="flex items-center gap-2">
                         <p className="text-[9px] text-[var(--color-brass)] font-black uppercase tracking-widest pl-2 border-l-2 border-[var(--color-brass)]">場景</p>
-                        {getLockedSceneId() && <div className="w-1 h-1 rounded-full bg-[var(--color-sage)] shadow-[0_0_8px_rgba(85,106,91,0.5)]"></div>}
+                        {getLockedSceneId() && <div className="w-1 h-1 rounded-full bg-[var(--color-sage)]"></div>}
                     </div>
                     <div className="space-y-3 pl-3">
                         <div className="grid grid-cols-2 gap-4">
@@ -609,7 +609,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                 <div className="space-y-4">
                     <div className="flex items-center gap-2">
                         <p className="text-[9px] text-[var(--color-brass)] font-black uppercase tracking-widest pl-2 border-l-2 border-[var(--color-brass)]">造型</p>
-                        {model.preferences?.active_outfit_id && <div className="w-1 h-1 rounded-full bg-[var(--color-sage)] shadow-[0_0_8px_rgba(85,106,91,0.5)]"></div>}
+                        {model.preferences?.active_outfit_id && <div className="w-1 h-1 rounded-full bg-[var(--color-sage)]"></div>}
                     </div>
                     <div className="pl-3 space-y-1">
                         <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest">服裝鎖定策略</p>
@@ -623,7 +623,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                 <div className="space-y-4">
                     <div className="flex items-center gap-2">
                         <p className="text-[9px] text-[var(--color-brass)] font-black uppercase tracking-widest pl-2 border-l-2 border-[var(--color-brass)]">生成</p>
-                        {diary && <div className="w-1 h-1 rounded-full bg-[var(--color-sage)] shadow-[0_0_8px_rgba(85,106,91,0.5)] animate-pulse"></div>}
+                        {diary && <div className="w-1 h-1 rounded-full bg-[var(--color-sage)] animate-pulse"></div>}
                     </div>
                     <div className="grid grid-cols-2 gap-y-4 gap-x-4 pl-3">
                         <div className="space-y-1">
@@ -672,7 +672,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             {active && (
                 <motion.div 
                     layoutId="active-indicator"
-                    className="absolute -left-1 top-2 bottom-2 w-1 bg-[var(--color-brass)] rounded-full shadow-[0_0_10px_rgba(164,123,67,0.55)]"
+                    className="absolute -left-1 top-2 bottom-2 w-1 bg-[var(--color-brass)] rounded-full"
                 />
             )}
         </motion.button>
@@ -703,12 +703,18 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         }
 
         try {
-            const result = await generateIPDiary(model, effectiveEvent, { 
-                isPOV, 
-                lastEntry: context,
-                forcedSceneId: sceneIdToUse,
-                forcedOutfitId
-            });
+            // A4（2026-07-14 體檢）：日記文字生成加 60 秒逾時保護，逾時走下方既有 catch，
+            // 不讓 isGenerating 卡死、不讓 requestLeave 被永久鎖住。
+            const result = await withTimeout(
+                generateIPDiary(model, effectiveEvent, {
+                    isPOV,
+                    lastEntry: context,
+                    forcedSceneId: sceneIdToUse,
+                    forcedOutfitId
+                }),
+                60000,
+                '日記生成'
+            );
             
             // P2-4: 獲取最新的服裝 ID (可能由 service 更新至 store)
             // 由於 generateIPDiary 會更新 model.preferences.recent_outfit_ids，
@@ -735,6 +741,9 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             const msg = e instanceof Error ? e.message : String(e);
             if (msg.includes('SCENE_COMBINATION_UNSAFE')) {
                 addNotification({ type: 'error', message: '場景組合不合理', description: `${msg.replace('SCENE_COMBINATION_UNSAFE: ', '')}——請修改事件內容或換一個場景。` });
+            } else if (msg.includes('逾時')) {
+                // A4（2026-07-14 體檢）：withTimeout 逾時錯誤，直接顯示明確訊息
+                addNotification({ type: 'error', message: '靈魂同步逾時', description: msg });
             } else {
                 addNotification({ type: 'error', message: '靈魂同步失敗', description: '無法提取敘事數據，請重試。' });
             }
@@ -838,16 +847,22 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             });
 
             // HD → gemini-2.5-flash-image（快速）；Cinematic / Pro → gemini-3.1-flash-image-preview（高保真）
-            const url = await transformImage(
-                sourceImageData,
-                finalImagePrompt,
-                additionalRefs,
-                undefined,
-                {
-                    usePro: quality === 'Cinematic' || quality === 'Pro',
-                    imageConfig,
-                    identityBoost: quality === 'Pro'
-                }
+            // A4（2026-07-14 體檢）：影像生成加 120 秒逾時保護，逾時走下方既有 catch，
+            // 不讓 isGeneratingImage 卡死、不讓 requestLeave 被永久鎖住。
+            const url = await withTimeout(
+                transformImage(
+                    sourceImageData,
+                    finalImagePrompt,
+                    additionalRefs,
+                    undefined,
+                    {
+                        usePro: quality === 'Cinematic' || quality === 'Pro',
+                        imageConfig,
+                        identityBoost: quality === 'Pro'
+                    }
+                ),
+                120000,
+                '影像生成'
             );
 
             // Embed model identity (DNA) into the generated image
@@ -867,8 +882,12 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             console.error(e);
             // Stage 28-1: server 端 quota 拒絕（429 QUOTA_EXCEEDED）走既有 QuotaErrorModal，
             // 不用一般錯誤通知混淆使用者
+            const genImgMsg = e instanceof Error ? e.message : String(e);
             if (isServerQuotaError(e)) {
                 window.dispatchEvent(new Event('imagenQuotaExceeded'));
+            } else if (genImgMsg.includes('逾時')) {
+                // A4（2026-07-14 體檢）：withTimeout 逾時錯誤，直接顯示明確訊息
+                addNotification({ type: 'error', message: '影像生成逾時', description: genImgMsg });
             } else {
                 addNotification({ type: 'error', message: '影像生成失敗', description: 'AI 算力調度異常，請稍後再試。' });
             }
@@ -1365,7 +1384,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                 <div className="space-y-0.5 min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                         <span className="text-[10px] text-gray-600 uppercase tracking-wider shrink-0">場景</span>
-                        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${isConfigLocked ? 'bg-[var(--color-wine)] shadow-[0_0_6px_rgba(111,39,53,0.4)]' : 'bg-white/20'}`} />
+                        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${isConfigLocked ? 'bg-[var(--color-wine)]' : 'bg-white/20'}`} />
                         <span className="text-[12px] font-bold text-white truncate">{previewScene?.name_zh || previewScene?.scene_id || '—'}</span>
                     </div>
                     <p className="text-[10px] text-gray-600 pl-6 truncate">
@@ -1479,8 +1498,8 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                     <div className="flex justify-between items-center">
                                         <div className="space-y-1">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-1.5 h-4 bg-[var(--color-brass)] rounded-full shadow-[0_0_12px_rgba(164,123,67,0.4)]"></div>
-                                                <h3 className="text-2xl font-black text-narrative-ink tracking-[0.3em] uppercase italic">靈魂週計畫</h3>
+                                                <div className="w-1.5 h-4 bg-[var(--color-brass)] rounded-full"></div>
+                                                <h3 className="text-2xl font-black text-narrative-ink tracking-[0.3em]">靈魂週計畫</h3>
                                             </div>
                                         </div>
                                         <button onClick={() => setShowPlan(false)} className="text-[12px] text-narrative-ink-soft hover:text-narrative-ink transition-colors uppercase tracking-widest font-black border-b border-narrative-ink/20 pb-1">返回敘事</button>
@@ -1501,7 +1520,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                 <div className="flex justify-between items-start mb-6">
                                                     <div>
                                                         <p className="text-[11px] text-narrative-ink-soft/80 font-black uppercase tracking-widest leading-none mb-1">第 {idx + 1} 天</p>
-                                                        <h4 className="text-sm font-black text-narrative-ink uppercase tracking-tight italic">{brief.title}</h4>
+                                                        <h4 className="text-sm font-black text-narrative-ink tracking-tight">{brief.title}</h4>
                                                     </div>
                                                     {brief.isArcScene && <span className="px-2.5 py-1 bg-[var(--color-wine)] text-white text-[11px] font-black rounded-md">故事環節</span>}
                                                     {brief.isThreadScene && <span className="px-2.5 py-1 bg-[var(--color-sage)] text-black text-[11px] font-black rounded-md">發展線</span>}
@@ -1569,8 +1588,8 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                     <div className="flex justify-between items-center">
                                         <div className="space-y-1">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-1.5 h-4 bg-[var(--color-steel)] rounded-full shadow-[0_0_15px_rgba(70,90,112,0.4)]"></div>
-                                                <h3 className="text-2xl font-black text-narrative-ink tracking-[0.3em] uppercase italic">敘事矩陣設定</h3>
+                                                <div className="w-1.5 h-4 bg-[var(--color-steel)] rounded-full"></div>
+                                                <h3 className="text-2xl font-black text-narrative-ink tracking-[0.3em]">敘事矩陣設定</h3>
                                             </div>
                                         </div>
                                     </div>
@@ -1689,7 +1708,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                             if (pickerAICardScene) confirmScene(pickerAICardScene);
                                                             else if (!isAICardLoading) void handleLoadAICard();
                                                         }}>
-                                                        <span className="text-[11px] font-black text-[var(--color-brass)] uppercase tracking-widest mb-3">✦ AI 感應</span>
+                                                        <span className="text-[11px] font-black text-[var(--color-brass)] uppercase tracking-widest mb-3 flex items-center gap-1.5"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>AI 感應</span>
                                                         {isAICardLoading ? (
                                                             <div className="flex-1 space-y-2 animate-pulse">
                                                                 <div className="h-2.5 bg-white/10 rounded-full w-3/4"/>
@@ -1708,7 +1727,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         ) : (
                                                             <>
                                                                 <div className="flex-1 flex flex-col items-center justify-center text-center gap-2">
-                                                                    <span className="text-[28px] text-[var(--color-brass)]/15">✦</span>
+                                                                    <svg className="w-8 h-8 text-[var(--color-brass)]/15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z"/></svg>
                                                                     <p className="text-[12px] text-gray-500 italic leading-relaxed">點擊讓<br/>AI 感應</p>
                                                                 </div>
                                                                 <p className="text-[11px] text-[var(--color-brass)]/30 font-bold uppercase tracking-widest">靈魂導向</p>
@@ -1787,7 +1806,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                     <div
                                                         onClick={() => confirmSceneOutfit(confirmedScene, pickerOutfitOptions.topPick.outfit_id)}
                                                         className="narrative-choice-card is-featured bg-[var(--color-bg-card)] border border-[var(--color-brass)]/30 rounded-[14px] p-3.5 flex flex-col cursor-pointer hover:border-[var(--color-brass)]/60 hover:bg-white/5 transition-all active:scale-[0.98] min-h-[240px]">
-                                                        <span className="text-[11px] font-black text-[var(--color-brass)] uppercase tracking-widest mb-2">✦ AI 推薦</span>
+                                                        <span className="text-[11px] font-black text-[var(--color-brass)] uppercase tracking-widest mb-2 flex items-center gap-1.5"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>AI 推薦</span>
                                                         <p className="text-[16px] font-black text-white leading-tight mb-2">
                                                             {STYLE_ARCHETYPE_MAP[pickerOutfitOptions.topPick.style_archetype] || pickerOutfitOptions.topPick.style_archetype}
                                                         </p>
@@ -2209,7 +2228,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             <div className="space-y-1.5 pl-6">
                                                 <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black">生理對齊</p>
                                                 <p className="text-base text-[var(--color-sage)] font-black flex items-center gap-3">
-                                                    <span className="w-2.5 h-2.5 rounded-full bg-[var(--color-sage)] shadow-[0_0_12px_rgba(85,106,91,0.6)] animate-pulse"></span>
+                                                    <span className="w-2.5 h-2.5 rounded-full bg-[var(--color-sage)] animate-pulse"></span>
                                                     已上線
                                                 </p>
                                             </div>
@@ -2255,7 +2274,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                     onClick={() => setNarrativeStep(1)}
                                                                     className="text-[10px] text-[var(--color-brass)] font-black uppercase tracking-[0.2em] border-b border-[var(--color-brass)]/40 hover:border-[var(--color-brass)] transition-all flex items-center gap-2"
                                                                 >
-                                                                    <span>✨</span> {eventInput.trim() ? '更換場景' : '選場景'}
+                                                                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg> {eventInput.trim() ? '更換場景' : '選場景'}
                                                                 </motion.button>
                                                             </div>
                                                         </div>
@@ -2316,7 +2335,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         <div className="group relative">
                                                             <label className="text-[9px] font-black text-gray-500 uppercase tracking-widest block mb-2">事件描述（可調整）</label>
                                                             <textarea 
-                                                                className="w-full min-h-[220px] bg-black/5 dark:bg-black/40 border border-black/5 dark:border-white/5 rounded-[2.5rem] p-6 text-sm text-gray-800 dark:text-gray-200 focus:border-[var(--color-brass)]/30 focus:shadow-[0_0_40px_rgba(164,123,67,0.05)] transition-all resize-vertical font-medium leading-relaxed outline-none shadow-inner"
+                                                                className="w-full min-h-[220px] bg-black/5 dark:bg-black/40 border border-black/5 dark:border-white/5 rounded-[2.5rem] p-6 text-sm text-gray-800 dark:text-gray-200 focus:border-[var(--color-brass)]/30 transition-all resize-vertical font-medium leading-relaxed outline-none shadow-inner"
                                                                 placeholder="描繪此刻的情境... 靈魂敘事將以此為軸心展開。"
                                                                 value={eventInput}
                                                                 onChange={(e) => {
@@ -2358,8 +2377,9 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                 {currentSceneId && (
                                                                     <div className="flex items-center justify-between px-4 py-2 bg-white/5 border border-white/10 rounded-xl">
                                                                         <div className="flex items-center gap-2">
+                                                                            <svg className="w-3.5 h-3.5 text-white/70 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg>
                                                                             <span className="text-[11px] text-white/90">
-                                                                                🎬 今日場景：{ALL_EXTENDED_SCENES.find(s => s.scene_id === currentSceneId)?.name_zh || currentSceneId}
+                                                                                今日場景：{ALL_EXTENDED_SCENES.find(s => s.scene_id === currentSceneId)?.name_zh || currentSceneId}
                                                                                 <span className="text-gray-500 ml-1">（{ALL_EXTENDED_SCENES.find(s => s.scene_id === currentSceneId)?.category || '一般'}）</span>
                                                                             </span>
                                                                         </div>
@@ -2368,7 +2388,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                             disabled={isGenerating}
                                                                             className="text-[9px] text-[var(--color-brass)] font-bold uppercase tracking-widest hover:underline flex items-center gap-1 disabled:opacity-30"
                                                                         >
-                                                                            {isGenerating ? '切換中...' : '🔄 換一個場景'}
+                                                                            {isGenerating ? '切換中...' : (<><svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg> 換一個場景</>)}
                                                                         </button>
                                                                     </div>
                                                                 )}
@@ -2412,7 +2432,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                             disabled={!diary || isExtractingMem || isFinishCooldown}
                             isLoading={isExtractingMem}
                             title={isFinishCooldown ? '影像剛生成，請稍候片刻再確認送出' : undefined}
-                            className="px-10 text-[11px] font-bold tracking-[0.4em] uppercase italic"
+                            className="px-10 text-[11px] font-bold tracking-[0.4em]"
                         >
                             完成佈署
                         </Button>
@@ -2446,10 +2466,10 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                 </div>
 
                                 <div className="space-y-3 pt-4">
-                                    <Button onClick={() => handleConfirmMemories(newMemories)} className="w-full py-4 text-[10px] tracking-widest uppercase italic">
-                                        存入長期記憶 🧠
+                                    <Button onClick={() => handleConfirmMemories(newMemories)} className="w-full py-4 text-[10px] tracking-widest">
+                                        存入長期記憶 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 0 0 2.25-2.25V6.75a2.25 2.25 0 0 0-2.25-2.25H6.75A2.25 2.25 0 0 0 4.5 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25Zm.75-12h9v9h-9v-9Z"/></svg>
                                     </Button>
-                                    <Button variant="secondary" onClick={() => handleConfirmMemories([])} className="w-full py-3 text-[10px] border-white/10 opacity-60 uppercase italic tracking-widest">
+                                    <Button variant="secondary" onClick={() => handleConfirmMemories([])} className="w-full py-3 text-[10px] border-white/10 opacity-60 tracking-widest">
                                         不儲存跳過
                                     </Button>
                                 </div>
@@ -2477,7 +2497,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                 <div className="space-y-3 pt-4">
                                     <Button
                                         onClick={() => { setShowUnsavedLeaveConfirm(false); setPendingLeaveAction(null); }}
-                                        className="w-full py-4 text-[10px] tracking-widest uppercase italic"
+                                        className="w-full py-4 text-[10px] tracking-widest"
                                     >
                                         返回儲存
                                     </Button>
@@ -2489,7 +2509,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             setPendingLeaveAction(null);
                                             if (action) action();
                                         }}
-                                        className="w-full py-3 text-[10px] border-white/10 opacity-60 uppercase italic tracking-widest"
+                                        className="w-full py-3 text-[10px] border-white/10 opacity-60 tracking-widest"
                                     >
                                         放棄並離開
                                     </Button>

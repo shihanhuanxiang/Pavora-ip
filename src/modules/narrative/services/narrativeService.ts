@@ -18,6 +18,25 @@ import { isSceneCombinationSafe } from "../../../domains/scene/sceneSafeMatrix";
 import { sanitizeHardcodedSubjectTerms } from "../../modelCreation/services/personaService";
 
 /**
+ * A4（2026-07-14 體檢）：生成呼叫逾時保護。
+ * Promise.race 對「可能永不 resolve/reject」的生成呼叫加上上限，逾時 reject 一個帶明確中文訊息的
+ * Error，讓呼叫端既有 catch/finally 走既有錯誤通知＋loading 旗標復位流程，不再讓操作者被鎖死。
+ * 注意：這裡只讓 UI 端不再等待，底層請求（fetch/API call）本身逾時後可能仍在背景繼續執行，
+ * 這是已知限制——真正取消（AbortController）與 P0 一起排，不在本次範圍內處理。
+ */
+export const withTimeout = <T>(promise: Promise<T>, ms: number, label: string): Promise<T> => {
+    return new Promise<T>((resolve, reject) => {
+        const timer = setTimeout(() => {
+            reject(new Error(`${label}逾時（超過 ${Math.round(ms / 1000)} 秒），請稍後重試`));
+        }, ms);
+        promise.then(
+            (value) => { clearTimeout(timer); resolve(value); },
+            (err) => { clearTimeout(timer); reject(err); }
+        );
+    });
+};
+
+/**
  * 將 Visual Preset 的值填入 model 的對應欄位
  * 這是「一鍵填充」函式，Preset 是起點，使用者之後可以繼續手動微調
  */

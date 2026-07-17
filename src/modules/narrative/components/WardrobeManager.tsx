@@ -377,12 +377,12 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                 <div className="space-y-4">
                     <div className="space-y-2">
                         <div className="flex items-center gap-3">
-                            <div className="w-1.5 h-5 bg-[var(--color-brass)] rounded-full shadow-[0_0_15px_rgba(164,123,67,0.4)]"></div>
+                            <div className="w-1.5 h-5 bg-[var(--color-brass)] rounded-full"></div>
                             <h3 className="text-2xl font-black text-[var(--color-narrative-ink)] tracking-[0.3em] uppercase">
                                 角色劇組衣櫃
                             </h3>
                         </div>
-                        <p className="text-[11px] text-[var(--color-brass)] font-bold uppercase tracking-[0.5em] ml-5 italic opacity-70">
+                        <p className="text-[11px] text-[var(--color-brass)] font-bold tracking-[0.5em] ml-5 opacity-70">
                             角色數位資產矩陣
                         </p>
                     </div>
@@ -477,7 +477,7 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                     <div className="space-y-6 relative z-10 flex-1 pointer-events-none">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-2">
-                                                <div className={`w-2 h-2 rounded-full ${isActive ? 'bg-[var(--color-wine)] animate-pulse shadow-[0_0_8px_rgba(111,39,53,1)]' : 'bg-[var(--color-bg-input)]'}`}></div>
+                                                <div className={`w-2 h-2 rounded-full ${isActive ? 'bg-[var(--color-wine)] animate-pulse' : 'bg-[var(--color-bg-input)]'}`}></div>
                                                 <span className="text-[11px] font-black text-gray-500 uppercase tracking-widest">{outfit.outfit_id}</span>
                                             </div>
                                             <div className="flex gap-2">
@@ -487,7 +487,7 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                         </div>
 
                                         <div className="space-y-1">
-                                            <h4 className={`font-display font-black text-lg tracking-tight leading-none uppercase italic transition-colors ${isActive ? 'text-[var(--color-wine)]' : 'text-[var(--color-text-title)]'}`}>
+                                            <h4 className={`font-display font-black text-lg tracking-tight leading-none transition-colors ${isActive ? 'text-[var(--color-wine)]' : 'text-[var(--color-text-title)]'}`}>
                                                 {STYLE_ARCHETYPE_MAP[outfit.style_archetype] || outfit.style_archetype.replace('_', ' ')}
                                             </h4>
                                             <div className={`h-0.5 w-8 rounded-full transition-all duration-500 ${isActive ? 'bg-[var(--color-wine)] w-16' : 'bg-[var(--color-border)]'}`}></div>
@@ -522,7 +522,7 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                                         <div
                                                             style={{ width: WEAR_STATE_MAP[outfit.wear_state]?.width || '50%' }}
                                                             className={`h-full rounded-full ${
-                                                                outfit.wear_state === 'worn_in' ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.4)]' : 'bg-[var(--color-brass)] shadow-[0_0_8px_rgba(164,123,67,0.4)]'
+                                                                outfit.wear_state === 'worn_in' ? 'bg-red-500' : 'bg-[var(--color-brass)]'
                                                             }`}
                                                         />
                                                     </div>
@@ -535,7 +535,7 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                         <div className="flex items-center gap-2">
                                             <div className={`px-2 py-1 rounded text-[11px] font-black uppercase tracking-widest transition-all ${
                                                 isActive
-                                                ? 'bg-[var(--color-wine)] text-white shadow-[0_0_15px_rgba(111,39,53,0.4)] animate-pulse'
+                                                ? 'bg-[var(--color-wine)] text-white animate-pulse'
                                                 : 'bg-[var(--color-bg-input)] text-gray-500'
                                             }`}>
                                                 {isActive ? '當前著裝方案' : '庫存保管中'}
@@ -562,7 +562,7 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                         
                         <div className="flex justify-between items-start mb-10 relative z-10">
                             <div className="space-y-1">
-                                <h3 className="text-2xl font-black text-[var(--color-text-title)] tracking-widest uppercase italic">新增矩陣穿搭</h3>
+                                <h3 className="text-2xl font-black text-[var(--color-text-title)] tracking-widest">新增矩陣穿搭</h3>
                                 <p className="text-[11px] text-gray-500 font-bold tracking-[0.4em] uppercase">配置您的 AI 數位模組視覺組件</p>
                             </div>
                             <button onClick={() => setShowForm(false)} className="p-3 bg-white/5 hover:bg-white/10 rounded-2xl transition-all">
@@ -697,7 +697,7 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                                 <span className={`text-[11px] font-black tracking-widest ${newOutfit.aesthetic_tier === tier.id ? 'text-white' : 'text-gray-500 group-hover:text-gray-300'}`}>{tier.label}</span>
                                                 <span className="text-[11px] text-gray-600 font-bold uppercase">{tier.desc}</span>
                                                 {newOutfit.aesthetic_tier === tier.id && (
-                                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-[var(--color-brass)] rounded-full shadow-[0_0_10px_rgba(164,123,67,1)]"></div>
+                                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-[var(--color-brass)] rounded-full"></div>
                                                 )}
                                             </button>
                                         ))}
@@ -722,13 +722,13 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                         <div className="mt-12 pt-8 border-t border-white/5 flex gap-6 relative z-10">
                             <button 
                                 onClick={() => setShowForm(false)} 
-                                className="flex-1 py-4 bg-white/[0.03] hover:bg-white/[0.08] text-white/60 hover:text-white transition-all rounded-2xl font-black text-[12px] tracking-widest uppercase border border-white/5 italic"
+                                className="flex-1 py-4 bg-white/[0.03] hover:bg-white/[0.08] text-white/60 hover:text-white transition-all rounded-2xl font-black text-[12px] tracking-widest border border-white/5"
                             >
                                 取消變更
                             </button>
                             <button
                                 onClick={handleSave}
-                                className="flex-[2] py-4 bg-[var(--color-wine)] hover:bg-[var(--color-wine)]/90 text-white transition-all rounded-2xl font-black text-[13px] tracking-[0.3em] uppercase shadow-[0_20px_50px_rgba(111,39,53,0.3)] active:scale-[0.98] italic"
+                                className="flex-[2] py-4 bg-[var(--color-wine)] hover:bg-[var(--color-wine)]/90 text-white transition-all rounded-2xl font-black text-[13px] tracking-[0.3em] shadow-[0_20px_50px_rgba(111,39,53,0.3)] active:scale-[0.98]"
                             >
                                 儲存衣櫃資產
                             </button>
