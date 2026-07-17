@@ -1667,4 +1667,175 @@
     white-space: nowrap;
     pointer-events: none;
   }
+
+  /* ══════════════════════════════════════════════════════════════
+     Home Workbench（首頁換皮，2026-07-17，原型 00_首頁_工作室總覽.html）
+     只作用在 .home-workbench 作用域內，不動 body／全域規則。
+     四色（wine/brass/sage/steel）直接沿用既有 @theme token，不重複定義。
+     ══════════════════════════════════════════════════════════════ */
+
+  .home-workbench {
+    --home-bg: #f3eee7;
+    --home-paper: #fffaf2;
+    --home-paper-2: #ebe0d3;
+    --home-ink: #211f1d;
+    --home-muted: #6f665f;
+    --home-line: #d7cabc;
+    --home-line-strong: #9c8b7c;
+    --home-shadow: 0 18px 60px rgba(44,32,24,.12);
+    --home-inner: inset 0 1px 0 rgba(255,255,255,.78);
+
+    position: relative;
+    isolation: isolate;
+    background:
+      linear-gradient(90deg, rgba(111,39,53,.06) 0 1px, transparent 1px 100%),
+      linear-gradient(180deg, rgba(164,123,67,.08), rgba(70,90,112,.05) 42%, rgba(255,250,242,.4)),
+      var(--home-bg);
+    background-size: 92px 92px, auto, auto;
+    color: var(--home-ink);
+  }
+
+  /* 18px radial 圓點紙感紋理，scope 在 ::before，z-index:-1 確保不蓋過內容 */
+  .home-workbench::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(circle at 1px 1px, rgba(33,31,29,.08) 1px, transparent 0);
+    background-size: 18px 18px;
+    opacity: .16;
+  }
+
+  /* F2：全域 h1-h6 強制白色反制——home 淺紙底標題一律翻回 ink */
+  .home-workbench :is(h1,h2,h3,h4,h5,h6) {
+    color: var(--home-ink) !important;
+  }
+
+  /* F3：p/span/div color:inherit 反制——home- ink/muted 與四色文字通道 */
+  .home-workbench [class*="text-[var(--home-ink)"] {
+    color: var(--home-ink) !important;
+  }
+  .home-workbench [class*="text-[var(--home-muted)"] {
+    color: var(--home-muted) !important;
+  }
+  .home-workbench [class*="text-wine"] {
+    color: var(--color-wine) !important;
+  }
+  .home-workbench [class*="text-brass"] {
+    color: var(--color-brass) !important;
+  }
+  .home-workbench [class*="text-sage"] {
+    color: var(--color-sage) !important;
+  }
+  .home-workbench [class*="text-steel"] {
+    color: var(--color-steel) !important;
+  }
+
+  /* 卡片三件套：主要卡 / 強調卡 / 次級卡 */
+  .home-workbench .home-card {
+    background: rgba(255,250,242,.86) !important;
+    border: 1px solid var(--home-line) !important;
+    border-radius: 8px !important;
+    box-shadow: var(--home-shadow), var(--home-inner) !important;
+    transition: transform .4s ease, border-color .3s ease, box-shadow .3s ease;
+  }
+  .home-workbench .home-card:hover {
+    border-color: var(--color-wine) !important;
+  }
+  .home-workbench .home-card-accent {
+    background: rgba(111,39,53,.06) !important;
+    border: 1px solid rgba(111,39,53,.32) !important;
+  }
+  .home-workbench .home-card-sub {
+    background: rgba(255,255,255,.38) !important;
+    border: 1px solid var(--home-line) !important;
+    border-radius: 7px !important;
+    transition: border-color .3s ease, background .3s ease;
+  }
+  .home-workbench .home-card-sub:hover {
+    border-color: var(--color-brass) !important;
+    background: rgba(255,255,255,.55) !important;
+  }
+
+  /* 按鈕：主要（wine 底）／次級（外框）／低調（純文字） */
+  .home-workbench .home-btn-primary {
+    background: var(--color-wine) !important;
+    border: 1px solid var(--color-wine) !important;
+    color: var(--home-paper) !important;
+    box-shadow: 0 12px 24px rgba(111,39,53,.2) !important;
+  }
+  .home-workbench .home-btn-secondary {
+    background: rgba(255,255,255,.4) !important;
+    border: 1px solid var(--home-line-strong) !important;
+    color: var(--home-ink) !important;
+  }
+  .home-workbench .home-btn-quiet {
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    color: var(--home-muted) !important;
+  }
+  .home-workbench .home-btn-quiet:hover {
+    color: var(--home-ink) !important;
+  }
+
+  /* 模式切換 pill（COMMERCE / IP 創作），選中態 wine 底淺字 */
+  .home-workbench .home-pill-group {
+    background: rgba(235,224,211,.62) !important;
+    border: 1px solid var(--home-line) !important;
+    border-radius: 999px !important;
+  }
+  .home-workbench .home-pill {
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-radius: 999px !important;
+    color: var(--home-muted) !important;
+  }
+  .home-workbench .home-pill-active {
+    background: var(--color-wine) !important;
+    border-radius: 999px !important;
+    color: var(--home-paper) !important;
+    box-shadow: 0 10px 20px rgba(111,39,53,.22) !important;
+  }
+
+  /* eyebrow：區塊小標，12px/800/letter-spacing .12em/wine + 28px 短橫線前綴 */
+  .home-workbench .home-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    color: var(--color-wine) !important;
+  }
+  .home-workbench .home-eyebrow::before {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: var(--color-wine);
+    flex: 0 0 auto;
+  }
+
+  /* 圖示 chip（卡片內圓角圖示底）與 hover 箭頭 chip */
+  .home-workbench .home-icon-chip {
+    background: rgba(111,39,53,.08) !important;
+    border: 1px solid rgba(111,39,53,.2) !important;
+    color: var(--color-wine) !important;
+  }
+  .home-workbench .home-arrow-chip {
+    border: 1px solid rgba(164,123,67,.5) !important;
+    color: var(--color-brass) !important;
+  }
+
+  /* hero H1：42px/1.08，窄視窗降階，比照原型 00 響應式規則 */
+  .home-workbench .home-hero-title {
+    font-size: 42px;
+    line-height: 1.08;
+  }
+  @media (max-width: 760px) {
+    .home-workbench .home-hero-title {
+      font-size: 30px;
+      line-height: 1.14;
+    }
+  }
 }
