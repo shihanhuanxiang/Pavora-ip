@@ -1883,4 +1883,38 @@
   .narrative-workbench button[class*="bg-[var(--color-sage)]"] { background: var(--color-sage) !important; }
   .narrative-workbench button.bg-\[var\(--color-wine\)\]\/90 { background: rgba(var(--color-wine-rgb),0.9) !important; }
   .narrative-workbench button.bg-\[var\(--color-sage\)\]\/90 { background: rgba(var(--color-sage-rgb),0.9) !important; }
+
+  /* ══════════════════════════════════════════════════════════════
+     Model Setup 換皮（2026-07-18，原型：模型建立頁 4 步驟精靈 + 完整表單）
+     只作用在 .model-setup 作用域內（掛在 .home-workbench 容器上的第二個
+     class），不動 .home-workbench 既有規則。核心色票（brass 選中態／
+     home-line 中性邊框）沿用 .home-workbench 既有白名單反制；本區塊只
+     補上既有白名單未涵蓋的透明度層級與元件細節。
+     ══════════════════════════════════════════════════════════════ */
+
+  /* button.bg-brass solid 與 border-brass 各透明度層級已由 .home-workbench
+     既有白名單涵蓋；本頁另用到 bg-brass/10、/15、/20（按鈕底色淡色態），
+     既有白名單未收錄，於此補上，反制 unlayered button{background:none}。 */
+  .model-setup button.bg-brass\/10 { background: rgba(var(--color-brass-rgb),0.10) !important; }
+  .model-setup button.bg-brass\/15 { background: rgba(var(--color-brass-rgb),0.15) !important; }
+  .model-setup button.bg-brass\/20 { background: rgba(var(--color-brass-rgb),0.20) !important; }
+
+  /* 生成結果卡的深色相片遮罩按鈕（浮在實際生成相片上，刻意維持深色玻璃態，
+     不隨全頁淺紙化），同理需要反制 unlayered button{background:none} */
+  .model-setup button.bg-white\/10 { background: rgba(255,255,255,0.10) !important; }
+  .model-setup button.hover\:bg-white\/20:hover { background: rgba(255,255,255,0.20) !important; }
+
+  /* 輸入框 focus 態邊框：focus:border-brass 是 layered 條件類別，仍會輸給
+     unlayered *{border-color:#e5e7eb}，直接以偽類反制取代對應 Tailwind 類別 */
+  .model-setup input:focus,
+  .model-setup textarea:focus {
+    border-color: var(--color-brass) !important;
+  }
+
+  /* Select / Slider 共用元件內建的「中文 (English)」拆行渲染屬元件本體，
+     本次換皮不動元件；僅在本頁作用域內隱藏其英文行（第二個 span），
+     結構見 shared/components/common/Select.tsx:29-33、Slider.tsx:36-40 */
+  .model-setup label > span.block.text-\[10px\].opacity-50.font-normal {
+    display: none;
+  }
 }

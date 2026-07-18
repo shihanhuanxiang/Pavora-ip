@@ -248,7 +248,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
         
         addNotification({
             type: 'info',
-            message: '📑 品牌資產繼承成功',
+            message: '品牌資產繼承成功',
             description: `已載入 ${inheritedModel.name} 的核心身分與比例參數。`
         });
     }
@@ -276,7 +276,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
         
         addNotification({
             type: 'success',
-            message: '🎬 敘事數據同步成功',
+            message: '敘事數據同步成功',
             description: `已載入 ${model.name} 的日記背景與氛圍指令。`
         });
     }
@@ -388,7 +388,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                 interests: traits.interests || prev.lifeCircuit.interests
             }
         }));
-        addNotification({ type: 'success', message: '✨ IP 人設補完成功' });
+        addNotification({ type: 'success', message: 'IP 人設補完成功' });
     } catch (e) {
         addNotification({ type: 'error', message: '人設生成失敗' });
     } finally { setIsGeneratingPersona(false); }
@@ -437,7 +437,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
         handlePersonaUpdate('locked_descriptor', text);
         addNotification({ 
             type: 'success', 
-            message: '✨ 身份鎖定描述已草擬於身分盒',
+            message: '身份鎖定描述已草擬於身分盒',
             description: '核心視覺特徵已根據當前設定完成鎖定。'
         });
       }
@@ -512,7 +512,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
     
     addNotification({
         type: 'success',
-        message: '✨ 隨機靈感已套用 (含深度人設)',
+        message: '隨機靈感已套用（含深度人設）',
         description: `已鎖定${isMale ? '男性' : '女性'}性別，並同步產生全套 IP 屬性。`
     });
   }, [formState.gender, addNotification, handleAutoGeneratePersona]);
@@ -525,7 +525,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
   }, [highlightedFields]);
   
   const getFieldClass = (fieldName: string) => {
-    return `transition-all duration-300 ${highlightedFields.has(fieldName) ? 'ring-2 ring-[var(--color-gold)] ring-offset-2 ring-offset-gray-900 rounded-lg p-1' : ''}`;
+    return `transition-all duration-300 ${highlightedFields.has(fieldName) ? 'ring-2 ring-[var(--color-brass)] ring-offset-2 ring-offset-gray-900 rounded-lg p-1' : ''}`;
   };
 
   const handleFaceReferenceChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -553,7 +553,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                 }));
                 addNotification({
                     type: 'success',
-                    message: '🧬 偵測到 Pavora 協議',
+                    message: '偵測到 Pavora 協議',
                     description: `已從圖片內碼還原生理參數與身分數據。`
                 });
             }
@@ -609,7 +609,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
             ...prev,
             ...preset
         }));
-        addNotification({ type: 'success', message: `✨ 已套用 ${presetKey.includes('female') ? '女性' : '男性'} 預設配置，生理參數已同步` });
+        addNotification({ type: 'success', message: `已套用 ${presetKey.includes('female') ? '女性' : '男性'} 預設配置，生理參數已同步` });
     }
   };
 
@@ -674,15 +674,15 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
   };
 
   return (
-    <div className="container mx-auto p-4 lg:p-8 max-w-[110rem] animate-fade-in pb-24 lg:pb-8">
+    <div className="home-workbench model-setup min-h-screen font-sans container mx-auto p-4 lg:p-8 max-w-[110rem] animate-fade-in pb-24 lg:pb-8">
       {isLoading && <Loader message="時空傳送中..." />}
       
       {/* Mobile Nav */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-[var(--color-bg-deep)] border-t border-[var(--color-border)] z-40 flex justify-around p-2 pb-safe">
-          <button onClick={() => setMobileTab('settings')} className={`flex flex-col items-center p-2 w-1/2 ${mobileTab === 'settings' ? 'text-[var(--color-gold)] bg-white/5' : 'text-gray-500'}`}>
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-[var(--home-paper)] border-t border-[var(--home-line)] z-40 flex justify-around p-2 pb-safe">
+          <button onClick={() => setMobileTab('settings')} className={`flex flex-col items-center p-2 w-1/2 ${mobileTab === 'settings' ? 'text-[var(--color-brass)] bg-[rgba(255,255,255,.4)]' : 'text-[var(--home-muted)]'}`}>
               <ModelIcon className="w-6 h-6" /><span className="text-[10px] font-bold">參數設定</span>
           </button>
-          <button onClick={() => setMobileTab('preview')} className={`flex flex-col items-center p-2 w-1/2 ${mobileTab === 'preview' ? 'text-[var(--color-gold)] bg-white/5' : 'text-gray-500'}`}>
+          <button onClick={() => setMobileTab('preview')} className={`flex flex-col items-center p-2 w-1/2 ${mobileTab === 'preview' ? 'text-[var(--color-brass)] bg-[rgba(255,255,255,.4)]' : 'text-[var(--home-muted)]'}`}>
               <View360Icon className="w-6 h-6" /><span className="text-[10px] font-bold">生成結果</span>
           </button>
       </div>
@@ -690,38 +690,24 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
-            <h2 className="text-3xl font-display font-bold uppercase tracking-widest text-white">模特兒生成 (Model Creation)</h2>
-            <p className="text-[10px] text-[var(--color-gold)] tracking-[0.4em] uppercase opacity-70">Model Creation Studio</p>
+            <h2 className="text-3xl font-display font-bold tracking-widest text-[var(--home-ink)]">模特兒生成</h2>
           </div>
           <div className="flex gap-3">
               <button
                 onClick={() => setWizardMode(v => !v)}
-                className={`px-4 py-1.5 rounded-full border text-[10px] font-bold transition-all ${wizardMode ? 'bg-white/10 border-white/20 text-white' : 'border-[var(--color-border)] text-gray-400 hover:border-white/20'}`}
+                className={`px-4 py-1.5 rounded-full border text-[10px] font-bold transition-all ${wizardMode ? 'bg-brass text-black border-brass' : 'home-btn-secondary'}`}
               >
-                {wizardMode ? '🪄 精靈模式' : '📋 完整表單'}
+                {wizardMode ? '精靈模式' : '完整表單'}
               </button>
-              <button 
+              <button
                 onClick={() => setIsExpertMode(!isExpertMode)}
-                className={`px-4 py-1.5 rounded-full border text-[10px] font-bold transition-all ${isExpertMode ? 'bg-[var(--color-gold)] text-black border-[var(--color-gold)]' : 'border-[var(--color-border)] text-gray-400 hover:border-[var(--color-gold)]'}`}
+                className={`px-4 py-1.5 rounded-full border text-[10px] font-bold transition-all ${isExpertMode ? 'bg-brass text-black border-brass' : 'border-[var(--home-line)] text-[var(--home-muted)] hover:border-brass'}`}
               >
-                  {isExpertMode ? (
-                      <div className="flex flex-col items-center">
-                        <span>專家模式 ON</span>
-                        <span className="text-[9px] font-normal opacity-70">(Expert Mode: ON)</span>
-                      </div>
-                  ) : (
-                      <div className="flex flex-col items-center">
-                        <span>切換專家模式</span>
-                        <span className="text-[9px] font-normal opacity-70">(Switch to Expert)</span>
-                      </div>
-                  )}
+                  {isExpertMode ? '專家模式 已開啟' : '切換專家模式'}
               </button>
               {onGoHome && (
-                  <Button onClick={onGoHome} variant="secondary" className="px-3 py-1">
-                      <div className="flex flex-col items-center">
-                          <span className="text-[10px] font-bold">返回首頁</span>
-                          <span className="text-[8px] font-normal opacity-60">(Home)</span>
-                      </div>
+                  <Button onClick={onGoHome} variant="secondary" className="home-btn-secondary px-3 py-1 text-[10px] font-bold">
+                      返回首頁
                   </Button>
               )}
           </div>
@@ -742,13 +728,13 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                         { n: 4 as const, label: '身份鎖定' }
                     ]).map(({ n, label }, i) => (
                         <React.Fragment key={n}>
-                            <button onClick={() => setWizardStep(n)} className={`flex flex-col items-center gap-1 ${wizardStep >= n ? 'text-[var(--color-gold)]' : 'text-gray-600'}`}>
-                                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-black border transition-all ${wizardStep === n ? 'bg-[var(--color-gold)] text-black border-[var(--color-gold)]' : wizardStep > n ? 'bg-[var(--color-gold)]/20 border-[var(--color-gold)]/40 text-[var(--color-gold)]' : 'bg-white/5 border-white/10 text-gray-500'}`}>
+                            <button onClick={() => setWizardStep(n)} className={`flex flex-col items-center gap-1 ${wizardStep >= n ? 'text-[var(--color-brass)]' : 'text-[var(--home-muted)]'}`}>
+                                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-black border transition-all ${wizardStep === n ? 'bg-brass text-black border-brass' : wizardStep > n ? 'bg-brass/20 border-brass/40 text-[var(--color-brass)]' : 'bg-[rgba(255,255,255,.4)] border-[var(--home-line)] text-[var(--home-muted)]'}`}>
                                     {wizardStep > n ? '✓' : n}
                                 </div>
                                 <span className="text-[8px] font-bold uppercase tracking-widest hidden sm:block">{label}</span>
                             </button>
-                            {i < 3 && <div className={`flex-1 h-px transition-all ${wizardStep > n ? 'bg-[var(--color-gold)]/40' : 'bg-white/10'}`} />}
+                            {i < 3 && <div className={`flex-1 h-px transition-all ${wizardStep > n ? 'bg-brass/40' : 'bg-[rgba(255,255,255,.5)]'}`} />}
                         </React.Fragment>
                     ))}
                 </div>
@@ -759,29 +745,29 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                 <div className="space-y-5">
                     {/* STEP 1: 基本設定 */}
                     {wizardStep === 1 && (
-                        <Card className="p-0 overflow-hidden border-none bg-white/[0.03] backdrop-blur-xl">
-                            <div className="p-5 border-b border-white/5 bg-gradient-to-r from-[var(--color-gold)]/5 to-transparent">
-                                <h3 className="text-sm font-bold text-white tracking-[0.2em] uppercase flex items-center gap-3">
-                                    <div className="w-1 h-4 bg-[var(--color-gold)]"></div>
+                        <Card className="p-0 overflow-hidden border-none home-card">
+                            <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent">
+                                <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] uppercase flex items-center gap-3">
+                                    <div className="w-1 h-4 bg-brass"></div>
                                     <div className="flex flex-col items-start leading-tight">
                                         <span>基本設定</span>
-                                        <span className="text-[9px] opacity-40 font-normal normal-case">Step 1 — 不到 1 分鐘</span>
+                                        <span className="text-[9px] opacity-40 font-normal normal-case">步驟 1 — 不到 1 分鐘</span>
                                     </div>
                                 </h3>
                             </div>
                             <div className="p-6 space-y-5">
                                 <div>
-                                    <label className="block text-[11px] font-bold text-gray-500 uppercase mb-2 tracking-widest">IP 姓名 (Name)</label>
+                                    <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-2 tracking-widest">IP 姓名</label>
                                     <div className="flex gap-2">
-                                        <input type="text" className="flex-1 bg-black/40 border border-white/10 rounded-xl p-3 text-sm focus:border-[var(--color-gold)] focus:outline-none transition-all placeholder:text-gray-700" placeholder="輸入 IP 角色姓名" value={formState.name} onChange={e => handleFormChange('name', e.target.value)} />
-                                        <button onClick={() => { const p = formState.gender === 'male' ? IP_NAME_POOL.male : IP_NAME_POOL.female; handleFormChange('name', p[Math.floor(Math.random() * p.length)]); }} className="px-3 bg-white/5 border border-white/10 rounded-xl text-gray-400 hover:text-white hover:border-white/20 transition-all">🎲</button>
+                                        <input type="text" className="flex-1 bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:outline-none transition-all placeholder:text-[var(--home-muted)]" placeholder="輸入 IP 角色姓名" value={formState.name} onChange={e => handleFormChange('name', e.target.value)} />
+                                        <button onClick={() => { const p = formState.gender === 'male' ? IP_NAME_POOL.male : IP_NAME_POOL.female; handleFormChange('name', p[Math.floor(Math.random() * p.length)]); }} className="px-3 bg-[rgba(255,255,255,.4)] border border-[var(--home-line)] rounded-xl text-[var(--home-muted)] hover:text-[var(--home-ink)] hover:border-[var(--home-line-strong)] transition-all text-[11px] font-bold">隨機</button>
                                     </div>
                                 </div>
                                 <Select label="生理性別 (GENDER)" options={GENDER_PRESETS} value={formState.gender} onChange={e => handleGenderChange(e.target.value)} />
                                 <Slider label="年齡 (AGE)" min={18} max={45} unit="歲" value={formState.age} onChange={e => handleFormChange('age', Number(e.target.value))} />
                                 <div>
-                                    <label className="block text-[11px] font-bold text-gray-500 uppercase mb-2 tracking-widest">職業 (Profession)</label>
-                                    <input type="text" className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm focus:border-[var(--color-gold)] focus:outline-none transition-all placeholder:text-gray-700" placeholder="例：攝影師、咖啡師、設計師..." value={formState.persona.profession} onChange={e => handlePersonaUpdate('profession', e.target.value)} />
+                                    <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-2 tracking-widest">職業</label>
+                                    <input type="text" className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:outline-none transition-all placeholder:text-[var(--home-muted)]" placeholder="例：攝影師、咖啡師、設計師..." value={formState.persona.profession} onChange={e => handlePersonaUpdate('profession', e.target.value)} />
                                 </div>
                                 <Select label="主力城市 (City)" options={TAIWAN_COUNTIES} value={formState.lifeCircuit.primaryCity} onChange={e => handleCircuitUpdate('primaryCity', e.target.value)} />
                             </div>
@@ -789,40 +775,40 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                     )}
                     {/* STEP 2: 外觀建立 */}
                     {wizardStep === 2 && (
-                        <Card className="p-0 overflow-hidden border-none bg-white/[0.03] backdrop-blur-xl">
-                            <div className="p-5 border-b border-white/5 bg-gradient-to-r from-[var(--color-gold)]/5 to-transparent">
-                                <h3 className="text-sm font-bold text-white tracking-[0.2em] uppercase flex items-center gap-3">
-                                    <div className="w-1 h-4 bg-[var(--color-gold)]"></div>
+                        <Card className="p-0 overflow-hidden border-none home-card">
+                            <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent">
+                                <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] uppercase flex items-center gap-3">
+                                    <div className="w-1 h-4 bg-brass"></div>
                                     <div className="flex flex-col items-start leading-tight">
                                         <span>外觀建立</span>
-                                        <span className="text-[9px] opacity-40 font-normal normal-case">Step 2 — 選臉型與外觀方向</span>
+                                        <span className="text-[9px] opacity-40 font-normal normal-case">步驟 2 — 選臉型與外觀方向</span>
                                     </div>
                                 </h3>
                             </div>
                             <div className="p-6 space-y-6">
                                 <div>
-                                    <label className="block text-[11px] font-bold text-gray-500 uppercase mb-3 tracking-widest">臉型風格 (Face Style)</label>
+                                    <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 tracking-widest">臉型風格</label>
                                     <div className="grid grid-cols-3 gap-2">
                                         {STYLE_ARCHETYPES.filter(a => a.gender.includes(formState.gender as any) || a.gender.includes('unisex')).slice(0, 6).map(a => (
-                                            <button key={a.value} onClick={() => handleFormChange('archetype', a.value)} className={`py-2.5 px-2 rounded-xl border text-[9px] font-bold transition-all text-center ${formState.archetype === a.value ? 'bg-[var(--color-gold)]/20 border-[var(--color-gold)] text-[var(--color-gold)]' : 'border-white/10 text-gray-400 hover:border-white/20'}`}>{a.label}</button>
+                                            <button key={a.value} onClick={() => handleFormChange('archetype', a.value)} className={`py-2.5 px-2 rounded-xl border text-[9px] font-bold transition-all text-center ${formState.archetype === a.value ? 'bg-brass/20 border-brass text-[var(--color-brass)]' : 'border-[var(--home-line)] text-[var(--home-muted)] hover:border-[var(--home-line-strong)]'}`}>{a.label}</button>
                                         ))}
                                     </div>
                                 </div>
                                 <Select label="膚色 (Skin Tone)" options={SKIN_TONE_OPTIONS} value={formState.skinTone} onChange={e => handleFormChange('skinTone', e.target.value)} />
                                 <div>
-                                    <label className="block text-[11px] font-bold text-gray-500 uppercase mb-2 tracking-widest">髮色 (Hair Color)</label>
-                                    <input type="text" className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm focus:border-[var(--color-gold)] focus:outline-none transition-all placeholder:text-gray-700" placeholder="例：黑色直髮、棕色捲髮..." value={formState.hairColor} onChange={e => handleFormChange('hairColor', e.target.value)} />
+                                    <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-2 tracking-widest">髮色</label>
+                                    <input type="text" className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:outline-none transition-all placeholder:text-[var(--home-muted)]" placeholder="例：黑色直髮、棕色捲髮..." value={formState.hairColor} onChange={e => handleFormChange('hairColor', e.target.value)} />
                                 </div>
-                                <div className="pt-2 border-t border-white/5 space-y-3">
-                                    <p className="text-[9px] text-gray-600 uppercase tracking-widest">生活細節（選填）</p>
+                                <div className="pt-2 border-t border-[var(--home-line)] space-y-3">
+                                    <p className="text-[9px] text-[var(--home-muted)] uppercase tracking-widest">生活細節（選填）</p>
                                     <div className="grid grid-cols-2 gap-3">
                                         <div>
-                                            <label className="block text-[10px] font-bold text-gray-500 mb-1.5">🐾 寵物</label>
-                                            <input type="text" className="w-full bg-black/40 border border-white/10 rounded-xl p-2.5 text-xs focus:border-[var(--color-gold)] focus:outline-none transition-all placeholder:text-gray-700" placeholder="品種/名字" value={formatPetAnchor(formState.worldAnchors.pet)} onChange={e => handlePetAnchorUpdate(e.target.value)} />
+                                            <label className="block text-[10px] font-bold text-[var(--home-muted)] mb-1.5">寵物</label>
+                                            <input type="text" className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-2.5 text-xs focus:border-brass focus:outline-none transition-all placeholder:text-[var(--home-muted)]" placeholder="品種/名字" value={formatPetAnchor(formState.worldAnchors.pet)} onChange={e => handlePetAnchorUpdate(e.target.value)} />
                                         </div>
                                         <div>
-                                            <label className="block text-[10px] font-bold text-gray-500 mb-1.5">✨ 標誌物品</label>
-                                            <input type="text" className="w-full bg-black/40 border border-white/10 rounded-xl p-2.5 text-xs focus:border-[var(--color-gold)] focus:outline-none transition-all placeholder:text-gray-700" placeholder="例：相機、特定飾品" value={formState.worldAnchors.iconicItems[0]?.name || ''} onChange={e => handleIconicItemsUpdate(e.target.value)} />
+                                            <label className="block text-[10px] font-bold text-[var(--home-muted)] mb-1.5">標誌物品</label>
+                                            <input type="text" className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-2.5 text-xs focus:border-brass focus:outline-none transition-all placeholder:text-[var(--home-muted)]" placeholder="例：相機、特定飾品" value={formState.worldAnchors.iconicItems[0]?.name || ''} onChange={e => handleIconicItemsUpdate(e.target.value)} />
                                         </div>
                                     </div>
                                 </div>
@@ -831,19 +817,19 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                     )}
                     {/* STEP 3: AI 人設生成 */}
                     {wizardStep === 3 && (
-                        <Card className="p-0 overflow-hidden border-none bg-white/[0.03] backdrop-blur-xl">
-                            <div className="p-5 border-b border-white/5 bg-gradient-to-r from-[var(--color-gold)]/5 to-transparent">
-                                <h3 className="text-sm font-bold text-white tracking-[0.2em] uppercase flex items-center gap-3">
-                                    <div className="w-1 h-4 bg-[var(--color-gold)]"></div>
+                        <Card className="p-0 overflow-hidden border-none home-card">
+                            <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent">
+                                <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] uppercase flex items-center gap-3">
+                                    <div className="w-1 h-4 bg-brass"></div>
                                     <div className="flex flex-col items-start leading-tight">
                                         <span>AI 人設生成</span>
-                                        <span className="text-[9px] opacity-40 font-normal normal-case">Step 3 — 一鍵 AI 或手動填入</span>
+                                        <span className="text-[9px] opacity-40 font-normal normal-case">步驟 3 — 一鍵 AI 或手動填入</span>
                                     </div>
                                 </h3>
                             </div>
                             <div className="p-6 space-y-5">
-                                <button onClick={handleAutoGeneratePersona} disabled={isGeneratingPersona} className={`w-full py-3.5 rounded-2xl border text-[11px] font-black uppercase tracking-widest transition-all ${isGeneratingPersona ? 'opacity-50 cursor-not-allowed border-white/10 text-gray-500' : 'border-[var(--color-gold)]/40 text-[var(--color-gold)] hover:bg-[var(--color-gold)]/10'}`}>
-                                    {isGeneratingPersona ? '⏳ AI 人設生成中...' : '🤖 AI 一鍵生成人設'}
+                                <button onClick={handleAutoGeneratePersona} disabled={isGeneratingPersona} className={`w-full py-3.5 rounded-2xl border text-[11px] font-black tracking-widest transition-all ${isGeneratingPersona ? 'opacity-50 cursor-not-allowed border-[var(--home-line)] text-[var(--home-muted)]' : 'border-brass/40 text-[var(--color-brass)] hover:bg-brass/10'}`}>
+                                    {isGeneratingPersona ? 'AI 人設生成中...' : 'AI 一鍵生成人設'}
                                 </button>
                                 <Select label="核心氛圍 (VIBE)" options={CORE_VIBE_OPTIONS} value={formState.persona.coreVibe} onChange={e => handlePersonaUpdate('coreVibe', e.target.value)} />
                                 <Select label="MBTI (PERSONALITY)" options={MBTI_OPTIONS} value={formState.persona.mbti} onChange={e => handlePersonaUpdate('mbti', e.target.value)} />
@@ -853,33 +839,33 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                     )}
                     {/* STEP 4: 身份鎖定 */}
                     {wizardStep === 4 && (
-                        <Card className="p-0 overflow-hidden border-none bg-white/[0.03] backdrop-blur-xl">
-                            <div className="p-5 border-b border-white/5 bg-gradient-to-r from-[var(--color-gold)]/5 to-transparent">
-                                <h3 className="text-sm font-bold text-white tracking-[0.2em] uppercase flex items-center gap-3">
-                                    <div className="w-1 h-4 bg-[var(--color-gold)]"></div>
+                        <Card className="p-0 overflow-hidden border-none home-card">
+                            <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent">
+                                <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] uppercase flex items-center gap-3">
+                                    <div className="w-1 h-4 bg-brass"></div>
                                     <div className="flex flex-col items-start leading-tight">
                                         <span>身份鎖定</span>
-                                        <span className="text-[9px] opacity-40 font-normal normal-case">Step 4 — AI 草擬後確認生成</span>
+                                        <span className="text-[9px] opacity-40 font-normal normal-case">步驟 4 — AI 草擬後確認生成</span>
                                     </div>
                                 </h3>
                             </div>
                             <div className="p-6 space-y-5">
-                                <button onClick={handleGenerateLockedDescriptor} disabled={isGeneratingDescriptor} className={`w-full py-3.5 rounded-2xl border text-[11px] font-black uppercase tracking-widest transition-all ${isGeneratingDescriptor ? 'opacity-50 cursor-not-allowed border-white/10 text-gray-500' : 'border-[var(--color-gold)]/40 text-[var(--color-gold)] hover:bg-[var(--color-gold)]/10'}`}>
-                                    {isGeneratingDescriptor ? '⏳ 草擬中...' : '✨ AI 草擬身份鎖定 (Locked Descriptor)'}
+                                <button onClick={handleGenerateLockedDescriptor} disabled={isGeneratingDescriptor} className={`w-full py-3.5 rounded-2xl border text-[11px] font-black tracking-widest transition-all ${isGeneratingDescriptor ? 'opacity-50 cursor-not-allowed border-[var(--home-line)] text-[var(--home-muted)]' : 'border-brass/40 text-[var(--color-brass)] hover:bg-brass/10'}`}>
+                                    {isGeneratingDescriptor ? '草擬中...' : 'AI 草擬身份鎖定'}
                                 </button>
                                 <div>
-                                    <label className="block text-[11px] font-bold text-gray-500 uppercase mb-2 tracking-widest">身份鎖定描述</label>
-                                    <textarea className="w-full h-28 bg-black/40 border border-white/10 rounded-xl p-3 text-xs font-mono focus:border-[var(--color-gold)] focus:outline-none transition-all resize-none placeholder:text-gray-700" placeholder="AI 草擬後在此確認或微調..." value={formState.persona.locked_descriptor} onChange={e => handlePersonaUpdate('locked_descriptor', e.target.value)} />
+                                    <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-2 tracking-widest">身份鎖定描述</label>
+                                    <textarea className="w-full h-28 bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-xs font-mono focus:border-brass focus:outline-none transition-all resize-none placeholder:text-[var(--home-muted)]" placeholder="AI 草擬後在此確認或微調..." value={formState.persona.locked_descriptor} onChange={e => handlePersonaUpdate('locked_descriptor', e.target.value)} />
                                 </div>
                                 <div>
-                                    <label className="block text-[11px] font-bold text-gray-500 uppercase mb-2 tracking-widest">生成品質 (Quality)</label>
+                                    <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-2 tracking-widest">生成品質</label>
                                     <div className="grid grid-cols-3 gap-2">
                                         {([
                                             { id: 'standard' as const, label: '標準' },
                                             { id: 'high' as const, label: '高品質' },
                                             { id: 'ultra' as const, label: 'Ultra' }
                                         ]).map(q => (
-                                            <button key={q.id} onClick={() => setGenerationQuality(q.id)} className={`py-2.5 rounded-xl border text-[9px] font-bold transition-all ${generationQuality === q.id ? 'bg-[var(--color-gold)]/20 border-[var(--color-gold)] text-[var(--color-gold)]' : 'border-white/10 text-gray-500 hover:border-white/20'}`}>{q.label}</button>
+                                            <button key={q.id} onClick={() => setGenerationQuality(q.id)} className={`py-2.5 rounded-xl border text-[9px] font-bold transition-all ${generationQuality === q.id ? 'bg-brass/20 border-brass text-[var(--color-brass)]' : 'border-[var(--home-line)] text-[var(--home-muted)] hover:border-[var(--home-line-strong)]'}`}>{q.label}</button>
                                         ))}
                                     </div>
                                 </div>
@@ -888,12 +874,12 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                     )}
                     {/* Step Navigation */}
                     <div className="flex items-center justify-between gap-3">
-                        <button onClick={() => setWizardStep(s => Math.max(1, s - 1) as 1|2|3|4)} disabled={wizardStep === 1} className="px-5 py-3 border border-white/10 rounded-xl text-[10px] font-bold text-gray-400 hover:text-white hover:border-white/30 transition-all disabled:opacity-20 disabled:cursor-not-allowed">← 上一步</button>
-                        <span className="text-[9px] text-gray-600 uppercase tracking-widest">{wizardStep} / 4</span>
+                        <button onClick={() => setWizardStep(s => Math.max(1, s - 1) as 1|2|3|4)} disabled={wizardStep === 1} className="px-5 py-3 border border-[var(--home-line)] rounded-xl text-[10px] font-bold text-[var(--home-muted)] hover:text-[var(--home-ink)] hover:border-[var(--home-line-strong)] transition-all disabled:opacity-20 disabled:cursor-not-allowed">← 上一步</button>
+                        <span className="text-[9px] text-[var(--home-muted)] tracking-widest">{wizardStep} / 4</span>
                         {wizardStep < 4 ? (
-                            <button onClick={() => setWizardStep(s => Math.min(4, s + 1) as 1|2|3|4)} className="px-5 py-3 bg-white/10 border border-white/20 rounded-xl text-[10px] font-bold text-white hover:bg-[var(--color-gold)]/20 hover:border-[var(--color-gold)]/40 hover:text-[var(--color-gold)] transition-all">下一步 →</button>
+                            <button onClick={() => setWizardStep(s => Math.min(4, s + 1) as 1|2|3|4)} className="px-5 py-3 bg-[rgba(255,255,255,.5)] border border-[var(--home-line-strong)] rounded-xl text-[10px] font-bold text-[var(--home-ink)] hover:bg-brass/20 hover:border-brass/40 hover:text-[var(--color-brass)] transition-all">下一步 →</button>
                         ) : (
-                            <Button onClick={handleGenerate} isLoading={isLoading} disabled={isLoading} className="px-6 py-3 text-[10px] font-black tracking-widest uppercase">🚀 生成 IP</Button>
+                            <Button onClick={handleGenerate} isLoading={isLoading} disabled={isLoading} className="home-btn-primary px-6 py-3 text-[10px] font-black tracking-widest">生成 IP</Button>
                         )}
                     </div>
                 </div>
@@ -903,48 +889,38 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
             {!wizardMode && (<>
 
             {/* 1. 靈魂藍圖 */}
-            <Card className="p-0 overflow-hidden border-none bg-white/[0.03] backdrop-blur-xl group/card">
-              <div className="p-5 border-b border-white/5 flex justify-between items-center bg-gradient-to-r from-[var(--color-gold)]/5 to-transparent transition-all group-hover/card:from-[var(--color-gold)]/10">
-                <h3 className="text-sm font-bold text-white tracking-[0.2em] uppercase flex items-center gap-3">
-                  <div className="w-1 h-4 bg-[var(--color-gold)] shadow-[0_0_10px_rgba(var(--color-gold-rgb),0.5)]"></div>
-                  <div className="flex flex-col items-start leading-tight">
-                    <span className="group-hover/card:text-[var(--color-gold)] transition-colors">靈魂藍圖</span>
-                    <span className="text-[10px] opacity-40 font-normal normal-case tracking-normal">(Soul Blueprint)</span>
-                  </div>
+            <Card className="p-0 overflow-hidden border-none home-card group/card">
+              <div className="p-5 border-b border-[var(--home-line)] flex justify-between items-center bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent transition-all group-hover/card:from-[var(--color-brass)]/10">
+                <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
+                  <div className="w-1 h-4 bg-brass"></div>
+                  <span className="group-hover/card:text-[var(--color-brass)] transition-colors">靈魂藍圖</span>
                 </h3>
-                <motion.button 
+                <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={handleRandomize} 
-                    className="bg-white/5 hover:bg-white/10 border border-white/5 py-1 px-4 rounded-full transition-all group"
+                    onClick={handleRandomize}
+                    className="bg-[rgba(255,255,255,.4)] hover:bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] py-1.5 px-4 rounded-full transition-all group"
                 >
-                    <div className="flex flex-col items-center">
-                        <span className="text-[10px] font-bold text-[var(--color-gold)]">✨ 隨機靈感</span>
-                        <span className="text-[8px] font-normal opacity-40 text-white">(Randomize)</span>
-                    </div>
+                    <span className="text-[10px] font-bold text-[var(--color-brass)]">隨機靈感</span>
                 </motion.button>
               </div>
               <div className="p-6 space-y-7">
                 <div className={getFieldClass('name')}>
-                    <label className="block text-[11px] font-bold text-gray-500 uppercase mb-3 flex justify-between min-h-[2.5rem] items-center font-display tracking-[0.2em] text-left">
-                        <div className="flex flex-col">
-                            <span className="block text-white mb-0.5">IP 姓名</span>
-                            <span className="block text-[9px] opacity-40 font-normal normal-case tracking-normal">(Identity Name)</span>
-                        </div>
-                        <button 
+                    <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 flex justify-between min-h-[2.5rem] items-center font-display tracking-[0.2em] text-left">
+                        <span className="block text-[var(--home-ink)]">IP 姓名</span>
+                        <button
                             onClick={() => {
                                 const namePool = formState.gender === 'male' ? IP_NAME_POOL.male : IP_NAME_POOL.female;
                                 const randomName = namePool[Math.floor(Math.random() * namePool.length)];
                                 handleFormChange('name', randomName);
-                                addNotification({ type: 'info', message: '🎲 已隨機選取姓名' });
+                                addNotification({ type: 'info', message: '已隨機選取姓名' });
                             }}
-                            className="group flex flex-col items-end transition-all hover:opacity-100"
+                            className="group flex items-center transition-all hover:opacity-100"
                         >
-                            <span className="text-[9px] text-[var(--color-gold)] font-bold mb-0.5 group-hover:underline">隨機換名</span>
-                            <span className="text-[8px] text-gray-600 font-normal">(Roll Name)</span>
+                            <span className="text-[9px] text-[var(--color-brass)] font-bold group-hover:underline">隨機換名</span>
                         </button>
                     </label>
-                    <input type="text" className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm focus:border-[var(--color-gold)] focus:ring-1 focus:ring-[var(--color-gold)]/20 focus:outline-none transition-all placeholder:text-gray-700" placeholder="輸入 IP 角色姓名" value={formState.name} onChange={e => handleFormChange('name', e.target.value)} />
+                    <input type="text" className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:ring-1 focus:ring-[var(--color-brass)]/20 focus:outline-none transition-all placeholder:text-[var(--home-muted)]" placeholder="輸入 IP 角色姓名" value={formState.name} onChange={e => handleFormChange('name', e.target.value)} />
                 </div>
                 <div className="grid grid-cols-2 gap-5">
                     <Select label="生理性別 (GENDER)" options={GENDER_PRESETS} value={formState.gender} onChange={e => handleGenderChange(e.target.value)} />
@@ -966,50 +942,46 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                 <div className="grid grid-cols-2 gap-4 pt-2">
                     <Select label="主力語氣 (TONE OF VOICE)" options={TONE_OPTIONS} value={formState.persona.toneOfVoice} onChange={e => handlePersonaUpdate('toneOfVoice', e.target.value)} />
                     <div className="flex items-end justify-center pb-1">
-                        <p className="text-[9px] text-gray-500 italic opacity-60">人設細節將隨「隨機靈感」自動生成 (Persona details auto-generated)</p>
+                        <p className="text-[9px] text-[var(--home-muted)] opacity-60">人設細節將隨「隨機靈感」自動生成</p>
                     </div>
                 </div>
 
                 {/* 身份鎖定描述 - 靈魂核心 */}
-                <div className="pt-4 border-t border-white/5 space-y-3">
+                <div className="pt-4 border-t border-[var(--home-line)] space-y-3">
                     <div className="flex justify-between items-center">
-                        <label className="block text-[11px] font-bold text-gray-500 uppercase font-display tracking-[0.2em] leading-tight text-left">
-                            <span className="block text-white mb-0.5">身份鎖定描述</span>
-                            <span className="block text-[9px] opacity-40 font-normal normal-case tracking-normal">(Locked Descriptor)</span>
+                        <label className="block text-[11px] font-bold text-[var(--home-muted)] font-display tracking-[0.2em] leading-tight text-left">
+                            <span className="block text-[var(--home-ink)]">身份鎖定描述</span>
                         </label>
-                        <motion.button 
+                        <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={handleGenerateLockedDescriptor}
                             disabled={isGeneratingDescriptor}
-                            className="text-[10px] text-[var(--color-gold)] font-bold flex items-center gap-2 hover:opacity-80 transition-all disabled:opacity-30"
+                            className="text-[10px] text-[var(--color-brass)] font-bold flex items-center gap-2 hover:opacity-80 transition-all disabled:opacity-30"
                         >
                             {isGeneratingDescriptor ? (
-                                <div className="w-3 h-3 border-2 border-[var(--color-gold)] border-t-transparent rounded-full animate-spin"></div>
+                                <div className="w-3 h-3 border-2 border-brass border-t-transparent rounded-full animate-spin"></div>
                             ) : (
-                                <span className="flex items-center gap-1.5 underline decoration-[0.5px] underline-offset-4">✨ AI 草擬身分盒 (Draft Identity)</span>
+                                <span className="flex items-center gap-1.5 underline decoration-[0.5px] underline-offset-4">AI 草擬身分盒</span>
                             )}
                         </motion.button>
                     </div>
                     <textarea 
-                        className="w-full h-24 bg-black/40 border border-white/10 rounded-xl p-3 text-[11px] text-gray-300 focus:border-[var(--color-gold)] focus:outline-none transition-all resize-none leading-relaxed placeholder:text-gray-700 font-mono scrollbar-none"
+                        className="w-full h-24 bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-[11px] text-[var(--home-muted)] focus:border-brass focus:outline-none transition-all resize-none leading-relaxed placeholder:text-[var(--home-muted)] font-mono scrollbar-none"
                         placeholder="描述這個 IP 的核心視覺特徵（英文），例如面部細節、骨架神韻等，這是維持生圖一致性的關鍵。"
                         value={formState.persona.locked_descriptor}
                         onChange={e => handlePersonaUpdate('locked_descriptor', e.target.value)}
                     />
-                    <p className="text-[9px] text-gray-600 italic leading-relaxed">
-                        * 身份鎖定 (Identity Lock) 是維護 IP 視覺一致性的最高級位字串。建議使用 AI 根據目前設定草擬後，再進行手動精煉。
+                    <p className="text-[9px] text-[var(--home-muted)] leading-relaxed">
+                        * 身份鎖定是維護 IP 視覺一致性的最高級位字串。建議使用 AI 根據目前設定草擬後，再進行手動精煉。
                     </p>
                 </div>
 
                 {/* Style Archetypes (矩陣 v2.0) */}
-                <div className="pt-4 border-t border-white/5">
-                    <label className="block text-[11px] font-bold text-gray-500 uppercase mb-3 flex justify-between items-center font-display tracking-[0.2em]">
-                        <div className="flex flex-col">
-                            <span className="text-white mb-0.5">風格原型偏好</span>
-                            <span className="text-[9px] opacity-40 font-normal normal-case">(Style Archetypes)</span>
-                        </div>
-                        <span className="text-[9px] text-[var(--color-gold)] opacity-60">用於智慧穿搭路由</span>
+                <div className="pt-4 border-t border-[var(--home-line)]">
+                    <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 flex justify-between items-center font-display tracking-[0.2em]">
+                        <span className="text-[var(--home-ink)]">風格原型偏好</span>
+                        <span className="text-[9px] text-[var(--color-brass)] opacity-60">用於智慧穿搭路由</span>
                     </label>
                     <div className="flex flex-wrap gap-2">
                         {STYLE_ARCHETYPES.filter(a => a.gender.includes(formState.gender as any) || a.gender.includes('unisex')).map(archetype => {
@@ -1028,8 +1000,8 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                                     }}
                                     className={`px-3 py-1.5 rounded-full text-[10px] font-bold transition-all border ${
                                         isSelected 
-                                        ? 'bg-[var(--color-gold)] text-black border-[var(--color-gold)] shadow-[0_0_15px_rgba(var(--color-gold-rgb),0.3)]' 
-                                        : 'bg-white/5 text-gray-400 border-white/10 hover:border-[var(--color-gold)]/50'
+                                        ? 'bg-brass text-black border-brass shadow-[0_0_15px_rgba(var(--color-brass-rgb),0.3)]' 
+                                        : 'bg-[rgba(255,255,255,.4)] text-[var(--home-muted)] border-[var(--home-line)] hover:border-brass/50'
                                     }`}
                                 >
                                     {archetype.label}
@@ -1042,41 +1014,37 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
             </Card>
 
             {/* 2. 生理特徵 (Physiological Features) */}
-            <Card className="p-0 overflow-hidden border-none bg-white/[0.03] backdrop-blur-xl">
-              <div className="p-5 border-b border-white/5 bg-gradient-to-r from-[var(--color-gold)]/5 to-transparent flex justify-between items-center group">
-                <h3 className="text-sm font-bold text-white tracking-[0.2em] uppercase flex items-center gap-3">
-                  <div className="w-1 h-4 bg-[var(--color-gold)] shadow-[0_0_10px_rgba(var(--color-gold-rgb),0.5)]"></div>
-                  <div className="flex flex-col items-start leading-tight">
-                    <span className="group-hover:text-[var(--color-gold)] transition-colors">生理特徵</span>
-                    <span className="text-[9px] opacity-40 font-normal normal-case tracking-normal">(Biometric Blueprint)</span>
-                  </div>
+            <Card className="p-0 overflow-hidden border-none home-card">
+              <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent flex justify-between items-center group">
+                <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
+                  <div className="w-1 h-4 bg-brass"></div>
+                  <span className="group-hover:text-[var(--color-brass)] transition-colors">生理特徵</span>
                 </h3>
               </div>
               <div className="p-6 space-y-7">
                     <div className={getFieldClass('archetype')}>
                         <div className="flex justify-between items-center mb-4 min-h-[2.5rem]">
-                            <label className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] text-left flex flex-col leading-tight">
-                                <span className="text-white mb-0.5">臉部原型</span>
-                                <span className="text-[9px] opacity-40 font-normal normal-case tracking-normal">(Biometric Identity)</span>
+                            <label className="text-[11px] font-bold text-[var(--home-muted)] tracking-[0.2em] text-left flex flex-col leading-tight">
+                                <span className="text-[var(--home-ink)]">臉部原型</span>
                             </label>
                             {faceReferences.length > 0 && (
                                 <motion.div 
                                     initial={{ x: 20, opacity: 0 }}
                                     animate={{ x: 0, opacity: 1 }}
-                                    className="flex items-center gap-2 bg-[var(--color-gold)]/20 border border-[var(--color-gold)]/40 px-4 py-1.5 rounded-full font-bold shadow-[0_0_25px_rgba(var(--color-gold-rgb),0.2)]"
+                                    className="flex items-center gap-2 bg-brass/20 border border-brass/40 px-4 py-1.5 rounded-full font-bold shadow-[0_0_25px_rgba(var(--color-brass-rgb),0.2)]"
                                 >
                                     <div className="relative flex h-2 w-2">
-                                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-gold)] opacity-75"></span>
-                                      <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--color-gold)]"></span>
+                                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brass opacity-75"></span>
+                                      <span className="relative inline-flex rounded-full h-2 w-2 bg-brass"></span>
                                     </div>
-                                    <span className="text-[10px] text-[var(--color-gold)] tracking-widest">IDENTITY LOCKED</span>
+                                    <span className="text-[10px] text-[var(--color-brass)] tracking-widest">身份已鎖定</span>
                                 </motion.div>
                             )}
                         </div>
                         <div className="relative group">
                             {faceReferences.length > 0 && (
-                                <div className="absolute inset-0 z-20 cursor-not-allowed bg-black/40 backdrop-blur-[2px] rounded-xl flex items-center justify-center border border-[var(--color-gold)]/20">
-                                   <span className="text-[10px] text-[var(--color-gold)] font-bold tracking-widest opacity-80">參考圖優先模式已開啟</span>
+                                <div className="absolute inset-0 z-20 cursor-not-allowed bg-[rgba(255,250,242,.9)] rounded-xl flex items-center justify-center border border-brass/20">
+                                   <span className="text-[10px] text-[var(--color-brass)] font-bold tracking-widest opacity-80">參考圖優先模式已開啟</span>
                                 </div>
                             )}
                             <Select 
@@ -1109,30 +1077,29 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                         initial={{ opacity: 0, height: 0 }} 
                         animate={{ opacity: 1, height: 'auto' }} 
                         exit={{ opacity: 0, height: 0 }}
-                        className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-3 overflow-hidden"
+                        className="p-4 bg-[rgba(255,255,255,.4)] rounded-xl border border-[var(--home-line)] space-y-3 overflow-hidden"
                     >
                         <div className="flex justify-between items-start">
-                            <label className="text-[10px] font-bold text-[var(--color-gold)] uppercase tracking-wider text-left flex flex-col leading-tight">
+                            <label className="text-[10px] font-bold text-[var(--color-brass)] tracking-wider text-left flex flex-col leading-tight">
                                 <span>面部特徵參考圖</span>
-                                <span className="opacity-50 font-normal normal-case">(Identity Lock)</span>
                             </label>
-                            <span className="text-[10px] text-gray-500 font-mono pt-1">{faceReferences.length}/10</span>
+                            <span className="text-[10px] text-[var(--home-muted)] font-mono pt-1">{faceReferences.length}/10</span>
                         </div>
                         <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
                             {faceReferencePreviews.map((url, idx) => (
-                                <div key={idx} className="relative min-w-[70px] h-[70px] rounded-lg overflow-hidden border border-white/10 group flex-shrink-0">
+                                <div key={idx} className="relative min-w-[70px] h-[70px] rounded-lg overflow-hidden border border-[var(--home-line)] group flex-shrink-0">
                                     <img src={url} className="w-full h-full object-cover" />
-                                    <button onClick={() => removeFaceReference(idx)} className="absolute inset-0 bg-red-600/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity">&times;</button>
+                                    <button onClick={() => removeFaceReference(idx)} className="absolute inset-0 bg-red-600/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-[var(--home-ink)] transition-opacity">&times;</button>
                                 </div>
                             ))}
                             {faceReferences.length < 10 && (
-                                <label htmlFor="face-ref-final" className="min-w-[70px] h-[70px] bg-black/40 border border-dashed border-white/10 rounded-lg flex items-center justify-center cursor-pointer hover:border-[var(--color-gold)] transition-all flex-shrink-0">
-                                    <PhotoIcon className="w-5 h-5 text-gray-600" />
+                                <label htmlFor="face-ref-final" className="min-w-[70px] h-[70px] bg-[rgba(255,255,255,.5)] border border-dashed border-[var(--home-line)] rounded-lg flex items-center justify-center cursor-pointer hover:border-brass transition-all flex-shrink-0">
+                                    <PhotoIcon className="w-5 h-5 text-[var(--home-muted)]" />
                                 </label>
                             )}
                         </div>
                         <input id="face-ref-final" type="file" className="hidden" accept="image/*" multiple onChange={handleFaceReferenceChange} />
-                        <p className="text-[9px] text-gray-500 italic text-center">建議上傳多角度清晰正臉照，以獲得最佳特徵鎖定效果 (Upload multiple clear front-facing photos for best Identity Lock results)</p>
+                        <p className="text-[9px] text-[var(--home-muted)] text-center">建議上傳多角度清晰正臉照，以獲得最佳特徵鎖定效果</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -1140,27 +1107,25 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                 {isExpertMode && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="space-y-6 overflow-hidden">
                     <div className="space-y-3">
-                        <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] flex flex-col leading-tight">
-                            <span className="text-white mb-0.5">網美等級</span>
-                            <span className="text-[9px] opacity-40 font-normal normal-case tracking-normal">(Photogenic Level)</span>
+                        <label className="block text-[11px] font-bold text-[var(--home-muted)] tracking-[0.2em] flex flex-col leading-tight">
+                            <span className="text-[var(--home-ink)]">網美等級</span>
                         </label>
                         <div className="flex gap-2">
                             {[
-                                { level: 1, label: '自然路人', sublabel: 'Natural' },
-                                { level: 2, label: '天然網美', sublabel: 'Influencer' },
-                                { level: 3, label: '精修偶像', sublabel: 'Idol' }
-                            ].map(({ level, label, sublabel }) => (
+                                { level: 1, label: '自然路人' },
+                                { level: 2, label: '天然網美' },
+                                { level: 3, label: '精修偶像' }
+                            ].map(({ level, label }) => (
                                 <button
                                     key={level}
                                     onClick={() => handleFormChange('netRedLevel', level)}
                                     className={`flex-1 py-2.5 rounded-xl border text-center transition-all ${
                                         formState.netRedLevel === level
-                                            ? 'bg-[var(--color-gold)] text-black border-[var(--color-gold)] shadow-xl shadow-[var(--color-gold)]/20'
-                                            : 'bg-black/20 text-gray-400 border-white/10 hover:border-white/30'
+                                            ? 'bg-brass text-black border-brass shadow-xl shadow-[var(--color-brass)]/20'
+                                            : 'bg-[rgba(255,255,255,.4)] text-[var(--home-muted)] border-[var(--home-line)] hover:border-[var(--home-line-strong)]'
                                     }`}
                                 >
                                     <div className="text-[11px] font-bold">{label}</div>
-                                    <div className="text-[9px] opacity-60 mt-0.5">{sublabel}</div>
                                 </button>
                             ))}
                         </div>
@@ -1184,7 +1149,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                     />
                 </div>
 
-                <div className="space-y-4 pt-2 border-t border-white/5">
+                <div className="space-y-4 pt-2 border-t border-[var(--home-line)]">
                     <Select label="體態選項 (Physique)" options={PROPORTION_MODE_OPTIONS} value={formState.proportionMode} onChange={e => handlePhysiqueChange(e.target.value)} />
                     <Slider label="身高 (Height)" min={150} max={200} unit="cm" value={formState.height} onChange={e => handleFormChange('height', Number(e.target.value))} />
                 </div>
@@ -1192,14 +1157,11 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
             </Card>
 
             {/* 3. 環境與足跡 (Life Circuit) */}
-            <Card className="p-0 overflow-hidden border-none bg-white/[0.03] backdrop-blur-xl">
-              <div className="p-5 border-b border-white/5 bg-gradient-to-r from-[var(--color-gold)]/5 to-transparent group">
-                <h3 className="text-sm font-bold text-white tracking-[0.2em] uppercase flex items-center gap-3">
-                  <div className="w-1 h-4 bg-[var(--color-gold)] shadow-[0_0_10px_rgba(var(--color-gold-rgb),0.5)]"></div>
-                  <div className="flex flex-col items-start leading-tight">
-                    <span className="group-hover:text-[var(--color-gold)] transition-colors">環境與足跡</span>
-                    <span className="text-[9px] opacity-40 font-normal normal-case tracking-normal">(Life Circuit)</span>
-                  </div>
+            <Card className="p-0 overflow-hidden border-none home-card">
+              <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent group">
+                <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
+                  <div className="w-1 h-4 bg-brass"></div>
+                  <span className="group-hover:text-[var(--color-brass)] transition-colors">環境與足跡</span>
                 </h3>
               </div>
               <div className="p-6 space-y-7">
@@ -1219,11 +1181,10 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                 </div>
                 <div className="grid grid-cols-2 gap-5">
                     <div className={getFieldClass('profession')}>
-                        <label className="block text-[11px] font-bold text-gray-500 uppercase mb-3 min-h-[2.5rem] font-display tracking-[0.2em] leading-tight text-left">
-                            <span className="block text-white mb-0.5">職業身分</span>
-                            <span className="block text-[9px] opacity-40 font-normal normal-case tracking-normal">(Profession)</span>
+                        <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 min-h-[2.5rem] font-display tracking-[0.2em] leading-tight text-left">
+                            <span className="block text-[var(--home-ink)]">職業身分</span>
                         </label>
-                        <input type="text" className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm focus:border-[var(--color-gold)] focus:outline-none transition-all" placeholder="如: 藝術家 (e.g. Creator)" value={formState.persona.profession} onChange={e => handlePersonaUpdate('profession', e.target.value)} />
+                        <input type="text" className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:outline-none transition-all" placeholder="如：藝術家、創作者" value={formState.persona.profession} onChange={e => handlePersonaUpdate('profession', e.target.value)} />
                     </div>
                     <Select label="核心興趣 (INTERESTS)" options={INTEREST_OPTIONS} value={formState.lifeCircuit.interests?.[0] || ''} onChange={e => handleCircuitUpdate('interests', [e.target.value])} />
                 </div>
@@ -1231,39 +1192,34 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
             </Card>
 
             {/* 生活細節 (Life Details) - 選填 */}
-            <Card className="p-0 overflow-hidden border-none bg-white/[0.03] backdrop-blur-xl">
-              <div className="p-5 border-b border-white/5 bg-gradient-to-r from-[var(--color-gold)]/5 to-transparent group">
-                <h3 className="text-sm font-bold text-white tracking-[0.2em] uppercase flex items-center gap-3">
-                  <div className="w-1 h-4 bg-[var(--color-gold)] shadow-[0_0_10px_rgba(var(--color-gold-rgb),0.5)]"></div>
-                  <div className="flex flex-col items-start leading-tight">
-                    <span className="group-hover:text-[var(--color-gold)] transition-colors">生活細節</span>
-                    <span className="text-[9px] opacity-40 font-normal normal-case tracking-normal">(Life Details) - 選填</span>
-                  </div>
+            <Card className="p-0 overflow-hidden border-none home-card">
+              <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent group">
+                <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
+                  <div className="w-1 h-4 bg-brass"></div>
+                  <span className="group-hover:text-[var(--color-brass)] transition-colors">生活細節（選填）</span>
                 </h3>
               </div>
               <div className="p-6 space-y-6">
                 <div className="grid grid-cols-2 gap-5">
                     <div className={getFieldClass('pet')}>
-                        <label className="block text-[11px] font-bold text-gray-500 uppercase mb-3 min-h-[2.5rem] font-display tracking-[0.2em] leading-tight text-left">
-                            <span className="block text-white mb-0.5">寵物</span>
-                            <span className="block text-[9px] opacity-40 font-normal normal-case tracking-normal">(Pet)</span>
+                        <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 min-h-[2.5rem] font-display tracking-[0.2em] leading-tight text-left">
+                            <span className="block text-[var(--home-ink)]">寵物</span>
                         </label>
                         <input 
                             type="text" 
-                            className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm focus:border-[var(--color-gold)] focus:outline-none transition-all placeholder:text-gray-700" 
+                            className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:outline-none transition-all placeholder:text-[var(--home-muted)]" 
                             placeholder="例：橘貓 Mochi、柴犬 Koko" 
                             value={formatPetAnchor(formState.worldAnchors?.pet)} 
                             onChange={e => handlePetAnchorUpdate(e.target.value)} 
                         />
                     </div>
                     <div className={getFieldClass('iconicItems')}>
-                        <label className="block text-[11px] font-bold text-gray-500 uppercase mb-3 min-h-[2.5rem] font-display tracking-[0.2em] leading-tight text-left">
-                            <span className="block text-white mb-0.5">標誌性物品</span>
-                            <span className="block text-[9px] opacity-40 font-normal normal-case tracking-normal">(Iconic Item)</span>
+                        <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 min-h-[2.5rem] font-display tracking-[0.2em] leading-tight text-left">
+                            <span className="block text-[var(--home-ink)]">標誌性物品</span>
                         </label>
                         <input 
                             type="text" 
-                            className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm focus:border-[var(--color-gold)] focus:outline-none transition-all placeholder:text-gray-700" 
+                            className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:outline-none transition-all placeholder:text-[var(--home-muted)]" 
                             placeholder="例：總是帶著的底片相機、特定款式耳環" 
                             value={formState.worldAnchors?.iconicItems[0]?.name || ''} 
                             onChange={e => handleIconicItemsUpdate(e.target.value)} 
@@ -1274,30 +1230,27 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
             </Card>
 
             {/* 4. 專業服裝系統 (Apparel Curation) */}
-            <Card className="p-0 overflow-hidden border-none bg-white/[0.03] backdrop-blur-xl">
-              <div className="p-5 border-b border-white/5 bg-gradient-to-r from-[var(--color-gold)]/5 to-transparent">
-                <h3 className="text-sm font-bold text-white tracking-[0.2em] uppercase flex items-center gap-3">
-                  <div className="w-1 h-4 bg-[var(--color-gold)] shadow-[0_0_10px_rgba(var(--color-gold-rgb),0.5)]"></div>
-                  <div className="flex flex-col items-start leading-tight">
-                    <span className="group-hover:text-[var(--color-gold)] transition-colors">專業服裝系統</span>
-                    <span className="text-[9px] opacity-40 font-normal normal-case tracking-normal">(Apparel Curation)</span>
-                  </div>
+            <Card className="p-0 overflow-hidden border-none home-card">
+              <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent">
+                <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
+                  <div className="w-1 h-4 bg-brass"></div>
+                  <span className="group-hover:text-[var(--color-brass)] transition-colors">專業服裝系統</span>
                 </h3>
               </div>
               <div className="p-6 space-y-6">
                   {/* 分類 Tab */}
-                  <div className="flex gap-2 bg-black/40 p-1.5 rounded-2xl border border-white/5 mb-4">
+                  <div className="flex gap-2 bg-[rgba(255,255,255,.5)] p-1.5 rounded-2xl border border-[var(--home-line)] mb-4">
                       {APPAREL_CATEGORIES.map(cat => (
                           <button
                             key={cat.id}
                             onClick={() => setActiveApparelCat(cat.id)}
-                            className={`flex-1 py-2 text-[11px] font-bold rounded-xl transition-all duration-300 relative overflow-hidden ${activeApparelCat === cat.id ? 'bg-[var(--color-gold)] text-black shadow-[0_4px_20px_rgba(var(--color-gold-rgb),0.3)]' : 'text-gray-500 hover:text-gray-300 hover:bg-white/5'}`}
+                            className={`flex-1 py-2 text-[11px] font-bold rounded-xl transition-all duration-300 relative overflow-hidden ${activeApparelCat === cat.id ? 'bg-brass text-black shadow-[0_4px_20px_rgba(var(--color-brass-rgb),0.3)]' : 'text-[var(--home-muted)] hover:text-[var(--home-muted)] hover:bg-[rgba(255,255,255,.4)]'}`}
                           >
                               <span className="relative z-10">{cat.label.split(' (')[0]}</span>
                               {activeApparelCat === cat.id && (
-                                  <motion.div 
-                                    layoutId="apparel-tab-glare" 
-                                    className="absolute inset-0 bg-white/20 blur-xl pointer-events-none" 
+                                  <motion.div
+                                    layoutId="apparel-tab-glare"
+                                    className="absolute inset-0 bg-[rgba(255,255,255,.25)] pointer-events-none"
                                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                                   />
                               )}
@@ -1344,19 +1297,17 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                                         }
                                         handleFormChange('outfitItems', newItems);
                                     }}
-                                    className={`p-4 rounded-2xl border text-left transition-all duration-300 relative overflow-hidden group/item flex flex-col justify-between h-[82px] ${isSelected ? 'bg-[var(--color-gold)]/15 border-[var(--color-gold)]/60 text-[var(--color-gold)] ring-1 ring-[var(--color-gold)]/30' : 'bg-white/[0.03] border-white/5 text-gray-400 hover:border-white/20 hover:bg-white/5'}`}
+                                    className={`p-4 rounded-2xl border text-left transition-all duration-300 relative overflow-hidden group/item flex flex-col justify-between h-[82px] ${isSelected ? 'bg-brass/15 border-brass/60 text-[var(--color-brass)] ring-1 ring-[var(--color-brass)]/30' : 'bg-[rgba(255,255,255,.4)] border-[var(--home-line)] text-[var(--home-muted)] hover:border-[var(--home-line-strong)] hover:bg-[rgba(255,255,255,.55)]'}`}
                                 >
                                     <div className="flex flex-col gap-0.5 relative z-10">
-                                        <span className={`text-[11px] font-bold tracking-tight leading-tight ${isSelected ? 'text-white' : ''}`}>{item.label.split(' (')[0]}</span>
-                                        <p className="text-[8px] opacity-40 font-normal uppercase tracking-wider truncate w-full">{item.label.split(' (')[1]?.replace(')', '')}</p>
+                                        <span className={`text-[11px] font-bold tracking-tight leading-tight ${isSelected ? 'text-[var(--home-ink)]' : ''}`}>{item.label.split(' (')[0]}</span>
                                     </div>
-                                    
-                                    <div className="flex justify-between items-center mt-auto relative z-10">
-                                       <span className="text-[7px] text-gray-600 font-mono uppercase">VTO-{item.category.toUpperCase().slice(0,3)}-{item.id.split('_').pop()}</span>
+
+                                    <div className="flex justify-end items-center mt-auto relative z-10">
                                        {isSelected && (
-                                            <motion.div 
+                                            <motion.div
                                                 layoutId={`check-${item.id}`}
-                                                className="w-1.5 h-1.5 bg-[var(--color-gold)] rounded-full shadow-[0_0_10px_var(--color-gold)]"
+                                                className="w-1.5 h-1.5 bg-brass rounded-full shadow-[0_0_10px_var(--color-brass)]"
                                             />
                                        )}
                                     </div>
@@ -1367,7 +1318,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                                     {isSelected && (
                                         <motion.div 
                                             layoutId={`bg-active-${item.id}`}
-                                            className="absolute inset-0 bg-gradient-to-t from-[var(--color-gold)]/10 to-transparent pointer-events-none" 
+                                            className="absolute inset-0 bg-gradient-to-t from-[var(--color-brass)]/10 to-transparent pointer-events-none" 
                                         />
                                     )}
                                 </motion.button>
@@ -1377,7 +1328,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                     </motion.div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
+                  <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[var(--home-line)]">
                       <Select 
                         label="影像比例 (Aspect Ratio)" 
                         options={[
@@ -1402,15 +1353,14 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                       />
                   </div>
                   
-                  <div className={`flex items-center justify-between p-4 rounded-xl border transition-all ${formState.isMultiAngle ? 'bg-[var(--color-gold)]/10 border-[var(--color-gold)]/30' : 'bg-white/5 border-white/5'}`}>
+                  <div className={`flex items-center justify-between p-4 rounded-xl border transition-all ${formState.isMultiAngle ? 'bg-brass/10 border-brass/30' : 'bg-[rgba(255,255,255,.4)] border-[var(--home-line)]'}`}>
                       <div className="flex flex-col items-start text-left">
-                          <span className="text-[11px] font-bold text-white uppercase tracking-wider mb-0.5">多視角同步生成</span>
-                          <span className="text-[10px] font-normal normal-case opacity-50 leading-tight">(Matrix Mode)</span>
-                          <span className="text-[9px] text-gray-500 mt-1 italic">一次產出 4-6 個不同角度的同型人物 (Generate 4-6 angles simultaneously)</span>
+                          <span className="text-[11px] font-bold text-[var(--home-ink)] tracking-wider">多視角同步生成</span>
+                          <span className="text-[9px] text-[var(--home-muted)] mt-1">一次產出 4-6 個不同角度的同型人物</span>
                       </div>
                       <button 
                         onClick={() => handleFormChange('isMultiAngle', !formState.isMultiAngle)}
-                        className={`w-12 h-6 rounded-full transition-all relative ${formState.isMultiAngle ? 'bg-[var(--color-gold)]' : 'bg-white/10'}`}
+                        className={`w-12 h-6 rounded-full transition-all relative ${formState.isMultiAngle ? 'bg-brass' : 'bg-[rgba(255,255,255,.5)]'}`}
                       >
                           <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${formState.isMultiAngle ? 'left-7 shadow-lg' : 'left-1'}`}></div>
                       </button>
@@ -1418,16 +1368,15 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
 
                   <div className="space-y-4">
                       <div className="flex justify-between items-start">
-                          <h4 className="text-[10px] font-bold text-gray-500 uppercase flex flex-col items-start leading-tight">
+                          <h4 className="text-[10px] font-bold text-[var(--home-muted)] flex flex-col items-start leading-tight">
                               <span>生活感強度</span>
-                              <span className="opacity-50 font-normal normal-case">(Lifestyle Fidelity)</span>
                           </h4>
-                          <span className="text-[10px] font-bold text-[var(--color-gold)] pt-1">LV.{formState.fidelityScale}</span>
+                          <span className="text-[10px] font-bold text-[var(--color-brass)] pt-1">LV.{formState.fidelityScale}</span>
                       </div>
                       <div className="flex gap-2">
                           {[1,2,3,4,5].map(lvl => (
-                              <button key={lvl} onClick={() => handleFormChange('fidelityScale', lvl)} className={`flex-1 h-10 rounded-xl border text-[10px] font-bold transition-all ${formState.fidelityScale === lvl ? 'bg-[var(--color-gold)] text-black border-[var(--color-gold)] shadow-xl shadow-[var(--color-gold)]/20' : 'bg-black/20 text-gray-400 border-white/10'}`}>
-                                  {lvl === 1 ? '影棚 (Studio)' : lvl === 3 ? '街頭 (Urban)' : lvl === 5 ? '隨手 (Casual)' : lvl}
+                              <button key={lvl} onClick={() => handleFormChange('fidelityScale', lvl)} className={`flex-1 h-10 rounded-xl border text-[10px] font-bold transition-all ${formState.fidelityScale === lvl ? 'bg-brass text-black border-brass shadow-xl shadow-[var(--color-brass)]/20' : 'bg-[rgba(255,255,255,.4)] text-[var(--home-muted)] border-[var(--home-line)]'}`}>
+                                  {lvl === 1 ? '影棚' : lvl === 3 ? '街頭' : lvl === 5 ? '隨手' : lvl}
                               </button>
                           ))}
                       </div>
@@ -1435,32 +1384,32 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
               </div>
             </Card>
 
-            <motion.button 
+            <motion.button
                 whileHover={{ scale: 1.01, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={handleGenerate} 
+                onClick={handleGenerate}
                 disabled={isLoading}
-                className="w-full py-5 rounded-2xl bg-[var(--color-gold)] text-black shadow-2xl shadow-[var(--color-gold)]/20 flex flex-col items-center gap-1 group relative overflow-hidden transition-all duration-300 disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed"
+                className="home-btn-primary w-full py-5 rounded-2xl flex flex-col items-center gap-1 group relative overflow-hidden transition-all duration-300 disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed"
             >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none"></div>
-                <span className="text-base font-black tracking-widest uppercase relative z-10 flex items-center gap-2">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[rgba(255,255,255,.2)] to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none"></div>
+                <span className="text-base font-black tracking-widest relative z-10 flex items-center gap-2">
                     {isLoading ? (
                         <>
-                            <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin"></div>
-                            <span>時空傳送中 (Constructing)...</span>
+                            <div className="w-4 h-4 border-2 border-[rgba(255,250,242,.4)] border-t-[var(--home-paper)] rounded-full animate-spin"></div>
+                            <span>時空傳送中...</span>
                         </>
                     ) : (
-                        '開啟時空膠囊 (Generate Model)'
+                        '開啟時空膠囊'
                     )}
                 </span>
-                <span className="text-[9px] opacity-60 tracking-[0.3em] font-light relative z-10">CONSTRUCT THE PERSONA</span>
-                
+                <span className="text-[9px] opacity-70 tracking-[0.3em] font-light relative z-10">建構專屬 IP 人格</span>
+
                 {isLoading && (
-                   <motion.div 
+                   <motion.div
                      initial={{ scaleX: 0 }}
                      animate={{ scaleX: 1 }}
                      transition={{ duration: 3, ease: "easeInOut" }}
-                     className="absolute bottom-0 left-0 right-0 h-1 bg-black/20 origin-left"
+                     className="absolute bottom-0 left-0 right-0 h-1 bg-[rgba(255,255,255,.3)] origin-left"
                    />
                 )}
             </motion.button>
@@ -1470,35 +1419,30 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
         {/* Right Column: Preview */}
         <div className={`lg:col-span-7 xl:col-span-8 flex flex-col gap-6 ${mobileTab === 'preview' ? 'block' : 'hidden lg:block'}`}>
             {error && (
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="p-4 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-400 text-sm flex flex-col gap-2"
+                    className="p-4 bg-[rgba(155,61,54,0.08)] border border-danger/20 rounded-2xl text-danger text-sm flex flex-col gap-2"
                 >
-                    <div className="flex items-center gap-2 font-bold uppercase tracking-tight">
-                        <span className="text-lg">⚠️</span> 
-                        <span>傳送發生異常 (Transmission Error)</span>
+                    <div className="flex items-center gap-2 font-bold tracking-tight">
+                        <span>傳送發生異常</span>
                     </div>
-                    <p className="opacity-80 leading-relaxed font-mono text-[11px] bg-black/20 p-3 rounded-lg border border-white/5">{error}</p>
-                    <button 
+                    <p className="opacity-80 leading-relaxed font-mono text-[11px] bg-[rgba(255,255,255,.4)] p-3 rounded-lg border border-[var(--home-line)]">{error}</p>
+                    <button
                         onClick={() => setError(null)}
-                        className="text-[10px] uppercase font-bold text-red-400/60 hover:text-red-400 self-end mt-1 underline"
+                        className="text-[10px] font-bold text-danger/70 hover:text-danger self-end mt-1 underline"
                     >
-                        [ 關閉提示 Dismiss ]
+                        關閉提示
                     </button>
                 </motion.div>
             )}
             
-            <Card className="flex-1 min-h-[500px] border-none bg-white/[0.02] p-8">
-               <div className="flex justify-between items-start mb-8 border-b border-white/5 pb-4">
-                  <h3 className="text-xl font-bold tracking-widest uppercase text-white flex flex-col items-start leading-tight">
+            <Card className="flex-1 min-h-[500px] border-none home-card p-8">
+               <div className="flex justify-between items-start mb-8 border-b border-[var(--home-line)] pb-4">
+                  <h3 className="text-xl font-bold tracking-widest text-[var(--home-ink)] flex flex-col items-start leading-tight">
                     <span>結果預覽</span>
-                    <div className="flex items-center gap-2">
-                        <span className="text-xs font-normal normal-case opacity-50">(Preview Results)</span>
-                        <span className="text-[10px] font-light text-gray-500 tracking-normal normal-case">Digital Replicas</span>
-                    </div>
                   </h3>
-                  <div className="text-[10px] text-gray-500 font-mono pt-2">COUNT: {generatedModels.length}</div>
+                  <div className="text-[10px] text-[var(--home-muted)] font-mono pt-2">數量：{generatedModels.length}</div>
                </div>
                
                {generatedModels.length > 0 ? (
@@ -1506,31 +1450,31 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                        <AnimatePresence>
                            {generatedModels.map((model, idx) => (
                                <motion.div key={model.id} initial={{opacity:0, scale:0.95}} animate={{opacity:1, scale:1}} className="group relative">
-                                   <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-white/5 bg-black/40">
+                                   <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-[var(--home-line)] bg-[rgba(255,255,255,.5)]">
                                        <AsyncImage src={model.imageUrl} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex flex-col justify-end gap-3 translate-y-4 group-hover:translate-y-0 transition-transform">
-                                          <Button 
-                                            onClick={() => handleSaveToLounge(model)} 
-                                            variant="primary" 
+                                          <Button
+                                            onClick={() => handleSaveToLounge(model)}
+                                            variant="primary"
                                             className="w-full py-2 text-[10px] font-bold"
                                             disabled={savedModelIds.has(model.id)}
                                           >
-                                            {savedModelIds.has(model.id) ? '已儲存 ✓ (Saved)' : '儲存休息室 (Save to Lounge)'}
+                                            {savedModelIds.has(model.id) ? '已儲存' : '儲存休息室'}
                                           </Button>
-                                          
+
                                           {savedModelIds.has(model.id) && (
-                                            <motion.button 
+                                            <motion.button
                                                 initial={{ opacity: 0, y: 5 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 onClick={onGoHome}
-                                                className="w-full py-2 bg-white/10 hover:bg-[var(--color-gold)] text-[10px] font-bold text-[var(--color-gold)] hover:text-black rounded-lg border border-[var(--color-gold)]/20 transition-all"
+                                                className="w-full py-2 bg-white/10 hover:bg-brass text-[10px] font-bold text-[var(--color-brass)] hover:text-black rounded-lg border border-brass/20 transition-all"
                                             >
-                                                前往 IP 休息室 (Go to Lounge)
+                                                前往 IP 休息室
                                             </motion.button>
                                           )}
 
                                           <div className="flex gap-2">
-                                              <button onClick={() => setPreviewingModelIndex(idx)} className="flex-1 bg-white/10 hover:bg-white/20 py-2 rounded-lg text-[10px] font-bold text-white transition-colors">放大 (Zoom)</button>
+                                              <button onClick={() => setPreviewingModelIndex(idx)} className="flex-1 bg-white/10 hover:bg-white/20 py-2 rounded-lg text-[10px] font-bold text-white transition-colors">放大</button>
                                               <button onClick={() => handleDownload(model)} className="px-3 bg-white/10 hover:bg-white/20 rounded-lg text-white"><DownloadIcon className="w-3 h-3" /></button>
                                           </div>
                                        </div>
@@ -1540,10 +1484,10 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                        </AnimatePresence>
                    </div>
                ) : (
-                   <div className="h-[400px] flex flex-col items-center justify-center border border-dashed border-white/5 rounded-3xl opacity-30">
-                       <PhotoIcon className="w-16 h-16 mb-4 text-white" />
-                       <p className="text-lg uppercase tracking-widest text-white">等待初始化 (Awaiting Input)...</p>
-                       <p className="text-xs mt-2">請於左側面板設定參數後點擊生成 (Set parameters and click generate)</p>
+                   <div className="h-[400px] flex flex-col items-center justify-center border border-dashed border-[var(--home-line)] rounded-3xl opacity-30">
+                       <PhotoIcon className="w-16 h-16 mb-4 text-[var(--home-ink)]" />
+                       <p className="text-lg tracking-widest text-[var(--home-ink)]">等待初始化...</p>
+                       <p className="text-xs mt-2">請於左側面板設定參數後點擊生成</p>
                    </div>
                )}
             </Card>
