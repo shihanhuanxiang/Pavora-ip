@@ -19,6 +19,13 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = 3000;
 
+// P0 2026-07-18: 反向代理/LB 後，req.ip 預設回傳代理位址，導致全體共用同一 rate limit 桶
+// （見 server/middleware/guard.ts 註解）。設 trust proxy 後 Express 從 X-Forwarded-For 取真實
+// 客戶端 IP，rate limit 恢復 per-real-IP。TRUST_PROXY_HOPS 指定信任的代理層數：單層反代/平台 LB
+// 填 1（預設）；多層依實際層數；直接對外暴露（無代理）時設 0，避免客戶端偽造 X-Forwarded-For 繞過。
+const trustProxyHops = process.env.TRUST_PROXY_HOPS !== undefined ? parseInt(process.env.TRUST_PROXY_HOPS, 10) : 1;
+app.set('trust proxy', Number.isFinite(trustProxyHops) ? trustProxyHops : 1);
+
 const clientID = process.env.GOOGLE_CLIENT_ID;
 const clientSecret = process.env.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_CLIENT_SEC;
 const redirectUri = process.env.GOOGLE_REDIRECT_URI || process.env.GOOGLE_REDIRECT_U || process.env.GOOGLE_REDIRECT_L || `${process.env.APP_BASE_URL}/api/auth/google/callback`;
@@ -89,6 +96,13 @@ const SCOPES = [
 ];
 
 // --- API Routes ---
+
+// P0 2026-07-18: Google Drive query 字串值消毒。Drive query 語言用單引號包字串值，未跳脫的
+// 使用者輸入（folderName/search/parentId/folderId）含單引號即可跳出字串、注入 query 語法。
+// 依 Drive API 規則跳脫反斜線與單引號；不含這兩者的輸入完全不受影響。
+function escapeDriveQueryValue(value: unknown): string {
+  return String(value).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+}
 
 const USAGE_LOG_PATH = path.join(__dirname, 'logs', 'usage.jsonl');
 
@@ -379,7 +393,7 @@ app.post('/api/drive/sync', originGuard, rateLimit, async (req, res) => {
     
     if (!folderId) {
       const folderSearch = await drive.files.list({
-        q: `name = '${folderName}' and mimeType = 'application/vnd.google-apps.folder' and trashed = false`,
+        q: `name = '${escapeDriveQueryValue(folderName)}' and mimeType = 'application/vnd.google-apps.folder' and trashed = false`,
         fields: 'files(id)',
         spaces: 'drive'
       });
@@ -473,9 +487,9 @@ app.get('/api/drive/folders', rateLimit, async (req, res) => {
 
     let query = "mimeType = 'application/vnd.google-apps.folder' and trashed = false";
     if (search) {
-      query += ` and name contains '${search}'`;
+      query += ` and name contains '${escapeDriveQueryValue(search)}'`;
     } else if (parentId) {
-      query += ` and '${parentId}' in parents`;
+      query += ` and '${escapeDriveQueryValue(parentId)}' in parents`;
     }
 
     const response = await drive.files.list({
@@ -515,7 +529,7 @@ app.get('/api/drive/files', rateLimit, async (req, res) => {
       const drive = google.drive({ version: 'v3', auth: oauth2Client });
 
       const response = await drive.files.list({
-        q: `'${folderId}' in parents and trashed = false`,
+        q: `'${escapeDriveQueryValue(folderId)}' in parents and trashed = false`,
         fields: 'files(id, name, mimeType, webViewLink, thumbnailLink)',
         spaces: 'drive',
         orderBy: 'name'
