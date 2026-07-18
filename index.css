@@ -1915,6 +1915,6 @@
      本次換皮不動元件；僅在本頁作用域內隱藏其英文行（第二個 span），
      結構見 shared/components/common/Select.tsx:29-33、Slider.tsx:36-40 */
   .model-setup label > span.block.text-\[10px\].opacity-50.font-normal {
-    display: none;
+    display: none !important;
   }
 }
