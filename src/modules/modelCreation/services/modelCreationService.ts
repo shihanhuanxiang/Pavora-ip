@@ -79,8 +79,17 @@ The user has provided FACE REFERENCE IMAGES. These are the ABSOLUTE and EXCLUSIV
 The body proportions are extreme (Bust:${params.bust}, Waist:${params.waist}). You MUST render visible structural fabric tension. The clothing MUST appear to be significantly stretched across the chest and shoulders. Add realistic pulling creases at the seams.`
             : "";
 
+        // ② 2026-07-18: 無參考圖路徑補臉部標記禁令。identityInstruction 只在
+        // hasFaceRef 時附加，導致無參考圖生成缺少「禁止臆造痣/斑」的底線（CLAUDE.md
+        // 鐵則第 4 節），且冒出的標記會被 generateFacialDescriptor 反推鎖進
+        // locked_descriptor 污染下游（T8c 污染鏈同族）。此常數僅在無參考圖時生效，
+        // 有參考圖路徑（identityInstruction）完全不動。措辭刻意區分「膚質紋理保留」
+        // 與「禁止離散色斑」，避免與 realismInstruction 的毛孔寫實條款衝突。
+        const noRefFacialMarkInstruction = `[FACIAL MARK POLICY — NO FACE REFERENCE PROVIDED]
+No face reference image was provided for this generation. Do NOT invent, infer, or add any moles, freckles, beauty marks, birthmarks, dark facial spots, skin marks, patches, or blemishes. Keep the facial skin clean and mark-free. Natural skin texture (visible pores, fine detail) is required, but no discrete pigmented or dark marks of any kind.`;
+
         const instructions = [
-            hasFaceRef ? identityInstruction : "",
+            hasFaceRef ? identityInstruction : noRefFacialMarkInstruction,
             baseSystemInstruction, 
             physiqueInstruction,
             physicsInstruction,
