@@ -152,6 +152,10 @@ export interface FacialDescriptorSeed {
 }
 
 export const generateFacialDescriptor = async (seed: FacialDescriptorSeed): Promise<string> => {
+    // G05 2026-07-19: 精靈模式存的 gender 是 'male'/'female'，舊判斷只認 'M'，
+    // 男模一律落到 female（descriptor 性別污染）。統一走 resolveNeutralGenderLabel
+    // normalize（M/MALE、F/FEMALE 都認，未知回中性 'virtual IP model' 而非預設女性）。
+    const genderLabel = resolveNeutralGenderLabel(seed.gender);
     try {
         const ai = await getGeminiClient(false) as any;
 
@@ -160,12 +164,12 @@ You are a forensic portrait analyst. Analyze the provided face photo and produce
 
 Subject metadata:
 - Name: ${seed.name}
-- Gender: ${seed.gender === 'M' ? 'male virtual IP model' : 'female virtual IP model'}
+- Gender: ${genderLabel}
 - Age: ${seed.age || 25} years old
 
 Output requirements:
 1. Single-line English string (no line breaks, no markdown).
-2. Start with: "${seed.name}, ${seed.gender === 'M' ? 'male virtual IP model' : 'female virtual IP model'}, ${seed.age || 25} years old, "
+2. Start with: "${seed.name}, ${genderLabel}, ${seed.age || 25} years old, "
 3. Then describe ONLY observable distinguishing features in this order:
    - Hair: color, length, texture, bangs style (if any), root color contrast (if visible)
    - Eyes: shape, double/single eyelid, size, expression character
@@ -222,5 +226,5 @@ Output the string directly, nothing else.
     }
 
     // 失敗時回傳通用 fallback
-    return `${seed.name}, ${seed.gender === 'M' ? 'male virtual IP model' : 'female virtual IP model'}, ${seed.age || 25} years old, East Asian facial features, expressive eyes with double eyelids, balanced facial proportions, healthy dewy skin, natural lip color`;
+    return `${seed.name}, ${genderLabel}, ${seed.age || 25} years old, East Asian facial features, expressive eyes with double eyelids, balanced facial proportions, healthy dewy skin, natural lip color`;
 };
