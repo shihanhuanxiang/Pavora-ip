@@ -188,8 +188,10 @@ export const CORE_VIBE_OPTIONS = [
     { value: '機能未來', label: '機能未來 (Tech Future)' }
 ];
 
-// T8 確定性 zh→en 映射（同 TAIWAN_COUNTY_EN_MAP 說明）。coreVibe 無自由輸入路徑
-//（僅 Select 與 handleRandomize），值保證落在此集合內。
+// T8 確定性 zh→en 映射（同 TAIWAN_COUNTY_EN_MAP 說明）。ModelSetup 建立流程的
+// coreVibe 只來自 Select 與 handleRandomize，值落在此集合內；但 ModelIdentityEditor
+// 編輯既有模特時提供 coreVibe 中文自由輸入框（可為非 preset 值），故消費端
+//（modelCreationService personaInstruction）未命中映射時須防禦性翻譯，不可假設恆在集合內。
 export const CORE_VIBE_EN_MAP: Record<string, string> = {
     '優雅時尚': 'Elegant Fashion',
     '活力街頭': 'Vibrant Street',

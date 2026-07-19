@@ -10,18 +10,24 @@ export const generateModels = async (params: any): Promise<Model[]> => {
     const hasFaceRef = params.faceReferences && params.faceReferences.length > 0;
 
     // T8 ZH→EN 前置（切 enforce 前的語意防線）：自由輸入欄位在此翻譯（無中文時
-    // 零成本零延遲）；有限集合 preset（coreVibe/toneOfVoice/primaryCity）由
-    // buildModelPrompt 內的確定性映射處理，不走執行時翻譯。toneOfVoice 可能被
-    // AI 生成值覆寫成非 preset 中文，故未命中映射時防禦性翻譯。
+    // 零成本零延遲）。有限集合 preset（coreVibe/toneOfVoice）優先取確定性英文映射；
+    // 但兩者都可能被 AI 生成、或自由輸入（ModelIdentityEditor 有 coreVibe 中文輸入框）
+    // 覆寫成非 preset 中文，故未命中映射時防禦性翻譯——coreVibe 尤其會進不經
+    // runPromptPipeline 的 systemInstruction（旁路），殘留中文會直送模型（T12 補洞）。
     // 翻譯失敗會 throw PROMPT_TRANSLATION_FAILED（fail loud，不偽裝成功）。
     const persona = params.persona;
-    const [hairColorEn, professionEn, toneOfVoiceEn, customOutfitEn] = await Promise.all([
+    const [hairColorEn, professionEn, toneOfVoiceEn, customOutfitEn, coreVibeEn] = await Promise.all([
         ensureEnglishPrompt(params.hairColor, 'a hair color description for a virtual model'),
         ensureEnglishPrompt(persona?.profession, "the model's profession"),
         persona?.toneOfVoice && !TONE_OF_VOICE_EN_MAP[persona.toneOfVoice]
             ? ensureEnglishPrompt(persona.toneOfVoice, "the persona's tone of voice / expression style")
             : Promise.resolve(persona?.toneOfVoice ?? ''),
-        ensureEnglishPrompt(params.customOutfitPrompt, 'a custom outfit description')
+        ensureEnglishPrompt(params.customOutfitPrompt, 'a custom outfit description'),
+        persona?.coreVibe
+            ? (CORE_VIBE_EN_MAP[persona.coreVibe]
+                ? Promise.resolve(CORE_VIBE_EN_MAP[persona.coreVibe])
+                : ensureEnglishPrompt(persona.coreVibe, "the model's core vibe / personality essence"))
+            : Promise.resolve('')
     ]);
     const effectiveParams = {
         ...params,
@@ -68,10 +74,12 @@ The user has provided FACE REFERENCE IMAGES. These are the ABSOLUTE and EXCLUSIV
             ? `Maintain strict brand visual consistency following the ${params.brandStyleAnchor} style guide.` 
             : "";
         
-        // T8: systemInstruction 不經 runPromptPipeline（enforce 管不到），coreVibe
-        // 必須在此取映射英文值，否則中文旁路直送模型（2026-07-11 審計發現的洩漏點）。
+        // T8/T12: systemInstruction 不經 runPromptPipeline（enforce 管不到），coreVibe
+        // 必須是英文，否則中文旁路直送模型（2026-07-11 審計發現的洩漏點）。coreVibeEn
+        // 已在上方 Promise.all 取映射英文、或對非 preset 值（ModelIdentityEditor 自由
+        // 輸入）防禦性翻譯，補上 `?? persona.coreVibe` fallback 會漏原始中文的缺口。
         const personaInstruction = persona
-            ? `EMBODIMENT: The soul of this model is "${CORE_VIBE_EN_MAP[persona.coreVibe] ?? persona.coreVibe}". Adhere to their unique micro-expressions and aura.`
+            ? `EMBODIMENT: The soul of this model is "${coreVibeEn}". Adhere to their unique micro-expressions and aura.`
             : "";
         
         const physicsInstruction = (params.bustTension > 80 || params.vTaperScale > 80)
