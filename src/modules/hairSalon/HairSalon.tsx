@@ -282,7 +282,7 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
             const prompt = await constructPrompt();
             const rawAnglePrompt = `${prompt}, ${angle.en}`;
             // Stage 1b batch 3: English-only preset chain (prompt/keyword/en fields) — safe to enforce.
-            const anglePrompt = runPromptPipeline(rawAnglePrompt, { source: 'hairSalon:transformHairAndMakeup:regenerateAngle', mode: 'enforce' }).prompt;
+            const anglePrompt = runPromptPipeline(rawAnglePrompt, { source: 'hairSalon:transformHairAndMakeup:regenerateAngle' }).prompt;
             
             const matrixImages = (Object.values(salonMatrix) as any[])
                 .filter(m => m.fileData)
@@ -360,7 +360,7 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                   
                   const rawAnglePrompt = `${prompt}, ${angle.en}`;
                   // Stage 1b batch 3: English-only preset chain — safe to enforce.
-                  const anglePrompt = runPromptPipeline(rawAnglePrompt, { source: 'hairSalon:transformHairAndMakeup:multiAngle', mode: 'enforce' }).prompt;
+                  const anglePrompt = runPromptPipeline(rawAnglePrompt, { source: 'hairSalon:transformHairAndMakeup:multiAngle' }).prompt;
                   const angleConfig = {
                       ...config,
                       imageConfig: {
@@ -384,7 +384,7 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
               setLoadingMessage('正在執行髮絲微觀渲染與妝容融合...');
               // Stage 1b batch 3: English-only preset chain — safe to enforce.
               // (customHairstyleDescription is wired into constructPrompt as of Stage 1b-T10, translated via ensureEnglishPrompt.)
-              const pipelinedPrompt = runPromptPipeline(prompt, { source: 'hairSalon:transformHairAndMakeup:single', mode: 'enforce' }).prompt;
+              const pipelinedPrompt = runPromptPipeline(prompt, { source: 'hairSalon:transformHairAndMakeup:single' }).prompt;
               const result = await transformHairAndMakeup(baseImage!.fileData, identityRef, pipelinedPrompt, config, setLoadingMessage, hairstyleRefImage?.fileData);
               setGeneratedImage(result);
               

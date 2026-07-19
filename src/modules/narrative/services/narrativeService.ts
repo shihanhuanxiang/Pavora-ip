@@ -794,7 +794,7 @@ const buildFinalVisualPromptV11 = (
     // sanitizePromptText function that sanitizeFinalPrompt aliases, so the
     // returned prompt is byte-identical to the pre-Stage-B behavior. This is
     // the equivalence-verification package (plan §2 package 2).
-    const pipelineResult = runPromptPipeline(rawPrompt, { source: 'narrative:buildFinalVisualPromptV11', mode: 'enforce' });
+    const pipelineResult = runPromptPipeline(rawPrompt, { source: 'narrative:buildFinalVisualPromptV11' });
     const sanitized = { prompt: pipelineResult.prompt, report: pipelineResult.report };
 
     if (typeof window !== 'undefined' && window.localStorage && window.localStorage.getItem('PAVORA_DEBUG_PROMPT') === '1') {
@@ -1383,8 +1383,8 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
         // sanitizePromptText call sanitizeFinalPrompt aliases.
         // Stage 1b: enforce now also strips Chinese (full-English rule); the
         // ZH exit is display-layer content and opts out via keepChinese.
-        const sanitizedVisualPrompt = runPromptPipeline(repairedApparelVisualPrompt, { source: 'narrative:diaryVisualPrompt', mode: 'enforce' }).prompt;
-        const sanitizedVisualPromptZH = runPromptPipeline(repairedVisualPromptZH, { source: 'narrative:diaryVisualPromptZH', mode: 'enforce', keepChinese: true }).prompt;
+        const sanitizedVisualPrompt = runPromptPipeline(repairedApparelVisualPrompt, { source: 'narrative:diaryVisualPrompt' }).prompt;
+        const sanitizedVisualPromptZH = runPromptPipeline(repairedVisualPromptZH, { source: 'narrative:diaryVisualPromptZH', keepChinese: true }).prompt;
         
         return {
             content: data.content,
@@ -2196,7 +2196,7 @@ export const generateCarouselVariation = async (
         `Change ONLY: ${variationDesc}. Keep all other details identical. ` +
         `Maintain the same lighting, background, clothing, and facial identity. ` +
         `Original scene context for consistency: ${safeOriginalPrompt}`,
-        { source: 'narrative:carouselVariation', mode: 'enforce' }
+        { source: 'narrative:carouselVariation' }
     ).prompt;
 
     return await transformImage(

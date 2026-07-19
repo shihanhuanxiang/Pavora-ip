@@ -86,7 +86,7 @@ export const removeApparelBackground = async (apparelImage: {data: string, mimeT
     Do not include any hangers, mannequins, or background elements.
     `;
     // Stage 1b batch 2: pure-English literal template — safe to enforce.
-    const pipelinedPrompt = runPromptPipeline(prompt, { source: 'fitting:removeApparelBackground', mode: 'enforce' }).prompt;
+    const pipelinedPrompt = runPromptPipeline(prompt, { source: 'fitting:removeApparelBackground' }).prompt;
 
     const response = await client.models.generateContent({
         model: 'gemini-2.5-flash-image',
@@ -257,7 +257,7 @@ Update the existing ${vtoCategoryToEnglish(category)} in Asset 3 with the new de
     prompt += `\n\nNote: Maintain the model's appearance and the scene's composition. 
     IMPORTANT: Maintain the EXACT framing of Asset 3. If Asset 3 is a full-body shot, the output MUST also be a full-body shot. Do not crop. Ensure the entire subject is visible within the frame.`;
 
-    const pipelinedApplyPrompt = runPromptPipeline(prompt, { source: 'fitting:applyApparel', mode: 'enforce' }).prompt;
+    const pipelinedApplyPrompt = runPromptPipeline(prompt, { source: 'fitting:applyApparel' }).prompt;
     parts.push({ text: pipelinedApplyPrompt });
     
     // 1. 身份參考 (Identity Anchor) - 優先使用臉部錨點，否則使用目前影像
@@ -325,7 +325,7 @@ Update the existing ${vtoCategoryToEnglish(category)} in Asset 3 with the new de
             
             const retryPrompt = `Fashion catalog production: Transfer garment from Asset 2 to model in Asset 3. Maintain model characteristics from Asset 1. High-end studio photography.`;
             // Stage 1b batch 2: pure-English literal retry template — safe to enforce.
-            const pipelinedRetryPrompt = runPromptPipeline(retryPrompt, { source: 'fitting:applyApparel:retry', mode: 'enforce' }).prompt;
+            const pipelinedRetryPrompt = runPromptPipeline(retryPrompt, { source: 'fitting:applyApparel:retry' }).prompt;
             const retryParts = [
                 { text: pipelinedRetryPrompt },
                 { inlineData: identityRef || currentCanvasData },
@@ -389,7 +389,7 @@ export const restoreIdentity = async (
     }
 
     // Stage 1b batch 2: parameterless English template — safe to enforce.
-    const pipelinedFixPrompt = runPromptPipeline(fixPrompt, { source: 'fitting:restoreIdentity', mode: 'enforce' }).prompt;
+    const pipelinedFixPrompt = runPromptPipeline(fixPrompt, { source: 'fitting:restoreIdentity' }).prompt;
     const parts: any[] = [
         { inlineData: faceAnchorData }, 
         { inlineData: currentCanvasData }, 
@@ -455,7 +455,7 @@ export const refineGarmentDetails = async (
     Output the refined image with extremely high detail and professional studio quality.
     `.trim();
     // Stage 1b batch 2: pure-English literal template — safe to enforce.
-    const pipelinedRefinePrompt = runPromptPipeline(prompt, { source: 'fitting:refineGarmentDetails', mode: 'enforce' }).prompt;
+    const pipelinedRefinePrompt = runPromptPipeline(prompt, { source: 'fitting:refineGarmentDetails' }).prompt;
 
     const parts: any[] = [
         { text: pipelinedRefinePrompt },

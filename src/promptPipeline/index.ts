@@ -67,10 +67,10 @@ const appendMaleMismatchWarning = (report: PromptSanitizerReport, prompt: string
  * Single entry point: every image-prompt exit point should call this
  * immediately before the prompt is handed to the image model.
  *
- * dryrun (default): validatePromptText only. Prompt is returned unchanged,
+ * dryrun: validatePromptText only. Prompt is returned unchanged,
  *   blocked is always false. Report is recorded to the debug snapshot when
  *   PAVORA_DEBUG_PROMPT=1.
- * enforce: sanitizePromptText — removes forbidden facial-mark terms,
+ * enforce (default, T11 2026-07-19): sanitizePromptText — removes forbidden facial-mark terms,
  *   strips Chinese characters / CJK punctuation (Stage 1b, unless
  *   keepChinese is set) and normalizes whitespace. blocked = !report.isClean
  *   afterward (hardcoded subject / male-mismatch remain report-only per plan

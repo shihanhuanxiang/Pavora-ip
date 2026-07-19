@@ -121,7 +121,7 @@ export { generateSocialCopy, generateCampaignStrategy } from '../../domains/ipCo
 export const removeBackground = async (imageData: { data: string, mimeType: string }, onProgress?: (msg: string) => void) => {
     const rawPrompt = "Extract the main product/subject from this image and place it on a clean, solid white background. Remove all shadows, reflections, and existing background elements. Ensure the subject's edges are sharp and clean. [OUTPUT]: Only the subject on pure white #FFFFFF.";
     // Stage 1b batch 1: pure-English literal template — safe to enforce.
-    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:removeBackground', mode: 'enforce' }).prompt;
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:removeBackground' }).prompt;
     return transformImage(imageData, prompt, [], onProgress, { usePro: false });
 };
 
@@ -280,7 +280,7 @@ export const generateScene = async (personData: any | { label: string; fileData:
         multiAngleData,
         config.imageConfig?.seed
     );
-    const prompt = runPromptPipeline(rawSceneCompositionPrompt, { source: 'sceneGeneration:generateScene', mode: 'enforce' }).prompt;
+    const prompt = runPromptPipeline(rawSceneCompositionPrompt, { source: 'sceneGeneration:generateScene' }).prompt;
     const refs = [];
     if (hasBgImage) refs.push(bgData);
     if (identityRef) refs.push(identityRef);
@@ -316,7 +316,7 @@ export const generateBurstImages = async (baseImageData: any, pairs: any[], lock
             toEnglish(pair.expression, 'a facial expression description for a portrait'),
         ]);
         const rawPrompt = `Generate a portrait with pose: ${englishPose} and expression: ${englishExpression}. Identity lock level: ${lock}.`;
-        const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateBurstImages', mode: 'enforce' }).prompt;
+        const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateBurstImages' }).prompt;
         const refs = faceRef ? [faceRef] : [];
         try {
             const url = await transformImage(baseImageData, prompt, refs, onProgress, config);
@@ -360,7 +360,7 @@ export const generateApparelDesignSequence = async (params: any, config: any, on
     
     const generateOne = async (suffix: string, faceRefs: any[]) => {
         const rawPrompt = `${basePrompt} ${suffix}`;
-        const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateApparelDesignSequence', mode: 'enforce' }).prompt;
+        const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateApparelDesignSequence' }).prompt;
         const finalRefs = [...faceRefs];
         if (params.referenceImage && params.referenceImage.data) {
             return await transformImage(params.referenceImage, prompt, finalRefs, onProgress, config);
@@ -472,7 +472,7 @@ export const extractAssetsFromImage = async (imageData: any, options: any, onPro
             rawPrompt = ASSET_EXTRACTION_IMAGE_PROMPT(item.name, item.description);
         }
         // Stage 1b-T5: item.name/description are AI outputs constrained to English at the source (ASSET_IDENTIFICATION_PROMPT rule 4); enforce is the safety net. item.name_zh is the UI display label and never enters this prompt.
-        const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:extractAssetsFromImage', mode: 'enforce' }).prompt;
+        const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:extractAssetsFromImage' }).prompt;
         const url = await transformImage(imageData, prompt, [], undefined, { usePro: options.usePro });
         return { ...item, pngTransparentUrl: url };
     }));
@@ -485,7 +485,7 @@ export const tuneImageDetail = async (baseData: any, maskData: any, instruction:
     // Stage 1b-T: user free-text instruction — translate ZH→EN before enforce.
     const englishInstruction = await ensureEnglishPrompt(instruction, 'a localized inpainting instruction for the masked region');
     const rawPrompt = DETAIL_TUNE_PROMPT(englishInstruction);
-    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:tuneImageDetail', mode: 'enforce' }).prompt;
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:tuneImageDetail' }).prompt;
 
     // 強化局部重繪的品質提示詞
     const qualityPrompt = config.usePro
@@ -535,7 +535,7 @@ export const optimizeAndReangleImage = async (imageData: any, params: any, onPro
         ensureEnglishPrompt(params.additionalPrompt, 'additional optimization instructions for the photo'),
     ]);
     const rawPrompt = buildOptimizationPrompt({ ...params, addObject, removeObject, changeStyle, additionalPrompt });
-    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:optimizeAndReangleImage', mode: 'enforce' }).prompt;
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:optimizeAndReangleImage' }).prompt;
 
     const imageConfig: any = {};
     if (params.aspectRatio && params.aspectRatio !== 'original') {
@@ -645,7 +645,7 @@ export const generateProductPoster = async (
         ensureEnglishPrompt(overrides.props, 'a props description for a product poster'),
     ]);
     const rawPrompt = buildPCPEPosterPrompt({ ...overrides, background, camera, lighting, pose, props }, form.ratio, form.quality, colorLock);
-    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateProductPoster', mode: 'enforce' }).prompt;
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateProductPoster' }).prompt;
     const refs = faceAnchor ? [faceAnchor] : [];
     const url = await transformImage(subjectData, prompt, refs, onProgress, { usePro: form.quality === 'high', imageConfig: { aspectRatio: form.ratio } });
     return { url };
@@ -696,8 +696,8 @@ export const processFashionItem = async (
     const rawCleanPrompt = `${CLEAN_SHOT_PROMPT} ${lightingNote} ${styleNote} Ensure clean edges and professional studio quality.`;
     const rawMacroPrompt = `${MACRO_SHOT_PROMPT} ${styleNote} Focus on texture and material detail.`;
     // Stage 1b batch 1: pure-English literal templates + programmatic English notes — safe to enforce.
-    const cleanPrompt = runPromptPipeline(rawCleanPrompt, { source: 'geminiService:processFashionItem:clean', mode: 'enforce' }).prompt;
-    const macroPrompt = runPromptPipeline(rawMacroPrompt, { source: 'geminiService:processFashionItem:macro', mode: 'enforce' }).prompt;
+    const cleanPrompt = runPromptPipeline(rawCleanPrompt, { source: 'geminiService:processFashionItem:clean' }).prompt;
+    const macroPrompt = runPromptPipeline(rawMacroPrompt, { source: 'geminiService:processFashionItem:macro' }).prompt;
 
     const refs = styleRef ? [styleRef] : [];
 
@@ -718,7 +718,7 @@ export const refineFullBody = async (
     // Stage 1b-T: notes is user free text — translate ZH→EN before enforce.
     const englishNotes = await ensureEnglishPrompt(notes, 'styling notes for refining a full-body fashion photo');
     const rawPrompt = `${REFINE_BODY_PROMPT(englishNotes)} ${styleNote}`;
-    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:refineFullBody', mode: 'enforce' }).prompt;
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:refineFullBody' }).prompt;
     const refs = styleRef ? [styleRef] : [];
     return await transformImage(imageData, prompt, refs, onProgress, { usePro: resolution !== 'HD' });
 };
@@ -761,14 +761,14 @@ export const generateMacroCraftScene = async (fileData: any, params: any, analys
         customInstruction: await ensureEnglishPrompt(params.customInstruction, 'an additional creative instruction for a macro-scale product scene')
     };
     const rawPrompt = buildMacroCraftPrompt(safeParams, analysis);
-    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateMacroCraftScene', mode: 'enforce' }).prompt;
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateMacroCraftScene' }).prompt;
     return await transformImage(fileData, prompt, [], onProgress, { usePro: params.quality === 'high' });
 };
 
 export const generateStyleAnchorImage = async (params: any, onProgress: any) => {
     const rawPrompt = buildStyleAnchorPrompt(params);
     // Stage 1b batch 2: preset-only English prompt fields — safe to enforce.
-    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateStyleAnchorImage', mode: 'enforce' }).prompt;
+    const prompt = runPromptPipeline(rawPrompt, { source: 'geminiService:generateStyleAnchorImage' }).prompt;
     const refs = [];
     if (params.identityImage) refs.push(params.identityImage);
     if (params.outfitImage) refs.push(params.outfitImage);

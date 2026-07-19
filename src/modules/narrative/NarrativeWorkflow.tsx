@@ -837,7 +837,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
             ]);
             const finalImagePrompt = runPromptPipeline(
                 [safeEditablePrompt, safePetNote, secondaryRefNote.trim()].filter(Boolean).join(' '),
-                { source: 'narrative:finalImagePrompt', mode: 'enforce' }
+                { source: 'narrative:finalImagePrompt' }
             ).prompt;
             writeActualImagePromptDebugSnapshot(finalImagePrompt, {
                 faceReferenceCount: faceRefs.length,

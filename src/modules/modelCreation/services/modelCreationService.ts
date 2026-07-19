@@ -64,8 +64,10 @@ The user has provided FACE REFERENCE IMAGES. These are the ABSOLUTE and EXCLUSIV
 - FACIAL MARK POLICY: Do NOT invent new moles, beauty marks, freckles, birthmarks, dark facial spots, or skin marks. Preserve permanent facial marks ONLY when they are clearly visible in the reference photos AND explicitly part of the user's confirmed identity. If uncertain, keep the face clean and mark-free while preserving bone structure, eyes, nose, lips, jawline, and skin texture.
 - EVIDENCE-BASED: Maximize confirmed facial geometry and stable identity traits from the source photos to ensure 95%+ identity match without adding unconfirmed facial marks.`;
         
-        const physiqueInstruction = params.isExpertMode 
-            ? `STRICT PHYSIQUE ENFORCEMENT: The model's body MUST strictly follow the technical metrics provided (Height, Bust, Waist, Hips). These are hard physical constraints for the skeletal structure, not suggestions.` 
+        // P2① 2026-07-19: 三圍數字已移出 prompt（改語意化滑桿描述），此指令改為只指涉
+        // 實際仍有提供的 Height／頭身比與語意體型描述，避免指涉不存在的量測數字。
+        const physiqueInstruction = params.isExpertMode
+            ? `STRICT PHYSIQUE ENFORCEMENT: The model's body MUST strictly follow the technical metrics provided (Height, head-to-body ratio) and the semantic physique descriptions in the prompt. These are hard physical constraints for the skeletal structure, not suggestions.`
             : "";
         
         const realismInstruction = "Focus on micro-details: skin pores, fine hair strands, realistic eye reflections (catchlights), and natural fabric textures. Avoid any 'plastic' or 'CG' look.";
@@ -82,11 +84,6 @@ The user has provided FACE REFERENCE IMAGES. These are the ABSOLUTE and EXCLUSIV
             ? `EMBODIMENT: The soul of this model is "${coreVibeEn}". Adhere to their unique micro-expressions and aura.`
             : "";
         
-        const physicsInstruction = (params.bustTension > 80 || params.vTaperScale > 80)
-            ? `[PHYSICS_ENFORCEMENT: ULTRA_TENSION]
-The body proportions are extreme (Bust:${params.bust}, Waist:${params.waist}). You MUST render visible structural fabric tension. The clothing MUST appear to be significantly stretched across the chest and shoulders. Add realistic pulling creases at the seams.`
-            : "";
-
         // ② 2026-07-18: 無參考圖路徑補臉部標記禁令。identityInstruction 只在
         // hasFaceRef 時附加，導致無參考圖生成缺少「禁止臆造痣/斑」的底線（CLAUDE.md
         // 鐵則第 4 節），且冒出的標記會被 generateFacialDescriptor 反推鎖進
@@ -98,10 +95,9 @@ No face reference image was provided for this generation. Do NOT invent, infer, 
 
         const instructions = [
             hasFaceRef ? identityInstruction : noRefFacialMarkInstruction,
-            baseSystemInstruction, 
+            baseSystemInstruction,
             physiqueInstruction,
-            physicsInstruction,
-            realismInstruction, 
+            realismInstruction,
             brandInstruction, 
             personaInstruction
         ].filter(Boolean).join("\n\n");
@@ -114,7 +110,7 @@ No face reference image was provided for this generation. Do NOT invent, infer, 
         }
 
         const isExpectedMale = params.gender === 'male' || params.gender === 'M';
-        const pipelinedPrompt = runPromptPipeline(prompt, { source: 'modelCreation:generateModels', mode: 'enforce', expectMale: isExpectedMale }).prompt;
+        const pipelinedPrompt = runPromptPipeline(prompt, { source: 'modelCreation:generateModels', expectMale: isExpectedMale }).prompt;
 
         let contents: any;
         if (hasFaceRef) {

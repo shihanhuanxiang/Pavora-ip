@@ -406,7 +406,7 @@ const FantasySeries: React.FC<FantasySeriesProps> = ({ onGoHome, initialImage, o
             });
             // Stage 1b-T9: customScenePrompt is dormant (no setter, no UI binding — always ''); if it is ever wired to UI, it MUST go through ensureEnglishPrompt first.
             // enforce here intentionally strips preset Chinese: race/job labelZh (e.g.「人類 (Human)」→ "(Human)") and lighting/composition zh descriptions — those are UI helper strings; the English .prompt/.prompt_en fields carry the real instructions and are preserved.
-            const pipelinedCharacterPrompt = runPromptPipeline(characterPrompt, { source: 'fantasySeries:transformImage', mode: 'enforce' }).prompt;
+            const pipelinedCharacterPrompt = runPromptPipeline(characterPrompt, { source: 'fantasySeries:transformImage' }).prompt;
 
             const config = { 
                 usePro: quality === 'fast' ? false : true, 

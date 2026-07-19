@@ -205,6 +205,13 @@ export const buildModelPrompt = (params: any) => {
     prompt += `- Ensure a safe margin (padding) between the feet and the bottom edge of the image. \n`;
     prompt += `- The model must be standing vertically within the frame.\n\n`;
 
+    // --- HAND ANATOMY MANDATE (③ POSITIVE HAND GUIDANCE) ---
+    prompt += `[HAND ANATOMY MANDATE]\n`;
+    prompt += `- Each hand must have exactly five fingers, clearly separated and individually articulated. \n`;
+    prompt += `- No fused, missing, extra, or malformed fingers. Each knuckle and joint must read as anatomically correct. \n`;
+    prompt += `- Avoid unnatural hyperextension or overbent finger joints; joints must bend within natural human range. \n`;
+    prompt += `- Hands should rest in a relaxed, natural pose consistent with the body's posture and the garment being worn. \n\n`;
+
     prompt += `[BIOLOGICAL TIME-AXIS: AGE ${params.age || 25}]\n`;
     prompt += `- PHYSIOLOGICAL SYNTHESIS: Adjust the person's appearance to exactly ${params.age || 25} years old.\n`;
     if (params.age > 45) {
@@ -274,7 +281,6 @@ export const buildModelPrompt = (params: any) => {
         prompt += `[🚨 MANDATORY BIOLOGICAL METRICS (PHYSICAL TRUTH) 🚨]\n`;
         prompt += `- BIOMETRIC ENFORCEMENT: The model's physique MUST strictly adhere to these precise metrics. No approximation allowed. \n`;
         prompt += `- HEIGHT: Exactly ${params.height}cm (This affects limb length and vertical proportions). \n`;
-        prompt += `- BODY MEASUREMENTS (EXACT): Bust ${params.bust}cm, Waist ${params.waist}cm, Hips ${params.hip}cm. \n`;
         prompt += `- PROPORTION RATIO: Head-to-body ratio must be strictly ${params.headBodyRatio || 8.0} heads. \n`;
         prompt += `- SILHOUETTE: ${params.proportionMode} physique mode. The body volume and skeletal structure must be a 100% match for these specifications.\n\n`;
         
@@ -337,7 +343,7 @@ export const buildModelPrompt = (params: any) => {
     }
     prompt += `Skin: Confirming "${SKIN_TONE_DESC_MAP[params.skinTone] ?? params.skinTone}" tone with ${params.skinFinish} finish.\n`;
     prompt += `Hair: Confirming "${params.hairColor}" color. Style: ${params.hairStyle}.\n`;
-    prompt += `Body: ${params.proportionMode} proportions. Height: ${params.height}cm. Head-to-body ratio: ${params.headBodyRatio || 8.0} heads. (Bust ${params.bust}, Waist ${params.waist}, Hip ${params.hip}).\n\n`;
+    prompt += `Body: ${params.proportionMode} proportions. Height: ${params.height}cm. Head-to-body ratio: ${params.headBodyRatio || 8.0} heads.\n\n`;
 
     let outfitPrompt = '';
     if (params.customOutfitPrompt) {

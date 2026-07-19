@@ -8,11 +8,11 @@ export type PipelineMode = 'dryrun' | 'enforce';
 
 export const PIPELINE_MODE_STORAGE_KEY = 'PAVORA_PIPELINE_MODE';
 
-// Stage B default: dryrun for the whole rollout (packages 1-8).
-// Package 9 (separate, not part of this change) flips this to 'enforce'
-// once the golden verification script and manual dry-run reports show
-// no false positives, per plan §5.
-const DEFAULT_PIPELINE_MODE: PipelineMode = 'dryrun';
+// T11 (2026-07-19): global default flipped to 'enforce'. All production exits
+// already ran enforce explicitly since Stage 1b; call sites now rely on this
+// default. Dryrun remains available for tests/diagnostics via explicit option
+// or localStorage override.
+const DEFAULT_PIPELINE_MODE: PipelineMode = 'enforce';
 
 const isValidMode = (value: unknown): value is PipelineMode => {
   return value === 'dryrun' || value === 'enforce';
