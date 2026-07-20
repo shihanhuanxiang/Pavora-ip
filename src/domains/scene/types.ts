@@ -57,6 +57,7 @@ export interface NarrativeSceneExtended extends NarrativeScene {
   negative_prompt?: string;
   visual_noise?: string[]; // Alternative naming in v1.1
   prompt_skeleton?: string; // Alternative naming in v1.1
+  safe_matrix?: SceneSafeMatrix; // 居家 12 場景首批填值（2026-07-20）；沿用 SceneSafeMatrix，NarrativeSceneExtended 仍不 extends SceneBase，僅補此欄位供 checkAgainstSceneMatrix 讀取
   flags: {
     relationship_layer: string | null;
     story_arc_id: string | null;

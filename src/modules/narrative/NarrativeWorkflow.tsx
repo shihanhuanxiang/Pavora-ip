@@ -966,10 +966,13 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     // Step 1：隨機 3 張場景卡（篩選變更時重新抽）
     const STEP1_CATEGORY_CONTEXTS: Record<string, string[]> = {
         urban:   ['urban_street', 'shopping_random', 'night_market'],
-        cafe:    ['cafe_aesthetic', 'home_cozy', 'office_pro', 'travel_journey'],
+        // 2026-07-20：home_cozy 移出 cafe 桶——過去因無「居家日常」類別而寄放於此，
+        // 現已有獨立 home 類別，避免居家卡同時出現在咖啡日常篩選下。
+        cafe:    ['cafe_aesthetic', 'office_pro', 'travel_journey'],
         beach:   ['beach_island'],
         mountain:['mountain_outdoor', 'rural_field'],
         culture: ['temple_old_town', 'festival_event'],
+        home:    ['home_cozy'],
     };
 
     const refreshRandomCards = React.useCallback(() => {
@@ -1659,6 +1662,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         { label: '海岸泳池', value: 'beach' },
                                                         { label: '山林田野', value: 'mountain' },
                                                         { label: '文化廟町', value: 'culture' },
+                                                        { label: '居家日常', value: 'home' },
                                                     ] as Array<{label: string; value: string | null}>).map(c => (
                                                         <button key={String(c.value)}
                                                             onClick={() => setPickerCategory(c.value)}

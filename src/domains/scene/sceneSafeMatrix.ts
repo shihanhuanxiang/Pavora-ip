@@ -113,28 +113,29 @@ function includesKeyword(haystack: string, keywords: string[]): boolean {
 }
 
 /**
- * 用場景自帶的 safe_matrix（若已填值）檢查 action / prop 是否被明確禁止或不在允許池中。
- * 未填值的欄位視為「不限制」（向後相容：A4 的 7 個 optional 欄位目前全域未填值）。
+ * 用場景自帶的 safe_matrix（若已填值）檢查 action / prop 是否被明確禁止。
+ * 只有 forbidden_* 黑名單具強制力；allowed_actions / prop_pool 白名單僅供參考不拒絕
+ * （見函式內 2026-07-20 裁決註解）。未填值的欄位視為「不限制」。
  */
 function checkAgainstSceneMatrix(
   matrix: SceneSafeMatrix,
   action?: string,
   prop?: string
 ): SceneSafeCheckResult | null {
+  // 2026-07-20 居家場景首填 safe_matrix 時的裁決：只有黑名單（forbidden_*）具強制力；
+  // 白名單（allowed_actions / prop_pool）僅供 prompt 組裝參考，不做「不在名單即拒絕」。
+  // 原因：本函式的 action 參數語意雙載（呼叫端可能傳真實動作，也可能傳 contextId 如
+  // "home_cozy"，見 isSceneCombinationSafe docstring）——白名單拒絕會把合法 contextId
+  // 全數誤殺（narrativeService confirmScene 路徑 12 張居家卡全滅，fresh-context 驗收抓到）。
+  // 與模組設計原則「寧漏擋不誤殺」一致。
   if (action) {
     if (matrix.forbidden_actions?.some((a) => a.toLowerCase() === action.toLowerCase())) {
       return { ok: false, reason: `action "${action}" 在此場景的 forbidden_actions 名單中` };
-    }
-    if (matrix.allowed_actions?.length && !matrix.allowed_actions.some((a) => a.toLowerCase() === action.toLowerCase())) {
-      return { ok: false, reason: `action "${action}" 不在此場景的 allowed_actions 名單中` };
     }
   }
   if (prop) {
     if (matrix.forbidden_outfit_pool?.some((p) => p.toLowerCase() === prop.toLowerCase())) {
       return { ok: false, reason: `prop "${prop}" 在此場景的 forbidden_outfit_pool 名單中` };
-    }
-    if (matrix.prop_pool?.length && !matrix.prop_pool.some((p) => p.toLowerCase() === prop.toLowerCase())) {
-      return { ok: false, reason: `prop "${prop}" 不在此場景的 prop_pool 名單中` };
     }
   }
   return null; // 無法從 safe_matrix 判定不合理 → 交給 deny-list 或視為合理
