@@ -789,7 +789,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                                 <div>
                                     <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 tracking-widest">臉型風格</label>
                                     <div className="grid grid-cols-3 gap-2">
-                                        {STYLE_ARCHETYPES.filter(a => a.gender.includes(formState.gender as any) || a.gender.includes('unisex')).slice(0, 6).map(a => (
+                                        {filteredFaceArchetypes.map(a => (
                                             <button key={a.value} onClick={() => handleFormChange('archetype', a.value)} className={`py-2.5 px-2 rounded-xl border text-[9px] font-bold transition-all text-center ${formState.archetype === a.value ? 'bg-brass/20 border-brass text-[var(--color-brass)]' : 'border-[var(--home-line)] text-[var(--home-muted)] hover:border-[var(--home-line-strong)]'}`}>{a.label}</button>
                                         ))}
                                     </div>
