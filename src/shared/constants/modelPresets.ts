@@ -324,8 +324,8 @@ export const SMART_SUGGEST_PRESETS: Record<string, any> = {
     },
     'male_korean_actor': { 
         label: '韓系男演員 (Korean Actor)',
-        aestheticStyle: 'korean_soft', 
-        archetype: 'soft_youthful', 
+        aestheticStyle: 'korean_soft',
+        archetype: 'korean_idol_male',
         outfitPresetId: 'm_vto_tank_shorts',
         proportionMode: 'slim',
         skinTone: 'fair',
@@ -336,8 +336,8 @@ export const SMART_SUGGEST_PRESETS: Record<string, any> = {
     },
     'male_rugged_gentleman': { 
         label: '粗獷紳士 (Rugged)',
-        aestheticStyle: 'high_fashion', 
-        archetype: 'rugged_handsome', 
+        aestheticStyle: 'high_fashion',
+        archetype: 'mature_taiwan_male',
         outfitPresetId: 'm_vto_compression_top',
         proportionMode: 'v_shape',
         skinTone: 'tan',
@@ -361,7 +361,7 @@ export const SMART_SUGGEST_PRESETS: Record<string, any> = {
     'female_cyber_punk': {
         label: '賽博酷兒 (Cyberpunk)',
         aestheticStyle: 'cyberpunk',
-        archetype: 'cyber_stray',
+        archetype: 'mixed_aesthetic',
         outfitPresetId: 'f_vto_bodysuit',
         proportionMode: 'slim',
         skinTone: 'fair',
@@ -373,7 +373,7 @@ export const SMART_SUGGEST_PRESETS: Record<string, any> = {
     'female_ethereal_elfin': {
         label: '精靈空靈 (Ethereal)',
         aestheticStyle: 'realistic',
-        archetype: 'ethereal_elfin',
+        archetype: 'japanese_pure',
         outfitPresetId: 'f_vto_bikini',
         proportionMode: 'petite',
         skinTone: 'fair',
@@ -397,7 +397,8 @@ export const SMART_SUGGEST_PRESETS: Record<string, any> = {
     'female_fitness_pro': {
         label: '健美教練 (Fitness)',
         aestheticStyle: 'realistic',
-        archetype: 'fitness_leader',
+        // TODO(P2): 合法臉型清單無「運動員臉型」對應，暫用 mixed_aesthetic 佔位，待 Hank 裁決是否新增 archetype
+        archetype: 'mixed_aesthetic',
         outfitPresetId: 'f_vto_bra_bikeshorts',
         proportionMode: 'athletic',
         skinTone: 'tan',
@@ -409,7 +410,7 @@ export const SMART_SUGGEST_PRESETS: Record<string, any> = {
     'male_cyber_mercenary': {
         label: '科技傭兵 (Mercenary)',
         aestheticStyle: 'cyberpunk',
-        archetype: 'cyber_stray',
+        archetype: 'mixed_aesthetic',
         outfitPresetId: 'm_vto_compression_top',
         proportionMode: 'v_shape',
         skinTone: 'medium',
@@ -433,7 +434,8 @@ export const SMART_SUGGEST_PRESETS: Record<string, any> = {
     'male_fitness_coach': {
         label: '明星教練 (Fit Coach)',
         aestheticStyle: 'realistic',
-        archetype: 'fitness_leader',
+        // TODO(P2): 合法臉型清單無「運動員臉型」對應，暫用 mixed_aesthetic 佔位，待 Hank 裁決是否新增 archetype
+        archetype: 'mixed_aesthetic',
         outfitPresetId: 'm_vto_shirtless',
         proportionMode: 'athletic',
         skinTone: 'medium',
@@ -469,7 +471,7 @@ export const SMART_SUGGEST_PRESETS: Record<string, any> = {
     'female_retro_vintage': {
         label: '復古名伶 (Vintage)',
         aestheticStyle: 'cinematic',
-        archetype: 'classic_beauty',
+        archetype: 'mature_elegant',
         outfitPresetId: 'f_vto_bodysuit',
         proportionMode: 'curvy',
         skinTone: 'fair',
@@ -481,7 +483,7 @@ export const SMART_SUGGEST_PRESETS: Record<string, any> = {
     'male_tech_nomad': {
         label: '機迷遊牧 (Tech Nomad)',
         aestheticStyle: 'cyberpunk',
-        archetype: 'exotic_mixed',
+        archetype: 'mixed_aesthetic',
         outfitPresetId: 'm_vto_compression_top',
         proportionMode: 'slim',
         skinTone: 'tan',

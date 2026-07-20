@@ -66,7 +66,7 @@ export const generatePersonaTraits = async (seed: PersonaSeed) => {
     
     // 如果過程中有任何失敗，回傳穩定的預設值
     return {
-        catchphrase: seed.gender === 'male' ? "保持真實，成就卓越。" : "優雅是唯一的信仰。",
+        catchphrase: seed.gender && isMaleGender(seed.gender) ? "保持真實，成就卓越。" : "優雅是唯一的信仰。",
         postingHabit: "精簡且優雅，少量使用 Emoji。",
         toneOfVoice: "專業且溫和",
         mbti: "INTJ",
@@ -96,6 +96,11 @@ const resolveNeutralGenderLabel = (genderHint?: string): string => {
     if (normalized === 'M' || normalized === 'MALE') return 'male virtual IP model';
     if (normalized === 'F' || normalized === 'FEMALE') return 'female virtual IP model';
     return 'virtual IP model';
+};
+
+const isMaleGender = (g?: string): boolean => {
+    const n = (g || '').toString().trim().toUpperCase();
+    return n === 'M' || n === 'MALE';
 };
 
 /**

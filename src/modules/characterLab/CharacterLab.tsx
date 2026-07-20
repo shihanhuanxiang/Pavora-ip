@@ -224,7 +224,7 @@ const CharacterLab: React.FC<CharacterLabProps> = ({ onGoHome, initialImage }) =
                 4. Overall vibe and bone structure.
                 
                 Output a concise 2-3 sentence description in English that can be used as a prompt prefix to maintain 100% identity consistency.
-                Example: "A Caucasian female in her mid-20s, sharp jawline, almond-shaped green eyes, wavy auburn hair, fair skin with subtle freckles."
+                Example: "An East Asian female in her mid-20s, soft oval jawline, almond-shaped dark brown eyes with a visible double eyelid crease, straight black hair with subtle layers, fair luminous skin with fine natural pores."
             `;
             const refs = faceAnchors.length > 0 ? faceAnchors.map(a => a.fileData) : [fileData];
             const dna = await transformImage(fileData, prompt, refs, undefined, { isTextOnly: true } as any);

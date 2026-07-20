@@ -191,20 +191,30 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
 
   const handlePromoteToAmbassador = async (model: Model) => {
     if (ambassadors.length >= 5) {
-      alert('品牌代言人上限為 5 位，請先移除現有代言人。');
+      addNotification({ type: 'warning', message: '品牌代言人上限為 5 位，請先移除現有代言人。' });
       return;
     }
-    
+
+    const normalizedGenderRaw = (model.gender || '').toString().trim().toUpperCase();
+    const normalizedGender: 'male' | 'female' | 'non-binary' =
+      normalizedGenderRaw === 'M' || normalizedGenderRaw === 'MALE'
+        ? 'male'
+        : normalizedGenderRaw === 'F' || normalizedGenderRaw === 'FEMALE'
+        ? 'female'
+        : 'non-binary';
+
     await addAmbassador({
       id: `amb_${Date.now()}`,
       name: model.name,
       imageUrl: model.imageUrl,
-      gender: 'female', // Default, should ideally be from model data
+      gender: normalizedGender,
+      // TODO(P2): Model 型別尚無 ethnicity/bodyType 欄位，下游目前零消費；待資料模型補欄位後改讀 model 實際值（待 Hank 裁決是否新增欄位）
       ethnicity: 'Asian',
+      // TODO(P2): Model 型別尚無 ethnicity/bodyType 欄位，下游目前零消費；待資料模型補欄位後改讀 model 實際值（待 Hank 裁決是否新增欄位）
       bodyType: 'Standard',
       createdAt: new Date().toISOString()
     });
-    alert('已成功晉升為品牌代言人！');
+    addNotification({ type: 'success', message: '已成功晉升為品牌代言人！' });
   };
 
   const handlePortfolioImport = async (selectedItems: PortfolioItem[]) => {
