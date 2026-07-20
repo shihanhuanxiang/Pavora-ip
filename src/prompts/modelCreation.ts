@@ -9,11 +9,13 @@ import { CORE_VIBE_EN_MAP, TONE_OF_VOICE_EN_MAP, TAIWAN_COUNTY_EN_MAP } from '..
 // 2026-07-11 膚色語意校準（Hank 拍板美感升級）：裸值 "medium" 會被生圖模型解讀成
 // 全球平均的偏深膚色（東南亞/南亞感）。此映射把 4 檔膚色錨定在高級時裝 IP 審美語彙。
 // 鍵對應 modelPresets.ts 的 SKIN_TONE_OPTIONS value（fair/medium/tan/deep）。
+// 2026-07-20：fair/tan/deep 補東亞語感——原本只有 medium 有，fair 的 porcelain-ivory
+// rosy undertone 措辭是實測歐美臉漂移的引信之一。
 const SKIN_TONE_DESC_MAP: Record<string, string> = {
-    fair: 'porcelain-fair luminous ivory with a subtle rosy undertone',
+    fair: 'porcelain-fair luminous ivory with a subtle rosy undertone — a bright translucent fair East Asian complexion (NOT Caucasian skin)',
     medium: 'natural light-medium warm ivory — a healthy, bright, translucent East Asian complexion (NOT tan, NOT olive, NOT dusky)',
-    tan: 'sun-kissed light golden honey tan, warm and luminous',
-    deep: 'rich deep bronze, smooth, even and luminous'
+    tan: 'sun-kissed light golden honey tan, warm and luminous — a healthy tanned East Asian complexion',
+    deep: 'rich deep bronze, smooth, even and luminous East Asian complexion'
 };
 
 // 1. AESTHETIC STYLE MAPPING (Gender Specific)
@@ -135,7 +137,12 @@ export const buildModelPrompt = (params: any) => {
         return p;
     };
 
-    let prompt = `Generate a photorealistic ${params.gender} fashion model based on the following specific mandates.\n\n`;
+    // 2026-07-20 台灣臉第二輪加強：人種寫進第一句（位置最前＝權重最高）。
+    // 第一輪只在 BIOMETRIC IDENTITY 段（prompt 約 2/3 深處）錨定，實測仍輸給
+    // 開頭 COLOR SPECTRAL 的 fair-ivory/棕髮等西方臉引信。有參考圖時人種由參考圖主導。
+    let prompt = hasFaceRef
+        ? `Generate a photorealistic ${params.gender} fashion model based on the following specific mandates.\n\n`
+        : `Generate a photorealistic Taiwanese (East Asian) ${params.gender} fashion model based on the following specific mandates. The model's facial structure MUST be East Asian (Taiwanese) — this requirement overrides all styling, hair color, and skin tone directives below.\n\n`;
 
     // --- 🚨 [PHASE 1: THE IDENTITY ANCHOR - BIOMETRIC LOCK] 🚨 ---
     if (hasFaceRef) {
@@ -397,7 +404,9 @@ export const buildModelPrompt = (params: any) => {
     prompt += `Quality: ${stylistKeywords}, photorealistic, RAW quality, 8k resolution.\n\n`;
 
     prompt += `[NEGATIVE PROMPT]\n`;
-    const baseNegatives = "(3D render:1.5), (illustration:1.5), (painting:1.5), (cartoon:1.5), (CG), (anime), (unreal engine), (mutated), (deformed), (low quality), (blurry), (extra limbs), (fused bodies), (mutated hands), (deformed face), (merged characters), (different outfits), (asymmetric clothing)";
+    // 2026-07-20：無參考圖時加西方臉負面詞（有參考圖時人種由參考圖決定，不加以免干擾）。
+    const ethnicityNegatives = hasFaceRef ? "" : ", (Caucasian face:1.5), (Western facial features:1.4), (European bone structure:1.4)";
+    const baseNegatives = "(3D render:1.5), (illustration:1.5), (painting:1.5), (cartoon:1.5), (CG), (anime), (unreal engine), (mutated), (deformed), (low quality), (blurry), (extra limbs), (fused bodies), (mutated hands), (deformed face), (merged characters), (different outfits), (asymmetric clothing)" + ethnicityNegatives;
     if (!params.isMultiAngle) {
         prompt += `${baseNegatives}, (cropped feet:2.0), (cut off legs:2.0), (missing shoes:2.0), (out of frame:1.8), (half body), (close up), (distorted limbs), (extra toes), (blurry feet).`;
     } else {

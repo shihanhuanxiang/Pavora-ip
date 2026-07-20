@@ -93,12 +93,19 @@ The user has provided FACE REFERENCE IMAGES. These are the ABSOLUTE and EXCLUSIV
         const noRefFacialMarkInstruction = `[FACIAL MARK POLICY — NO FACE REFERENCE PROVIDED]
 No face reference image was provided for this generation. Do NOT invent, infer, or add any moles, freckles, beauty marks, birthmarks, dark facial spots, skin marks, patches, or blemishes. Keep the facial skin clean and mark-free. Natural skin texture (visible pores, fine detail) is required, but no discrete pigmented or dark marks of any kind.`;
 
+        // 2026-07-20 台灣臉第二輪加強：systemInstruction 層人種鎖（僅無參考圖路徑；
+        // 有參考圖時人種由參考圖主導，不加以免與身份識別衝突）。第一輪只在正向 prompt
+        // 深處錨定，實測仍漂歐美臉——systemInstruction 權重最高，作為最終防線。
+        const ethnicityLockInstruction = `[ETHNICITY LOCK — NON-NEGOTIABLE]
+The model MUST have East Asian (Taiwanese) facial bone structure and features. Do NOT render Caucasian, Western, or European facial structure under any circumstance. Hair color and skin tone directives describe styling only — they never imply Western ethnicity. If any instruction seems to conflict, East Asian (Taiwanese) facial identity always wins.`;
+
         const instructions = [
             hasFaceRef ? identityInstruction : noRefFacialMarkInstruction,
+            hasFaceRef ? "" : ethnicityLockInstruction,
             baseSystemInstruction,
             physiqueInstruction,
             realismInstruction,
-            brandInstruction, 
+            brandInstruction,
             personaInstruction
         ].filter(Boolean).join("\n\n");
 
