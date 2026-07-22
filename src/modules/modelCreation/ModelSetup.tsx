@@ -708,8 +708,100 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
         {/* Left Column: Settings */}
         <div className={`lg:col-span-5 xl:col-span-4 space-y-6 ${mobileTab === 'settings' ? 'block' : 'hidden lg:block'}`}>
-            
-            
+
+            {/* 0. 臉部來源 (Face Source) */}
+            <Card className="p-0 overflow-hidden border-none home-card">
+              <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent flex justify-between items-center group">
+                <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
+                  <div className="w-1 h-4 bg-brass"></div>
+                  <span className="group-hover:text-[var(--color-brass)] transition-colors">臉部來源</span>
+                </h3>
+              </div>
+              <div className="p-6 space-y-7">
+                    <div className={getFieldClass('archetype')}>
+                        <div className="flex justify-between items-center mb-4 min-h-[2.5rem]">
+                            <label className="text-[11px] font-bold text-[var(--home-muted)] tracking-[0.2em] text-left flex flex-col leading-tight">
+                                <span className="text-[var(--home-ink)]">臉部原型</span>
+                            </label>
+                            {faceReferences.length > 0 && (
+                                <motion.div
+                                    initial={{ x: 20, opacity: 0 }}
+                                    animate={{ x: 0, opacity: 1 }}
+                                    className="flex items-center gap-2 bg-brass/20 border border-brass/40 px-4 py-1.5 rounded-full font-bold shadow-[0_0_25px_rgba(var(--color-brass-rgb),0.2)]"
+                                >
+                                    <div className="relative flex h-2 w-2">
+                                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brass opacity-75"></span>
+                                      <span className="relative inline-flex rounded-full h-2 w-2 bg-brass"></span>
+                                    </div>
+                                    <span className="text-[10px] text-[var(--color-brass)] tracking-widest">身份已鎖定</span>
+                                </motion.div>
+                            )}
+                        </div>
+                        <div className="relative group">
+                            {faceReferences.length > 0 && (
+                                <div className="absolute inset-0 z-20 cursor-not-allowed bg-[rgba(255,250,242,.9)] rounded-xl flex items-center justify-center border border-brass/20">
+                                   <span className="text-[10px] text-[var(--color-brass)] font-bold tracking-widest opacity-80">參考圖優先模式已開啟</span>
+                                </div>
+                            )}
+                            <Select
+                                options={filteredFaceArchetypes}
+                                value={faceReferences.length > 0 ? 'identity_lock' : formState.archetype}
+                                onChange={e => {
+                                    const newArchetype = e.target.value;
+                                    const styleMap = FACE_ARCHETYPE_STYLE_MAP[newArchetype];
+                                    if (styleMap && newArchetype !== 'identity_lock') {
+                                        setFormState(prev => ({
+                                            ...prev,
+                                            archetype: newArchetype,
+                                            aestheticStyle: styleMap.aestheticStyle,
+                                            skinFinish: styleMap.skinFinish,
+                                            makeupStyle: styleMap.makeupStyle
+                                        }));
+                                    } else {
+                                        handleFormChange('archetype', newArchetype);
+                                    }
+                                }}
+                                disabled={faceReferences.length > 0}
+                            />
+                        </div>
+                    </div>
+
+                {/* 智慧展開：面部特徵參考圖 */}
+                <AnimatePresence>
+                  {(formState.archetype === 'identity_lock' || faceReferences.length > 0) && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="p-4 bg-[rgba(255,255,255,.4)] rounded-xl border border-[var(--home-line)] space-y-3 overflow-hidden"
+                    >
+                        <div className="flex justify-between items-start">
+                            <label className="text-[10px] font-bold text-[var(--color-brass)] tracking-wider text-left flex flex-col leading-tight">
+                                <span>面部特徵參考圖</span>
+                            </label>
+                            <span className="text-[10px] text-[var(--home-muted)] font-mono pt-1">{faceReferences.length}/10</span>
+                        </div>
+                        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
+                            {faceReferencePreviews.map((url, idx) => (
+                                <div key={idx} className="relative min-w-[70px] h-[70px] rounded-lg overflow-hidden border border-[var(--home-line)] group flex-shrink-0">
+                                    <img src={url} className="w-full h-full object-cover" />
+                                    <button onClick={() => removeFaceReference(idx)} className="absolute inset-0 bg-red-600/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-[var(--home-ink)] transition-opacity">&times;</button>
+                                </div>
+                            ))}
+                            {faceReferences.length < 10 && (
+                                <label htmlFor="face-ref-final" className="min-w-[70px] h-[70px] bg-[rgba(255,255,255,.5)] border border-dashed border-[var(--home-line)] rounded-lg flex items-center justify-center cursor-pointer hover:border-brass transition-all flex-shrink-0">
+                                    <PhotoIcon className="w-5 h-5 text-[var(--home-muted)]" />
+                                </label>
+                            )}
+                        </div>
+                        <input id="face-ref-final" type="file" className="hidden" accept="image/*" multiple onChange={handleFaceReferenceChange} />
+                        <p className="text-[9px] text-[var(--home-muted)] text-center">建議上傳多角度清晰正臉照，以獲得最佳特徵鎖定效果</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </Card>
+
             {/* 1. 靈魂藍圖 */}
             <Card className="p-0 overflow-hidden border-none home-card group/card">
               <div className="p-5 border-b border-[var(--home-line)] flex justify-between items-center bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent transition-all group-hover/card:from-[var(--color-brass)]/10">
@@ -747,13 +839,13 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                 <div className="grid grid-cols-2 gap-5">
                     <Select label="生理性別 (GENDER)" options={GENDER_PRESETS} value={formState.gender} onChange={e => handleGenderChange(e.target.value)} />
                     <div className={getFieldClass('age')}>
-                        <Slider 
+                        <Slider
                             label="年齡 (AGE)"
                             unit="歲"
-                            min={20} 
-                            max={90} 
-                            value={formState.age} 
-                            onChange={e => handleFormChange('age', Number(e.target.value))} 
+                            min={20}
+                            max={60}
+                            value={formState.age}
+                            onChange={e => handleFormChange('age', Number(e.target.value))}
                         />
                     </div>
                 </div>
@@ -844,88 +936,6 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                 </h3>
               </div>
               <div className="p-6 space-y-7">
-                    <div className={getFieldClass('archetype')}>
-                        <div className="flex justify-between items-center mb-4 min-h-[2.5rem]">
-                            <label className="text-[11px] font-bold text-[var(--home-muted)] tracking-[0.2em] text-left flex flex-col leading-tight">
-                                <span className="text-[var(--home-ink)]">臉部原型</span>
-                            </label>
-                            {faceReferences.length > 0 && (
-                                <motion.div 
-                                    initial={{ x: 20, opacity: 0 }}
-                                    animate={{ x: 0, opacity: 1 }}
-                                    className="flex items-center gap-2 bg-brass/20 border border-brass/40 px-4 py-1.5 rounded-full font-bold shadow-[0_0_25px_rgba(var(--color-brass-rgb),0.2)]"
-                                >
-                                    <div className="relative flex h-2 w-2">
-                                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brass opacity-75"></span>
-                                      <span className="relative inline-flex rounded-full h-2 w-2 bg-brass"></span>
-                                    </div>
-                                    <span className="text-[10px] text-[var(--color-brass)] tracking-widest">身份已鎖定</span>
-                                </motion.div>
-                            )}
-                        </div>
-                        <div className="relative group">
-                            {faceReferences.length > 0 && (
-                                <div className="absolute inset-0 z-20 cursor-not-allowed bg-[rgba(255,250,242,.9)] rounded-xl flex items-center justify-center border border-brass/20">
-                                   <span className="text-[10px] text-[var(--color-brass)] font-bold tracking-widest opacity-80">參考圖優先模式已開啟</span>
-                                </div>
-                            )}
-                            <Select 
-                                options={filteredFaceArchetypes} 
-                                value={faceReferences.length > 0 ? 'identity_lock' : formState.archetype} 
-                                onChange={e => {
-                                    const newArchetype = e.target.value;
-                                    const styleMap = FACE_ARCHETYPE_STYLE_MAP[newArchetype];
-                                    if (styleMap && newArchetype !== 'identity_lock') {
-                                        setFormState(prev => ({
-                                            ...prev,
-                                            archetype: newArchetype,
-                                            aestheticStyle: styleMap.aestheticStyle,
-                                            skinFinish: styleMap.skinFinish,
-                                            makeupStyle: styleMap.makeupStyle
-                                        }));
-                                    } else {
-                                        handleFormChange('archetype', newArchetype);
-                                    }
-                                }} 
-                                disabled={faceReferences.length > 0} 
-                            />
-                        </div>
-                    </div>
-                
-                {/* 智慧展開：面部特徵參考圖 */}
-                <AnimatePresence>
-                  {(formState.archetype === 'identity_lock' || faceReferences.length > 0) && (
-                    <motion.div 
-                        initial={{ opacity: 0, height: 0 }} 
-                        animate={{ opacity: 1, height: 'auto' }} 
-                        exit={{ opacity: 0, height: 0 }}
-                        className="p-4 bg-[rgba(255,255,255,.4)] rounded-xl border border-[var(--home-line)] space-y-3 overflow-hidden"
-                    >
-                        <div className="flex justify-between items-start">
-                            <label className="text-[10px] font-bold text-[var(--color-brass)] tracking-wider text-left flex flex-col leading-tight">
-                                <span>面部特徵參考圖</span>
-                            </label>
-                            <span className="text-[10px] text-[var(--home-muted)] font-mono pt-1">{faceReferences.length}/10</span>
-                        </div>
-                        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
-                            {faceReferencePreviews.map((url, idx) => (
-                                <div key={idx} className="relative min-w-[70px] h-[70px] rounded-lg overflow-hidden border border-[var(--home-line)] group flex-shrink-0">
-                                    <img src={url} className="w-full h-full object-cover" />
-                                    <button onClick={() => removeFaceReference(idx)} className="absolute inset-0 bg-red-600/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-[var(--home-ink)] transition-opacity">&times;</button>
-                                </div>
-                            ))}
-                            {faceReferences.length < 10 && (
-                                <label htmlFor="face-ref-final" className="min-w-[70px] h-[70px] bg-[rgba(255,255,255,.5)] border border-dashed border-[var(--home-line)] rounded-lg flex items-center justify-center cursor-pointer hover:border-brass transition-all flex-shrink-0">
-                                    <PhotoIcon className="w-5 h-5 text-[var(--home-muted)]" />
-                                </label>
-                            )}
-                        </div>
-                        <input id="face-ref-final" type="file" className="hidden" accept="image/*" multiple onChange={handleFaceReferenceChange} />
-                        <p className="text-[9px] text-[var(--home-muted)] text-center">建議上傳多角度清晰正臉照，以獲得最佳特徵鎖定效果</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-                
                 {isExpertMode && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="space-y-6 overflow-hidden">
                     <div className="space-y-3">
@@ -983,7 +993,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
               <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent group">
                 <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
                   <div className="w-1 h-4 bg-brass"></div>
-                  <span className="group-hover:text-[var(--color-brass)] transition-colors">環境與足跡</span>
+                  <span className="group-hover:text-[var(--color-brass)] transition-colors">環境與生活細節</span>
                 </h3>
               </div>
               <div className="p-6 space-y-7">
@@ -1010,41 +1020,29 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                     </div>
                     <Select label="核心興趣 (INTERESTS)" options={INTEREST_OPTIONS} value={formState.lifeCircuit.interests?.[0] || ''} onChange={e => handleCircuitUpdate('interests', [e.target.value])} />
                 </div>
-              </div>
-            </Card>
-
-            {/* 生活細節 (Life Details) - 選填 */}
-            <Card className="p-0 overflow-hidden border-none home-card">
-              <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent group">
-                <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
-                  <div className="w-1 h-4 bg-brass"></div>
-                  <span className="group-hover:text-[var(--color-brass)] transition-colors">生活細節（選填）</span>
-                </h3>
-              </div>
-              <div className="p-6 space-y-6">
                 <div className="grid grid-cols-2 gap-5">
                     <div className={getFieldClass('pet')}>
                         <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 min-h-[2.5rem] font-display tracking-[0.2em] leading-tight text-left">
                             <span className="block text-[var(--home-ink)]">寵物</span>
                         </label>
-                        <input 
-                            type="text" 
-                            className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:outline-none transition-all placeholder:text-[var(--home-muted)]" 
-                            placeholder="例：橘貓 Mochi、柴犬 Koko" 
-                            value={formatPetAnchor(formState.worldAnchors?.pet)} 
-                            onChange={e => handlePetAnchorUpdate(e.target.value)} 
+                        <input
+                            type="text"
+                            className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:outline-none transition-all placeholder:text-[var(--home-muted)]"
+                            placeholder="例：橘貓 Mochi、柴犬 Koko"
+                            value={formatPetAnchor(formState.worldAnchors?.pet)}
+                            onChange={e => handlePetAnchorUpdate(e.target.value)}
                         />
                     </div>
                     <div className={getFieldClass('iconicItems')}>
                         <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 min-h-[2.5rem] font-display tracking-[0.2em] leading-tight text-left">
                             <span className="block text-[var(--home-ink)]">標誌性物品</span>
                         </label>
-                        <input 
-                            type="text" 
-                            className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:outline-none transition-all placeholder:text-[var(--home-muted)]" 
-                            placeholder="例：總是帶著的底片相機、特定款式耳環" 
-                            value={formState.worldAnchors?.iconicItems[0]?.name || ''} 
-                            onChange={e => handleIconicItemsUpdate(e.target.value)} 
+                        <input
+                            type="text"
+                            className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:outline-none transition-all placeholder:text-[var(--home-muted)]"
+                            placeholder="例：總是帶著的底片相機、特定款式耳環"
+                            value={formState.worldAnchors?.iconicItems[0]?.name || ''}
+                            onChange={e => handleIconicItemsUpdate(e.target.value)}
                         />
                     </div>
                 </div>

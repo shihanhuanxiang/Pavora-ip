@@ -221,10 +221,15 @@ export const buildModelPrompt = (params: any) => {
 
     prompt += `[BIOLOGICAL TIME-AXIS: AGE ${params.age || 25}]\n`;
     prompt += `- PHYSIOLOGICAL SYNTHESIS: Adjust the person's appearance to exactly ${params.age || 25} years old.\n`;
-    if (params.age > 45) {
-        prompt += `- MATURITY SCAN: Introduce realistic age-appropriate skin laxity, subtle nasolabial folds, and character lines around the eyes. Maintain the core bone structure from reference images but overlay natural aging markers.\n`;
-    } else if (params.age < 25) {
-        prompt += `- YOUTHFUL SCAN: Ensure high skin elasticity, soft facial fat distribution (if appropriate for age), and crystal-clear complexion while preserving biometric features.\n`;
+    const age = params.age || 25;
+    if (age <= 25) {
+        prompt += `- YOUTHFUL SCAN: High skin elasticity, soft facial fat distribution, fresh dewy complexion, smooth youthful features while preserving biometric identity.\n`;
+    } else if (age <= 35) {
+        prompt += `- PRIME SCAN: Mature yet fresh adult features, firm well-maintained skin with healthy natural texture, confident refined expression, no aging markers.\n`;
+    } else if (age <= 45) {
+        prompt += `- REFINED MATURITY SCAN: Sophisticated adult elegance, subtle expression character around the eyes, well-maintained firm skin, graceful mature beauty that remains attractive and well-kept (NOT tired, NOT plain).\n`;
+    } else {
+        prompt += `- GRACEFUL MATURITY SCAN: Elegant mature presence, natural age-appropriate skin character with subtle fine lines and gentle nasolabial definition, refined bone structure, dignified graceful aging while remaining attractive, healthy and well-kept.\n`;
     }
     prompt += `- AGE CONSISTENCY: The age-appearance must be physically plausible for the target number.\n\n`;
 
@@ -249,38 +254,38 @@ export const buildModelPrompt = (params: any) => {
         const bt = params.bustTension || 50;
         const pc = params.physiqueCurvature || 50;
         
-        prompt += `[PHYSIQUE ARCHITECTURE: FEMALE ANATOMY]\n`;
-        // Mapping Curvature (0-100) -> Physique Contour
-        if (pc <= 30) prompt += `- Contour: Lean high-fashion runway frame, long slender torso lines, minimal hip flare, flat stomach emphasis, model-thin silhouette. \n`;
-        else if (pc <= 55) prompt += `- Contour: Naturally feminine figure with visible waist definition, gentle bust-to-hip ratio, soft curves without dramatic projection, everyday attractive silhouette. \n`;
-        else if (pc <= 75) prompt += `- Contour: Clear hourglass silhouette — visibly cinched waist, full rounded hip line, defined bust-to-waist-to-hip S-curve. Clothing drapes over curves naturally. The waist-to-hip contrast is clearly visible and attractive. \n`;
-        else prompt += `- Contour: Dramatic hourglass figure — significantly cinched waist with full voluptuous hip and bust projection. Strong pelvic-waist contrast creates high-impact hourglass presence. Every garment follows the exaggerated S-curve of the body. \n`;
-        
-        // Mapping Bust Volume & Physics (0-100) -> [上圍體積感]
+        prompt += `[FIGURE TYPE & GARMENT FIT — FEMALE]\n`;
+        // Mapping Curvature (0-100) -> Figure Type Contour
+        if (pc <= 30) prompt += `- Contour: Lean editorial runway figure type — long slender lines, straight silhouette, minimal hip curve; garments hang with a clean straight drape. \n`;
+        else if (pc <= 55) prompt += `- Contour: Natural feminine figure type with a defined waistline — balanced proportions, soft everyday silhouette; garments follow a gently tailored fit. \n`;
+        else if (pc <= 75) prompt += `- Contour: Hourglass figure type — clearly defined waist and balanced shoulder-to-hip line; garments tailored to follow the waist-to-hip line and drape cleanly over the silhouette. \n`;
+        else prompt += `- Contour: Full hourglass figure type — pronounced waist definition with a curvier shoulder-to-hip line; garments tailored for a fuller-figured fit that follows the body's curve. \n`;
+
+        // Mapping Bust Tension (0-100) -> Upper-garment Fit
         if (bt > 80) {
-            prompt += `- Volume Physics: 🚨 FULL BUST PRESENCE. Generous natural bust volume with realistic weight and gravitational softness. Fabric across chest shows visible natural stretch and drape from volume. Clothing fits tightly across bust with realistic creasing at seams. \n`;
+            prompt += `- Upper-garment Fit: Tailored for a fuller-bust figure type — upper garments cut with a fuller fit through the chest, fabric drapes with a clean structured line. \n`;
         } else if (bt > 55) {
-            prompt += `- Volume Physics: Full natural bust with visible rounded projection and soft gravitational drape. Clothing fits snugly across chest, showing the natural curve and volume underneath. \n`;
+            prompt += `- Upper-garment Fit: Tailored for a full-bust figure type — upper garments follow a rounded fuller fit through the chest with natural drape. \n`;
         } else if (bt > 30) {
-            prompt += `- Volume Physics: Natural feminine bust with gentle rounded shape and realistic fabric drape. \n`;
+            prompt += `- Upper-garment Fit: Standard feminine fit through the chest with natural garment drape. \n`;
         } else {
-            prompt += `- Volume Physics: Lean flat-chested aesthetic, minimal bust projection, high-fashion editorial silhouette. \n`;
+            prompt += `- Upper-garment Fit: Lean editorial fit — minimal chest projection, straight garment line, high-fashion silhouette. \n`;
         }
     } else {
         const md = params.muscularDensity || 50;
         const vt = params.vTaperScale || 50;
-        
-        prompt += `[PHYSIQUE ARCHITECTURE: MALE ANATOMY]\n`;
+
+        prompt += `[FIGURE TYPE & GARMENT FIT — MALE]\n`;
         // Mapping Muscular Density (0-100)
-        if (md <= 30) prompt += `- Density: Slender and lean physique, subtle muscle tone, marathon-runner aesthetic. \n`;
-        else if (md <= 70) prompt += `- Density: Athletic aesthetic build, defined pectoralis major, clear muscle separation and vascularity. \n`;
-        else prompt += `- Density: 🚨 MAXIMUM MUSCULAR HYPERTROPHY. Dense muscle structure, massive deltoids and pectorals, deep muscle separation and hyper-defined density. \n`;
-        
-        // Mapping Shoulder Frame (0-100) -> V-Taper
+        if (md <= 30) prompt += `- Density: Slim lean figure type, subtle muscle tone; garments follow a slim tailored fit. \n`;
+        else if (md <= 70) prompt += `- Density: Athletic figure type, defined build; garments follow a fitted athletic cut. \n`;
+        else prompt += `- Density: Muscular athletic figure type, broad structured shoulders and defined build; garments tailored for a broad muscular fit. \n`;
+
+        // Mapping Shoulder Frame (0-100) -> V-Taper Figure/Fit
         if (vt > 80) {
-            prompt += `- Frame Architecture: 🚨 EXTREME SHOULDER TENSION. Powerful V-tapered skeleton with ultra-broad shoulders. Force fabric tension marks across the trapezius and upper back, showing the garment being stretched by the wide frame. \n`;
+            prompt += `- Frame Architecture: Pronounced V-taper figure type with an ultra-broad shoulder-to-waist line; garments tailored with a strong shoulder line, structured across the upper back to follow the wide frame. \n`;
         } else {
-            prompt += `- Frame Architecture: Natural V-taper architectural frame with professional athletic proportions. \n`;
+            prompt += `- Frame Architecture: Natural V-taper figure type with professional athletic proportions; garments follow a balanced shoulder-to-waist tailored line. \n`;
         }
     }
 
