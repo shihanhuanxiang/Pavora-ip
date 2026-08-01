@@ -23,7 +23,7 @@ import { useNotification } from '../../shared/context/NotificationContext';
 import { useAppStore } from '../../shared/stores/useAppStore';
 import { embedMetadata } from '../../shared/utils/metadataUtils';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
+import {
     GENDER_PRESETS, APPAREL_CATEGORIES, APPAREL_ITEMS,
     FACE_ARCHETYPES, FACE_ARCHETYPE_STYLE_MAP, SKIN_TONE_OPTIONS, SKIN_FINISH_OPTIONS, MAKEUP_STYLE_OPTIONS,
     PROPORTION_MODE_OPTIONS, PROPORTION_DEFAULTS,
@@ -134,9 +134,9 @@ const getDefaultVisualIdentityHint = (gender: string) => {
     };
 };
 
-const ModelSetup: React.FC<ModelSetupProps> = ({ 
-    onModelSelect, onGoHome, onGoBack, 
-    inheritedModel, initialNarrativeData, onClearNarrative 
+const ModelSetup: React.FC<ModelSetupProps> = ({
+    onModelSelect, onGoHome, onGoBack,
+    inheritedModel, initialNarrativeData, onClearNarrative
 }) => {
   const { projectMode } = useAppStore();
   const { masterTaxonomy, apparelStructure, loading: taxonomyLoading } = useTaxonomy();
@@ -146,7 +146,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [previewingModelIndex, setPreviewingModelIndex] = useState<number | null>(null);
   const [savedModelIds, setSavedModelIds] = useState<Set<string>>(new Set());
-  
+
   const { addModel, updateModelGallery } = useModelStore();
   const { addAmbassador, ambassadors, activeAmbassadorId } = useBrandStore();
   const { addNotification } = useNotification();
@@ -189,6 +189,8 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
   const [highlightedFields, setHighlightedFields] = useState<Set<string>>(new Set());
   const [generationQuality, setGenerationQuality] = useState<QualityLevel>('standard');
   const [mobileTab, setMobileTab] = useState<'settings' | 'preview'>('settings');
+  const [activeTab, setActiveTab] = useState<'face' | 'body' | 'soul' | 'apparel'>('face');
+  const [isPresetBannerOpen, setIsPresetBannerOpen] = useState(false);
   const [activeApparelCat, setActiveApparelCat] = useState('full_set');
 
   // A7: Use a ref to track the latest formState to avoid stale closures in async callbacks (like setTimeout)
@@ -243,7 +245,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
             muscularDensity: inheritedModel.advancedStats?.muscularDensity ?? prev.muscularDensity,
             vTaperScale: inheritedModel.advancedStats?.vTaperScale ?? prev.vTaperScale
         }));
-        
+
         addNotification({
             type: 'info',
             message: '品牌資產繼承成功',
@@ -257,7 +259,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
     if (initialNarrativeData) {
         const { model, diary } = initialNarrativeData;
         const diaryParams = diary.generatedPromptParams || {};
-        
+
         setFormState(prev => ({
             ...prev,
             name: model.name || prev.name,
@@ -271,7 +273,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
             customOutfitPrompt: diaryParams.suggestedOutfit ? `Wearing ${diaryParams.suggestedOutfit}` : prev.customOutfitPrompt,
             outfitItems: diaryParams.suggestedOutfit ? [] : prev.outfitItems
         }));
-        
+
         addNotification({
             type: 'success',
             message: '敘事數據同步成功',
@@ -337,17 +339,17 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
   const handleFormChange = (field: string, value: any) => {
     setFormState(prev => {
         let newState = { ...prev, [field]: value };
-        
+
         // 多視角與比例聯動
         if (field === 'isMultiAngle') {
             if (value === true) {
                 newState.ratio = '16:9';
             }
         }
-        
+
         return newState;
     });
-    
+
     // 如果修改了關鍵數值，重置預設集顯示
     if (['bust', 'waist', 'hip', 'height', 'proportionMode', 'skinFinish', 'makeupStyle'].includes(field)) {
         setSelectedPresetId('custom');
@@ -359,7 +361,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
         return next;
     });
   };
-  
+
   const handleAutoGeneratePersona = useCallback(async () => {
     setIsGeneratingPersona(true);
     const currentForm = formStateRef.current;
@@ -396,14 +398,14 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
     setIsGeneratingDescriptor(true);
     try {
       const client = await getGeminiClient(true) as any;
-      
+
       const { profession, coreVibe, mbti, toneOfVoice } = formState.persona;
       const { visualIdentityHint } = formState;
       const { primaryCity, interests } = formState.lifeCircuit;
 
       const prompt = `
-        You are a digital identity architect for PAVORA (high-end fashion IP agency). 
-        Based on the character profile below, draft a 2nd/3rd-person English "Identity Locked Descriptor". 
+        You are a digital identity architect for PAVORA (high-end fashion IP agency).
+        Based on the character profile below, draft a 2nd/3rd-person English "Identity Locked Descriptor".
         This string will be used as a master prompt anchor to ensure facial and structural consistency in AI image generation.
 
         Character Profile:
@@ -428,20 +430,20 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
         model: "gemini-3-flash-preview",
         contents: prompt
       });
-      
+
       const text = (response.text || "").trim().replace(/^["']|["']$/g, '');
-      
+
       if (text) {
         handlePersonaUpdate('locked_descriptor', text);
-        addNotification({ 
-            type: 'success', 
+        addNotification({
+            type: 'success',
             message: '身份鎖定描述已草擬於身分盒',
             description: '核心視覺特徵已根據當前設定完成鎖定。'
         });
       }
     } catch (e) {
-      addNotification({ 
-        type: 'error', 
+      addNotification({
+        type: 'error',
         message: '身份鎖定描述生成失敗',
         description: getFriendlyErrorMessage(e)
       });
@@ -461,7 +463,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
 
     const randomArchetype = FACE_ARCHETYPES[Math.floor(Math.random() * FACE_ARCHETYPES.length)].value;
     const randomStyle = AESTHETIC_STYLES[Math.floor(Math.random() * AESTHETIC_STYLES.length)].value;
-    
+
     const presets = APPAREL_ITEMS.filter(i => i.category === 'full_set' && (i.gender === 'both' || i.gender === currentGender));
     const randomOutfit = [presets[Math.floor(Math.random() * presets.length)].id];
 
@@ -502,12 +504,12 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
 
     setFormState(prev => ({ ...prev, ...randomState }));
     setHighlightedFields(new Set(Object.keys(randomState)));
-    
+
     // 延遲執行 AI 補完以確保基本數據已寫入
     setTimeout(() => {
         handleAutoGeneratePersona();
     }, 200);
-    
+
     addNotification({
         type: 'success',
         message: '隨機靈感已套用（含深度人設）',
@@ -521,7 +523,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
         return () => clearTimeout(timer);
     }
   }, [highlightedFields]);
-  
+
   const getFieldClass = (fieldName: string) => {
     return `transition-all duration-300 ${highlightedFields.has(fieldName) ? 'ring-2 ring-[var(--color-brass)] ring-offset-2 ring-offset-gray-900 rounded-lg p-1' : ''}`;
   };
@@ -529,7 +531,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
   const handleFaceReferenceChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
         const newFiles = Array.from(event.target.files) as File[];
-        
+
         // Metadata extraction for Re-import
         const { extractMetadataFromFile } = await import('../../shared/utils/metadataUtils');
         for (const file of newFiles) {
@@ -600,12 +602,22 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
   const applyBasePreset = (presetKey: string) => {
     setSelectedPresetId(presetKey);
     if (presetKey === 'custom') return;
-    
+
     const preset = (SMART_SUGGEST_PRESETS as any)[presetKey];
     if (preset) {
+        // 資料 bug 修正 (a)：SMART_SUGGEST_PRESETS 的 outfitPresetId 是 f_vto_/m_vto_ 命名，
+        // 與 APPAREL_ITEMS 實際 id（f_full_/f_top_/f_bottom_/foot_/m_full_/m_top_）對不上。
+        // 只有找得到對應 APPAREL_ITEMS 才寫入 outfitItems，找不到就跳過服裝欄位（其餘欄位照套）。
+        // 現況：全 20 組 outfitPresetId 均對不上，本次一律走跳過分支，屬預期（服裝結構待 PR-D 處理）。
+        const { outfitPresetId, label: _presetLabel, ...presetFields } = preset;
+        const matchedOutfit = APPAREL_ITEMS.find(item => item.id === outfitPresetId);
+
         setFormState(prev => ({
             ...prev,
-            ...preset
+            ...presetFields,
+            ...(matchedOutfit ? { outfitItems: [matchedOutfit.id] } : {}),
+            // 資料 bug 修正 (b)：套用預設不覆蓋核心身分列的姓名，姓名維持使用者輸入
+            name: prev.name
         }));
         addNotification({ type: 'success', message: `已套用 ${presetKey.includes('female') ? '女性' : '男性'} 預設配置，生理參數已同步` });
     }
@@ -614,13 +626,13 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
   const handlePhysiqueChange = (value: string) => {
     const gender = formState.gender as 'female' | 'male';
     const defaults = (PROPORTION_DEFAULTS as any)[gender]?.[value];
-    
+
     setFormState(prev => ({
       ...prev,
       proportionMode: value,
       ...(defaults || {})
     }));
-    
+
     setSelectedPresetId('custom');
   };
 
@@ -630,7 +642,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
     try {
       const selectedItems = APPAREL_ITEMS.filter(item => formState.outfitItems.includes(item.id));
       const finalFaceRefs = faceReferences.length > 0 ? await Promise.all(faceReferences.map(f => fileToBase64(f))) : undefined;
-      
+
       const models = await generateModels({
         ...formState,
         isExpertMode,
@@ -641,7 +653,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
         preferred_archetypes: formState.preferredArchetypes,
       });
       setGeneratedModels(prev => [...models, ...prev]);
-    } catch (err) { setError(getFriendlyErrorMessage(err)); } 
+    } catch (err) { setError(getFriendlyErrorMessage(err)); }
     finally { setIsLoading(false); }
   }, [formState, faceReferences, generationQuality, isExpertMode]);
 
@@ -663,18 +675,18 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
       // For download, we ensure metadata is embedded
       const { id, name, gender, age, persona, lifeCircuit, stats, advancedStats, type } = model;
       const metadata = { id, name, gender, age, persona, lifeCircuit, stats, advancedStats, type };
-      
-      const enrichedImageUrl = model.imageUrl.startsWith('data:') 
+
+      const enrichedImageUrl = model.imageUrl.startsWith('data:')
           ? embedMetadata(model.imageUrl, metadata)
           : model.imageUrl;
-      
+
       downloadImage(enrichedImageUrl, `${name || 'model'}.jpg`, 'ModelSetup');
   };
 
   return (
     <div className="home-workbench model-setup min-h-screen font-sans container mx-auto p-4 lg:p-8 max-w-[110rem] animate-fade-in pb-24 lg:pb-8">
       {isLoading && <Loader message="時空傳送中..." />}
-      
+
       {/* Mobile Nav */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-[var(--home-paper)] border-t border-[var(--home-line)] z-40 flex justify-around p-2 pb-safe">
           <button onClick={() => setMobileTab('settings')} className={`flex flex-col items-center p-2 w-1/2 ${mobileTab === 'settings' ? 'text-[var(--color-brass)] bg-[rgba(255,255,255,.4)]' : 'text-[var(--home-muted)]'}`}>
@@ -709,118 +721,11 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
         {/* Left Column: Settings */}
         <div className={`lg:col-span-5 xl:col-span-4 space-y-6 ${mobileTab === 'settings' ? 'block' : 'hidden lg:block'}`}>
 
-            {/* 0. 臉部來源 (Face Source) */}
+            {/* 核心身分列 (常駐：不論切到哪個 tab 都顯示，姓名/性別/年齡從靈魂藍圖卡搬出；瘦身為單行緊湊排列) */}
             <Card className="p-0 overflow-hidden border-none home-card">
-              <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent flex justify-between items-center group">
-                <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
-                  <div className="w-1 h-4 bg-brass"></div>
-                  <span className="group-hover:text-[var(--color-brass)] transition-colors">臉部來源</span>
-                </h3>
-              </div>
-              <div className="p-6 space-y-7">
-                    <div className={getFieldClass('archetype')}>
-                        <div className="flex justify-between items-center mb-4 min-h-[2.5rem]">
-                            <label className="text-[11px] font-bold text-[var(--home-muted)] tracking-[0.2em] text-left flex flex-col leading-tight">
-                                <span className="text-[var(--home-ink)]">臉部原型</span>
-                            </label>
-                            {faceReferences.length > 0 && (
-                                <motion.div
-                                    initial={{ x: 20, opacity: 0 }}
-                                    animate={{ x: 0, opacity: 1 }}
-                                    className="flex items-center gap-2 bg-brass/20 border border-brass/40 px-4 py-1.5 rounded-full font-bold shadow-[0_0_25px_rgba(var(--color-brass-rgb),0.2)]"
-                                >
-                                    <div className="relative flex h-2 w-2">
-                                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brass opacity-75"></span>
-                                      <span className="relative inline-flex rounded-full h-2 w-2 bg-brass"></span>
-                                    </div>
-                                    <span className="text-[10px] text-[var(--color-brass)] tracking-widest">身份已鎖定</span>
-                                </motion.div>
-                            )}
-                        </div>
-                        <div className="relative group">
-                            {faceReferences.length > 0 && (
-                                <div className="absolute inset-0 z-20 cursor-not-allowed bg-[rgba(255,250,242,.9)] rounded-xl flex items-center justify-center border border-brass/20">
-                                   <span className="text-[10px] text-[var(--color-brass)] font-bold tracking-widest opacity-80">參考圖優先模式已開啟</span>
-                                </div>
-                            )}
-                            <Select
-                                options={filteredFaceArchetypes}
-                                value={faceReferences.length > 0 ? 'identity_lock' : formState.archetype}
-                                onChange={e => {
-                                    const newArchetype = e.target.value;
-                                    const styleMap = FACE_ARCHETYPE_STYLE_MAP[newArchetype];
-                                    if (styleMap && newArchetype !== 'identity_lock') {
-                                        setFormState(prev => ({
-                                            ...prev,
-                                            archetype: newArchetype,
-                                            aestheticStyle: styleMap.aestheticStyle,
-                                            skinFinish: styleMap.skinFinish,
-                                            makeupStyle: styleMap.makeupStyle
-                                        }));
-                                    } else {
-                                        handleFormChange('archetype', newArchetype);
-                                    }
-                                }}
-                                disabled={faceReferences.length > 0}
-                            />
-                        </div>
-                    </div>
-
-                {/* 智慧展開：面部特徵參考圖 */}
-                <AnimatePresence>
-                  {(formState.archetype === 'identity_lock' || faceReferences.length > 0) && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="p-4 bg-[rgba(255,255,255,.4)] rounded-xl border border-[var(--home-line)] space-y-3 overflow-hidden"
-                    >
-                        <div className="flex justify-between items-start">
-                            <label className="text-[10px] font-bold text-[var(--color-brass)] tracking-wider text-left flex flex-col leading-tight">
-                                <span>面部特徵參考圖</span>
-                            </label>
-                            <span className="text-[10px] text-[var(--home-muted)] font-mono pt-1">{faceReferences.length}/10</span>
-                        </div>
-                        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
-                            {faceReferencePreviews.map((url, idx) => (
-                                <div key={idx} className="relative min-w-[70px] h-[70px] rounded-lg overflow-hidden border border-[var(--home-line)] group flex-shrink-0">
-                                    <img src={url} className="w-full h-full object-cover" />
-                                    <button onClick={() => removeFaceReference(idx)} className="absolute inset-0 bg-red-600/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-[var(--home-ink)] transition-opacity">&times;</button>
-                                </div>
-                            ))}
-                            {faceReferences.length < 10 && (
-                                <label htmlFor="face-ref-final" className="min-w-[70px] h-[70px] bg-[rgba(255,255,255,.5)] border border-dashed border-[var(--home-line)] rounded-lg flex items-center justify-center cursor-pointer hover:border-brass transition-all flex-shrink-0">
-                                    <PhotoIcon className="w-5 h-5 text-[var(--home-muted)]" />
-                                </label>
-                            )}
-                        </div>
-                        <input id="face-ref-final" type="file" className="hidden" accept="image/*" multiple onChange={handleFaceReferenceChange} />
-                        <p className="text-[9px] text-[var(--home-muted)] text-center">建議上傳多角度清晰正臉照，以獲得最佳特徵鎖定效果</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </Card>
-
-            {/* 1. 靈魂藍圖 */}
-            <Card className="p-0 overflow-hidden border-none home-card group/card">
-              <div className="p-5 border-b border-[var(--home-line)] flex justify-between items-center bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent transition-all group-hover/card:from-[var(--color-brass)]/10">
-                <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
-                  <div className="w-1 h-4 bg-brass"></div>
-                  <span className="group-hover/card:text-[var(--color-brass)] transition-colors">靈魂藍圖</span>
-                </h3>
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={handleRandomize}
-                    className="bg-[rgba(255,255,255,.4)] hover:bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] py-1.5 px-4 rounded-full transition-all group"
-                >
-                    <span className="text-[10px] font-bold text-[var(--color-brass)]">隨機靈感</span>
-                </motion.button>
-              </div>
-              <div className="p-6 space-y-7">
+              <div className="p-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
                 <div className={getFieldClass('name')}>
-                    <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 flex justify-between min-h-[2.5rem] items-center font-display tracking-[0.2em] text-left">
+                    <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-1.5 flex justify-between items-center font-display tracking-[0.2em] text-left">
                         <span className="block text-[var(--home-ink)]">IP 姓名</span>
                         <button
                             onClick={() => {
@@ -834,405 +739,609 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                             <span className="text-[9px] text-[var(--color-brass)] font-bold group-hover:underline">隨機換名</span>
                         </button>
                     </label>
-                    <input type="text" className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:ring-1 focus:ring-[var(--color-brass)]/20 focus:outline-none transition-all placeholder:text-[var(--home-muted)]" placeholder="輸入 IP 角色姓名" value={formState.name} onChange={e => handleFormChange('name', e.target.value)} />
+                    <input type="text" className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-2.5 text-sm focus:border-brass focus:ring-1 focus:ring-[var(--color-brass)]/20 focus:outline-none transition-all placeholder:text-[var(--home-muted)]" placeholder="輸入 IP 角色姓名" value={formState.name} onChange={e => handleFormChange('name', e.target.value)} />
                 </div>
-                <div className="grid grid-cols-2 gap-5">
-                    <Select label="生理性別 (GENDER)" options={GENDER_PRESETS} value={formState.gender} onChange={e => handleGenderChange(e.target.value)} />
-                    <div className={getFieldClass('age')}>
-                        <Slider
-                            label="年齡 (AGE)"
-                            unit="歲"
-                            min={20}
-                            max={60}
-                            value={formState.age}
-                            onChange={e => handleFormChange('age', Number(e.target.value))}
-                        />
-                    </div>
-                </div>
-                <div className="grid grid-cols-2 gap-5 py-2">
-                    <Select label="核心氛圍 (VIBE)" options={CORE_VIBE_OPTIONS} value={formState.persona.coreVibe} onChange={e => handlePersonaUpdate('coreVibe', e.target.value)} />
-                    <Select label="MBTI (PERSONALITY)" options={MBTI_OPTIONS} value={formState.persona.mbti} onChange={e => handlePersonaUpdate('mbti', e.target.value)} />
-                </div>
-                <div className="grid grid-cols-2 gap-4 pt-2">
-                    <Select label="主力語氣 (TONE OF VOICE)" options={TONE_OPTIONS} value={formState.persona.toneOfVoice} onChange={e => handlePersonaUpdate('toneOfVoice', e.target.value)} />
-                    <div className="flex items-end justify-center pb-1">
-                        <p className="text-[9px] text-[var(--home-muted)] opacity-60">人設細節將隨「隨機靈感」自動生成</p>
-                    </div>
-                </div>
-
-                {/* 身份鎖定描述 - 靈魂核心 */}
-                <div className="pt-4 border-t border-[var(--home-line)] space-y-3">
-                    <div className="flex justify-between items-center">
-                        <label className="block text-[11px] font-bold text-[var(--home-muted)] font-display tracking-[0.2em] leading-tight text-left">
-                            <span className="block text-[var(--home-ink)]">身份鎖定描述</span>
-                        </label>
-                        <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={handleGenerateLockedDescriptor}
-                            disabled={isGeneratingDescriptor}
-                            className="text-[10px] text-[var(--color-brass)] font-bold flex items-center gap-2 hover:opacity-80 transition-all disabled:opacity-30"
-                        >
-                            {isGeneratingDescriptor ? (
-                                <div className="w-3 h-3 border-2 border-brass border-t-transparent rounded-full animate-spin"></div>
-                            ) : (
-                                <span className="flex items-center gap-1.5 underline decoration-[0.5px] underline-offset-4">AI 草擬身分盒</span>
-                            )}
-                        </motion.button>
-                    </div>
-                    <textarea 
-                        className="w-full h-24 bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-[11px] text-[var(--home-muted)] focus:border-brass focus:outline-none transition-all resize-none leading-relaxed placeholder:text-[var(--home-muted)] font-mono scrollbar-none"
-                        placeholder="描述這個 IP 的核心視覺特徵（英文），例如面部細節、骨架神韻等，這是維持生圖一致性的關鍵。"
-                        value={formState.persona.locked_descriptor}
-                        onChange={e => handlePersonaUpdate('locked_descriptor', e.target.value)}
+                <Select label="生理性別 (GENDER)" options={GENDER_PRESETS} value={formState.gender} onChange={e => handleGenderChange(e.target.value)} />
+                <div className={getFieldClass('age')}>
+                    <Slider
+                        label="年齡 (AGE)"
+                        unit="歲"
+                        min={20}
+                        max={60}
+                        value={formState.age}
+                        onChange={e => handleFormChange('age', Number(e.target.value))}
                     />
-                    <p className="text-[9px] text-[var(--home-muted)] leading-relaxed">
-                        * 身份鎖定是維護 IP 視覺一致性的最高級位字串。建議使用 AI 根據目前設定草擬後，再進行手動精煉。
-                    </p>
-                </div>
-
-                {/* Style Archetypes (矩陣 v2.0) */}
-                <div className="pt-4 border-t border-[var(--home-line)]">
-                    <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 flex justify-between items-center font-display tracking-[0.2em]">
-                        <span className="text-[var(--home-ink)]">風格原型偏好</span>
-                        <span className="text-[9px] text-[var(--color-brass)] opacity-60">用於智慧穿搭路由</span>
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                        {STYLE_ARCHETYPES.filter(a => a.gender.includes(formState.gender as any) || a.gender.includes('unisex')).map(archetype => {
-                            const isSelected = formState.preferredArchetypes.includes(archetype.value);
-                            return (
-                                <button
-                                    key={archetype.value}
-                                    onClick={() => {
-                                        setFormState(prev => {
-                                            const current = prev.preferredArchetypes;
-                                            const next = current.includes(archetype.value)
-                                                ? current.filter(v => v !== archetype.value)
-                                                : [...current, archetype.value];
-                                            return { ...prev, preferredArchetypes: next };
-                                        });
-                                    }}
-                                    className={`px-3 py-1.5 rounded-full text-[10px] font-bold transition-all border ${
-                                        isSelected 
-                                        ? 'bg-brass text-black border-brass shadow-[0_0_15px_rgba(var(--color-brass-rgb),0.3)]' 
-                                        : 'bg-[rgba(255,255,255,.4)] text-[var(--home-muted)] border-[var(--home-line)] hover:border-brass/50'
-                                    }`}
-                                >
-                                    {archetype.label}
-                                </button>
-                            );
-                        })}
-                    </div>
                 </div>
               </div>
             </Card>
 
-            {/* 2. 生理特徵 (Physiological Features) */}
+            {/* 快速預設橫幅 (SMART_SUGGEST_PRESETS 20 組，可摺疊) */}
             <Card className="p-0 overflow-hidden border-none home-card">
-              <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent flex justify-between items-center group">
+              <button
+                type="button"
+                onClick={() => setIsPresetBannerOpen(prev => !prev)}
+                className="w-full p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent flex justify-between items-center group"
+              >
                 <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
                   <div className="w-1 h-4 bg-brass"></div>
-                  <span className="group-hover:text-[var(--color-brass)] transition-colors">生理特徵</span>
+                  <span className="group-hover:text-[var(--color-brass)] transition-colors">快速預設</span>
                 </h3>
-              </div>
-              <div className="p-6 space-y-7">
-                {isExpertMode && (
-                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="space-y-6 overflow-hidden">
-                    <div className="space-y-3">
-                        <label className="block text-[11px] font-bold text-[var(--home-muted)] tracking-[0.2em] flex flex-col leading-tight">
-                            <span className="text-[var(--home-ink)]">網美等級</span>
-                        </label>
-                        <div className="flex gap-2">
-                            {[
-                                { level: 1, label: '自然路人' },
-                                { level: 2, label: '天然網美' },
-                                { level: 3, label: '精修偶像' }
-                            ].map(({ level, label }) => (
+                <span className="text-[10px] text-[var(--color-brass)] font-bold">{isPresetBannerOpen ? '收合 ▲' : '展開 ▼'}</span>
+              </button>
+              <AnimatePresence>
+                {isPresetBannerOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="overflow-hidden"
+                    >
+                        <div className="p-6 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                            {Object.entries(SMART_SUGGEST_PRESETS).map(([presetKey, preset]) => (
                                 <button
-                                    key={level}
-                                    onClick={() => handleFormChange('netRedLevel', level)}
-                                    className={`flex-1 py-2.5 rounded-xl border text-center transition-all ${
-                                        formState.netRedLevel === level
-                                            ? 'bg-brass text-black border-brass shadow-xl shadow-[var(--color-brass)]/20'
-                                            : 'bg-[rgba(255,255,255,.4)] text-[var(--home-muted)] border-[var(--home-line)] hover:border-[var(--home-line-strong)]'
-                                    }`}
+                                    key={presetKey}
+                                    onClick={() => applyBasePreset(presetKey)}
+                                    className={`p-3 rounded-xl border text-left transition-all ${selectedPresetId === presetKey ? 'bg-brass text-black border-brass shadow-[0_4px_20px_rgba(var(--color-brass-rgb),0.3)]' : 'bg-[rgba(255,255,255,.4)] border-[var(--home-line)] text-[var(--home-muted)] hover:border-brass/50'}`}
                                 >
-                                    <div className="text-[11px] font-bold">{label}</div>
+                                    <span className="text-[10px] font-bold leading-tight block">{(preset as any).label}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </motion.div>
+                )}
+              </AnimatePresence>
+            </Card>
+
+            {/* Tab 列 (臉部 / 身形 / 靈魂人設 / 服裝造型) */}
+            <div className="sticky top-4 z-30 bg-[var(--home-paper)]/95 backdrop-blur-sm py-1">
+                <div className="flex gap-2 bg-[rgba(255,255,255,.5)] p-1.5 rounded-2xl border border-[var(--home-line)]">
+                    {([
+                        { key: 'face', label: '臉部' },
+                        { key: 'body', label: '身形' },
+                        { key: 'soul', label: '靈魂人設' },
+                        { key: 'apparel', label: '服裝造型' }
+                    ] as const).map(tab => (
+                        <button
+                            key={tab.key}
+                            onClick={() => setActiveTab(tab.key)}
+                            className={`flex-1 py-2.5 text-[11px] font-bold rounded-xl transition-all duration-300 relative overflow-hidden ${activeTab === tab.key ? 'bg-brass text-black shadow-[0_4px_20px_rgba(var(--color-brass-rgb),0.3)]' : 'text-[var(--home-muted)] hover:bg-[rgba(255,255,255,.4)]'}`}
+                        >
+                            <span className="relative z-10">{tab.label}</span>
+                            {activeTab === tab.key && (
+                                <motion.div
+                                    layoutId="model-setup-tab-glare"
+                                    className="absolute inset-0 bg-[rgba(255,255,255,.25)] pointer-events-none"
+                                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                                />
+                            )}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* ===== TAB: 臉部 ===== */}
+            {activeTab === 'face' && (
+              <>
+                {/* 0. 臉部來源 (Face Source) */}
+                <Card className="p-0 overflow-hidden border-none home-card">
+                  <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent flex justify-between items-center group">
+                    <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
+                      <div className="w-1 h-4 bg-brass"></div>
+                      <span className="group-hover:text-[var(--color-brass)] transition-colors">臉部來源</span>
+                    </h3>
+                  </div>
+                  <div className="p-6 space-y-7">
+                        <div className={getFieldClass('archetype')}>
+                            <div className="flex justify-between items-center mb-4 min-h-[2.5rem]">
+                                <label className="text-[11px] font-bold text-[var(--home-muted)] tracking-[0.2em] text-left flex flex-col leading-tight">
+                                    <span className="text-[var(--home-ink)]">臉部原型</span>
+                                </label>
+                                {faceReferences.length > 0 && (
+                                    <motion.div
+                                        initial={{ x: 20, opacity: 0 }}
+                                        animate={{ x: 0, opacity: 1 }}
+                                        className="flex items-center gap-2 bg-brass/20 border border-brass/40 px-4 py-1.5 rounded-full font-bold shadow-[0_0_25px_rgba(var(--color-brass-rgb),0.2)]"
+                                    >
+                                        <div className="relative flex h-2 w-2">
+                                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brass opacity-75"></span>
+                                          <span className="relative inline-flex rounded-full h-2 w-2 bg-brass"></span>
+                                        </div>
+                                        <span className="text-[10px] text-[var(--color-brass)] tracking-widest">身份已鎖定</span>
+                                    </motion.div>
+                                )}
+                            </div>
+                            <div className="relative group">
+                                {faceReferences.length > 0 && (
+                                    <div className="absolute inset-0 z-20 cursor-not-allowed bg-[rgba(255,250,242,.9)] rounded-xl flex items-center justify-center border border-brass/20">
+                                       <span className="text-[10px] text-[var(--color-brass)] font-bold tracking-widest opacity-80">參考圖優先模式已開啟</span>
+                                    </div>
+                                )}
+                                <Select
+                                    options={filteredFaceArchetypes}
+                                    value={faceReferences.length > 0 ? 'identity_lock' : formState.archetype}
+                                    onChange={e => {
+                                        const newArchetype = e.target.value;
+                                        const styleMap = FACE_ARCHETYPE_STYLE_MAP[newArchetype];
+                                        if (styleMap && newArchetype !== 'identity_lock') {
+                                            setFormState(prev => ({
+                                                ...prev,
+                                                archetype: newArchetype,
+                                                aestheticStyle: styleMap.aestheticStyle,
+                                                skinFinish: styleMap.skinFinish,
+                                                makeupStyle: styleMap.makeupStyle
+                                            }));
+                                        } else {
+                                            handleFormChange('archetype', newArchetype);
+                                        }
+                                    }}
+                                    disabled={faceReferences.length > 0}
+                                />
+                            </div>
+                        </div>
+
+                    {/* 智慧展開：面部特徵參考圖 */}
+                    <AnimatePresence>
+                      {(formState.archetype === 'identity_lock' || faceReferences.length > 0) && (
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="p-4 bg-[rgba(255,255,255,.4)] rounded-xl border border-[var(--home-line)] space-y-3 overflow-hidden"
+                        >
+                            <div className="flex justify-between items-start">
+                                <label className="text-[10px] font-bold text-[var(--color-brass)] tracking-wider text-left flex flex-col leading-tight">
+                                    <span>面部特徵參考圖</span>
+                                </label>
+                                <span className="text-[10px] text-[var(--home-muted)] font-mono pt-1">{faceReferences.length}/10</span>
+                            </div>
+                            <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
+                                {faceReferencePreviews.map((url, idx) => (
+                                    <div key={idx} className="relative min-w-[70px] h-[70px] rounded-lg overflow-hidden border border-[var(--home-line)] group flex-shrink-0">
+                                        <img src={url} className="w-full h-full object-cover" />
+                                        <button onClick={() => removeFaceReference(idx)} className="absolute inset-0 bg-red-600/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-[var(--home-ink)] transition-opacity">&times;</button>
+                                    </div>
+                                ))}
+                                {faceReferences.length < 10 && (
+                                    <label htmlFor="face-ref-final" className="min-w-[70px] h-[70px] bg-[rgba(255,255,255,.5)] border border-dashed border-[var(--home-line)] rounded-lg flex items-center justify-center cursor-pointer hover:border-brass transition-all flex-shrink-0">
+                                        <PhotoIcon className="w-5 h-5 text-[var(--home-muted)]" />
+                                    </label>
+                                )}
+                            </div>
+                            <input id="face-ref-final" type="file" className="hidden" accept="image/*" multiple onChange={handleFaceReferenceChange} />
+                            <p className="text-[9px] text-[var(--home-muted)] text-center">建議上傳多角度清晰正臉照，以獲得最佳特徵鎖定效果</p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </Card>
+
+                {/* 膚色與髮色 (原生理特徵卡搬移至臉部 tab) */}
+                <Card className="p-0 overflow-hidden border-none home-card">
+                  <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent flex justify-between items-center group">
+                    <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
+                      <div className="w-1 h-4 bg-brass"></div>
+                      <span className="group-hover:text-[var(--color-brass)] transition-colors">膚色與髮色</span>
+                    </h3>
+                  </div>
+                  <div className="p-6 space-y-7">
+                    <div className="grid grid-cols-2 gap-4">
+                        <Select label="膚色 (Skin Tone)" options={SKIN_TONE_OPTIONS} value={formState.skinTone} onChange={e => handleFormChange('skinTone', e.target.value)} />
+                        <Select
+                            label="髮色 (Hair Color)"
+                            options={[
+                                { value: 'black', label: '黑色 (Black)' },
+                                { value: 'brown', label: '棕色 (Brown)' },
+                                { value: 'blonde', label: '金髮 (Blonde)' },
+                                { value: 'silver', label: '銀髮 (Silver)' },
+                                { value: 'red', label: '紅髮 (Red)' }
+                            ]}
+                            value={formState.hairColor}
+                            onChange={e => handleFormChange('hairColor', e.target.value)}
+                        />
+                    </div>
+                  </div>
+                </Card>
+              </>
+            )}
+
+            {/* ===== TAB: 身形 ===== */}
+            {activeTab === 'body' && (
+              <Card className="p-0 overflow-hidden border-none home-card">
+                <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent flex justify-between items-center group">
+                  <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
+                    <div className="w-1 h-4 bg-brass"></div>
+                    <span className="group-hover:text-[var(--color-brass)] transition-colors">體態與比例</span>
+                  </h3>
+                </div>
+                <div className="p-6 space-y-7">
+                    {isExpertMode && (
+                      <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="space-y-6 overflow-hidden">
+                        <div className="space-y-3">
+                            <label className="block text-[11px] font-bold text-[var(--home-muted)] tracking-[0.2em] flex flex-col leading-tight">
+                                <span className="text-[var(--home-ink)]">網美等級</span>
+                            </label>
+                            <div className="flex gap-2">
+                                {[
+                                    { level: 1, label: '自然路人' },
+                                    { level: 2, label: '天然網美' },
+                                    { level: 3, label: '精修偶像' }
+                                ].map(({ level, label }) => (
+                                    <button
+                                        key={level}
+                                        onClick={() => handleFormChange('netRedLevel', level)}
+                                        className={`flex-1 py-2.5 rounded-xl border text-center transition-all ${
+                                            formState.netRedLevel === level
+                                                ? 'bg-brass text-black border-brass shadow-xl shadow-[var(--color-brass)]/20'
+                                                : 'bg-[rgba(255,255,255,.4)] text-[var(--home-muted)] border-[var(--home-line)] hover:border-[var(--home-line-strong)]'
+                                        }`}
+                                    >
+                                        <div className="text-[11px] font-bold">{label}</div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    <div className="space-y-4 pt-2 border-t border-[var(--home-line)]">
+                        <Select label="體態選項 (Physique)" options={PROPORTION_MODE_OPTIONS} value={formState.proportionMode} onChange={e => handlePhysiqueChange(e.target.value)} />
+                        <Slider label="身高 (Height)" min={150} max={200} unit="cm" value={formState.height} onChange={e => handleFormChange('height', Number(e.target.value))} />
+                    </div>
+                </div>
+              </Card>
+            )}
+
+            {/* ===== TAB: 靈魂人設 ===== */}
+            {activeTab === 'soul' && (
+              <>
+                {/* 1. 靈魂藍圖 (已移除姓名/性別/年齡，這三項在核心身分列常駐) */}
+                <Card className="p-0 overflow-hidden border-none home-card group/card">
+                  <div className="p-5 border-b border-[var(--home-line)] flex justify-between items-center bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent transition-all group-hover/card:from-[var(--color-brass)]/10">
+                    <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
+                      <div className="w-1 h-4 bg-brass"></div>
+                      <span className="group-hover/card:text-[var(--color-brass)] transition-colors">靈魂藍圖</span>
+                    </h3>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={handleRandomize}
+                        className="bg-[rgba(255,255,255,.4)] hover:bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] py-1.5 px-4 rounded-full transition-all group"
+                    >
+                        <span className="text-[10px] font-bold text-[var(--color-brass)]">隨機靈感</span>
+                    </motion.button>
+                  </div>
+                  <div className="p-6 space-y-7">
+                    <div className="grid grid-cols-2 gap-5 py-2">
+                        <Select label="核心氛圍 (VIBE)" options={CORE_VIBE_OPTIONS} value={formState.persona.coreVibe} onChange={e => handlePersonaUpdate('coreVibe', e.target.value)} />
+                        <Select label="MBTI (PERSONALITY)" options={MBTI_OPTIONS} value={formState.persona.mbti} onChange={e => handlePersonaUpdate('mbti', e.target.value)} />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 pt-2">
+                        <Select label="主力語氣 (TONE OF VOICE)" options={TONE_OPTIONS} value={formState.persona.toneOfVoice} onChange={e => handlePersonaUpdate('toneOfVoice', e.target.value)} />
+                        <div className="flex items-end justify-center pb-1">
+                            <p className="text-[9px] text-[var(--home-muted)] opacity-60">人設細節將隨「隨機靈感」自動生成</p>
+                        </div>
+                    </div>
+
+                    {/* 身份鎖定描述 - 靈魂核心 */}
+                    <div className="pt-4 border-t border-[var(--home-line)] space-y-3">
+                        <div className="flex justify-between items-center">
+                            <label className="block text-[11px] font-bold text-[var(--home-muted)] font-display tracking-[0.2em] leading-tight text-left">
+                                <span className="block text-[var(--home-ink)]">身份鎖定描述</span>
+                            </label>
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={handleGenerateLockedDescriptor}
+                                disabled={isGeneratingDescriptor}
+                                className="text-[10px] text-[var(--color-brass)] font-bold flex items-center gap-2 hover:opacity-80 transition-all disabled:opacity-30"
+                            >
+                                {isGeneratingDescriptor ? (
+                                    <div className="w-3 h-3 border-2 border-brass border-t-transparent rounded-full animate-spin"></div>
+                                ) : (
+                                    <span className="flex items-center gap-1.5 underline decoration-[0.5px] underline-offset-4">AI 草擬身分盒</span>
+                                )}
+                            </motion.button>
+                        </div>
+                        <textarea
+                            className="w-full h-24 bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-[11px] text-[var(--home-muted)] focus:border-brass focus:outline-none transition-all resize-none leading-relaxed placeholder:text-[var(--home-muted)] font-mono scrollbar-none"
+                            placeholder="描述這個 IP 的核心視覺特徵（英文），例如面部細節、骨架神韻等，這是維持生圖一致性的關鍵。"
+                            value={formState.persona.locked_descriptor}
+                            onChange={e => handlePersonaUpdate('locked_descriptor', e.target.value)}
+                        />
+                        <p className="text-[9px] text-[var(--home-muted)] leading-relaxed">
+                            * 身份鎖定是維護 IP 視覺一致性的最高級位字串。建議使用 AI 根據目前設定草擬後，再進行手動精煉。
+                        </p>
+                    </div>
+
+                    {/* Style Archetypes (矩陣 v2.0) */}
+                    <div className="pt-4 border-t border-[var(--home-line)]">
+                        <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 flex justify-between items-center font-display tracking-[0.2em]">
+                            <span className="text-[var(--home-ink)]">風格原型偏好</span>
+                            <span className="text-[9px] text-[var(--color-brass)] opacity-60">用於智慧穿搭路由</span>
+                        </label>
+                        <div className="flex flex-wrap gap-2">
+                            {STYLE_ARCHETYPES.filter(a => a.gender.includes(formState.gender as any) || a.gender.includes('unisex')).map(archetype => {
+                                const isSelected = formState.preferredArchetypes.includes(archetype.value);
+                                return (
+                                    <button
+                                        key={archetype.value}
+                                        onClick={() => {
+                                            setFormState(prev => {
+                                                const current = prev.preferredArchetypes;
+                                                const next = current.includes(archetype.value)
+                                                    ? current.filter(v => v !== archetype.value)
+                                                    : [...current, archetype.value];
+                                                return { ...prev, preferredArchetypes: next };
+                                            });
+                                        }}
+                                        className={`px-3 py-1.5 rounded-full text-[10px] font-bold transition-all border ${
+                                            isSelected
+                                            ? 'bg-brass text-black border-brass shadow-[0_0_15px_rgba(var(--color-brass-rgb),0.3)]'
+                                            : 'bg-[rgba(255,255,255,.4)] text-[var(--home-muted)] border-[var(--home-line)] hover:border-brass/50'
+                                        }`}
+                                    >
+                                        {archetype.label}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* 3. 環境與足跡 (Life Circuit) */}
+                <Card className="p-0 overflow-hidden border-none home-card">
+                  <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent group">
+                    <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
+                      <div className="w-1 h-4 bg-brass"></div>
+                      <span className="group-hover:text-[var(--color-brass)] transition-colors">環境與生活細節</span>
+                    </h3>
+                  </div>
+                  <div className="p-6 space-y-7">
+                    <div className="grid grid-cols-2 gap-5">
+                        <Select
+                            label="IP 活動縣市 (CITY)"
+                            options={TAIWAN_COUNTIES}
+                            value={formState.lifeCircuit.primaryCity}
+                            onChange={e => handleCircuitUpdate('primaryCity', e.target.value)}
+                        />
+                        <Select
+                            label="具體區域 (DISTRICT)"
+                            options={(TAIWAN_DISTRICT_DATA[formState.lifeCircuit.primaryCity] || []).map(d => ({ value: d, label: d }))}
+                            value={formState.lifeCircuit.primaryDistrict}
+                            onChange={e => handleCircuitUpdate('primaryDistrict', e.target.value)}
+                        />
+                    </div>
+                    <div className="grid grid-cols-2 gap-5">
+                        <div className={getFieldClass('profession')}>
+                            <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 min-h-[2.5rem] font-display tracking-[0.2em] leading-tight text-left">
+                                <span className="block text-[var(--home-ink)]">職業身分</span>
+                            </label>
+                            <input type="text" className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:outline-none transition-all" placeholder="如：藝術家、創作者" value={formState.persona.profession} onChange={e => handlePersonaUpdate('profession', e.target.value)} />
+                        </div>
+                        <Select label="核心興趣 (INTERESTS)" options={INTEREST_OPTIONS} value={formState.lifeCircuit.interests?.[0] || ''} onChange={e => handleCircuitUpdate('interests', [e.target.value])} />
+                    </div>
+                    <div className="grid grid-cols-2 gap-5">
+                        <div className={getFieldClass('pet')}>
+                            <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 min-h-[2.5rem] font-display tracking-[0.2em] leading-tight text-left">
+                                <span className="block text-[var(--home-ink)]">寵物</span>
+                            </label>
+                            <input
+                                type="text"
+                                className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:outline-none transition-all placeholder:text-[var(--home-muted)]"
+                                placeholder="例：橘貓 Mochi、柴犬 Koko"
+                                value={formatPetAnchor(formState.worldAnchors?.pet)}
+                                onChange={e => handlePetAnchorUpdate(e.target.value)}
+                            />
+                        </div>
+                        <div className={getFieldClass('iconicItems')}>
+                            <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 min-h-[2.5rem] font-display tracking-[0.2em] leading-tight text-left">
+                                <span className="block text-[var(--home-ink)]">標誌性物品</span>
+                            </label>
+                            <input
+                                type="text"
+                                className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:outline-none transition-all placeholder:text-[var(--home-muted)]"
+                                placeholder="例：總是帶著的底片相機、特定款式耳環"
+                                value={formState.worldAnchors?.iconicItems[0]?.name || ''}
+                                onChange={e => handleIconicItemsUpdate(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                  </div>
+                </Card>
+              </>
+            )}
+
+            {/* ===== TAB: 服裝造型 ===== */}
+            {activeTab === 'apparel' && (
+              <Card className="p-0 overflow-hidden border-none home-card">
+                <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent">
+                  <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
+                    <div className="w-1 h-4 bg-brass"></div>
+                    <span className="group-hover:text-[var(--color-brass)] transition-colors">專業服裝系統</span>
+                  </h3>
+                </div>
+                <div className="p-6 space-y-6">
+                    {/* 分類 Tab */}
+                    <div className="flex gap-2 bg-[rgba(255,255,255,.5)] p-1.5 rounded-2xl border border-[var(--home-line)] mb-4">
+                        {APPAREL_CATEGORIES.map(cat => (
+                            <button
+                              key={cat.id}
+                              onClick={() => setActiveApparelCat(cat.id)}
+                              className={`flex-1 py-2 text-[11px] font-bold rounded-xl transition-all duration-300 relative overflow-hidden ${activeApparelCat === cat.id ? 'bg-brass text-black shadow-[0_4px_20px_rgba(var(--color-brass-rgb),0.3)]' : 'text-[var(--home-muted)] hover:text-[var(--home-muted)] hover:bg-[rgba(255,255,255,.4)]'}`}
+                            >
+                                <span className="relative z-10">{cat.label.split(' (')[0]}</span>
+                                {activeApparelCat === cat.id && (
+                                    <motion.div
+                                      layoutId="apparel-tab-glare"
+                                      className="absolute inset-0 bg-[rgba(255,255,255,.25)] pointer-events-none"
+                                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                                    />
+                                )}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* 選項列表 - 加入動畫容器 */}
+                    <div className="max-h-[360px] overflow-y-auto pr-2 custom-scrollbar">
+                      <motion.div
+                          key={activeApparelCat}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.3 }}
+                          className="grid grid-cols-2 gap-3"
+                      >
+                        {APPAREL_ITEMS
+                          .filter(i => (i.gender === 'both' || i.gender === formState.gender) && i.category === activeApparelCat)
+                          .map((item, idx) => {
+                              const isSelected = formState.outfitItems.includes(item.id);
+                              return (
+                                  <motion.button
+                                      key={item.id}
+                                      initial={{ opacity: 0, scale: 0.95 }}
+                                      animate={{ opacity: 1, scale: 1 }}
+                                      transition={{ delay: idx * 0.03 }}
+                                      whileHover={{ scale: 1.02, y: -2 }}
+                                      whileTap={{ scale: 0.98 }}
+                                      onClick={() => {
+                                          let newItems = [...formState.outfitItems];
+                                          if (item.category === 'full_set') {
+                                              newItems = [item.id];
+                                          } else {
+                                              newItems = newItems.filter(id => {
+                                                  const found = APPAREL_ITEMS.find(ai => id === ai.id);
+                                                  return found?.category !== 'full_set';
+                                              });
+                                              newItems = newItems.filter(id => {
+                                                  const found = APPAREL_ITEMS.find(ai => id === ai.id);
+                                                  return found?.category !== item.category;
+                                              });
+                                              if (!isSelected) newItems.push(item.id);
+                                          }
+                                          handleFormChange('outfitItems', newItems);
+                                      }}
+                                      className={`p-4 rounded-2xl border text-left transition-all duration-300 relative overflow-hidden group/item flex flex-col justify-between h-[82px] ${isSelected ? 'bg-brass/15 border-brass/60 text-[var(--color-brass)] ring-1 ring-[var(--color-brass)]/30' : 'bg-[rgba(255,255,255,.4)] border-[var(--home-line)] text-[var(--home-muted)] hover:border-[var(--home-line-strong)] hover:bg-[rgba(255,255,255,.55)]'}`}
+                                  >
+                                      <div className="flex flex-col gap-0.5 relative z-10">
+                                          <span className={`text-[11px] font-bold tracking-tight leading-tight ${isSelected ? 'text-[var(--home-ink)]' : ''}`}>{item.label.split(' (')[0]}</span>
+                                      </div>
+
+                                      <div className="flex justify-end items-center mt-auto relative z-10">
+                                         {isSelected && (
+                                              <motion.div
+                                                  layoutId={`check-${item.id}`}
+                                                  className="w-1.5 h-1.5 bg-brass rounded-full shadow-[0_0_10px_var(--color-brass)]"
+                                              />
+                                         )}
+                                      </div>
+
+                                      {/* 裝飾線條 */}
+                                      <div className={`absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-white/10 to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity pointer-events-none -mr-8 -mt-8 rotate-45`} />
+
+                                      {isSelected && (
+                                          <motion.div
+                                              layoutId={`bg-active-${item.id}`}
+                                              className="absolute inset-0 bg-gradient-to-t from-[var(--color-brass)]/10 to-transparent pointer-events-none"
+                                          />
+                                      )}
+                                  </motion.button>
+                              );
+                          })
+                        }
+                      </motion.div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[var(--home-line)]">
+                        <Select
+                          label="影像比例 (Aspect Ratio)"
+                          options={[
+                              { value: '1:1', label: '1:1 (Square)' },
+                              { value: '4:5', label: '4:5 (Portrait)' },
+                              { value: '9:16', label: '9:16 (Tall)' },
+                              { value: '16:9', label: '16:9 (Wide)' }
+                          ]}
+                          value={formState.isMultiAngle ? '16:9' : (formState.ratio || '1:1')}
+                          onChange={e => !formState.isMultiAngle && handleFormChange('ratio', e.target.value)}
+                          disabled={formState.isMultiAngle}
+                        />
+                        <Select
+                          label="畫質階級 (Quality Level)"
+                          options={[
+                              { value: 'standard', label: '標準 (Standard)' },
+                              { value: 'high', label: '高畫質 (Pro 2K)' },
+                              { value: 'ultra', label: '超高畫質 (Pro 4K)' }
+                          ]}
+                          value={generationQuality}
+                          onChange={e => setGenerationQuality(e.target.value as QualityLevel)}
+                        />
+                    </div>
+
+                    <div className={`flex items-center justify-between p-4 rounded-xl border transition-all ${formState.isMultiAngle ? 'bg-brass/10 border-brass/30' : 'bg-[rgba(255,255,255,.4)] border-[var(--home-line)]'}`}>
+                        <div className="flex flex-col items-start text-left">
+                            <span className="text-[11px] font-bold text-[var(--home-ink)] tracking-wider">多視角同步生成</span>
+                            <span className="text-[9px] text-[var(--home-muted)] mt-1">一次產出 4-6 個不同角度的同型人物</span>
+                        </div>
+                        <button
+                          onClick={() => handleFormChange('isMultiAngle', !formState.isMultiAngle)}
+                          className={`w-12 h-6 rounded-full transition-all relative ${formState.isMultiAngle ? 'bg-brass' : 'bg-[rgba(255,255,255,.5)]'}`}
+                        >
+                            <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${formState.isMultiAngle ? 'left-7 shadow-lg' : 'left-1'}`}></div>
+                        </button>
+                    </div>
+
+                    <div className="space-y-4">
+                        <div className="flex justify-between items-start">
+                            <h4 className="text-[10px] font-bold text-[var(--home-muted)] flex flex-col items-start leading-tight">
+                                <span>生活感強度</span>
+                            </h4>
+                            <span className="text-[10px] font-bold text-[var(--color-brass)] pt-1">LV.{formState.fidelityScale}</span>
+                        </div>
+                        <div className="flex gap-2">
+                            {[1,2,3,4,5].map(lvl => (
+                                <button key={lvl} onClick={() => handleFormChange('fidelityScale', lvl)} className={`flex-1 h-10 rounded-xl border text-[10px] font-bold transition-all ${formState.fidelityScale === lvl ? 'bg-brass text-black border-brass shadow-xl shadow-[var(--color-brass)]/20' : 'bg-[rgba(255,255,255,.4)] text-[var(--home-muted)] border-[var(--home-line)]'}`}>
+                                    {lvl === 1 ? '影棚' : lvl === 3 ? '街頭' : lvl === 5 ? '隨手' : lvl}
                                 </button>
                             ))}
                         </div>
                     </div>
-                  </motion.div>
-                )}
-
-                <div className="grid grid-cols-2 gap-4">
-                    <Select label="膚色 (Skin Tone)" options={SKIN_TONE_OPTIONS} value={formState.skinTone} onChange={e => handleFormChange('skinTone', e.target.value)} />
-                    <Select 
-                        label="髮色 (Hair Color)" 
-                        options={[
-                            { value: 'black', label: '黑色 (Black)' },
-                            { value: 'brown', label: '棕色 (Brown)' },
-                            { value: 'blonde', label: '金髮 (Blonde)' },
-                            { value: 'silver', label: '銀髮 (Silver)' },
-                            { value: 'red', label: '紅髮 (Red)' }
-                        ]} 
-                        value={formState.hairColor} 
-                        onChange={e => handleFormChange('hairColor', e.target.value)} 
-                    />
                 </div>
+              </Card>
+            )}
 
-                <div className="space-y-4 pt-2 border-t border-[var(--home-line)]">
-                    <Select label="體態選項 (Physique)" options={PROPORTION_MODE_OPTIONS} value={formState.proportionMode} onChange={e => handlePhysiqueChange(e.target.value)} />
-                    <Slider label="身高 (Height)" min={150} max={200} unit="cm" value={formState.height} onChange={e => handleFormChange('height', Number(e.target.value))} />
-                </div>
-              </div>
-            </Card>
+            {/* Sticky wrapper：讓生成按鈕常駐可見，切 tab 時不消失、不用捲到底才能按。
+                上緣用 home-paper 漸層墊出淡出區，避免內容捲動時從按鈕上方穿透。 */}
+            <div className="sticky bottom-4 z-20 pt-6 -mx-1 px-1 bg-gradient-to-t from-[var(--home-paper)] via-[var(--home-paper)] to-transparent">
+              <motion.button
+                  whileHover={{ scale: 1.01, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleGenerate}
+                  disabled={isLoading}
+                  className="home-btn-primary w-full py-5 rounded-2xl flex flex-col items-center gap-1 group relative overflow-hidden transition-all duration-300 disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed"
+              >
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[rgba(255,255,255,.2)] to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none"></div>
+                  <span className="text-base font-black tracking-widest relative z-10 flex items-center gap-2">
+                      {isLoading ? (
+                          <>
+                              <div className="w-4 h-4 border-2 border-[rgba(255,250,242,.4)] border-t-[var(--home-paper)] rounded-full animate-spin"></div>
+                              <span>時空傳送中...</span>
+                          </>
+                      ) : (
+                          '開啟時空膠囊'
+                      )}
+                  </span>
+                  <span className="text-[9px] opacity-70 tracking-[0.3em] font-light relative z-10">建構專屬 IP 人格</span>
 
-            {/* 3. 環境與足跡 (Life Circuit) */}
-            <Card className="p-0 overflow-hidden border-none home-card">
-              <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent group">
-                <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
-                  <div className="w-1 h-4 bg-brass"></div>
-                  <span className="group-hover:text-[var(--color-brass)] transition-colors">環境與生活細節</span>
-                </h3>
-              </div>
-              <div className="p-6 space-y-7">
-                <div className="grid grid-cols-2 gap-5">
-                    <Select 
-                        label="IP 活動縣市 (CITY)" 
-                        options={TAIWAN_COUNTIES} 
-                        value={formState.lifeCircuit.primaryCity} 
-                        onChange={e => handleCircuitUpdate('primaryCity', e.target.value)} 
-                    />
-                    <Select 
-                        label="具體區域 (DISTRICT)" 
-                        options={(TAIWAN_DISTRICT_DATA[formState.lifeCircuit.primaryCity] || []).map(d => ({ value: d, label: d }))} 
-                        value={formState.lifeCircuit.primaryDistrict} 
-                        onChange={e => handleCircuitUpdate('primaryDistrict', e.target.value)} 
-                    />
-                </div>
-                <div className="grid grid-cols-2 gap-5">
-                    <div className={getFieldClass('profession')}>
-                        <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 min-h-[2.5rem] font-display tracking-[0.2em] leading-tight text-left">
-                            <span className="block text-[var(--home-ink)]">職業身分</span>
-                        </label>
-                        <input type="text" className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:outline-none transition-all" placeholder="如：藝術家、創作者" value={formState.persona.profession} onChange={e => handlePersonaUpdate('profession', e.target.value)} />
-                    </div>
-                    <Select label="核心興趣 (INTERESTS)" options={INTEREST_OPTIONS} value={formState.lifeCircuit.interests?.[0] || ''} onChange={e => handleCircuitUpdate('interests', [e.target.value])} />
-                </div>
-                <div className="grid grid-cols-2 gap-5">
-                    <div className={getFieldClass('pet')}>
-                        <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 min-h-[2.5rem] font-display tracking-[0.2em] leading-tight text-left">
-                            <span className="block text-[var(--home-ink)]">寵物</span>
-                        </label>
-                        <input
-                            type="text"
-                            className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:outline-none transition-all placeholder:text-[var(--home-muted)]"
-                            placeholder="例：橘貓 Mochi、柴犬 Koko"
-                            value={formatPetAnchor(formState.worldAnchors?.pet)}
-                            onChange={e => handlePetAnchorUpdate(e.target.value)}
-                        />
-                    </div>
-                    <div className={getFieldClass('iconicItems')}>
-                        <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 min-h-[2.5rem] font-display tracking-[0.2em] leading-tight text-left">
-                            <span className="block text-[var(--home-ink)]">標誌性物品</span>
-                        </label>
-                        <input
-                            type="text"
-                            className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:outline-none transition-all placeholder:text-[var(--home-muted)]"
-                            placeholder="例：總是帶著的底片相機、特定款式耳環"
-                            value={formState.worldAnchors?.iconicItems[0]?.name || ''}
-                            onChange={e => handleIconicItemsUpdate(e.target.value)}
-                        />
-                    </div>
-                </div>
-              </div>
-            </Card>
-
-            {/* 4. 專業服裝系統 (Apparel Curation) */}
-            <Card className="p-0 overflow-hidden border-none home-card">
-              <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent">
-                <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
-                  <div className="w-1 h-4 bg-brass"></div>
-                  <span className="group-hover:text-[var(--color-brass)] transition-colors">專業服裝系統</span>
-                </h3>
-              </div>
-              <div className="p-6 space-y-6">
-                  {/* 分類 Tab */}
-                  <div className="flex gap-2 bg-[rgba(255,255,255,.5)] p-1.5 rounded-2xl border border-[var(--home-line)] mb-4">
-                      {APPAREL_CATEGORIES.map(cat => (
-                          <button
-                            key={cat.id}
-                            onClick={() => setActiveApparelCat(cat.id)}
-                            className={`flex-1 py-2 text-[11px] font-bold rounded-xl transition-all duration-300 relative overflow-hidden ${activeApparelCat === cat.id ? 'bg-brass text-black shadow-[0_4px_20px_rgba(var(--color-brass-rgb),0.3)]' : 'text-[var(--home-muted)] hover:text-[var(--home-muted)] hover:bg-[rgba(255,255,255,.4)]'}`}
-                          >
-                              <span className="relative z-10">{cat.label.split(' (')[0]}</span>
-                              {activeApparelCat === cat.id && (
-                                  <motion.div
-                                    layoutId="apparel-tab-glare"
-                                    className="absolute inset-0 bg-[rgba(255,255,255,.25)] pointer-events-none"
-                                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                  />
-                              )}
-                          </button>
-                      ))}
-                  </div>
-
-                  {/* 選項列表 - 加入動畫容器 */}
-                  <div className="max-h-[360px] overflow-y-auto pr-2 custom-scrollbar">
-                    <motion.div 
-                        key={activeApparelCat}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.3 }}
-                        className="grid grid-cols-2 gap-3"
-                    >
-                      {APPAREL_ITEMS
-                        .filter(i => (i.gender === 'both' || i.gender === formState.gender) && i.category === activeApparelCat)
-                        .map((item, idx) => {
-                            const isSelected = formState.outfitItems.includes(item.id);
-                            return (
-                                <motion.button
-                                    key={item.id}
-                                    initial={{ opacity: 0, scale: 0.95 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ delay: idx * 0.03 }}
-                                    whileHover={{ scale: 1.02, y: -2 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    onClick={() => {
-                                        let newItems = [...formState.outfitItems];
-                                        if (item.category === 'full_set') {
-                                            newItems = [item.id];
-                                        } else {
-                                            newItems = newItems.filter(id => {
-                                                const found = APPAREL_ITEMS.find(ai => id === ai.id);
-                                                return found?.category !== 'full_set';
-                                            });
-                                            newItems = newItems.filter(id => {
-                                                const found = APPAREL_ITEMS.find(ai => id === ai.id);
-                                                return found?.category !== item.category;
-                                            });
-                                            if (!isSelected) newItems.push(item.id);
-                                        }
-                                        handleFormChange('outfitItems', newItems);
-                                    }}
-                                    className={`p-4 rounded-2xl border text-left transition-all duration-300 relative overflow-hidden group/item flex flex-col justify-between h-[82px] ${isSelected ? 'bg-brass/15 border-brass/60 text-[var(--color-brass)] ring-1 ring-[var(--color-brass)]/30' : 'bg-[rgba(255,255,255,.4)] border-[var(--home-line)] text-[var(--home-muted)] hover:border-[var(--home-line-strong)] hover:bg-[rgba(255,255,255,.55)]'}`}
-                                >
-                                    <div className="flex flex-col gap-0.5 relative z-10">
-                                        <span className={`text-[11px] font-bold tracking-tight leading-tight ${isSelected ? 'text-[var(--home-ink)]' : ''}`}>{item.label.split(' (')[0]}</span>
-                                    </div>
-
-                                    <div className="flex justify-end items-center mt-auto relative z-10">
-                                       {isSelected && (
-                                            <motion.div
-                                                layoutId={`check-${item.id}`}
-                                                className="w-1.5 h-1.5 bg-brass rounded-full shadow-[0_0_10px_var(--color-brass)]"
-                                            />
-                                       )}
-                                    </div>
-
-                                    {/* 裝飾線條 */}
-                                    <div className={`absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-white/10 to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity pointer-events-none -mr-8 -mt-8 rotate-45`} />
-
-                                    {isSelected && (
-                                        <motion.div 
-                                            layoutId={`bg-active-${item.id}`}
-                                            className="absolute inset-0 bg-gradient-to-t from-[var(--color-brass)]/10 to-transparent pointer-events-none" 
-                                        />
-                                    )}
-                                </motion.button>
-                            );
-                        })
-                      }
-                    </motion.div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[var(--home-line)]">
-                      <Select 
-                        label="影像比例 (Aspect Ratio)" 
-                        options={[
-                            { value: '1:1', label: '1:1 (Square)' },
-                            { value: '4:5', label: '4:5 (Portrait)' },
-                            { value: '9:16', label: '9:16 (Tall)' },
-                            { value: '16:9', label: '16:9 (Wide)' }
-                        ]} 
-                        value={formState.isMultiAngle ? '16:9' : (formState.ratio || '1:1')} 
-                        onChange={e => !formState.isMultiAngle && handleFormChange('ratio', e.target.value)} 
-                        disabled={formState.isMultiAngle}
-                      />
-                      <Select 
-                        label="畫質階級 (Quality Level)" 
-                        options={[
-                            { value: 'standard', label: '標準 (Standard)' },
-                            { value: 'high', label: '高畫質 (Pro 2K)' },
-                            { value: 'ultra', label: '超高畫質 (Pro 4K)' }
-                        ]} 
-                        value={generationQuality} 
-                        onChange={e => setGenerationQuality(e.target.value as QualityLevel)} 
-                      />
-                  </div>
-                  
-                  <div className={`flex items-center justify-between p-4 rounded-xl border transition-all ${formState.isMultiAngle ? 'bg-brass/10 border-brass/30' : 'bg-[rgba(255,255,255,.4)] border-[var(--home-line)]'}`}>
-                      <div className="flex flex-col items-start text-left">
-                          <span className="text-[11px] font-bold text-[var(--home-ink)] tracking-wider">多視角同步生成</span>
-                          <span className="text-[9px] text-[var(--home-muted)] mt-1">一次產出 4-6 個不同角度的同型人物</span>
-                      </div>
-                      <button 
-                        onClick={() => handleFormChange('isMultiAngle', !formState.isMultiAngle)}
-                        className={`w-12 h-6 rounded-full transition-all relative ${formState.isMultiAngle ? 'bg-brass' : 'bg-[rgba(255,255,255,.5)]'}`}
-                      >
-                          <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${formState.isMultiAngle ? 'left-7 shadow-lg' : 'left-1'}`}></div>
-                      </button>
-                  </div>
-
-                  <div className="space-y-4">
-                      <div className="flex justify-between items-start">
-                          <h4 className="text-[10px] font-bold text-[var(--home-muted)] flex flex-col items-start leading-tight">
-                              <span>生活感強度</span>
-                          </h4>
-                          <span className="text-[10px] font-bold text-[var(--color-brass)] pt-1">LV.{formState.fidelityScale}</span>
-                      </div>
-                      <div className="flex gap-2">
-                          {[1,2,3,4,5].map(lvl => (
-                              <button key={lvl} onClick={() => handleFormChange('fidelityScale', lvl)} className={`flex-1 h-10 rounded-xl border text-[10px] font-bold transition-all ${formState.fidelityScale === lvl ? 'bg-brass text-black border-brass shadow-xl shadow-[var(--color-brass)]/20' : 'bg-[rgba(255,255,255,.4)] text-[var(--home-muted)] border-[var(--home-line)]'}`}>
-                                  {lvl === 1 ? '影棚' : lvl === 3 ? '街頭' : lvl === 5 ? '隨手' : lvl}
-                              </button>
-                          ))}
-                      </div>
-                  </div>
-              </div>
-            </Card>
-
-            <motion.button
-                whileHover={{ scale: 1.01, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={handleGenerate}
-                disabled={isLoading}
-                className="home-btn-primary w-full py-5 rounded-2xl flex flex-col items-center gap-1 group relative overflow-hidden transition-all duration-300 disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed"
-            >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[rgba(255,255,255,.2)] to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none"></div>
-                <span className="text-base font-black tracking-widest relative z-10 flex items-center gap-2">
-                    {isLoading ? (
-                        <>
-                            <div className="w-4 h-4 border-2 border-[rgba(255,250,242,.4)] border-t-[var(--home-paper)] rounded-full animate-spin"></div>
-                            <span>時空傳送中...</span>
-                        </>
-                    ) : (
-                        '開啟時空膠囊'
-                    )}
-                </span>
-                <span className="text-[9px] opacity-70 tracking-[0.3em] font-light relative z-10">建構專屬 IP 人格</span>
-
-                {isLoading && (
-                   <motion.div
-                     initial={{ scaleX: 0 }}
-                     animate={{ scaleX: 1 }}
-                     transition={{ duration: 3, ease: "easeInOut" }}
-                     className="absolute bottom-0 left-0 right-0 h-1 bg-[rgba(255,255,255,.3)] origin-left"
-                   />
-                )}
-            </motion.button>
+                  {isLoading && (
+                     <motion.div
+                       initial={{ scaleX: 0 }}
+                       animate={{ scaleX: 1 }}
+                       transition={{ duration: 3, ease: "easeInOut" }}
+                       className="absolute bottom-0 left-0 right-0 h-1 bg-[rgba(255,255,255,.3)] origin-left"
+                     />
+                  )}
+              </motion.button>
+            </div>
         </div>
 
         {/* Right Column: Preview */}
@@ -1255,7 +1364,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                     </button>
                 </motion.div>
             )}
-            
+
             <Card className="flex-1 min-h-[500px] border-none home-card p-8">
                <div className="flex justify-between items-start mb-8 border-b border-[var(--home-line)] pb-4">
                   <h3 className="text-xl font-bold tracking-widest text-[var(--home-ink)] flex flex-col items-start leading-tight">
@@ -1263,7 +1372,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                   </h3>
                   <div className="text-[10px] text-[var(--home-muted)] font-mono pt-2">數量：{generatedModels.length}</div>
                </div>
-               
+
                {generatedModels.length > 0 ? (
                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                        <AnimatePresence>
