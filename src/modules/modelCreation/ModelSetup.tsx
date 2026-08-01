@@ -183,6 +183,8 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
   const [isGeneratingPersona, setIsGeneratingPersona] = useState(false);
   const [isGeneratingDescriptor, setIsGeneratingDescriptor] = useState(false);
   const [isExpertMode, setIsExpertMode] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showFaceAdvanced, setShowFaceAdvanced] = useState(false);
   const [selectedPresetId, setSelectedPresetId] = useState('custom');
   const [faceReferences, setFaceReferences] = useState<File[]>([]);
   const [faceReferencePreviews, setFaceReferencePreviews] = useState<string[]>([]);
@@ -719,7 +721,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
         {/* Left Column: Settings */}
-        <div className={`lg:col-span-5 xl:col-span-4 space-y-6 ${mobileTab === 'settings' ? 'block' : 'hidden lg:block'}`}>
+        <div className={`lg:col-span-5 xl:col-span-4 space-y-6 pb-28 ${mobileTab === 'settings' ? 'block' : 'hidden lg:block'}`}>
 
             {/* 核心身分列 (常駐：不論切到哪個 tab 都顯示，姓名/性別/年齡從靈魂藍圖卡搬出；瘦身為單行緊湊排列) */}
             <Card className="p-0 overflow-hidden border-none home-card">
@@ -939,6 +941,62 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                             onChange={e => handleFormChange('hairColor', e.target.value)}
                         />
                     </div>
+                    <Select
+                        label="髮型 (Hair Style)"
+                        options={formState.gender === 'male' ? MALE_HAIR_STYLE_OPTIONS : FEMALE_HAIR_STYLE_OPTIONS}
+                        value={formState.hairStyle}
+                        onChange={e => handleFormChange('hairStyle', e.target.value)}
+                    />
+                  </div>
+                </Card>
+
+                {/* 進階微調：眼型／髮長／瀏海／膚質妝感／妝容風格 */}
+                <Card className="p-0 overflow-hidden border-none home-card">
+                  <div className="p-6">
+                    <button
+                        type="button"
+                        onClick={() => setShowFaceAdvanced(!showFaceAdvanced)}
+                        className="w-full flex justify-between items-center py-1 group"
+                    >
+                        <span className="text-[11px] font-bold text-[var(--home-ink)] tracking-[0.2em] group-hover:text-[var(--color-brass)] transition-colors">進階微調</span>
+                        <span className="text-[10px] font-bold text-[var(--color-brass)]">{showFaceAdvanced ? '收合 ▲' : '展開 ▼'}</span>
+                    </button>
+                    {showFaceAdvanced && (
+                      <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="space-y-4 overflow-hidden pt-5">
+                          <div className="grid grid-cols-2 gap-4">
+                              <Select
+                                  label="眼型 (Eye Shape)"
+                                  options={EYE_SHAPE_OPTIONS}
+                                  value={formState.eyeShape}
+                                  onChange={e => handleFormChange('eyeShape', e.target.value)}
+                              />
+                              <Select
+                                  label="髮長 (Hair Length)"
+                                  options={formState.gender === 'male' ? MALE_HAIR_LENGTH_OPTIONS : FEMALE_HAIR_LENGTH_OPTIONS}
+                                  value={formState.hairLength}
+                                  onChange={e => handleFormChange('hairLength', e.target.value)}
+                              />
+                              <Select
+                                  label="瀏海 (Bangs)"
+                                  options={formState.gender === 'male' ? MALE_HAIR_BANG_OPTIONS : FEMALE_HAIR_BANG_OPTIONS}
+                                  value={formState.hairBang}
+                                  onChange={e => handleFormChange('hairBang', e.target.value)}
+                              />
+                              <Select
+                                  label="膚質妝感 (Skin Finish)"
+                                  options={formState.gender === 'male' ? SKIN_FINISH_OPTIONS.male : SKIN_FINISH_OPTIONS.female}
+                                  value={formState.skinFinish}
+                                  onChange={e => handleFormChange('skinFinish', e.target.value)}
+                              />
+                              <Select
+                                  label="妝容風格 (Makeup Style)"
+                                  options={formState.gender === 'male' ? MAKEUP_STYLE_OPTIONS.male : MAKEUP_STYLE_OPTIONS.female}
+                                  value={formState.makeupStyle}
+                                  onChange={e => handleFormChange('makeupStyle', e.target.value)}
+                              />
+                          </div>
+                      </motion.div>
+                    )}
                   </div>
                 </Card>
               </>
@@ -954,38 +1012,111 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                   </h3>
                 </div>
                 <div className="p-6 space-y-7">
-                    {isExpertMode && (
-                      <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="space-y-6 overflow-hidden">
-                        <div className="space-y-3">
-                            <label className="block text-[11px] font-bold text-[var(--home-muted)] tracking-[0.2em] flex flex-col leading-tight">
-                                <span className="text-[var(--home-ink)]">網美等級</span>
-                            </label>
-                            <div className="flex gap-2">
-                                {[
-                                    { level: 1, label: '自然路人' },
-                                    { level: 2, label: '天然網美' },
-                                    { level: 3, label: '精修偶像' }
-                                ].map(({ level, label }) => (
-                                    <button
-                                        key={level}
-                                        onClick={() => handleFormChange('netRedLevel', level)}
-                                        className={`flex-1 py-2.5 rounded-xl border text-center transition-all ${
-                                            formState.netRedLevel === level
-                                                ? 'bg-brass text-black border-brass shadow-xl shadow-[var(--color-brass)]/20'
-                                                : 'bg-[rgba(255,255,255,.4)] text-[var(--home-muted)] border-[var(--home-line)] hover:border-[var(--home-line-strong)]'
-                                        }`}
-                                    >
-                                        <div className="text-[11px] font-bold">{label}</div>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                      </motion.div>
-                    )}
-
-                    <div className="space-y-4 pt-2 border-t border-[var(--home-line)]">
+                    <div className="space-y-4">
                         <Select label="體態選項 (Physique)" options={PROPORTION_MODE_OPTIONS} value={formState.proportionMode} onChange={e => handlePhysiqueChange(e.target.value)} />
                         <Slider label="身高 (Height)" min={150} max={200} unit="cm" value={formState.height} onChange={e => handleFormChange('height', Number(e.target.value))} />
+                    </div>
+
+                    {/* 進階微調摺疊區：身材滑桿 + 網美等級 + 精確體型約束開關 */}
+                    <div className="pt-4 border-t border-[var(--home-line)]">
+                        <button
+                            type="button"
+                            onClick={() => setShowAdvanced(!showAdvanced)}
+                            className="w-full flex justify-between items-center py-1 group"
+                        >
+                            <span className="text-[11px] font-bold text-[var(--home-ink)] tracking-[0.2em] group-hover:text-[var(--color-brass)] transition-colors">進階微調</span>
+                            <span className="text-[10px] font-bold text-[var(--color-brass)]">{showAdvanced ? '收合 ▲' : '展開 ▼'}</span>
+                        </button>
+
+                        {showAdvanced && (
+                          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="space-y-6 overflow-hidden pt-5">
+                              {/* 身材滑桿：以服裝版型語言呈現，依性別顯示對應維度 */}
+                              <div className="space-y-4">
+                                  {formState.gender === 'female' ? (
+                                      <>
+                                          <Slider
+                                              label="體態曲線"
+                                              min={0}
+                                              max={100}
+                                              unit="%"
+                                              value={formState.physiqueCurvature}
+                                              safetyStatus={getSafetyStatus('physiqueCurvature', formState.physiqueCurvature)}
+                                              onChange={e => handleFormChange('physiqueCurvature', Number(e.target.value))}
+                                          />
+                                          <Slider
+                                              label="上身輪廓"
+                                              min={0}
+                                              max={100}
+                                              unit="%"
+                                              value={formState.bustTension}
+                                              safetyStatus={getSafetyStatus('bustTension', formState.bustTension)}
+                                              onChange={e => handleFormChange('bustTension', Number(e.target.value))}
+                                          />
+                                      </>
+                                  ) : (
+                                      <>
+                                          <Slider
+                                              label="肌肉線條"
+                                              min={0}
+                                              max={100}
+                                              unit="%"
+                                              value={formState.muscularDensity}
+                                              onChange={e => handleFormChange('muscularDensity', Number(e.target.value))}
+                                          />
+                                          <Slider
+                                              label="肩背比例"
+                                              min={0}
+                                              max={100}
+                                              unit="%"
+                                              value={formState.vTaperScale}
+                                              onChange={e => handleFormChange('vTaperScale', Number(e.target.value))}
+                                          />
+                                      </>
+                                  )}
+                              </div>
+
+                              {/* 網美等級（原本被 isExpertMode gate，改收進進階區） */}
+                              <div className="space-y-3 pt-4 border-t border-[var(--home-line)]">
+                                  <label className="block text-[11px] font-bold text-[var(--home-muted)] tracking-[0.2em] flex flex-col leading-tight">
+                                      <span className="text-[var(--home-ink)]">網美等級</span>
+                                  </label>
+                                  <div className="flex gap-2">
+                                      {[
+                                          { level: 1, label: '自然路人' },
+                                          { level: 2, label: '天然網美' },
+                                          { level: 3, label: '精修偶像' }
+                                      ].map(({ level, label }) => (
+                                          <button
+                                              key={level}
+                                              onClick={() => handleFormChange('netRedLevel', level)}
+                                              className={`flex-1 py-2.5 rounded-xl border text-center transition-all ${
+                                                  formState.netRedLevel === level
+                                                      ? 'bg-brass text-black border-brass shadow-xl shadow-[var(--color-brass)]/20'
+                                                      : 'bg-[rgba(255,255,255,.4)] text-[var(--home-muted)] border-[var(--home-line)] hover:border-[var(--home-line-strong)]'
+                                              }`}
+                                          >
+                                              <div className="text-[11px] font-bold">{label}</div>
+                                          </button>
+                                      ))}
+                                  </div>
+                              </div>
+
+                              {/* 精確體型約束（isExpertMode）：純顯示的 showAdvanced 不影響它，需使用者另外開啟 */}
+                              <div className="pt-4 border-t border-[var(--home-line)] flex items-start justify-between gap-4">
+                                  <div>
+                                      <div className="text-[11px] font-bold text-[var(--home-ink)] tracking-[0.2em]">精確體型約束（專家）</div>
+                                      <p className="text-[9px] text-[var(--home-muted)] mt-1.5 leading-relaxed">開啟後將嚴格套用上方體型設定進行生成，關閉時 AI 保有自然發揮空間。</p>
+                                  </div>
+                                  <button
+                                      type="button"
+                                      onClick={() => setIsExpertMode(!isExpertMode)}
+                                      className={`shrink-0 px-4 py-1.5 rounded-full border text-[10px] font-bold transition-all ${isExpertMode ? 'bg-brass text-black border-brass' : 'border-[var(--home-line)] text-[var(--home-muted)] hover:border-brass'}`}
+                                  >
+                                      {isExpertMode ? '已開啟' : '已關閉'}
+                                  </button>
+                              </div>
+                          </motion.div>
+                        )}
                     </div>
                 </div>
               </Card>

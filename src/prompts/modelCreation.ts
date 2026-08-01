@@ -18,6 +18,30 @@ const SKIN_TONE_DESC_MAP: Record<string, string> = {
     deep: 'rich deep bronze, smooth, even and luminous East Asian complexion'
 };
 
+// PR-E: makeupStyle/hairLength/hairBang 語意化英文映射（鍵對應 modelPresets.ts 的
+// MAKEUP_STYLE_OPTIONS / FEMALE_HAIR_LENGTH_OPTIONS / MALE_HAIR_LENGTH_OPTIONS /
+// FEMALE_HAIR_BANG_OPTIONS / MALE_HAIR_BANG_OPTIONS value，兩性別選項有重疊值故合併成單一 map）。
+const MAKEUP_STYLE_DESC_MAP: Record<string, string> = {
+    natural: 'a natural "no-makeup makeup" look, soft and barely-there',
+    glam: 'glamorous full-coverage makeup with defined contour and bold color',
+    no_makeup: 'a completely bare face with no makeup at all',
+    k_pop: 'K-pop idol-style makeup with soft gradient lips and a dewy glass-skin base',
+    grooming: 'a clean, well-groomed complexion with skincare-forward grooming, no visible makeup'
+};
+
+const HAIR_LENGTH_DESC_MAP: Record<string, string> = {
+    short: 'short length',
+    medium: 'medium length',
+    long: 'long length'
+};
+
+const HAIR_BANG_DESC_MAP: Record<string, string> = {
+    none: 'no bangs, hair swept back cleanly from the forehead',
+    curtain: 'soft curtain bangs framing the face',
+    full: 'full blunt bangs across the forehead',
+    side: 'a side-swept part'
+};
+
 // 1. AESTHETIC STYLE MAPPING (Gender Specific)
 const AESTHETIC_MAP: Record<string, Record<string, string>> = {
     female: {
@@ -353,8 +377,14 @@ export const buildModelPrompt = (params: any) => {
     } else {
         prompt += `Face: Locked to Reference Images (BIOMETRIC_LOCK: ACTIVE).\n`;
     }
-    prompt += `Skin: Confirming "${SKIN_TONE_DESC_MAP[params.skinTone] ?? params.skinTone}" tone with ${params.skinFinish} finish.\n`;
-    prompt += `Hair: Confirming "${params.hairColor}" color. Style: ${params.hairStyle}.\n`;
+    const makeupDesc = params.makeupStyle ? (MAKEUP_STYLE_DESC_MAP[params.makeupStyle] ?? params.makeupStyle) : 'a natural everyday makeup look';
+    prompt += `Skin: Confirming "${SKIN_TONE_DESC_MAP[params.skinTone] ?? params.skinTone}" tone with ${params.skinFinish} finish. Makeup: ${makeupDesc}.\n`;
+
+    const hairLengthDesc = params.hairLength ? (HAIR_LENGTH_DESC_MAP[params.hairLength] ?? `${params.hairLength} length`) : '';
+    const hairBangDesc = params.hairBang ? (HAIR_BANG_DESC_MAP[params.hairBang] ?? params.hairBang) : '';
+    const hairDetailParts = [hairLengthDesc, hairBangDesc].filter(Boolean);
+    const hairDetailSuffix = hairDetailParts.length > 0 ? `, ${hairDetailParts.join(', ')}` : '';
+    prompt += `Hair: Confirming "${params.hairColor}" color. Style: ${params.hairStyle}${hairDetailSuffix}.\n`;
     prompt += `Body: ${params.proportionMode} proportions. Height: ${params.height}cm. Head-to-body ratio: ${params.headBodyRatio || 8.0} heads.\n\n`;
 
     let outfitPrompt = '';
