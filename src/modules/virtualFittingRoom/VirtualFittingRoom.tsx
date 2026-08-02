@@ -548,6 +548,8 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
 
             const config = {
                 usePro: quality !== 'standard',
+                // 此路徑的實際解析度為 1K/2K/4K：fittingService 只在 usePro 為真時才送 imageSize，
+                // 因此 standard（usePro=false）自然落在 API 預設 1K。行為已正確，維持原映射。
                 resolution: quality === 'ultra' ? '4K' : '2K' as '2K' | '4K',
                 aspectRatio: targetAspectRatio,
                 isFirstTime,
@@ -1110,7 +1112,7 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
                                     </div>
                                 </div>
 
-                                <Select label="渲染品質" options={[{value: 'standard', label: '標準 (Flash)'}, {value: 'high', label: '高品質 (2K)'}, {value: 'ultra', label: '超高畫質 (4K)'}]} value={quality} onChange={e => setQuality(e.target.value as QualityLevel)} />
+                                <Select label="渲染品質" options={[{value: 'standard', label: '草稿 (1K)'}, {value: 'high', label: '標準 (2K)'}, {value: 'ultra', label: '商業級 (4K)'}]} value={quality} onChange={e => setQuality(e.target.value as QualityLevel)} />
                                 <Select label="圖片比例" options={[{value: '9:16', label: '9:16 (直式手機)'}, {value: '3:4', label: '3:4 (時尚人像)'}, {value: '1:1', label: '1:1 (正方形)'}, {value: '4:3', label: '4:3 (標準橫式)'}, {value: '16:9', label: '16:9 (寬螢幕)'}]} value={targetAspectRatio} onChange={e => setTargetAspectRatio(e.target.value as AspectRatio)} />
                                 
                                 <div>

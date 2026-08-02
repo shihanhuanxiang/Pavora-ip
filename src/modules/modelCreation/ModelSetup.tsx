@@ -5,6 +5,7 @@ import Button from '../../shared/components/common/Button';
 import Card from '../../shared/components/common/Card';
 import Select from '../../shared/components/common/Select';
 import Loader from '../../shared/components/common/Loader';
+import TabBar, { type TabItem } from '../../shared/components/common/TabBar';
 import { generateModels } from './services/modelCreationService';
 import { generatePersonaTraits } from './services/personaService';
 import { getFriendlyErrorMessage, fileToBase64 } from '../../shared/services/geminiService';
@@ -46,6 +47,22 @@ const DESTINATIONS = [
     { key: 'composite_card', label: '模特兒合輯卡 (Model Composite)' },
     { key: 'salon', label: '髮型沙龍 (Hair Salon)' },
 ];
+
+type ModelSetupTabKey = 'face' | 'body' | 'soul' | 'apparel';
+
+/** 主頁籤。「基礎穿著」＝打底裝，刻意極簡貼身，見 CLAUDE.md 第 7 節架構原則第 3 條。 */
+const MODEL_SETUP_TABS: readonly TabItem<ModelSetupTabKey>[] = [
+    { key: 'face', label: '臉部' },
+    { key: 'body', label: '身形' },
+    { key: 'soul', label: '靈魂人設' },
+    { key: 'apparel', label: '基礎穿著' },
+];
+
+/** 基礎穿著分頁內的分類子頁籤。label 沿用原本的 `split(' (')[0]`，只顯示中文段。 */
+const APPAREL_CAT_TABS: readonly TabItem<string>[] = APPAREL_CATEGORIES.map(cat => ({
+    key: cat.id,
+    label: cat.label.split(' (')[0],
+}));
 
 interface ModelSetupProps {
   onModelSelect: (model: Model, destination: string) => void;
@@ -607,10 +624,9 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
 
     const preset = (SMART_SUGGEST_PRESETS as any)[presetKey];
     if (preset) {
-        // 資料 bug 修正 (a)：SMART_SUGGEST_PRESETS 的 outfitPresetId 是 f_vto_/m_vto_ 命名，
-        // 與 APPAREL_ITEMS 實際 id（f_full_/f_top_/f_bottom_/foot_/m_full_/m_top_）對不上。
-        // 只有找得到對應 APPAREL_ITEMS 才寫入 outfitItems，找不到就跳過服裝欄位（其餘欄位照套）。
-        // 現況：全 20 組 outfitPresetId 均對不上，本次一律走跳過分支，屬預期（服裝結構待 PR-D 處理）。
+        // 服裝對應：PR-D（2026-08-01）後，20 組 SMART_SUGGEST_PRESETS 的 outfitPresetId
+        // 已全數對得上 APPAREL_ITEMS 的實際 id，正常情況下都會走 matchedOutfit 分支。
+        // 下方 find 保留為防禦性檢查：日後新增預設卡若填錯 id，只跳過服裝欄位、其餘欄位照套，不整組失效。
         const { outfitPresetId, label: _presetLabel, ...presetFields } = preset;
         const matchedOutfit = APPAREL_ITEMS.find(item => item.id === outfitPresetId);
 
@@ -794,32 +810,15 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
               </AnimatePresence>
             </Card>
 
-            {/* Tab 列 (臉部 / 身形 / 靈魂人設 / 服裝造型) */}
-            <div className="sticky top-4 z-30 bg-[var(--home-paper)]/95 backdrop-blur-sm py-1">
-                <div className="flex gap-2 bg-[rgba(255,255,255,.5)] p-1.5 rounded-2xl border border-[var(--home-line)]">
-                    {([
-                        { key: 'face', label: '臉部' },
-                        { key: 'body', label: '身形' },
-                        { key: 'soul', label: '靈魂人設' },
-                        { key: 'apparel', label: '服裝造型' }
-                    ] as const).map(tab => (
-                        <button
-                            key={tab.key}
-                            onClick={() => setActiveTab(tab.key)}
-                            className={`flex-1 py-2.5 text-[11px] font-bold rounded-xl transition-all duration-300 relative overflow-hidden ${activeTab === tab.key ? 'bg-brass text-black shadow-[0_4px_20px_rgba(var(--color-brass-rgb),0.3)]' : 'text-[var(--home-muted)] hover:bg-[rgba(255,255,255,.4)]'}`}
-                        >
-                            <span className="relative z-10">{tab.label}</span>
-                            {activeTab === tab.key && (
-                                <motion.div
-                                    layoutId="model-setup-tab-glare"
-                                    className="absolute inset-0 bg-[rgba(255,255,255,.25)] pointer-events-none"
-                                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                />
-                            )}
-                        </button>
-                    ))}
-                </div>
-            </div>
+            {/* Tab 列 (臉部 / 身形 / 靈魂人設 / 基礎穿著) */}
+            <TabBar
+                tabs={MODEL_SETUP_TABS}
+                active={activeTab}
+                onChange={setActiveTab}
+                layoutId="model-setup-tab-glare"
+                size="md"
+                sticky
+            />
 
             {/* ===== TAB: 臉部 ===== */}
             {activeTab === 'face' && (
@@ -1283,35 +1282,36 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
               </>
             )}
 
-            {/* ===== TAB: 服裝造型 ===== */}
+            {/* ===== TAB: 基礎穿著（打底裝，刻意極簡貼身） ===== */}
             {activeTab === 'apparel' && (
               <Card className="p-0 overflow-hidden border-none home-card">
                 <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent">
                   <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
                     <div className="w-1 h-4 bg-brass"></div>
-                    <span className="group-hover:text-[var(--color-brass)] transition-colors">專業服裝系統</span>
+                    <span className="group-hover:text-[var(--color-brass)] transition-colors">基礎穿著</span>
                   </h3>
+                  {/*
+                    刻意設計，不是缺陷：這裡只提供極簡貼身的打底裝。
+                    越貼身簡潔，之後在虛擬試衣間換裝時殘留越少。
+                    正式服裝（洋裝／西裝／禮服）屬於試衣間與靈魂敘事，不歸這裡。
+                    詳見 CLAUDE.md 第 7 節架構原則第 3 條。
+                  */}
+                  <p className="mt-2 text-[11px] leading-relaxed text-[var(--home-muted)]">
+                    這裡選的是模特兒的<span className="font-bold text-[var(--home-ink)]">基礎穿著</span>。越貼身簡潔，之後在試衣間換裝越乾淨。
+                    <br />
+                    想要正式服裝或造型變化，請到<span className="font-bold text-[var(--home-ink)]">虛擬試衣間</span>或<span className="font-bold text-[var(--home-ink)]">靈魂敘事</span>。
+                  </p>
                 </div>
                 <div className="p-6 space-y-6">
                     {/* 分類 Tab */}
-                    <div className="flex gap-2 bg-[rgba(255,255,255,.5)] p-1.5 rounded-2xl border border-[var(--home-line)] mb-4">
-                        {APPAREL_CATEGORIES.map(cat => (
-                            <button
-                              key={cat.id}
-                              onClick={() => setActiveApparelCat(cat.id)}
-                              className={`flex-1 py-2 text-[11px] font-bold rounded-xl transition-all duration-300 relative overflow-hidden ${activeApparelCat === cat.id ? 'bg-brass text-black shadow-[0_4px_20px_rgba(var(--color-brass-rgb),0.3)]' : 'text-[var(--home-muted)] hover:text-[var(--home-muted)] hover:bg-[rgba(255,255,255,.4)]'}`}
-                            >
-                                <span className="relative z-10">{cat.label.split(' (')[0]}</span>
-                                {activeApparelCat === cat.id && (
-                                    <motion.div
-                                      layoutId="apparel-tab-glare"
-                                      className="absolute inset-0 bg-[rgba(255,255,255,.25)] pointer-events-none"
-                                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                    />
-                                )}
-                            </button>
-                        ))}
-                    </div>
+                    <TabBar
+                        tabs={APPAREL_CAT_TABS}
+                        active={activeApparelCat}
+                        onChange={setActiveApparelCat}
+                        layoutId="apparel-tab-glare"
+                        size="sm"
+                        className="mb-4"
+                    />
 
                     {/* 選項列表 - 加入動畫容器 */}
                     <div className="max-h-[360px] overflow-y-auto pr-2 custom-scrollbar">
@@ -1399,9 +1399,9 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                         <Select
                           label="畫質階級 (Quality Level)"
                           options={[
-                              { value: 'standard', label: '標準 (Standard)' },
-                              { value: 'high', label: '高畫質 (Pro 2K)' },
-                              { value: 'ultra', label: '超高畫質 (Pro 4K)' }
+                              { value: 'standard', label: '草稿 (1K)' },
+                              { value: 'high', label: '標準 (2K)' },
+                              { value: 'ultra', label: '商業級 (4K)' }
                           ]}
                           value={generationQuality}
                           onChange={e => setGenerationQuality(e.target.value as QualityLevel)}

@@ -84,7 +84,10 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onAdvancedEdit,
       // Configure based on quality
       const config = {
           usePro: quality !== 'standard',
-          resolution: quality === 'ultra' ? '4K' : '2K' as '2K' | '4K'
+          // 三檔真分級（2026-08-02 修正）：原本 standard 與 high 都送 2K。
+          // 此路徑的 imageSize 不受 usePro 影響（geminiService 直接讀 config.resolution），
+          // 所以 standard 必須明確送 1K。
+          resolution: (quality === 'ultra' ? '4K' : quality === 'high' ? '2K' : '1K') as '1K' | '2K' | '4K'
       };
 
       let finalFaceRefs = undefined;
@@ -424,9 +427,9 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onAdvancedEdit,
                     <Select 
                         label="生成品質" 
                         options={[
-                            {value: 'standard', label: '標準 (Flash)'}, 
-                            {value: 'high', label: '高品質 (Pro 2K)'},
-                            {value: 'ultra', label: '超高畫質 (Pro 4K)'}
+                            {value: 'standard', label: '草稿 (1K)'},
+                            {value: 'high', label: '標準 (2K)'},
+                            {value: 'ultra', label: '商業級 (4K)'}
                         ]} 
                         value={quality} 
                         onChange={e => setQuality(e.target.value as QualityLevel)} 

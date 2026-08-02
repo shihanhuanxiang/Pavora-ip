@@ -1204,9 +1204,9 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                                 <Select 
                                     label="生成品質" 
                                     options={[
-                                        {value: 'standard', label: '標準 (Flash)'}, 
-                                        {value: 'high', label: '高品質 (Pro 2K)'}, 
-                                        {value: 'ultra', label: '超高畫質 (Pro 4K)'}
+                                        {value: 'standard', label: '草稿 (1K)'},
+                                        {value: 'high', label: '標準 (2K)'},
+                                        {value: 'ultra', label: '商業級 (4K)'}
                                     ]} 
                                     value={quality} 
                                     onChange={e => setQuality(e.target.value as QualityLevel)} 
@@ -1372,8 +1372,8 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                                             const baseData = await imageUrlToimageData(generatedImage || baseImage!.url);
                                             const maskData = await imageUrlToimageData(mask);
                                             const result = await tuneImageDetail(baseData, maskData, instr, [baseImage!.fileData], setLoadingMessage, { 
-                                                usePro: quality !== 'standard', 
-                                                resolution: quality === 'ultra' ? '4K' : '2K'
+                                                usePro: quality !== 'standard',
+                                                resolution: quality === 'ultra' ? '4K' : quality === 'high' ? '2K' : '1K'
                                             });
                                             setGeneratedImage(result);
                                             addNotification({ type: 'success', message: '細節修正完成' });

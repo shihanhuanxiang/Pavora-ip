@@ -112,8 +112,15 @@ The model MUST have East Asian (Taiwanese) facial bone structure and features. D
         const aspectRatio = params.isMultiAngle ? "16:9" : (params.ratio || "1:1");
         const imageConfig: any = { aspectRatio };
         
+        // 三檔真分級（2026-08-02 修正）：原本只有 ultra 會送 imageSize，
+        // 而 UI 上「高畫質 (Pro 2K)」白紙黑字承諾 2K 卻從未送出該參數。
+        // 現統一為 草稿1K / 標準2K / 商業級4K。
         if (params.generationQuality === 'ultra') {
             imageConfig.imageSize = '4K';
+        } else if (params.generationQuality === 'high') {
+            imageConfig.imageSize = '2K';
+        } else {
+            imageConfig.imageSize = '1K';
         }
 
         const isExpectedMale = params.gender === 'male' || params.gender === 'M';

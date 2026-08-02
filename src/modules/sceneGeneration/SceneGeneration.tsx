@@ -388,7 +388,9 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
 
             const config = { 
                 usePro: quality !== 'standard', 
-                resolution: quality === 'ultra' ? '4K' : '2K' as '2K' | '4K',
+                // 三檔真分級（2026-08-02 修正）：原本 standard 與 high 都送 2K，
+                // 「高清 (HD)」等於沒作用。現統一為 草稿1K / 標準2K / 商業級4K。
+                resolution: (quality === 'ultra' ? '4K' : quality === 'high' ? '2K' : '1K') as '1K' | '2K' | '4K',
                 imageConfig: { aspectRatio },
                 customInstruction: modelIdentityHint
             };
@@ -496,7 +498,9 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
 
             const config = { 
                 usePro: quality !== 'standard', 
-                resolution: quality === 'ultra' ? '4K' : '2K' as '2K' | '4K',
+                // 三檔真分級（2026-08-02 修正）：原本 standard 與 high 都送 2K，
+                // 「高清 (HD)」等於沒作用。現統一為 草稿1K / 標準2K / 商業級4K。
+                resolution: (quality === 'ultra' ? '4K' : quality === 'high' ? '2K' : '1K') as '1K' | '2K' | '4K',
                 imageConfig: { aspectRatio },
                 customInstruction: modelIdentityHint
             };
@@ -804,8 +808,8 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                             const baseData = await imageUrlToimageData(currentImage || originalBaseImage!.url);
                             const maskData = await imageUrlToimageData(mask);
                             const result = await tuneImageDetail(baseData, maskData, instr, [originalBaseImage!.fileData], setLoadingMessage, { 
-                                usePro: quality !== 'standard', 
-                                resolution: quality === 'ultra' ? '4K' : '2K'
+                                usePro: quality !== 'standard',
+                                resolution: quality === 'ultra' ? '4K' : quality === 'high' ? '2K' : '1K'
                             });
                             push(result);
                         } catch (e) { setError(getFriendlyErrorMessage(e)); }
@@ -1482,9 +1486,9 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                             <span className="block text-[8px] opacity-70 font-normal tracking-normal">Quality</span>
                                         </div>
                                     } options={[
-                                        { value: 'standard', label: '標準 (Standard)' },
-                                        { value: 'high', label: '高清 (HD)' },
-                                        { value: 'ultra', label: '極致 (4K Ultra)' }
+                                        { value: 'standard', label: '草稿 (1K)' },
+                                        { value: 'high', label: '標準 (2K)' },
+                                        { value: 'ultra', label: '商業級 (4K)' }
                                     ]} value={quality} onChange={e => setQuality(e.target.value as QualityLevel)} />
                                     <Select label={
                                         <div className="min-h-[32px] flex flex-col justify-end">

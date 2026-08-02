@@ -409,8 +409,10 @@ const FantasySeries: React.FC<FantasySeriesProps> = ({ onGoHome, initialImage, o
             const pipelinedCharacterPrompt = runPromptPipeline(characterPrompt, { source: 'fantasySeries:transformImage' }).prompt;
 
             const config = { 
-                usePro: quality === 'fast' ? false : true, 
-                resolution: quality === 'high' ? '4K' : '2K',
+                usePro: quality === 'fast' ? false : true,
+                // 三檔真分級（2026-08-02 修正）：原本 fast 與 balanced 都送 2K。
+                // 現統一為 草稿1K / 標準2K / 商業級4K。
+                resolution: quality === 'high' ? '4K' : quality === 'balanced' ? '2K' : '1K',
                 imageConfig: {
                     aspectRatio: aspectRatio
                 }
@@ -740,9 +742,9 @@ const FantasySeries: React.FC<FantasySeriesProps> = ({ onGoHome, initialImage, o
                                 <Select 
                                     label="渲染品質" 
                                     options={[
-                                        {value: 'fast', label: '快速 (Fast)'}, 
-                                        {value: 'balanced', label: '平衡 (Balanced)'}, 
-                                        {value: 'high', label: '高品質 (High)'}
+                                        {value: 'fast', label: '草稿 (1K)'},
+                                        {value: 'balanced', label: '標準 (2K)'},
+                                        {value: 'high', label: '商業級 (4K)'}
                                     ]} 
                                     value={quality} 
                                     onChange={e => setQuality(e.target.value as QualityLevel)} 

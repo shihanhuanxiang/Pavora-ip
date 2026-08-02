@@ -215,7 +215,9 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
             const prompt = buildEGenBatchPrompt(EGEN_MATRIX_CELLS[0], analysis, style, s.suffix, "Ultra-high definition, photorealistic, cinematic lighting, 8k resolution, extreme detail, professional product photography. Maintain consistency with all provided product angles.");
             const url = await transformImage(primaryItem.fileData, prompt, allRefs, (msg) => setLoadingMessage(msg), {
                 usePro: quality !== 'FAST',
-                imageConfig: { imageSize: quality === 'MAX' ? '4K' : '2K', aspectRatio: '3:4' }
+                // 三檔真分級（2026-08-02 修正）：原本 FAST 與 STANDARD 都送 2K，
+                // UI 上的「快速」等於沒作用。現統一為 草稿1K / 標準2K / 商業級4K。
+                imageConfig: { imageSize: quality === 'MAX' ? '4K' : quality === 'STANDARD' ? '2K' : '1K', aspectRatio: '3:4' }
             });
             newResults.push({ id: `res_${Date.now()}_egen_${i}`, url, type: `E-Gen: ${s.name}`, mediaType: 'image' as const });
         }
@@ -271,7 +273,9 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
             });
             const url = await transformImage(primaryItem.fileData, prompt, allRefs, (msg) => setLoadingMessage(msg), {
                 usePro: quality !== 'FAST',
-                imageConfig: { imageSize: quality === 'MAX' ? '4K' : '2K', aspectRatio: '3:4' }
+                // 三檔真分級（2026-08-02 修正）：原本 FAST 與 STANDARD 都送 2K，
+                // UI 上的「快速」等於沒作用。現統一為 草稿1K / 標準2K / 商業級4K。
+                imageConfig: { imageSize: quality === 'MAX' ? '4K' : quality === 'STANDARD' ? '2K' : '1K', aspectRatio: '3:4' }
             });
             newResults.push({ id: `res_${Date.now()}_luxury_${i}`, url, type: `Luxury: ${s.name}`, mediaType: 'image' as const });
         }
@@ -687,7 +691,7 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
                                         onClick={() => setQuality(q)}
                                         className={`py-2 rounded-lg text-[9px] font-bold border transition-all ${quality === q ? 'bg-wine text-[var(--home-paper)] border-wine' : 'bg-white/40 text-[var(--home-muted)] border-[var(--home-line)] hover:border-[var(--home-line-strong)]'}`}
                                     >
-                                        {q === 'FAST' ? '快速' : q === 'STANDARD' ? '標準' : '極致 4K'}
+                                        {q === 'FAST' ? '草稿 1K' : q === 'STANDARD' ? '標準 2K' : '商業級 4K'}
                                     </button>
                                 ))}
                             </div>

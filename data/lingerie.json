@@ -13,6 +13,7 @@
     {
       "id": "lingerie_bra_classic_safe",
       "display_name_zh": "內衣（安全）",
+      "display_name_en": "Full-Coverage Classic Bra",
       "category": "lingerie",
       "description": "經典內衣款式，提供良好支撐與覆蓋。風格安全、適合日常穿搭。",
       "structure_core": ["full coverage cup", "adjustable straps"],
@@ -26,6 +27,7 @@
     {
       "id": "lingerie_swimwear_one_piece_safe",
       "display_name_zh": "連身泳裝（安全）",
+      "display_name_en": "One-Piece Swimsuit",
       "category": "lingerie",
       "description": "連身泳裝，提供完整覆蓋，適合各種水上活動。風格安全、適合家庭與公開場合。",
       "structure_core": ["one-piece", "full seat coverage"],
@@ -39,6 +41,7 @@
     {
       "id": "lingerie_sports_bra_safe",
       "display_name_zh": "運動內衣（安全）",
+      "display_name_en": "High-Support Sports Bra",
       "category": "lingerie",
       "description": "高支撐運動內衣，提供運動時的穩定性。風格安全，可單穿或內搭。",
       "structure_core": ["high support", "racerback", "wide band"],
@@ -52,6 +55,7 @@
     {
       "id": "lingerie_swimwear_bikini_safe",
       "display_name_zh": "兩件式泳衣（安全）",
+      "display_name_en": "High-Waist Two-Piece Swimsuit",
       "category": "lingerie",
       "description": "兩件式比基尼，提供較保守的覆蓋範圍。風格安全，適合公開場合。",
       "structure_core": ["high-waist bottom", "full coverage top"],

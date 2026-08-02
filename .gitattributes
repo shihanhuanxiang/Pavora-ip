@@ -1,0 +1,30 @@
+# PAVORA — 統一行尾，收掉「檔案沒改卻永遠顯示 modified」的雜訊
+#
+# 背景（2026-08-02）：DirectorMode.tsx / VideoPlayer.tsx / imageUtils.ts 三個檔案
+# 因為 CRLF 與 LF 混用，git 每次都判定為已修改（實際內容零差異，
+# `git diff --ignore-cr-at-eol` 為空）。這會讓「repo 是否乾淨」失去判斷力。
+#
+# 做法：所有文字檔在版本庫內一律以 LF 儲存，簽出時由 git 依平台處理。
+
+* text=auto eol=lf
+
+# Windows 專用腳本必須保留 CRLF，否則 cmd.exe 可能解析失敗
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# 二進位檔不得做任何行尾轉換
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.mp4 binary
+*.mov binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
