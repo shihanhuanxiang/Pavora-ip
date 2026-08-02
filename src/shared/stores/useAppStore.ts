@@ -1,32 +1,26 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+/**
+ * ⚰️ 已退役 —— 2026-08-02（企劃案階段 2 / B-1a）
+ * ================================================
+ *
+ * 這個 store 原本只做一件事：存「商業模式 / IP 創作模式」的切換，
+ * 並在切換時直接改 `--color-gold` CSS 變數，讓整站換一套主題色。
+ *
+ * 為什麼移除：
+ * 模式是**全域狀態**——切了之後功能會消失、主題色會變，使用者記不住東西在哪，
+ * 結果一堆功能被塞進漢堡選單躲起來（改版前有 5 個模組首頁完全看不到）。
+ * 真正該常駐的全域狀態是「現在在操作哪個 IP」（`useModelStore.activeModelId`），
+ * 不是「我是哪種人」。
+ *
+ * 取代它的東西：
+ * - 功能分組與名稱 → `src/shell/navRegistry.tsx`
+ * - 目前操作的 IP  → `useModelStore.activeModelId`（Header 常駐選擇器寫入）
+ *
+ * 目前狀態：**全 repo 已無任何 import**。
+ * 依專案鐵則「不自動 delete」，檔案保留於此僅作墓碑說明；
+ * 確認無誤後可由 Hank 直接刪除本檔。
+ *
+ * 殘留物：localStorage 的 `pavora-app-store` key 會留在既有使用者的瀏覽器裡，
+ * 不影響功能，不需要遷移。
+ */
 
-type ProjectMode = 'commerce' | 'ip_creator';
-
-interface AppState {
-  projectMode: ProjectMode;
-  setProjectMode: (mode: ProjectMode) => void;
-}
-
-export const useAppStore = create<AppState>()(
-  persist(
-    (set) => ({
-      projectMode: 'ip_creator',
-      setProjectMode: (mode) => {
-        // Update CSS Variables dynamically for theme shift
-        const root = document.documentElement;
-        if (mode === 'commerce') {
-          root.style.setProperty('--color-gold', '#60a5fa'); // Blue
-          root.style.setProperty('--color-gold-rgb', '96, 165, 250');
-        } else {
-          root.style.setProperty('--color-gold', '#d4af37'); // Gold
-          root.style.setProperty('--color-gold-rgb', '212, 175, 55');
-        }
-        set({ projectMode: mode });
-      },
-    }),
-    {
-      name: 'pavora-app-store',
-    }
-  )
-);
+export {};

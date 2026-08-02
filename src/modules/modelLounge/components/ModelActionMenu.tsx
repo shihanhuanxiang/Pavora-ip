@@ -21,7 +21,7 @@ const DESTINATIONS = [
     { key: 'fitting_room', label: '虛擬試衣間 (Fitting)' },
     { key: 'scene', label: '場景轉移 (Scene)' },
     { key: 'narrative', label: '靈魂敘事 (Narrative) ✨' },
-    { key: 'salon', label: '髮型沙龍 (Salon)' },
+    { key: 'salon', label: '妝髮沙龍 (Salon)' },
 ];
 
 const ModelActionMenu: React.FC<ModelActionMenuProps> = ({ 

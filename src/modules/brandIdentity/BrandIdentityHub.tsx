@@ -33,7 +33,7 @@ const BrandIdentityHub: React.FC<BrandIdentityHubProps> = ({ onGoHome, onModelSe
   const tabs = [
     { id: 'ambassadors', zh: '代言人管理', en: 'Ambassadors', icon: <ModelLoungeIcon /> },
     { id: 'creation', zh: '模特兒生成', en: 'Genesis', icon: <ModelIcon /> },
-    { id: 'lounge', zh: '模特兒休息室', en: 'Model Lounge', icon: <ModelLoungeIcon /> },
+    { id: 'lounge', zh: 'IP 休息室', en: 'Model Lounge', icon: <ModelLoungeIcon /> },
     { id: 'matrix', zh: '角色矩陣', en: 'Face Matrix', icon: <Face3DIcon /> },
     { id: 'salon', zh: '妝髮沙龍', en: 'Beauty Salon', icon: <HairSalonIcon /> },
     { id: 'presets', zh: '品牌預設', en: 'Style Presets', icon: <StyleAnchorIcon /> },
@@ -95,7 +95,7 @@ const BrandIdentityHub: React.FC<BrandIdentityHubProps> = ({ onGoHome, onModelSe
               </div>
             ) : (
               <div className="glass-panel rounded-3xl p-20 flex flex-col items-center justify-center text-center border-dashed border-2 border-[var(--color-border)]">
-                <p className="text-[var(--color-text-dim)] mb-8">尚未建立品牌代言人。您可以從模特兒生成中晉升，或從模特兒休息室中挑選。</p>
+                <p className="text-[var(--color-text-dim)] mb-8">尚未建立品牌代言人。您可以從模特兒生成中晉升，或從 IP 休息室中挑選。</p>
                 <div className="flex gap-4">
                   <Button onClick={() => setActiveTab('creation')}>前往生成</Button>
                   <Button onClick={() => setActiveTab('lounge')} variant="secondary">從休息室挑選</Button>
@@ -105,7 +105,7 @@ const BrandIdentityHub: React.FC<BrandIdentityHubProps> = ({ onGoHome, onModelSe
 
             <div className="mt-20">
               <div className="flex items-center gap-4 mb-8">
-                <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-[var(--color-text-dim)]">模特兒休息室 / Model Lounge</h3>
+                <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-[var(--color-text-dim)]">IP 休息室 / Model Lounge</h3>
                 <div className="h-px flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent"></div>
               </div>
               <ModelLounge onGoHome={onGoHome} onModelSelect={onModelSelect} isHubMode />

@@ -254,7 +254,7 @@ const PortfolioGallery: React.FC<PortfolioGalleryProps> = ({ onGoHome, onAdvance
             <div className="sticky top-[80px] z-30 glass-panel border-x-0 border-t-0 px-6 py-4 mb-8">
                 <div className="max-w-[110rem] mx-auto flex justify-between items-center">
                     <div className="flex flex-col">
-                        <h2 className="text-2xl font-display font-bold uppercase tracking-[0.3em] text-[var(--color-text-main)]">作品集錦</h2>
+                        <h2 className="text-2xl font-display font-bold uppercase tracking-[0.3em] text-[var(--color-text-main)]">作品庫</h2>
                         <span className="text-[9px] uppercase tracking-[0.5em] text-[var(--color-gold)] font-light">Portfolio Gallery</span>
                     </div>
                     <div className="flex items-center gap-4">

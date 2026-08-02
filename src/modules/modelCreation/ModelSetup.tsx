@@ -21,7 +21,6 @@ import ModelIcon from '../../shared/assets/icons/ModelIcon';
 import View360Icon from '../../shared/assets/icons/View360Icon';
 import ExpandIcon from '../../shared/assets/icons/ExpandIcon';
 import { useNotification } from '../../shared/context/NotificationContext';
-import { useAppStore } from '../../shared/stores/useAppStore';
 import { embedMetadata } from '../../shared/utils/metadataUtils';
 import { motion, AnimatePresence } from 'motion/react';
 import {
@@ -45,7 +44,7 @@ const DESTINATIONS = [
     { key: 'fitting_room', label: '虛擬試衣間 (Fitting Room)' },
     { key: 'scene', label: '場景轉移 (Scene Swap)' },
     { key: 'composite_card', label: '模特兒合輯卡 (Model Composite)' },
-    { key: 'salon', label: '髮型沙龍 (Hair Salon)' },
+    { key: 'salon', label: '妝髮沙龍 (Hair Salon)' },
 ];
 
 type ModelSetupTabKey = 'face' | 'body' | 'soul' | 'apparel';
@@ -155,7 +154,9 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
     onModelSelect, onGoHome, onGoBack,
     inheritedModel, initialNarrativeData, onClearNarrative
 }) => {
-  const { projectMode } = useAppStore();
+  // 2026-08-02：原本這裡解構了 projectMode，但整個檔案從未使用它（死變數）。
+  // 隨「商業／IP 創作模式」一併移除。
+
   const { masterTaxonomy, apparelStructure, loading: taxonomyLoading } = useTaxonomy();
 
   const [generatedModels, setGeneratedModels] = useState<Model[]>([]);

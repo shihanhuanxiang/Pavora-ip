@@ -1,11 +1,13 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import SkullIcon from '../shared/assets/icons/SkullIcon';
 import BellIcon from '../shared/assets/icons/BellIcon';
 import ActivityLog from '../shared/components/notification/ActivityLog';
+import AsyncImage from '../shared/components/common/AsyncImage';
+import ModelLoungeModal from '../shared/components/common/ModelLoungeModal';
 import { useNotification } from '../shared/context/NotificationContext';
-import { useAppStore } from '../shared/stores/useAppStore';
 import { useModelStore } from '../shared/stores/useModelStore';
+import { NAV_GROUPS, entriesByGroup, navName } from './navRegistry';
 
 interface HeaderProps {
   onTitleClick: () => void;
@@ -16,12 +18,23 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, isDarkMode, onToggleTheme }) => {
-  const { projectMode, setProjectMode } = useAppStore();
   const cloudSyncStatus = useModelStore((state) => state.cloudSyncStatus);
   const lastSyncError = useModelStore((state) => state.lastSyncError);
+  // 常駐 IP 選擇器（2026-08-02，企劃案 B-1b）。
+  // 改版前「現在在操作哪個 IP」沒有任何常駐入口：setActiveModel 全 repo 只有首頁旅程卡 2 個呼叫點，
+  // 連模特兒休息室都不會寫入。現在 Header 成為全站唯一、隨時可切的入口。
+  const models = useModelStore((state) => state.models);
+  const activeModelId = useModelStore((state) => state.activeModelId);
+  const setActiveModel = useModelStore((state) => state.setActiveModel);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isActivityLogOpen, setIsActivityLogOpen] = useState(false);
+  const [isIpSwitcherOpen, setIpSwitcherOpen] = useState(false);
   const { notifications, tasks } = useNotification();
+
+  const activeModel = useMemo(
+    () => models.find(model => model.id === activeModelId) || null,
+    [models, activeModelId]
+  );
 
   const activeCount = notifications.length + tasks.filter(t => t.status === 'processing').length;
 
@@ -35,47 +48,25 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
     return () => { document.body.style.overflow = 'unset'; };
   }, [isMenuOpen]);
 
-  const menuCategories = [
-    {
-      title: "品牌與行銷",
-      items: [
-        { label: "品牌識別中心", id: "brand_identity_hub", desc: "整理品牌的模特兒、美學調性與合輯卡，讓每次產出風格一致" },
-        { label: "行銷工廠", id: "marketing_factory", desc: "一次規劃並產出多平台需要的行銷素材與廣告視覺" },
-        { label: "動態中心", id: "motion_hub", desc: "把靜態影像變成有電影運鏡感的動態畫面" },
-      ]
-    },
-    {
-      title: "核心流程",
-      items: [
-        { label: "模特兒生成", id: "model_setup", desc: "打造一個長相固定、可重複使用的專屬代言人" },
-        { label: "虛擬試衣間", id: "fitting_room", desc: "不用實際拍攝，直接把商品穿到模特兒身上出圖" },
-        { label: "場景轉移", id: "scene", desc: "把同一張圖換到任何你想要的背景與情境" },
-      ]
-    },
-    {
-      title: "專業工具",
-      items: [
-        { label: "導演模式", id: "director_mode", desc: "把你的腳本文字變成一組分鏡與動態預覽" },
-        { label: "視覺錨點", id: "style_anchor", desc: "鎖定喜歡的視覺風格，套用到新的產出上" },
-        { label: "影像解構", id: "deconstruction", desc: "拆解一張圖的構成元素，方便你重新組合運用" },
-      ]
-    },
-    {
-      title: "創意實驗與資產",
-      items: [
-        { label: "服裝設計", id: "apparel", desc: "設計現實中還不存在的服裝款式與材質" },
-        { label: "妝髮沙龍", id: "salon", desc: "微調模特兒的妝容與髮型，做出你想要的細節" },
-        { label: "角色矩陣", id: "character_lab", desc: "一次生成多個角色原型，方便挑選並保持一致視覺" },
-        { label: "作品集錦", id: "portfolio", desc: "瀏覽並管理你目前所有 AI 產出的作品" },
-        { label: "作品優化", id: "portfolio_optimization", desc: "針對單張作品重新打光、換角度、補強細節" },
-        { label: "模特兒休息室", id: "lounge", desc: "在這裡切換你要接續經營的模特兒或代言人" },
-      ]
-    }
-  ];
+  // 選單直接由 navRegistry 產生，不再手寫一份名稱。
+  // 改版前這裡的名稱與首頁兩處各寫各的，同一個 lounge 有三個中文名。
+  const menuCategories = useMemo(
+    () =>
+      NAV_GROUPS.map(group => ({
+        title: group.title,
+        items: entriesByGroup(group.key),
+      })).filter(category => category.items.length > 0),
+    []
+  );
 
   const handleNavigate = (id: string) => {
     onNavigate(id);
     setIsMenuOpen(false);
+  };
+
+  const handlePickModel = (id: string) => {
+    setActiveModel(id);
+    setIpSwitcherOpen(false);
   };
 
   return (
@@ -122,40 +113,59 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
                 role="button"
               >
                 <div className="flex items-center justify-center gap-3">
-                  <SkullIcon className={`w-5 h-5 transition-colors duration-700 ease-out ${projectMode === 'commerce' ? 'text-blue-400' : 'text-[var(--color-text-dim)] group-hover:text-[var(--color-gold)]'}`} />
+                  <SkullIcon className="w-5 h-5 transition-colors duration-700 ease-out text-[var(--color-text-dim)] group-hover:text-[var(--color-gold)]" />
                   <h1 className="text-lg lg:text-2xl font-display font-bold uppercase tracking-[0.25em] text-[var(--color-text-main)] group-hover:text-[var(--color-gold)] transition-colors duration-700">
                     Pavora
                   </h1>
                 </div>
               </div>
 
-              {/* Workflow Switcher */}
-              <div className="hidden lg:flex items-center bg-[var(--color-bg-deep)]/60 rounded-full border border-[var(--color-border)] p-1 backdrop-blur-md shadow-2xl">
-                  <button 
-                    onClick={() => setProjectMode('commerce')}
-                    className={`px-4 py-1 rounded-full text-[8px] font-bold uppercase tracking-widest transition-all ${projectMode === 'commerce' ? 'bg-[var(--color-gold)] text-black shadow-lg shadow-[var(--color-gold)]/20' : 'text-[var(--color-text-dim)] hover:text-white'}`}
-                  >
-                    Commerce
-                  </button>
-                  <button 
-                    onClick={() => setProjectMode('ip_creator')}
-                    className={`px-4 py-1 rounded-full text-[8px] font-bold uppercase tracking-widest transition-all ${projectMode === 'ip_creator' ? 'bg-[var(--color-gold)] text-black shadow-lg shadow-[var(--color-gold)]/20' : 'text-[var(--color-text-dim)] hover:text-white'}`}
-                  >
-                    IP 創作模式
-                  </button>
-              </div>
+              {/* 常駐 IP 選擇器：取代改版前的「商業／IP 創作模式」切換。
+                  真正的全域狀態是「現在在操作哪個 IP」，不是「我是哪種人」。 */}
+              {models.length > 0 ? (
+                <button
+                  onClick={() => setIpSwitcherOpen(true)}
+                  className="hidden lg:flex items-center gap-2.5 bg-[var(--color-bg-deep)]/60 rounded-full border border-[var(--color-border)] pl-1 pr-4 py-1 backdrop-blur-md shadow-2xl hover:border-[var(--color-gold)]/50 transition-colors group/ip"
+                  title="切換目前操作的 IP"
+                >
+                  <span className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 bg-[var(--color-bg-input)]">
+                    {activeModel ? (
+                      <AsyncImage
+                        src={activeModel.imageUrl}
+                        alt={activeModel.name}
+                        className="w-full h-full object-cover object-top"
+                      />
+                    ) : null}
+                  </span>
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-[var(--color-text-dim)] group-hover/ip:text-[var(--color-gold)] transition-colors max-w-[140px] truncate">
+                    {activeModel ? activeModel.name : '尚未選擇 IP'}
+                  </span>
+                  <span className="text-[var(--color-text-dim)] text-[9px]">▾</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => handleNavigate('model_setup')}
+                  className="hidden lg:flex items-center gap-2 bg-[var(--color-bg-deep)]/60 rounded-full border border-[var(--color-border)] px-4 py-1.5 backdrop-blur-md shadow-2xl hover:border-[var(--color-gold)]/50 transition-colors group/ip"
+                  title="還沒有 IP，先建立一個"
+                >
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-[var(--color-text-dim)] group-hover/ip:text-[var(--color-gold)] transition-colors">
+                    ＋ 建立第一個 IP
+                  </span>
+                </button>
+              )}
           </div>
           
           {/* Right: Nav & Usage */}
           <div className="w-1/4 flex justify-end items-center gap-6">
               <div className="flex flex-col items-end gap-1">
                    <div className="hidden md:flex items-center gap-8">
+                      {/* 名稱一律取自 navRegistry，避免與首頁／漢堡選單各叫各的 */}
                       <button onClick={() => handleNavigate('fitting_room')} className="text-[10px] font-bold text-[var(--color-text-dim)] hover:text-[var(--color-text-main)] transition-colors uppercase tracking-[0.15em] relative group font-sans">
-                          虛擬試衣
+                          {navName('fitting_room')}
                           <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[var(--color-gold)] transition-all duration-500 group-hover:w-full"></span>
                       </button>
                       <button onClick={() => handleNavigate('portfolio')} className="text-[10px] font-bold text-[var(--color-text-dim)] hover:text-[var(--color-text-main)] transition-colors uppercase tracking-[0.15em] relative group font-sans">
-                          作品集
+                          {navName('portfolio')}
                           <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[var(--color-gold)] transition-all duration-500 group-hover:w-full"></span>
                       </button>
                   </div>
@@ -200,6 +210,13 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
 
       <ActivityLog isOpen={isActivityLogOpen} onClose={() => setIsActivityLogOpen(false)} />
 
+      {/* 常駐 IP 選擇器的彈窗。選了就寫入 activeModelId（全站唯一的「目前 IP」）。 */}
+      <ModelLoungeModal
+        isOpen={isIpSwitcherOpen}
+        onClose={() => setIpSwitcherOpen(false)}
+        onSelect={model => handlePickModel(model.id)}
+      />
+
       {/* Full Screen Mega Menu */}
       <div 
         className={`fixed inset-0 z-[40] bg-[var(--color-bg-deep)]/95 backdrop-blur-3xl transition-all duration-700 ease-out ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
@@ -226,7 +243,7 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
                                         className="group/item text-left flex flex-col transition-all duration-300 hover:translate-x-2"
                                     >
                                         <span className="text-xl lg:text-2xl font-display font-light text-[var(--color-text-main)] group-hover/item:text-[var(--color-gold)] uppercase tracking-wider transition-colors">
-                                            {item.label}
+                                            {item.name}
                                         </span>
                                         {item.desc && (
                                             <span className="text-[10px] text-[var(--color-text-dim)] group-hover/item:text-[var(--color-text-main)] opacity-60 mt-1 transition-colors max-w-[240px] leading-relaxed">

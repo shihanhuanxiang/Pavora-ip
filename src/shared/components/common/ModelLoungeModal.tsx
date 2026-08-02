@@ -18,7 +18,7 @@ const ModelLoungeModal: React.FC<ModelLoungeModalProps> = ({ isOpen, onClose, on
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50" onClick={onClose}>
       <div className="bg-gray-800 rounded-lg p-6 w-full max-w-4xl max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
         <div className="flex justify-between items-center mb-4">
-            <h3 className="text-2xl font-bold text-white">從模特兒休息室選擇</h3>
+            <h3 className="text-2xl font-bold text-white">從 IP 休息室選擇</h3>
             <Button onClick={onClose} variant="secondary" className="py-1 px-3">&times;</Button>
         </div>
         {models.length > 0 ? (
@@ -31,7 +31,7 @@ const ModelLoungeModal: React.FC<ModelLoungeModalProps> = ({ isOpen, onClose, on
             ))}
           </div>
         ) : (
-          <p className="text-gray-400 text-center py-8">您的模特兒休息室是空的。</p>
+          <p className="text-gray-400 text-center py-8">你的 IP 休息室是空的。</p>
         )}
       </div>
     </div>

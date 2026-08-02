@@ -60,8 +60,8 @@ const PortfolioSelectModal: React.FC<PortfolioSelectModalProps> = ({ isOpen, onC
         {/* Header */}
         <div className="p-6 border-b border-[var(--color-border)] flex justify-between items-center bg-[var(--color-bg-main)]">
           <div>
-            <h3 className="text-xl font-display font-bold uppercase tracking-widest text-[var(--color-text-main)]">從作品集錦匯入</h3>
-            <p className="text-[10px] text-[var(--color-gold)] uppercase tracking-widest mt-1">選擇要加入模特兒休息室的作品</p>
+            <h3 className="text-xl font-display font-bold uppercase tracking-widest text-[var(--color-text-main)]">從作品庫匯入</h3>
+            <p className="text-[10px] text-[var(--color-gold)] uppercase tracking-widest mt-1">選擇要加入 IP 休息室的作品</p>
           </div>
           <button onClick={onClose} className="text-gray-500 hover:text-white transition-colors">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -87,7 +87,7 @@ const PortfolioSelectModal: React.FC<PortfolioSelectModalProps> = ({ isOpen, onC
         <div className="flex-grow overflow-y-auto p-6 custom-scrollbar min-h-[400px]">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full py-20 text-gray-500">
-              <p className="text-[10px] uppercase tracking-widest">作品集錦中沒有任何作品</p>
+              <p className="text-[10px] uppercase tracking-widest">作品庫中沒有任何作品</p>
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">

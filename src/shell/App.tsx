@@ -57,7 +57,6 @@ const RouteTransitionFallback: React.FC = () => (
   </div>
 );
 
-import { useAppStore } from '../shared/stores/useAppStore';
 import { useModelStore } from '../shared/stores/useModelStore';
 
 // E4b：登入閘（env 旗標控制）。VITE_REQUIRE_LOGIN 未設定或非 'true' 時，
@@ -84,23 +83,15 @@ const getPathForWorkflowStep = (step: WorkflowStep) => {
 };
 
 const App: React.FC<AppProps> = ({ taxonomyData }) => {
-  const { projectMode } = useAppStore();
-  const { models, activeModelId } = useModelStore();
+  const { models, activeModelId, setActiveModel } = useModelStore();
   const { masterTaxonomy, apparelStructure } = taxonomyData;
   const { addNotification } = useNotification();
 
-  // 同步專案模式色彩
-  useEffect(() => {
-    const root = document.documentElement;
-    if (projectMode === 'commerce') {
-      root.style.setProperty('--color-gold', '#60a5fa');
-      root.style.setProperty('--color-gold-rgb', '96, 165, 250');
-    } else {
-      root.style.setProperty('--color-gold', '#d4af37');
-      root.style.setProperty('--color-gold-rgb', '212, 175, 55');
-    }
-  }, [projectMode]);
-  
+  // 2026-08-02（企劃案 B-1a）：移除「商業／IP 創作模式」切換。
+  // 原本這裡會依模式把 --color-gold 改成藍色，讓整站換一套主題色——
+  // 那是使用者迷路的主因之一（切個模式感覺像換了一個 app）。
+  // 現在主題色一律沿用 index.css 的預設金色，不再由 JS 覆寫。
+
   // 狀態持久化：從 sessionStorage 恢復
   const [workflowStep, setWorkflowStep] = useState<WorkflowStep>(() => {
     const pathStep = getWorkflowStepForPath(window.location.pathname);
@@ -244,6 +235,14 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
 
   const handleModelSelect = useCallback((model: any, destination: string) => {
     setSelectedModel(model);
+    // 2026-08-02（企劃案 B-1b）：兩條「目前是誰」的路徑必須同步。
+    // 改版前 activeModelId（持久化）與這裡的 selectedModel（暫存、靠 props 往下傳）
+    // 各走各的：模特兒休息室選人只寫 selectedModel、從不寫 activeModelId，
+    // 導致 Header 新增常駐 IP 選擇器後，兩邊會顯示不同的人。
+    // 現在任何「選了某個 IP」的動作都一併更新全域 activeModelId。
+    if (model?.id) {
+      setActiveModel(model.id);
+    }
     if (destination === 'narrative') {
         handleNavigate(destination);
         return;
@@ -256,11 +255,16 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
     } else {
       handleNavigate(destination);
     }
-  }, [handleAdvancedEdit, handleNavigate]);
+  }, [handleAdvancedEdit, handleNavigate, setActiveModel]);
 
   const renderContent = () => {
     const navProps = { onGoBack: handleGoBack, onGoHome: handleGoHome };
-    const narrativeModel = selectedModel || models.find(model => model.id === activeModelId) || models[0] || null;
+    // 「目前操作的 IP」的唯一解析順序。
+    // activeModelId 排第一：它是 Header 常駐選擇器寫入的全域狀態，
+    // 使用者剛剛在 Header 換人時必須立刻反映到各功能頁，不能被舊的暫存值蓋掉。
+    const currentModel =
+      models.find(model => model.id === activeModelId) || selectedModel || models[0] || null;
+    const narrativeModel = currentModel;
     switch (workflowStep) {
       case WorkflowStep.HOMEPAGE: return <HomePage onNavigate={handleNavigate} />;
       case WorkflowStep.BRAND_IDENTITY_HUB: return <BrandIdentityHub onGoHome={handleGoHome} onModelSelect={handleModelSelect} initialImage={editingImage} />;
@@ -316,7 +320,8 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
       case WorkflowStep.PERSONAL_WARDROBE: return <PersonalWardrobe onGoHome={handleGoHome} apparelStructure={apparelStructure} />;
       case WorkflowStep.APPAREL_DESIGN: return <ApparelDesign onGoHome={handleGoHome} onAdvancedEdit={handleAdvancedEdit} masterTaxonomy={masterTaxonomy} apparelStructure={apparelStructure} />;
       case WorkflowStep.HAIR_SALON: return <HairAndMakeupStudio onGoHome={handleGoHome} initialImage={editingImage} onContinueEditing={handleAdvancedEdit} />;
-      case WorkflowStep.SCENE_GENERATION: return <SceneGeneration onGoHome={handleGoHome} initialImage={editingImage} onContinueEditing={handleAdvancedEdit} selectedModel={selectedModel} />;
+      // 改用 currentModel：Header 換 IP 後場景轉移要跟著換人
+      case WorkflowStep.SCENE_GENERATION: return <SceneGeneration onGoHome={handleGoHome} initialImage={editingImage} onContinueEditing={handleAdvancedEdit} selectedModel={currentModel} />;
       case WorkflowStep.FANTASY_SERIES: return <FantasySeries onGoHome={handleGoHome} initialImage={editingImage} onContinueEditing={handleAdvancedEdit} />;
       case WorkflowStep.COMPOSITE_CARD: return <CompositeCardStudio onGoHome={handleGoHome} initialImage={editingImage} />;
       case WorkflowStep.PORTFOLIO_GALLERY: return <PortfolioGallery onGoHome={handleGoHome} onAdvancedEdit={handleAdvancedEdit} />;

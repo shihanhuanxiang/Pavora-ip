@@ -375,9 +375,9 @@ const PortfolioOptimization: React.FC<PortfolioOptimizationProps> = ({ onGoBack,
                     <h3 className="text-2xl font-bold text-[var(--color-text-title)] mb-4">請選擇要優化的圖片</h3>
                     <div className="flex gap-4">
                         <Button onClick={() => fileInputRef.current?.click()} variant="light">從電腦上傳</Button>
-                        <Button onClick={() => setIsLoungeOpen(true)}>從模特兒休息室選擇</Button>
+                        <Button onClick={() => setIsLoungeOpen(true)}>從 IP 休息室選擇</Button>
                     </div>
-                     <p className="text-sm text-gray-500 mt-4">或從「作品集錦」中選取圖片進入此模組。</p>
+                     <p className="text-sm text-gray-500 mt-4">或從「作品庫」中選取圖片進入此模組。</p>
                 </Card>
             ) : (
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">

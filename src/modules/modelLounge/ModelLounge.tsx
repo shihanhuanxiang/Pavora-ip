@@ -48,7 +48,7 @@ const DESTINATIONS = [
     { key: 'fitting_room', label: '虛擬試衣間 (Fitting)' },
     { key: 'scene', label: '場景轉移 (Scene)' },
     { key: 'narrative', label: '靈魂敘事 (Narrative) ✨' },
-    { key: 'salon', label: '髮型沙龍 (Salon)' },
+    { key: 'salon', label: '妝髮沙龍 (Salon)' },
 ];
 
 const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHubMode, initialPortfolioModelId, focusPortfolioAssets }) => {
@@ -549,7 +549,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                 <div className="mf-subheader sticky top-[80px] z-30 px-6 py-4 mb-8">
                     <div className="max-w-[110rem] mx-auto flex justify-between items-center">
                         <div className="flex flex-col">
-                            <h2 className="text-2xl font-display font-bold uppercase tracking-[0.3em] text-[var(--home-ink)]">模特兒休息室</h2>
+                            <h2 className="text-2xl font-display font-bold uppercase tracking-[0.3em] text-[var(--home-ink)]">IP 休息室</h2>
                         </div>
                         <div className="flex items-center gap-4">
                             {currentUser ? (
@@ -610,7 +610,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                             variant="primary"
                             className="home-btn-primary text-[10px] font-bold tracking-widest"
                         >
-                            從作品集錦匯入
+                            從作品庫匯入
                         </Button>
                         <Button
                             onClick={handleDelete}
@@ -1233,7 +1233,7 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                             </svg>
                         </div>
-                        <h3 className="text-2xl font-display font-bold uppercase tracking-[0.3em] text-[var(--home-ink)] mb-4">您的模特兒休息室是空的</h3>
+                        <h3 className="text-2xl font-display font-bold uppercase tracking-[0.3em] text-[var(--home-ink)] mb-4">你的 IP 休息室是空的</h3>
                         <p className="text-sm text-[var(--home-muted)] max-w-md leading-relaxed">請先至「模特兒生成」創建您的專屬模特兒。創建後，您可以在此管理並快速啟動其他創意流程。</p>
                                                 <Button onClick={() => onModelSelect({} as any, 'model_setup')} variant="primary" className="home-btn-primary mt-10 text-[10px] font-bold tracking-widest">前往模特兒生成</Button>
                     </div>
