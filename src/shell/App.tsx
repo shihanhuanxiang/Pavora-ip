@@ -336,6 +336,13 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
     }
   };
 
+  // 2026-08-02（Hank 拍板）：靈魂敘事是全站唯一會累積編輯狀態的功能。
+  // 在裡面用 Header 換 IP 幾乎一定是誤觸——換了會讓編輯到一半的內容與新 model 的
+  // 資料源不一致（`currentModel` 把 activeModelId 排第一，下一次 render 就會換人）。
+  // 故進入敘事即鎖定切換，離開自動解除。其餘功能不鎖，因為它們沒有累積狀態。
+  const ipSwitchLockReason =
+    workflowStep === WorkflowStep.NARRATIVE ? '靈魂敘事編輯中，離開後才能切換 IP' : null;
+
   return (
     <AuthProvider>
       <AuthGate>
@@ -347,6 +354,7 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
             imagenUsage={imagenUsage}
             isDarkMode={isDarkMode}
             onToggleTheme={toggleTheme}
+            ipSwitchLockReason={ipSwitchLockReason}
           />
           <main className="relative">
                       <QuotaErrorModal isOpen={isQuotaModalVisible} onClose={() => setQuotaModalVisible(false)} />

@@ -15,9 +15,14 @@ interface HeaderProps {
   imagenUsage: number;
   isDarkMode: boolean;
   onToggleTheme: () => void;
+  /**
+   * 非 null 時鎖住常駐 IP 選擇器，字串即鎖定原因（顯示在 tooltip）。
+   * 由 App.tsx 依目前 workflowStep 決定，目前只有靈魂敘事會鎖。
+   */
+  ipSwitchLockReason?: string | null;
 }
 
-const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, isDarkMode, onToggleTheme }) => {
+const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, isDarkMode, onToggleTheme, ipSwitchLockReason = null }) => {
   const cloudSyncStatus = useModelStore((state) => state.cloudSyncStatus);
   const lastSyncError = useModelStore((state) => state.lastSyncError);
   // 常駐 IP 選擇器（2026-08-02，企劃案 B-1b）。
@@ -125,8 +130,13 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
               {models.length > 0 ? (
                 <button
                   onClick={() => setIpSwitcherOpen(true)}
-                  className="hidden lg:flex items-center gap-2.5 bg-[var(--color-bg-deep)]/60 rounded-full border border-[var(--color-border)] pl-1 pr-4 py-1 backdrop-blur-md shadow-2xl hover:border-[var(--color-gold)]/50 transition-colors group/ip"
-                  title="切換目前操作的 IP"
+                  disabled={!!ipSwitchLockReason}
+                  className={`hidden lg:flex items-center gap-2.5 bg-[var(--color-bg-deep)]/60 rounded-full border border-[var(--color-border)] pl-1 pr-4 py-1 backdrop-blur-md shadow-2xl transition-colors group/ip ${
+                    ipSwitchLockReason
+                      ? 'opacity-50 cursor-not-allowed'
+                      : 'hover:border-[var(--color-gold)]/50'
+                  }`}
+                  title={ipSwitchLockReason || '切換目前操作的 IP'}
                 >
                   <span className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 bg-[var(--color-bg-input)]">
                     {activeModel ? (
