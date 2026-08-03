@@ -765,6 +765,15 @@ const buildFinalVisualPromptV11 = (
     }
 
     // Layer 10: negative_prompt
+    // 2026-08-03（企劃案 B-3 附註，刻意不改）：下面這串預設負面詞包含
+    // `no Chinese characters on signs`，但它的用意是「背景不要出現可讀文字」——
+    // 因為 AI 生成的文字幾乎都是亂碼，會直接毀掉商業可用度。它不是地域偏見，
+    // 對台灣場景同樣生效。
+    //
+    // 因此新增異國情境（京都和服、印度紗麗等，見企劃案 A-1）時，
+    // 若刻意想要當地招牌入鏡，做法是**在該場景資料裡自填 `negative_prompt` 覆寫這一串**
+    // （`scene.negative_prompt ||` 這個 fallback 就是為此存在），
+    // 不要來改這個全域預設值。
     let layer10 = scene.negative_prompt || "plastic skin, doll-like face, perfect symmetry, airbrushed, oversaturated, HDR, fake bokeh, instagram filter, watermark, text, logo, deformed hand, extra fingers, no phone visible in frame, no second phone in mirror, no selfie stick, no studio lighting, no model pose, no readable text in background, no store signs, no neon signs with text, no street signs, no Chinese characters on signs, no subtitles, no billboards, no shop name boards";
     
     // Hard Fabric / Rain Safeguard
@@ -903,6 +912,20 @@ export const generateDynamicEventWithScene = async (model: Model, lastEntry?: { 
 - 上一則動態：“${lastEntry.content}”
     ` : '【新故事線起始】';
 
+    /**
+     * 這則動態實際發生的城市（2026-08-03，企劃案 B-3 的同病根殘留，順手一併修）。
+     *
+     * 與 `generateIPDiary` 相同的問題：下面送給 AI 的指令原本寫死 `targetCity`
+     * （＝IP 常駐城市），但實際選出的 `scene` 可能不在該城市——
+     * 候選池與 cityFallback 都為空時會退到 `LOCALIZED_SCENES[0]`（見上方 :892），
+     * 那時 scene 的城市與 targetCity 就對不上，AI 會被告知錯的地點。
+     *
+     * 修法一致：場景自己的城市優先，`"any"` 或沒填才回退常駐城市。
+     */
+    const sceneCity = (scene as any).city && (scene as any).city !== 'any'
+        ? (scene as any).city
+        : targetCity;
+
     // 準備場景數據，避免直接暴露英文 prompt 素材給 AI 直接複製
     const sceneEvent = (scene as any).name_zh || scene.event;
     const sceneSensory = Array.isArray(scene.sensory) ? scene.sensory.join('、') : scene.sensory;
@@ -911,7 +934,7 @@ export const generateDynamicEventWithScene = async (model: Model, lastEntry?: { 
     const prompt = `
         ${identityHeader}
         ${contextHeader}
-        你現在是這名數位 IP 的【靈體編導】。請根據其人格與上一則動態，在【${targetCity}】策劃一則生活靈感。
+        你現在是這名數位 IP 的【靈體編導】。請根據其人格與上一則動態，在【${sceneCity}】策劃一則生活靈感。
         
         【場景設定】
         - 地點與事件：${sceneEvent}
@@ -1012,7 +1035,25 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
     }
 
     const location = event || sceneContext.event;
-    
+
+    /**
+     * 這篇貼文實際發生的城市（2026-08-03，企劃案 B-3）。
+     *
+     * 改版前的 bug：最終 prompt 的地點永遠寫 `primaryCity`（IP 的常駐城市），
+     * 而場景卡自己的 `city` 欄位只被拿去篩選候選池、**一個字都沒進 prompt**。
+     * 結果選了「京都和服旅拍」的場景卡，模型收到的還是「地點：台北市」——
+     * 而且同一份 prompt 裡場景卡的英文 promptSkeleton 可能寫著京都地標，
+     * 兩個地點訊號互相打架。
+     *
+     * 修法：**場景卡的城市優先，沒有才回退到 IP 常駐城市。**
+     * 沒有指定場景時行為與改版前完全相同，不影響既有流程。
+     *
+     * 註：Tier3 全池 fallback（上方 :985-988）抽到的場景可能不在 primaryCity，
+     * 此修法連帶讓那種情況也講對地點，不再張冠李戴。
+     */
+    const effectiveCity = sceneContext?.city || primaryCity;
+
+
     // 依月份隨機抽台灣天氣(避免永遠下雨)
     const month = new Date().getMonth() + 1;
     let weatherPool: string[];
@@ -1241,7 +1282,7 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
 - 標誌性物品：${(model.worldAnchors?.iconicItems?.map(i => i.name) ?? []).join('、') || '無特定物品'}
 
 [今日情境]
-- 地點: ${primaryCity} ${location}
+- 地點: ${effectiveCity} ${location}
 - 天氣: ${weather}
 - 活動: ${activity}
 
@@ -1260,7 +1301,7 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
    - 你必須產出英文提示詞，並將其拆分為以下模塊格式：
      [Subject]: (包含生理寫實細節)
      [Apparel]: (包含本次指定的完整穿搭)
-     [Environment]: (包含 ${primaryCity} 的場景碎屑與雜訊)
+     [Environment]: (包含 ${effectiveCity} 的場景碎屑與雜訊)
      [Lighting]: (包含對應天氣與 Tier 的光影語法)
      [Camera]: (包含對應 Tier 的攝影機設定與術語)
 
@@ -1331,14 +1372,14 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
         const repairedVisualPrompt = ensurePromptSection(
             data.visualPrompt,
             /^\s*(\[Lighting\]|【Lighting】|Lighting)\s*[:：]/im,
-            `[Lighting]: natural ${weather} lighting matching ${primaryCity} ${location}, realistic ambient shadows, no studio lighting`,
+            `[Lighting]: natural ${weather} lighting matching ${effectiveCity} ${location}, realistic ambient shadows, no studio lighting`,
             /^\s*(\[Camera\]|【Camera】|Camera)\s*[:：]/im
         );
 
         const repairedVisualPromptZH = ensurePromptSection(
             data.visualPromptZH,
             /^\s*(\[光影\]|【光影】|光影)\s*[:：]/m,
-            `[光影]: 呼應${weather}與${primaryCity}${location}的自然光影、環境陰影與真實現場光感，避免棚拍燈感`,
+            `[光影]: 呼應${weather}與${effectiveCity}${location}的自然光影、環境陰影與真實現場光感，避免棚拍燈感`,
             /^\s*(\[鏡頭\]|【鏡頭】|鏡頭)\s*[:：]/m
         );
 

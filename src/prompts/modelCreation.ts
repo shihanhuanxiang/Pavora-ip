@@ -4,7 +4,8 @@
 // ============================================================================
 
 // T8: 有限集合 preset 的確定性 zh→en 映射（final prompt 全英文鐵則）。
-import { CORE_VIBE_EN_MAP, TONE_OF_VOICE_EN_MAP, TAIWAN_COUNTY_EN_MAP } from '../shared/constants/personaPresets';
+// TAIWAN_COUNTY_EN_MAP 已隨 2026-08-03 移除 Background Setting 一併不再需要（B-4d）
+import { CORE_VIBE_EN_MAP, TONE_OF_VOICE_EN_MAP } from '../shared/constants/personaPresets';
 
 // 2026-07-11 膚色語意校準（Hank 拍板美感升級）：裸值 "medium" 會被生圖模型解讀成
 // 全球平均的偏深膚色（東南亞/南亞感）。此映射把 4 檔膚色錨定在高級時裝 IP 審美語彙。
@@ -190,12 +191,20 @@ export const buildModelPrompt = (params: any) => {
         const toneEn = params.persona.toneOfVoice
             ? (TONE_OF_VOICE_EN_MAP[params.persona.toneOfVoice] ?? params.persona.toneOfVoice)
             : 'Natural';
-        const cityZh = params.lifeCircuit?.primaryCity;
-        const cityEn = cityZh ? (TAIWAN_COUNTY_EN_MAP[cityZh] ?? cityZh) : '';
         prompt += `[${personaPrefix}: ${coreVibeEn}]\n`;
         prompt += `- Behavioral Personality: ${params.persona.mbti || 'Unknown'} - ${params.persona.profession || ''}. \n`;
         prompt += `- Expression Archetype: ${toneEn}. \n`;
-        prompt += `- Background Setting: ${cityEn ? `${cityEn}, Taiwan` : 'Taiwan'}. \n`;
+        // 2026-08-03（企劃案 B-4d ＋ B-3）：移除 `- Background Setting: ${city}, Taiwan`。
+        //
+        // 城市不是人物的表面特徵，是場景特徵。原本這一行讓 IP 的「常駐城市」直接決定
+        // 定妝照的背景，違反兩件事：
+        //   1. 架構原則「模特兒生成只留五官／身形／髮型／服裝」——定妝照要乾淨到好去背，
+        //      不該有城市背景（見 CLAUDE.md 第 7 節）。
+        //   2. 它與敘事那邊同一個欄位造成的「地點被角色綁死」是同一個病根：
+        //      場景卡選了京都，最終 prompt 仍寫著台北。
+        //
+        // 「常駐城市」欄位本身保留在 Model 資料與 Model Lounge 身分編輯器（那是人設資料），
+        // 只是不再進定妝照的 prompt。每篇貼文的地點改由場景卡決定（見 narrativeService 的修法）。
 
         // Micro-Expression Logic based on Vibe
         // T8 bug fix：原比對字串（'高冷厭世'/'鄰家親切'）與 CORE_VIBE_OPTIONS 實際值
