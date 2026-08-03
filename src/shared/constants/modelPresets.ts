@@ -513,6 +513,12 @@ export const ModelGenerationDefaults = {
     bust: 85,
     waist: 65,
     hip: 90,
+    // ⚰️ 2026-08-04（企劃案 B-5）：angle 與 lightingDepthControl 已失去讀取端。
+    // prompts/modelCreation.ts 的 [TECHNICAL SPECS] 原本插值這兩個欄位，
+    // 現已寫死成「eye-level, straight-on」＋「soft even studio lighting」。
+    // 兩者都從來沒有 UI 控制項、恆為下面這兩個預設值，改也改不動。
+    // 定妝照的角度與光線由 [CASTING STUDIO SPECIFICATION] 統一管理。
+    // 依鐵則不自動 delete，保留墓碑；確認後可由 Hank 刪除這兩行。
     angle: 'eye-level',
     // 2026-08-03（企劃案 B-4a）：移除 cameraLensType。
     // 全 repo 只有這一行，沒有任何讀取端——prompt 裡的鏡頭描述是寫死的 50mm/85mm。
@@ -524,6 +530,10 @@ export const ModelGenerationDefaults = {
     noseHeight: 50,
     eyeShape: 'standard',
     lipThickness: 50,
+    // ⚰️ 2026-08-04（企劃案 B-5）：lightingPreset 在模特兒生成已失去讀取端
+    // （[LIGHTING SPECTRUM] 與舊表情引擎的 catchlight 插值都已移除）。
+    // 注意：合成卡工作室（CompositeCardStudio）與虛擬試衣間各有自己的 lighting state，
+    // 它們的選單是元件內 inline 陣列，不吃這裡也不吃已墓碑化的 LIGHTING_PRESETS。
     lightingPreset: 'studio_soft',
     netRedLevel: 2,
     // 2026-08-03（企劃案 B-4a）：移除 brandStyleAnchor。
@@ -539,14 +549,21 @@ export const ModelGenerationDefaults = {
     vTaperScale: 50
 };
 
-export const LIGHTING_PRESETS = [
-    { value: 'studio_soft', label: '柔和棚拍 (Studio Soft)' },
-    { value: 'golden_hour', label: '黃金小時 (Golden Hour)' },
-    { value: 'cinematic_warm', label: '電影暖調 (Cinematic Warm)' },
-    { value: 'high_contrast', label: '高反差時尚 (High Contrast)' },
-    { value: 'natural_daylight', label: '自然日光 (Natural Daylight)' },
-    { value: 'neon_night', label: '霓虹夜色 (Neon Night)' }
-];
+/**
+ * ⚰️ 已退役 —— 2026-08-04（企劃案 B-5）
+ *
+ * `lightingPreset` 從無 UI 控制項、恆為 'studio_soft'，六個選項裡有五個從未被使用。
+ * 而 prompts/modelCreation.ts 的 [LIGHTING SPECTRUM] 段落已移除——它會跟新的
+ * [CASTING STUDIO SPECIFICATION]（均勻柔光、無投影）直接打架。
+ * 光線一律由棚拍規格統一管理；戲劇光屬於場景轉移與靈魂敘事。
+ *
+ * 已無任何 import。依鐵則不自動 delete，保留墓碑；確認後可由 Hank 刪除。
+ *
+ * 原本的六個選項（保留於此供查閱，git 歷史亦有）：
+ *   studio_soft 柔和棚拍 / golden_hour 黃金小時 / cinematic_warm 電影暖調 /
+ *   high_contrast 高反差時尚 / natural_daylight 自然日光 / neon_night 霓虹夜色
+ */
+export const LIGHTING_PRESETS: { value: string; label: string }[] = [];
 
 export const EYE_SHAPE_OPTIONS = [
     { value: 'standard', label: '標準 (Standard)' },

@@ -43,25 +43,39 @@ const HAIR_BANG_DESC_MAP: Record<string, string> = {
     side: 'a side-swept part'
 };
 
-// 1. AESTHETIC STYLE MAPPING (Gender Specific)
+// 1. SURFACE FINISH MAPPING (Gender Specific) —— 原 AESTHETIC STYLE MAPPING
+//
+// 2026-08-04（企劃案 B-5）淨化：
+// aestheticStyle 由「臉部原型」（FACE_ARCHETYPE_STYLE_MAP）與 20 張預設卡驅動，
+// 不能刪（會動到資料結構），但原內容嚴重越界，與新的
+// [CASTING STUDIO SPECIFICATION]（均勻柔光、無投影、深景深 f/8、禁散景）直接打架：
+//   cinematic → "Anamorphic bokeh" / "film grain"（散景與顆粒，去背會爛）
+//   cyberpunk → "Neon rim lighting" / "Techwear elements" / "chromatic aberration"
+//   western_vogue → "dramatic shadows" / "Sultry gaze" / "high-fashion pose"
+//   korean_soft → "High-key lighting"
+//   全部 → "Full body framing..."（構圖已由 [TECHNICAL SPECS] 統一管，重複下指令會互搶）
+//
+// 依架構原則「模特兒生成只留五官／身形／髮型／服裝表面特徵」，
+// 本表現在只描述【膚質、妝感、修容、髮質】——
+// 光線、景深、姿勢、眼神、背景、服裝一律不在此處出現。
 const AESTHETIC_MAP: Record<string, Record<string, string>> = {
     female: {
-        realistic: "Raw photorealism, shot on 85mm lens. Hyper-realistic skin texture with visible pores. Soft natural lighting. Full body framing with safe margins around feet.",
-        high_fashion: "High-end fashion editorial. Sharp, angular posing. Full body silhouette against clean studio background. Expensive designer look. Maintain the model's original ethnic features.",
-        korean_soft: "K-Beauty aesthetic. 'Glass skin'. High-key lighting. Soft coral makeup. Full length portrait showing entire posture.",
-        western_vogue: "Western supermodel aesthetic. Sun-kissed skin. Strong contouring. Sultry gaze. Full body fashion shot.",
-        japanese_fresh: "Japanese 'Mori Girl' transparency. Low contrast, airy feel. Natural makeup. Full body standing pose.",
-        cyberpunk: "Cyberpunk futuristic aesthetic. Neon rim lighting. Techwear elements. Full body height visible.",
-        cinematic: "Cinematic movie still. Anamorphic bokeh. Tonal depth. Full body narrative composition."
+        realistic: "Skin finish: raw natural texture with visible pores, no retouching look, even natural tone. Makeup: bare-faced or barely-there, untouched natural brow, no visible product. Hair: natural texture, minimal styling product.",
+        high_fashion: "Skin finish: refined high-end retouched quality, smooth even tone with a subtle satin sheen at the high points. Makeup: precise editorial makeup — cleanly defined brow, sculpted matte base, groomed lashes, defined lip line. Hair: polished and controlled, smooth cuticle. Maintain the model's original ethnic features.",
+        korean_soft: "Skin finish: 'glass skin' — dewy translucent luminosity with a visible inner glow, well-hydrated look. Makeup: K-beauty — soft coral lip tint with a gradient edge, minimal eye makeup, soft straight brow. Hair: soft glossy texture.",
+        western_vogue: "Skin finish: sun-kissed warm tone with a healthy satin sheen. Makeup: strong contouring with bronzed cheekbones, clearly defined lip line, full groomed brow. Hair: voluminous natural body.",
+        japanese_fresh: "Skin finish: clean semi-matte porcelain quality with fine natural texture retained. Makeup: minimal — bare lip with light balm, no contouring, soft undefined brow. Hair: airy soft texture with a natural fall.",
+        cyberpunk: "Skin finish: smooth cool-toned matte with a faint metallic sheen at the high points. Makeup: graphic precision makeup — sharp geometric eyeliner, cool-toned highlight, crisp edges. Hair: sleek sharp-edged styling.",
+        cinematic: "Skin finish: rich tonal depth with natural texture fully retained, slightly desaturated warm midtones. Makeup: understated naturalistic makeup, softly defined features. Hair: natural texture with slight movement."
     },
     male: {
-        realistic: "Raw masculine photorealism. Detailed skin texture, visible stubble. Natural daylight. Full length standing view.",
-        high_fashion: "Men's Vogue editorial. Sharp jawline. Moody structured lighting. Full body tailored styling.",
-        korean_soft: "K-Pop Idol aesthetic. Flawless complexion. Textured hair. Bright studio lighting. Full body lean fit.",
-        western_vogue: "Classic GQ style. Rugged texture, strong jaw. Full body powerful stance.",
-        japanese_fresh: "Japanese 'City Boy' aesthetic. Fresh-faced. Relaxed full body posture.",
-        cyberpunk: "Future-tech mercenary. Neon reflections. Full body height, grounded stance.",
-        cinematic: "Action movie hero. Gritty texture, dramatic lighting. Full body dramatic still."
+        realistic: "Skin finish: raw masculine texture, visible pores and a light stubble shadow. Grooming: natural untouched brow, no product. Hair: natural texture, minimal styling.",
+        high_fashion: "Skin finish: refined even tone, clean matte. Grooming: precisely shaped brow, clean-shaven or a sharply edged beard line. Hair: polished controlled styling.",
+        korean_soft: "Skin finish: flawless smooth complexion with a light dewy sheen. Grooming: soft natural brow, clean-shaven, subtle lip tint. Hair: textured soft styling with visible strand separation.",
+        western_vogue: "Skin finish: rugged warm-toned texture with visible pores. Grooming: strong full brow, defined stubble or a short trimmed beard. Hair: natural body with slight disorder.",
+        japanese_fresh: "Skin finish: clean matte with fine natural texture. Grooming: natural slightly sparse brow, clean-shaven. Hair: soft light texture.",
+        cyberpunk: "Skin finish: cool-toned matte with a faint metallic sheen at the high points. Grooming: sharply defined brow line, clean edges. Hair: sleek sharp-edged styling.",
+        cinematic: "Skin finish: gritty realistic texture with rich tonal depth, visible pores and stubble. Grooming: natural unstyled brow. Hair: natural texture with slight movement."
     }
 };
 
@@ -91,6 +105,14 @@ const FACE_ARCHETYPE_MAP: Record<string, Record<string, string>> = {
 };
 
 // 3. AI STYLIST ASSISTANT (Photography Keywords)
+//
+// 2026-08-04（企劃案 B-5）註記：定妝照只走 LEVEL 1。
+// 2-5 級的文字含「clean street environment」「Taiwan urban clutter」
+// 「incidental messy background」——那些會推翻 [CASTING STUDIO SPECIFICATION]。
+// 唯一呼叫鏈（ModelSetup → generateModels → buildModelPrompt）固定送 1，
+// 且 fallback 已改為 1，所以 2-5 實務上不可達。
+// 刻意保留而不刪：它們是「非定妝用途」的既有分級語彙，未來若有寫實素材需求可復用。
+// 但任何人想在定妝照路徑上開放 2-5，等於作廢整個棚拍規格——請先回頭讀 B-5。
 const FIDELITY_LEVELS: Record<number, string> = {
     1: "Studio Clean: Professional studio setup, clean backdrop, perfect lighting, no noise.",
     2: "Soft Realism: Natural skin texture, subtle ambient light, clean street environment.",
@@ -107,14 +129,18 @@ const getStylistKeywords = (params: any) => {
         keywords += "Shot on Sony A7R V, 61MP. Sharp focus. Professional post-processing. ";
     }
 
+    // 2026-08-04（企劃案 B-5）淨化：同 AESTHETIC_MAP 的理由。
+    // 這裡原本混入了 lighting / soft focus / dramatic shadows / bokeh / film grain /
+    // chromatic aberration / clean background / pose —— 全部違反棚拍規格，
+    // 且 soft focus 與色差會讓去背邊緣爛掉。現在只留【渲染質感與膚色調性】。
     const styleKeywords: Record<string, string> = {
         realistic: "Natural skin texture, raw photo, unedited look, 8k resolution.",
-        high_fashion: "Editorial lighting, sharp contrast, high-end retouching, glossy finish.",
-        korean_soft: "Soft focus, pastel tones, clean background, ethereal glow.",
-        western_vogue: "Strong contouring, dramatic shadows, sun-kissed skin, high-fashion pose.",
-        japanese_fresh: "Airy atmosphere, low contrast, natural daylight, minimalist aesthetic.",
-        cyberpunk: "Neon reflections, chromatic aberration, futuristic textures, high-tech vibe.",
-        cinematic: "Anamorphic bokeh, film grain, cinematic color grading, dramatic storytelling."
+        high_fashion: "High-end retouching, glossy skin finish, crisp micro-detail.",
+        korean_soft: "Pastel skin tones, luminous dewy rendering, clean even detail.",
+        western_vogue: "Strong contouring, sun-kissed skin tone, warm satin rendering.",
+        japanese_fresh: "Low-saturation clean rendering, fine natural skin detail, minimalist finish.",
+        cyberpunk: "Cool-toned rendering, crisp synthetic-clean textures, high-precision detail.",
+        cinematic: "Cinematic color grading, rich tonal depth, fine film-like skin texture."
     };
 
     keywords += styleKeywords[params.aestheticStyle] || styleKeywords['realistic'];
@@ -181,7 +207,7 @@ export const buildModelPrompt = (params: any) => {
 
     // --- [SPECTRAL FIDELITY: COLOR CHANNELS] ---
     prompt += `[COLOR SPECTRAL FIDELITY: PRIORITY ALPHA]\n`;
-    prompt += `- SKIN SPECTRUM: Force color output to exact "${SKIN_TONE_DESC_MAP[params.skinTone] ?? params.skinTone}" tone. This is a Spectral Instruction: do NOT allow environment lighting, "Aesthetic Style", or color grading to wash out or shift this skin tone. \n`;
+    prompt += `- SKIN SPECTRUM: Force color output to exact "${SKIN_TONE_DESC_MAP[params.skinTone] ?? params.skinTone}" tone. This is a Spectral Instruction: do NOT allow environment lighting, the "Surface Finish" block, or color grading to wash out or shift this skin tone. \n`;
     prompt += `- HAIR SPECTRUM: Force hair color to exact "${params.hairColor}" color. Identity depends on this chromatic consistency. \n\n`;
     if (params.persona) {
         const personaPrefix = hasFaceRef ? "Subject Behavior" : "IP Persona";
@@ -210,33 +236,64 @@ export const buildModelPrompt = (params: any) => {
         // T8 bug fix：原比對字串（'高冷厭世'/'鄰家親切'）與 CORE_VIBE_OPTIONS 實際值
         // 不符，兩分支從未生效；改比對實際 preset 值（Hank 2026-07-11 拍板順手修）。
         // 注意此處比對「原始中文 preset 值」（service 層不改寫 coreVibe，映射僅在插值處）。
-        prompt += `[MICRO-EXPRESSION ENGINE]\n`;
-        // 2026-07-11 美型版（Hank 拍板）：拿掉法令紋/魚尾紋/額頭張力等 authenticity
-        // 措辭——它們會把臉往「普通/顯老」拉，與 premium IP 審美衝突。
-        if (params.persona.coreVibe === '高冷超模') {
-            prompt += `- Expression: Subtle "sultry/bored" supermodel look. Slightly narrowed elegant eyes, relaxed lips, poised chin. Effortless aloof confidence — flawless editorial beauty, absolutely no frown lines or forehead tension. \n`;
-        } else if (params.persona.coreVibe === '清純鄰家') {
-            prompt += `- Expression: Soft genuine smile with a natural gentle eye-smile (crescent eyes). Bright clear luminous eyes, fresh dewy youthful glow, sweet refined charm. Photogenic girl/boy-next-door warmth — youthful and polished, absolutely no smile wrinkles, nasolabial folds, or crow's feet. \n`;
-        } else {
-            prompt += `- Expression: Relaxed composed features. Professional model gaze with soft camera-aware confidence. \n`;
-        }
-        
-        // Catchlight tracking
-        prompt += `- Eyes Catchlight: Procedural reflection based on ${params.lightingPreset} source. Sharp, crystal-clear iris reflections. \n\n`;
+        // 2026-08-04（企劃案 B-5）：改為定妝照專用的**固定中性表情**。
+        //
+        // 為什麼不再依 coreVibe 決定表情：
+        // coreVibe 的 UI 已隨「靈魂人設」tab 移除（B-4b），值固定在預設「優雅時尚」，
+        // 而它原本會落到 else 分支——等於表情已經是固定的，只是靠一個使用者碰不到的欄位決定。
+        // 更根本的是：**表情每次拍攝都不同，不是角色的固定外觀**。
+        // 定妝照是身分錨點素材，之後要進試衣間換裝、進敘事換場景，
+        // 表情越中性越通用；帶情緒的表情會殘留到每一張下游產出。
+        // 想要「高冷」或「甜美」的表情，那是靈魂敘事每次貼文該決定的事。
+        //
+        // coreVibe 本身仍保留在 Model 資料，供敘事模組使用，只是不再影響定妝照表情。
+        prompt += `[NEUTRAL CASTING EXPRESSION — FIXED]\n`;
+        prompt += `- Expression: Calm, relaxed, neutral. Lips together in a soft resting position, no smile, no smirk, no pout. Eyes open naturally and looking straight into the lens with quiet confidence.\n`;
+        prompt += `- Do NOT add emotional expression, mood, attitude or drama. This is a casting reference shot, not an editorial mood shot.\n`;
+        prompt += `- Face and jaw relaxed. No frown lines, no forehead tension, no squinting, no raised eyebrows.\n`;
+        prompt += `- Eyes Catchlight: soft even studio catchlight, sharp crystal-clear iris reflections.\n\n`;
     }
 
     // --- REALISM & FIDELITY ENGINE ---
-    const fLevel = params.fidelityScale || (params.realismToggle ? 4 : 2);
+    // 2026-08-04（企劃案 B-5）：fallback 由 `|| (params.realismToggle ? 4 : 2)` 改為 `|| 1`。
+    //
+    // 純防禦性修正。查證過的實際呼叫鏈只有一條：
+    //   ModelSetup.tsx:460 → generateModels（modelCreationService.ts）→ buildModelPrompt
+    // 而 ModelSetup 固定送 fidelityScale: 1，所以 fallback 目前不可達。
+    // （驗收時我一度在此寫「還有休息室重生、代言人等呼叫端」——那是錯的，已更正。）
+    //
+    // 仍然要改的理由：舊 fallback 會落到 LEVEL 2「clean street environment」甚至
+    // LEVEL 4「Taiwan urban clutter (scooters, cables, signage)」，一旦未來有新呼叫端
+    // 忘記帶這個參數，就會直接推翻下面的棚拍規格。定妝照沒有任何情況該落在 1 以外。
+    // 附帶：`realismToggle` 全 repo 從來沒有宣告過，舊 fallback 引用的是不存在的欄位。
+    const fLevel = params.fidelityScale || 1;
     prompt += `[FIDELITY ENGINE: LEVEL ${fLevel}]\n`;
-    prompt += `- ${FIDELITY_LEVELS[fLevel] || FIDELITY_LEVELS[2]}\n`;
+    prompt += `- ${FIDELITY_LEVELS[fLevel] || FIDELITY_LEVELS[1]}\n`;
     
-    if (params.dofIntensity !== undefined) {
-        const dof = params.dofIntensity;
-        prompt += `[DEPTH OF FIELD CONTROL]\n`;
-        if (dof < 30) prompt += `- Optics: f/1.2 prime lens, extremely shallow DOF, heavy creamy bokeh, background completely blurred.\n`;
-        else if (dof < 70) prompt += `- Optics: f/2.8 standard lens, natural background separation, soft focus transition.\n`;
-        else prompt += `- Optics: f/8.0 deep focus, sharp street background, wide-angle clarity.\n`;
-    }
+    /**
+     * 2026-08-04（企劃案 B-5）：定妝照的棚拍規格，全部寫死。
+     *
+     * 判準只有一個：**定妝照是素材不是成品，越乾淨、越好去背就越好用。**
+     * 它之後要進虛擬試衣間換裝、進靈魂敘事換場景、進場景轉移換背景——
+     * 任何殘留的背景、投影或模糊邊緣，都會變成下游每一張圖都要對抗的東西。
+     *
+     * 逐項理由（不要憑「看起來比較美」改動這裡）：
+     *  · 中性灰背景而非純白：純白會讓淺色服裝的邊緣被背景吃掉，去背時輪廓缺角。
+     *    中性灰對去背最友善，這是棚拍常識。
+     *  · 不要投影：有投影，去背時會連影子一起被切下來，貼到新場景就是災難。
+     *  · 深景深：淺景深會讓身體與服裝的**邊緣糊掉**，直接害到去背與換裝精度。
+     *    單色背景本來就沒有東西需要糊。
+     *  · 均勻柔光：有方向性的戲劇光在換背景後一定穿幫；均勻光最好重新打光。
+     *
+     * 原本這裡是依 dofIntensity（0-100，無 UI、恆為 50）三分支決定光圈，
+     * 其中 <30 那條會產生「背景完全模糊」——對定妝照是反效果。
+     */
+    prompt += `[CASTING STUDIO SPECIFICATION — FIXED, DO NOT DEVIATE]\n`;
+    prompt += `- Background: seamless solid neutral grey studio backdrop (approx #B0B0B0), completely empty. No props, no furniture, no environment, no texture, no gradient vignette.\n`;
+    prompt += `- Lighting: soft even studio lighting from a large softbox key with fill. Minimal shadow, no dramatic contrast, no coloured gels, no rim-light drama.\n`;
+    prompt += `- Shadows: NO cast shadow on the backdrop. Minimal contact shadow under the feet only.\n`;
+    prompt += `- Optics: deep depth of field (f/8 equivalent). The subject and the garment must be sharp edge to edge, with clean crisp silhouette boundaries. NO bokeh, NO background blur, NO soft focus.\n`;
+    prompt += `- Purpose: this is a cut-out-ready casting reference. The subject must be cleanly separable from the background.\n\n`;
 
     // --- COMPOSITION MANDATE (CRITICAL FOR FOOTWEAR) ---
     prompt += `[🚨 COMPOSITION RULE: FULL BODY MANDATORY 🚨]\n`;
@@ -271,9 +328,11 @@ export const buildModelPrompt = (params: any) => {
     // 內容本身（背景、光線、色調）也違反「模特兒生成只留表面特徵」的架構原則——
     // 那些屬於場景轉移與靈魂敘事，不屬於定妝照。
 
-    const aestheticLabel = hasFaceRef ? "ENVIRONMENTAL AESTHETIC" : "AESTHETIC STYLE";
+    // 2026-08-04（企劃案 B-5）：標題原為 "ENVIRONMENTAL AESTHETIC" / "AESTHETIC STYLE"。
+    // 內容淨化後已不含環境與構圖，只剩膚質妝感，沿用舊標題會誤導模型去畫環境氛圍。
     if (!params.isMultiAngle) {
-        prompt += `[${aestheticLabel}: ${params.aestheticStyle}]\n${aestheticDesc}\n\n`;
+        prompt += `[SURFACE FINISH — SKIN, MAKEUP & GROOMING: ${params.aestheticStyle}]\n${aestheticDesc}\n`;
+        prompt += `- This block controls SURFACE APPEARANCE ONLY. It must NOT influence lighting, background, depth of field, pose, gaze or wardrobe — every one of those is already fixed by the blocks above and must not be re-interpreted here.\n\n`;
     }
 
     // --- PHYSIOLOGICAL FEATURE CONTROLS (PHASE 2: ANATOMICAL MAPPING) ---
@@ -335,15 +394,19 @@ export const buildModelPrompt = (params: any) => {
             prompt += `- Technical Overrides: Eye Shape: ${params.eyeShape}, Nose Height: ${params.noseHeight}/100, Lip Thickness: ${params.lipThickness}/100. \n\n`;
         }
 
-        const lightingMap: Record<string, string> = {
-            studio_soft: "Soft professional studio lighting with gentle, realistic shadows.",
-            golden_hour: "Warm, low-angle natural sunlight typical of the hour before sunset.",
-            cinematic_warm: "Dramatic cinematic lighting with realistic amber tones and professional depth.",
-            high_contrast: "Edgy high-contrast photography lighting, sharp highlights and deep blacks.",
-            natural_daylight: "Clear, bright natural daylight. Neutral photographic color temperature.",
-            neon_night: "Vibrant neon rim lighting with realistic colorful reflections on skin."
-        };
-        prompt += `[LIGHTING SPECTRUM: ${params.lightingPreset}]\n${lightingMap[params.lightingPreset] || params.lightingDepthControl}\n\n`;
+        // 2026-08-04（企劃案 B-5）：移除 [LIGHTING SPECTRUM] 整段。
+        //
+        // 兩個理由：
+        //  1. **它會跟上方的 [CASTING STUDIO SPECIFICATION] 直接打架。** 那段已把打光寫死成
+        //     「均勻柔光、無投影」，這裡卻可能送出 golden_hour（夕陽側光）、
+        //     neon_night（霓虹輪廓光）、high_contrast（強反差深黑）——同一份 prompt 裡
+        //     兩套矛盾的打光指令，模型只會二選一，結果不可預期。
+        //  2. `lightingPreset` 是幽靈欄位：從無 UI 控制項，恆為 'studio_soft'，
+        //     只有「隨機靈感」會改它，而那顆按鈕已隨靈魂人設 tab 移除。
+        //     所以這 6 個選項裡有 5 個從來沒被使用過。
+        //
+        // 光線一律由 CASTING STUDIO SPECIFICATION 統一管理。定妝照要的是可再製的中性光，
+        // 戲劇光屬於場景轉移與靈魂敘事。
     }
 
     prompt += `[SUBJECT APPEARANCE]\n`;
@@ -409,7 +472,11 @@ export const buildModelPrompt = (params: any) => {
     if (params.isMultiAngle) {
         prompt += `[🚨 PROFESSIONAL CHARACTER REFERENCE SHEET (MODEL SETTING) 🚨]\n`;
         prompt += `- FORMAT: Generate a SINGLE 16:9 horizontal photographic layout. This is a technical character sheet for identity reference.\n`;
-        prompt += `- BACKGROUND: Clean, solid neutral studio background (e.g., white or light grey). No props, no furniture, no environment. Just the character.\n`;
+        // 2026-08-04（B-5 驗收修正）：原寫 "(e.g., white or light grey)"。
+        // [CASTING STUDIO SPECIFICATION] 是無條件輸出的，多角度路徑會同時收到
+        // 「中性灰 #B0B0B0」與「white」兩套背景規格，而 white 正是那段註解裡
+        // 明文指出會害去背的顏色。改成引用同一個來源，不再自成一套。
+        prompt += `- BACKGROUND: The exact same seamless neutral grey studio backdrop specified in the casting studio specification above. No props, no furniture, no environment. Just the character.\n`;
         prompt += `- COMPOSITION: Use a strictly organized 2-ROW GRID structure.\n\n`;
         
         if (params.gender === 'female') {
@@ -436,9 +503,16 @@ export const buildModelPrompt = (params: any) => {
     }
 
     prompt += `[TECHNICAL SPECS]\n`;
-    prompt += `Shot: ${params.isMultiAngle ? 'Technical Photographic Sheet' : 'FULL BODY VERTICAL SHOT'}. Angle: ${params.angle || 'eye-level'}.\n`;
+    // 2026-08-04（B-5）：Angle 與 Lighting 改為寫死。
+    // params.angle 與 params.lightingDepthControl 都是無 UI、恆為預設值的幽靈欄位，
+    // 而定妝照本來就該固定平視＋均勻柔光（見上方 CASTING STUDIO SPECIFICATION）。
+    prompt += `Shot: ${params.isMultiAngle ? 'Technical Photographic Sheet' : 'FULL BODY VERTICAL SHOT'}. Angle: eye-level, straight-on.\n`;
     prompt += `Camera: 50mm or 85mm prime lens for zero distortion.\n`;
-    prompt += `Lighting: ${params.isMultiAngle ? 'Neutral high-key studio lighting, even illumination' : params.lightingDepthControl}.\n`;
+    // 2026-08-04（B-5 驗收修正）：原寫 "neutral high-key studio lighting"。
+    // high-key 的攝影語意是亮到近乎過曝的白背景，會拉著模型把上方指定的
+    // 中性灰 #B0B0B0 背景打白——正是棚拍規格自己說會害去背的情形。
+    // 而且這行排在 prompt 尾端，位置＝權重，壓過前面的規格。
+    prompt += `Lighting: soft even studio lighting, low contrast, neutral colour temperature.\n`;
     prompt += `Quality: ${stylistKeywords}, photorealistic, RAW quality, 8k resolution.\n\n`;
 
     prompt += `[NEGATIVE PROMPT]\n`;
