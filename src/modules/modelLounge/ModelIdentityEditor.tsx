@@ -5,6 +5,12 @@ import Slider from '../../shared/components/common/Slider';
 import { motion, AnimatePresence } from 'motion/react';
 import { useModelStore } from '../../shared/stores/useModelStore';
 import { useNotification } from '../../shared/context/NotificationContext';
+// 2026-08-03（企劃案 D-10）：「隨機靈感」從 ModelSetup 搬來，需要這批人設選項常數。
+import {
+    MBTI_OPTIONS, CORE_VIBE_OPTIONS, TONE_OPTIONS, POSTING_HABITS,
+    TAIWAN_COUNTIES, TAIWAN_DISTRICT_DATA, INTEREST_OPTIONS
+} from '../../shared/constants/constants';
+import { generatePersonaTraits } from '../modelCreation/services/personaService';
 
 interface ModelIdentityEditorProps {
     model: Model;
@@ -23,7 +29,12 @@ const ModelIdentityEditor: React.FC<ModelIdentityEditorProps> = ({ model, onClos
             coreVibe: model.persona?.coreVibe || '',
             toneOfVoice: model.persona?.toneOfVoice || '',
             profession: model.persona?.profession || '',
-            locked_descriptor: model.persona?.locked_descriptor || ''
+            locked_descriptor: model.persona?.locked_descriptor || '',
+            // 2026-08-03：這兩個欄位刻意沒有輸入框——維持改版前的行為
+            // （在 ModelSetup 時它們也只能由「隨機靈感」或 AI 補完寫入，從無手動 UI）。
+            // 加進 formData 是為了讓隨機／AI 寫入的值能被保存，不會在儲存時被丟掉。
+            catchphrase: model.persona?.catchphrase || '',
+            postingHabit: model.persona?.postingHabit || ''
         },
         lifeCircuit: {
             primaryCity: model.lifeCircuit?.primaryCity || '',
@@ -51,6 +62,102 @@ const ModelIdentityEditor: React.FC<ModelIdentityEditorProps> = ({ model, onClos
     });
 
     const [showDownloadPrompt, setShowDownloadPrompt] = useState(false);
+    const [isRandomizing, setIsRandomizing] = useState(false);
+
+    /**
+     * 「隨機靈感」—— 2026-08-03 從 ModelSetup 搬來（企劃案 D-10，Hank 拍板）。
+     *
+     * 為什麼搬：原本它在模特兒生成的「靈魂人設」tab，那個 tab 依「只留表面特徵」
+     * 的架構原則被整個移除，這顆按鈕跟著陪葬。但「一鍵起草人設」是真的省時間的功能
+     * （填人設是最花時間的事），所以搬到真正管人設的地方。
+     *
+     * 與原版的三個差異：
+     *   1. **不隨機姓名**。原版會連名字一起亂數。這裡編輯的是**既有** IP，
+     *      亂改它的名字不合理。
+     *   2. **不隨機外觀**（臉部原型／美學風格／服裝／髮色／體型）。
+     *      那些屬於模特兒生成的保留範圍，這個編輯器也沒有那些欄位。
+     *   3. 高亮動畫沒搬（本檔無該機制），改用 notification 告知。
+     *
+     * 保留的部分：亂數填完之後會呼叫 `generatePersonaTraits` 做 AI 深度補完
+     * ——少了這步，「隨機靈感」只是亂數填空，那才是原版真正有價值的地方。
+     */
+    const handleRandomPersona = async () => {
+        setIsRandomizing(true);
+        try {
+            const pick = <T,>(arr: readonly T[]): T => arr[Math.floor(Math.random() * arr.length)];
+
+            const randomCity = pick(TAIWAN_COUNTIES).value;
+            const districts = TAIWAN_DISTRICT_DATA[randomCity] || [];
+            const randomDistrict = districts.length ? pick(districts) : '';
+
+            const seeded = {
+                mbti: pick(MBTI_OPTIONS).value,
+                coreVibe: pick(CORE_VIBE_OPTIONS).value,
+                toneOfVoice: pick(TONE_OPTIONS).value,
+                postingHabit: pick(POSTING_HABITS).value,
+            };
+            const seededCircuit = {
+                primaryCity: randomCity,
+                primaryDistrict: randomDistrict,
+                interests: [pick(INTEREST_OPTIONS).value],
+            };
+
+            // 先寫入亂數種子，讓使用者立刻看到變化（AI 補完可能要幾秒）
+            setFormData(prev => ({
+                ...prev,
+                persona: { ...prev.persona, ...seeded },
+                lifeCircuit: { ...prev.lifeCircuit, ...seededCircuit },
+            }));
+
+            // AI 深度補完：用剛才的種子產出更連貫的人設。
+            // 依 personaService 的 PersonaSeed 型別傳參（name/gender/age/profession/coreVibe/location），
+            // 回傳只有 catchphrase / postingHabit / toneOfVoice / mbti / interests——沒有 profession，
+            // 所以職業維持使用者原本填的值，不被覆寫。
+            try {
+                const parsedAge = Number(formData.age);
+                const traits = await generatePersonaTraits({
+                    name: formData.name,
+                    gender: String(formData.gender),
+                    age: Number.isFinite(parsedAge) && parsedAge > 0 ? parsedAge : undefined,
+                    profession: formData.persona.profession || undefined,
+                    coreVibe: seeded.coreVibe,
+                    location: randomCity,
+                });
+                if (traits) {
+                    setFormData(prev => ({
+                        ...prev,
+                        persona: {
+                            ...prev.persona,
+                            mbti: traits.mbti || prev.persona.mbti,
+                            toneOfVoice: traits.toneOfVoice || prev.persona.toneOfVoice,
+                            catchphrase: traits.catchphrase || prev.persona.catchphrase,
+                            postingHabit: traits.postingHabit || prev.persona.postingHabit,
+                        },
+                        lifeCircuit: {
+                            ...prev.lifeCircuit,
+                            interests: traits.interests?.length ? traits.interests : prev.lifeCircuit.interests,
+                        },
+                    }));
+                    addNotification({
+                        type: 'success',
+                        message: '隨機靈感已套用（含 AI 深度人設）',
+                        description: '姓名與外觀未變動。確認後請按下方儲存。',
+                    });
+                    return;
+                }
+            } catch {
+                // AI 補完失敗不算失敗——亂數種子已經寫進去了，仍然可用。
+            }
+
+            addNotification({
+                type: 'success',
+                message: '隨機靈感已套用',
+                description: 'AI 深度補完未成功，已套用基本亂數人設。姓名與外觀未變動。',
+            });
+        } finally {
+            setIsRandomizing(false);
+        }
+    };
 
     const handleSave = async (withDownload = false) => {
         try {
@@ -174,7 +281,20 @@ const ModelIdentityEditor: React.FC<ModelIdentityEditorProps> = ({ model, onClos
 
                         {/* Persona */}
                         <div className="space-y-4 pt-4 border-t border-white/5">
-                            <label className="text-[11px] font-bold text-[var(--color-gold)] uppercase tracking-[0.2em]">靈魂組態 (Persona)</label>
+                            <div className="flex items-center justify-between gap-3">
+                                <label className="text-[11px] font-bold text-[var(--color-gold)] uppercase tracking-[0.2em]">靈魂組態 (Persona)</label>
+                                {/* 「隨機靈感」2026-08-03 從 ModelSetup 搬來（企劃案 D-10）。
+                                    只隨機人設欄位，不動姓名與外觀——這裡編輯的是既有 IP，
+                                    亂改它的名字或長相不合理。 */}
+                                <button
+                                    onClick={handleRandomPersona}
+                                    disabled={isRandomizing}
+                                    className="text-[9px] text-[var(--color-gold)] border border-[var(--color-gold)]/30 px-3 py-1 rounded-full hover:bg-[var(--color-gold)] hover:text-black transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                                    title="隨機產生一套人設（不會改動姓名與外觀）"
+                                >
+                                    {isRandomizing ? '產生中…' : '🎲 隨機靈感'}
+                                </button>
+                            </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
                                     <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest text-[9px]">MBTI</label>

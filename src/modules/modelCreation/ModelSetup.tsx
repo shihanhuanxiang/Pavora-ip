@@ -1,16 +1,14 @@
 
 import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import type { Model, OutfitPreset, WorldAnchors } from '../../shared/types/types';
+import type { Model, WorldAnchors } from '../../shared/types/types';
 import Button from '../../shared/components/common/Button';
 import Card from '../../shared/components/common/Card';
 import Select from '../../shared/components/common/Select';
 import Loader from '../../shared/components/common/Loader';
 import TabBar, { type TabItem } from '../../shared/components/common/TabBar';
 import { generateModels } from './services/modelCreationService';
-import { generatePersonaTraits } from './services/personaService';
 import { getFriendlyErrorMessage, fileToBase64 } from '../../shared/services/geminiService';
-import { getGeminiClient } from '../../shared/services/core/geminiClient';
-import { downloadImage, imageUrlToimageData } from '../../shared/utils/imageUtils';
+import { downloadImage } from '../../shared/utils/imageUtils';
 import PhotoIcon from '../../shared/assets/icons/PhotoIcon';
 import ImagePreviewModal from '../../shared/components/common/ImagePreviewModal';
 import { useModelStore } from '../../shared/stores/useModelStore';
@@ -19,7 +17,6 @@ import AsyncImage from '../../shared/components/common/AsyncImage';
 import DownloadIcon from '../../shared/assets/icons/DownloadIcon';
 import ModelIcon from '../../shared/assets/icons/ModelIcon';
 import View360Icon from '../../shared/assets/icons/View360Icon';
-import ExpandIcon from '../../shared/assets/icons/ExpandIcon';
 import { useNotification } from '../../shared/context/NotificationContext';
 import { embedMetadata } from '../../shared/utils/metadataUtils';
 import { motion, AnimatePresence } from 'motion/react';
@@ -29,11 +26,7 @@ import {
     PROPORTION_MODE_OPTIONS, PROPORTION_DEFAULTS,
     FEMALE_HAIR_LENGTH_OPTIONS, FEMALE_HAIR_STYLE_OPTIONS, FEMALE_HAIR_BANG_OPTIONS,
     MALE_HAIR_LENGTH_OPTIONS, MALE_HAIR_STYLE_OPTIONS, MALE_HAIR_BANG_OPTIONS,
-    AESTHETIC_STYLES, SMART_SUGGEST_PRESETS, ModelGenerationDefaults,
-    LIGHTING_PRESETS, EYE_SHAPE_OPTIONS,
-    MBTI_OPTIONS, TAIWAN_COUNTIES, INTEREST_OPTIONS, TONE_OPTIONS, POSTING_HABITS,
-    TAIWAN_DISTRICT_DATA, TAIWAN_LOCATION_GROUPED_OPTIONS, CORE_VIBE_OPTIONS, IP_NAME_POOL,
-    STYLE_ARCHETYPES
+    SMART_SUGGEST_PRESETS, ModelGenerationDefaults, EYE_SHAPE_OPTIONS, IP_NAME_POOL
 } from '../../shared/constants/constants';
 
 import { useTaxonomy } from '../../shared/hooks/useTaxonomy';
@@ -96,29 +89,6 @@ const toModelCreationWorldAnchors = (anchors?: WorldAnchors): ModelCreationWorld
 const formatPetAnchor = (pet?: WorldAnchors['pet']) => {
     if (!pet) return '';
     return [pet.breed, pet.name].filter(Boolean).join(' ') || pet.description || '';
-};
-
-const parsePetAnchor = (value: string, current: ModelCreationWorldAnchors['pet']): ModelCreationWorldAnchors['pet'] => {
-    const trimmed = value.trim();
-    if (!trimmed) return { breed: '', name: '', description: '', traits: [] };
-
-    const parts = trimmed.split(/[、,，/]/).map(part => part.trim()).filter(Boolean);
-    if (parts.length >= 2) {
-        return {
-            ...current,
-            breed: parts[0],
-            name: parts.slice(1).join(' '),
-            description: current.description || trimmed,
-            traits: current.traits || []
-        };
-    }
-
-    return {
-        ...current,
-        name: trimmed,
-        description: current.description || trimmed,
-        traits: current.traits || []
-    };
 };
 
 const normalizeWorldAnchorsForModel = (anchors: ModelCreationWorldAnchors): WorldAnchors => {
@@ -203,8 +173,6 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
       // 全 repo 僅此一處出現，沒有任何讀取端，也不進 prompt——純垃圾。
   });
 
-  const [isGeneratingPersona, setIsGeneratingPersona] = useState(false);
-  const [isGeneratingDescriptor, setIsGeneratingDescriptor] = useState(false);
   const [isExpertMode, setIsExpertMode] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showFaceAdvanced, setShowFaceAdvanced] = useState(false);
@@ -320,47 +288,6 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
     return () => window.removeEventListener('unhandledrejection', handleRejection);
   }, []);
 
-  const handlePersonaUpdate = (field: string, value: any) => {
-    setFormState(prev => ({
-        ...prev,
-        persona: { ...prev.persona, [field]: value }
-    }));
-  };
-
-  const handlePetAnchorUpdate = (value: string) => {
-    setFormState(prev => ({
-        ...prev,
-        worldAnchors: {
-            ...prev.worldAnchors,
-            pet: parsePetAnchor(value, prev.worldAnchors.pet)
-        }
-    }));
-  };
-
-  const handleIconicItemsUpdate = (value: string) => {
-    setFormState(prev => ({
-        ...prev,
-        worldAnchors: {
-            ...prev.worldAnchors,
-            iconicItems: value.trim()
-                ? [{ ...(prev.worldAnchors.iconicItems[0] || { description: '', significance: '' }), name: value }]
-                : []
-        }
-    }));
-  };
-
-  const handleCircuitUpdate = (field: string, value: any) => {
-    setFormState(prev => {
-        const newCircuit = { ...prev.lifeCircuit, [field]: value };
-        if (field === 'primaryCity') {
-            const districts = TAIWAN_DISTRICT_DATA[value] || [];
-            newCircuit.primaryDistrict = districts[0] || '';
-        }
-        return { ...prev, lifeCircuit: newCircuit };
-    });
-    setSelectedPresetId('custom');
-  };
-
   const handleFormChange = (field: string, value: any) => {
     setFormState(prev => {
         let newState = { ...prev, [field]: value };
@@ -387,161 +314,24 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
     });
   };
 
-  const handleAutoGeneratePersona = useCallback(async () => {
-    setIsGeneratingPersona(true);
-    const currentForm = formStateRef.current;
-    try {
-        const traits = await generatePersonaTraits({
-            name: currentForm.name || '未命名',
-            gender: currentForm.gender,
-            coreVibe: currentForm.persona.coreVibe,
-            profession: currentForm.persona.profession,
-            location: `${currentForm.lifeCircuit.primaryCity}${currentForm.lifeCircuit.primaryDistrict}`
-        });
-
-        setFormState(prev => ({
-            ...prev,
-            persona: {
-                ...prev.persona,
-                mbti: traits.mbti || prev.persona.mbti,
-                catchphrase: traits.catchphrase || prev.persona.catchphrase,
-                postingHabit: traits.postingHabit || prev.persona.postingHabit,
-                toneOfVoice: traits.toneOfVoice || prev.persona.toneOfVoice
-            },
-            lifeCircuit: {
-                ...prev.lifeCircuit,
-                interests: traits.interests || prev.lifeCircuit.interests
-            }
-        }));
-        addNotification({ type: 'success', message: 'IP 人設補完成功' });
-    } catch (e) {
-        addNotification({ type: 'error', message: '人設生成失敗' });
-    } finally { setIsGeneratingPersona(false); }
-  }, [addNotification]);
-
-  const handleGenerateLockedDescriptor = async () => {
-    setIsGeneratingDescriptor(true);
-    try {
-      const client = await getGeminiClient(true) as any;
-
-      const { profession, coreVibe, mbti, toneOfVoice } = formState.persona;
-      const { visualIdentityHint } = formState;
-      const { primaryCity, interests } = formState.lifeCircuit;
-
-      const prompt = `
-        You are a digital identity architect for PAVORA (high-end fashion IP agency).
-        Based on the character profile below, draft a 2nd/3rd-person English "Identity Locked Descriptor".
-        This string will be used as a master prompt anchor to ensure facial and structural consistency in AI image generation.
-
-        Character Profile:
-        - Profession: ${profession || 'Virtual Model'}
-        - Core Vibe: ${coreVibe}
-        - Personality (MBTI): ${mbti || 'N/A'}
-        - Tone of Voice: ${toneOfVoice || 'N/A'}
-        - Visual Identity Hints: ${JSON.stringify(visualIdentityHint)}
-        - Location Base: ${primaryCity}
-        - Personal Interests: ${interests.join(', ')}
-        - Selected Appearance Presets (the description MUST stay consistent with these): skin tone preset = ${formState.skinTone}, hair color = ${formState.hairColor}, face archetype = ${formState.archetype}
-
-        Requirements for Output:
-        1. Length: Exactly 2-3 sentences.
-        2. Content: Focus on precise facial architecture (e.g., eye shape, bone structure), specific gaze aura (e.g., distant, sharp, warm), and a signature style anchor.
-        3. Language: PURE ENGLISH. No headers, no JSON, no Markdown.
-        4. Quality: Sophisticated, editorial, and technical for AI image synthesis.
-        5. AESTHETIC BASELINE: This is the face of a premium commercial fashion IP — it must align with contemporary Taiwanese beauty standards (refined harmonious features, bright expressive eyes, luminous complexion). FORBIDDEN: aging markers (nasolabial folds, crow's feet, wrinkles), unflattering features (wide nostrils, sagging), moles/freckles/spots/marks, and any skin tone wording that conflicts with the selected skin tone preset (e.g. do NOT write olive, tan, or dusky undertones when the preset is fair or medium).
-      `;
-
-      const response = await client.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: prompt
-      });
-
-      const text = (response.text || "").trim().replace(/^["']|["']$/g, '');
-
-      if (text) {
-        handlePersonaUpdate('locked_descriptor', text);
-        addNotification({
-            type: 'success',
-            message: '身份鎖定描述已草擬於身分盒',
-            description: '核心視覺特徵已根據當前設定完成鎖定。'
-        });
-      }
-    } catch (e) {
-      addNotification({
-        type: 'error',
-        message: '身份鎖定描述生成失敗',
-        description: getFriendlyErrorMessage(e)
-      });
-    } finally {
-      setIsGeneratingDescriptor(false);
-    }
-  };
-
-  const handleRandomize = useCallback(() => {
-    // 鎖定當前性別
-    const currentGender = formState.gender;
-    const isMale = currentGender === 'male';
-
-    // 依性別選取名字
-    const namePool = isMale ? IP_NAME_POOL.male : IP_NAME_POOL.female;
-    const randomName = namePool[Math.floor(Math.random() * namePool.length)];
-
-    const randomArchetype = FACE_ARCHETYPES[Math.floor(Math.random() * FACE_ARCHETYPES.length)].value;
-    const randomStyle = AESTHETIC_STYLES[Math.floor(Math.random() * AESTHETIC_STYLES.length)].value;
-
-    const presets = APPAREL_ITEMS.filter(i => i.category === 'full_set' && (i.gender === 'both' || i.gender === currentGender));
-    const randomOutfit = [presets[Math.floor(Math.random() * presets.length)].id];
-
-    const randomCity = TAIWAN_COUNTIES[Math.floor(Math.random() * TAIWAN_COUNTIES.length)].value;
-    const districts = TAIWAN_DISTRICT_DATA[randomCity] || [];
-    const randomDistrict = districts[Math.floor(Math.random() * districts.length)] || '';
-
-    const randomMBTI = MBTI_OPTIONS[Math.floor(Math.random() * MBTI_OPTIONS.length)].value;
-    const randomVibe = CORE_VIBE_OPTIONS[Math.floor(Math.random() * CORE_VIBE_OPTIONS.length)].value;
-    const randomInterest = INTEREST_OPTIONS[Math.floor(Math.random() * INTEREST_OPTIONS.length)].value;
-    const randomTone = TONE_OPTIONS[Math.floor(Math.random() * TONE_OPTIONS.length)].value;
-    const randomHabit = POSTING_HABITS[Math.floor(Math.random() * POSTING_HABITS.length)].value;
-
-    const randomState = {
-        name: randomName,
-        gender: currentGender,
-        visualIdentityHint: getDefaultVisualIdentityHint(currentGender),
-        aestheticStyle: randomStyle,
-        archetype: randomArchetype,
-        outfitItems: randomOutfit,
-        hairColor: ['black', 'brown', 'blonde', 'silver', 'red'][Math.floor(Math.random() * 5)],
-        lightingPreset: LIGHTING_PRESETS[Math.floor(Math.random() * LIGHTING_PRESETS.length)].value,
-        ...PROPORTION_DEFAULTS[currentGender as 'female' | 'male'].standard,
-        lifeCircuit: {
-            ...formState.lifeCircuit,
-            primaryCity: randomCity,
-            primaryDistrict: randomDistrict,
-            interests: [randomInterest]
-        },
-        persona: {
-            ...formState.persona,
-            coreVibe: randomVibe,
-            mbti: randomMBTI,
-            toneOfVoice: randomTone,
-            postingHabit: randomHabit
-        }
-    };
-
-    setFormState(prev => ({ ...prev, ...randomState }));
-    setHighlightedFields(new Set(Object.keys(randomState)));
-
-    // 延遲執行 AI 補完以確保基本數據已寫入
-    setTimeout(() => {
-        handleAutoGeneratePersona();
-    }, 200);
-
-    addNotification({
-        type: 'success',
-        message: '隨機靈感已套用（含深度人設）',
-        description: `已鎖定${isMale ? '男性' : '女性'}性別，並同步產生全套 IP 屬性。`
-    });
-  }, [formState.gender, addNotification, handleAutoGeneratePersona]);
-
+  // ── 以下區塊已於 2026-08-03 移除（企劃案 D-10 / B-4b 收尾）──────────────
+  // 「靈魂人設」tab 的 JSX 在同日被移除後，這批函式全部失去呼叫端。
+  // 依 fresh-context agent 產出的完整呼叫圖逐一確認為零引用後切除：
+  //   handlePersonaUpdate / handlePetAnchorUpdate / handleIconicItemsUpdate /
+  //   handleCircuitUpdate / handleAutoGeneratePersona / handleGenerateLockedDescriptor /
+  //   handleRandomize，以及 parsePetAnchor 與 isGeneratingPersona /
+  //   isGeneratingDescriptor 兩組從未被 JSX 消費的 state。
+  //
+  // 去向（Hank 2026-08-03 拍板）：
+  //   ·「AI 草擬身分盒」(handleGenerateLockedDescriptor) → 直接刪除。
+  //     它產出的 locked_descriptor 在生成完成後會被 generateFacialDescriptor
+  //     依實際生成的臉重新分析並覆寫，是設計上的矛盾。
+  //   ·「隨機靈感」(handleRandomize) → 搬到 ModelLounge 的 ModelIdentityEditor，
+  //     只保留人設那半（核心氛圍／MBTI／語氣／發文習慣／生活圈），
+  //     並帶走 handleAutoGeneratePersona（AI 深度人設補完）——少了它隨機靈感
+  //     只是亂數填空。外觀那半（臉部原型／美學風格／服裝／髮色／體型）不搬，
+  //     因為那些屬於模特兒生成的保留範圍，未來若要在此重建隨機化再議。
+  // ────────────────────────────────────────────────────────────────────
   useEffect(() => {
     if (highlightedFields.size > 0) {
         const timer = setTimeout(() => { setHighlightedFields(new Set()); }, 1500);
