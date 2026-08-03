@@ -72,10 +72,11 @@ The user has provided FACE REFERENCE IMAGES. These are the ABSOLUTE and EXCLUSIV
         
         const realismInstruction = "Focus on micro-details: skin pores, fine hair strands, realistic eye reflections (catchlights), and natural fabric textures. Avoid any 'plastic' or 'CG' look.";
         
-        const brandInstruction = params.brandStyleAnchor && params.brandStyleAnchor !== 'none' 
-            ? `Maintain strict brand visual consistency following the ${params.brandStyleAnchor} style guide.` 
-            : "";
-        
+        // 2026-08-03（企劃案 B-4a）：移除 brandStyleAnchor 分支。
+        // 該欄位無 UI、恆為 'none'，此處永遠取到空字串——實際上是死分支。
+        const brandInstruction = "";
+
+
         // T8/T12: systemInstruction 不經 runPromptPipeline（enforce 管不到），coreVibe
         // 必須是英文，否則中文旁路直送模型（2026-07-11 審計發現的洩漏點）。coreVibeEn
         // 已在上方 Promise.all 取映射英文、或對非 preset 值（ModelIdentityEditor 自由

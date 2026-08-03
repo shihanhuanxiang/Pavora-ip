@@ -30,22 +30,20 @@ import {
     FEMALE_HAIR_LENGTH_OPTIONS, FEMALE_HAIR_STYLE_OPTIONS, FEMALE_HAIR_BANG_OPTIONS,
     MALE_HAIR_LENGTH_OPTIONS, MALE_HAIR_STYLE_OPTIONS, MALE_HAIR_BANG_OPTIONS,
     AESTHETIC_STYLES, SMART_SUGGEST_PRESETS, ModelGenerationDefaults,
-    LIGHTING_PRESETS, EYE_SHAPE_OPTIONS, BRAND_STYLE_ANCHORS,
+    LIGHTING_PRESETS, EYE_SHAPE_OPTIONS,
     MBTI_OPTIONS, TAIWAN_COUNTIES, INTEREST_OPTIONS, TONE_OPTIONS, POSTING_HABITS,
     TAIWAN_DISTRICT_DATA, TAIWAN_LOCATION_GROUPED_OPTIONS, CORE_VIBE_OPTIONS, IP_NAME_POOL,
     STYLE_ARCHETYPES
 } from '../../shared/constants/constants';
 
 import { useTaxonomy } from '../../shared/hooks/useTaxonomy';
-import DeepApparelSelector from '../../shared/components/business/DeepApparelSelector';
 import Slider from '../../shared/components/common/Slider';
 
-const DESTINATIONS = [
-    { key: 'fitting_room', label: '虛擬試衣間 (Fitting Room)' },
-    { key: 'scene', label: '場景轉移 (Scene Swap)' },
-    { key: 'composite_card', label: '模特兒合輯卡 (Model Composite)' },
-    { key: 'salon', label: '妝髮沙龍 (Hair Salon)' },
-];
+// 2026-08-03（企劃案 B-4a）已移除兩項死代碼：
+// 1. `import DeepApparelSelector` —— 只 import、從未渲染。
+// 2. `const DESTINATIONS` —— 本檔宣告後從未使用。
+//    （ModelLounge.tsx 與 ModelActionMenu.tsx 各有自己的同名常數，那兩份是活的；
+//     未來要收斂成一份請走 navRegistry，見 C 區 00-17。）
 
 type ModelSetupTabKey = 'face' | 'body' | 'soul' | 'apparel';
 
@@ -157,7 +155,10 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
   // 2026-08-02：原本這裡解構了 projectMode，但整個檔案從未使用它（死變數）。
   // 隨「商業／IP 創作模式」一併移除。
 
-  const { masterTaxonomy, apparelStructure, loading: taxonomyLoading } = useTaxonomy();
+  // 2026-08-03（企劃案 B-4a）：只保留 loading 旗標。
+  // masterTaxonomy / apparelStructure 在本檔解構後從未被使用——它們是給
+  // DeepApparelSelector 用的，而那個元件在這裡只被 import、從未渲染（已一併移除 import）。
+  const { loading: taxonomyLoading } = useTaxonomy();
 
   const [generatedModels, setGeneratedModels] = useState<Model[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -175,7 +176,8 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
       name: '',
       netRedLevel: 2,
       customOutfitPrompt: '',
-      lockToAmbassador: false,
+      // 2026-08-03（企劃案 B-4a）：移除 lockToAmbassador。
+      // 它在 ApparelDesign / SceneGeneration 是活的，但在本檔宣告後從未被讀取。
       visualIdentityHint: getDefaultVisualIdentityHint(ModelGenerationDefaults.gender || 'female'),
       persona: {
           coreVibe: '優雅時尚',
@@ -195,7 +197,8 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
       preferredArchetypes: [] as string[],
       fidelityScale: 3,
       dofIntensity: 50,
-      sceneAnchor: 'none'
+      // 2026-08-03（企劃案 B-4a）：移除 sceneAnchor。
+      // 全 repo 僅此一處出現，沒有任何讀取端，也不進 prompt——純垃圾。
   });
 
   const [isGeneratingPersona, setIsGeneratingPersona] = useState(false);

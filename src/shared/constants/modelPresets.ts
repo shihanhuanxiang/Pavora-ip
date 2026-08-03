@@ -514,7 +514,8 @@ export const ModelGenerationDefaults = {
     waist: 65,
     hip: 90,
     angle: 'eye-level',
-    cameraLensType: '85mm portrait lens',
+    // 2026-08-03（企劃案 B-4a）：移除 cameraLensType。
+    // 全 repo 只有這一行，沒有任何讀取端——prompt 裡的鏡頭描述是寫死的 50mm/85mm。
     lightingDepthControl: 'soft studio lighting',
     // Phase 1: Advanced Parameters
     isExpertMode: false,
@@ -525,7 +526,11 @@ export const ModelGenerationDefaults = {
     lipThickness: 50,
     lightingPreset: 'studio_soft',
     netRedLevel: 2,
-    brandStyleAnchor: 'none',
+    // 2026-08-03（企劃案 B-4a）：移除 brandStyleAnchor。
+    // 它從來沒有任何 UI 控制項，恆為 'none'，所以下游那兩段 prompt 分支永遠不會觸發。
+    // CLAUDE.md 第 7 節「brandStyleAnchor 暴露位置」這條躺著的小裁決，答案是：不暴露，直接刪。
+    // 理由：它描述的是視覺氛圍（背景、光線、色調），不是人物表面特徵，
+    // 依「模特兒生成只留五官／身形／髮型／服裝」的架構原則，本來就不該在這裡。
     isMultiAngle: false,
     // Phase 1: Physiological Feature Controls
     bustTension: 50,
@@ -551,11 +556,14 @@ export const EYE_SHAPE_OPTIONS = [
     { value: 'phoenix', label: '鳳眼 (Phoenix)' }
 ];
 
-export const BRAND_STYLE_ANCHORS = [
-    { value: 'none', label: '無 (None)' },
-    { value: 'minimal_luxury', label: '極簡奢華 (Minimal Luxury)' },
-    { value: 'vibrant_street', label: '活力街頭 (Vibrant Street)' },
-    { value: 'noir_elegance', label: '暗黑優雅 (Noir Elegance)' },
-    { value: 'ethereal_dream', label: '空靈夢幻 (Ethereal Dream)' },
-    { value: 'tech_utilitarian', label: '科技機能 (Tech Utilitarian)' }
-];
+/**
+ * ⚰️ 已退役 —— 2026-08-03（企劃案 B-4a）
+ *
+ * 這組選項從來沒有被任何 UI 渲染過：`brandStyleAnchor` 恆為 'none'，
+ * 下游兩處 prompt 分支（modelCreationService / prompts/modelCreation）從未觸發。
+ * 內容本身描述的是背景、光線、色調——屬於場景與氛圍，不是人物表面特徵，
+ * 依「模特兒生成只留五官／身形／髮型／服裝」的架構原則本來就不該在這裡。
+ *
+ * 已無任何 import。依鐵則不自動 delete，保留墓碑；確認後可由 Hank 刪除本區塊。
+ */
+export const BRAND_STYLE_ANCHORS: { value: string; label: string }[] = [];

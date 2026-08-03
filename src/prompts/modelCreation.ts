@@ -257,16 +257,10 @@ export const buildModelPrompt = (params: any) => {
     }
     prompt += `- AGE CONSISTENCY: The age-appearance must be physically plausible for the target number.\n\n`;
 
-    if (params.brandStyleAnchor && params.brandStyleAnchor !== 'none' && !params.isMultiAngle) {
-        const anchorMap: Record<string, string> = {
-            minimal_luxury: "Clean, high-end aesthetic. Neutral color palette (beige, cream, charcoal). Soft diffused lighting. Minimalist background.",
-            vibrant_street: "High energy, urban feel. Saturated colors, dynamic lighting. Streetwear vibe with gritty but polished textures.",
-            noir_elegance: "Dark, moody, and sophisticated. Deep shadows, high contrast. Rich textures like velvet or silk. Dramatic lighting.",
-            ethereal_dream: "Soft, misty, and otherworldly. Pastel tones, lens flares, soft focus. Airy and light composition.",
-            tech_utilitarian: "Futuristic and functional. Cool tones (blue, grey, silver). Sharp lighting, tech-inspired textures and backgrounds."
-        };
-        prompt += `[BRAND VISUAL ANCHOR: ${params.brandStyleAnchor}]\n${anchorMap[params.brandStyleAnchor]}\n\n`;
-    }
+    // 2026-08-03（企劃案 B-4a）：移除 [BRAND VISUAL ANCHOR] 整段。
+    // brandStyleAnchor 從無 UI 控制項、恆為 'none'，此分支從未觸發過。
+    // 內容本身（背景、光線、色調）也違反「模特兒生成只留表面特徵」的架構原則——
+    // 那些屬於場景轉移與靈魂敘事，不屬於定妝照。
 
     const aestheticLabel = hasFaceRef ? "ENVIRONMENTAL AESTHETIC" : "AESTHETIC STYLE";
     if (!params.isMultiAngle) {
