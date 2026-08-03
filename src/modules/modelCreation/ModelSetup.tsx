@@ -45,13 +45,13 @@ import Slider from '../../shared/components/common/Slider';
 //    （ModelLounge.tsx 與 ModelActionMenu.tsx 各有自己的同名常數，那兩份是活的；
 //     未來要收斂成一份請走 navRegistry，見 C 區 00-17。）
 
-type ModelSetupTabKey = 'face' | 'body' | 'soul' | 'apparel';
+// 2026-08-03（企劃案 B-4b）：'soul' 已移除，四個頁籤縮為三個。
+type ModelSetupTabKey = 'face' | 'body' | 'apparel';
 
 /** 主頁籤。「基礎穿著」＝打底裝，刻意極簡貼身，見 CLAUDE.md 第 7 節架構原則第 3 條。 */
 const MODEL_SETUP_TABS: readonly TabItem<ModelSetupTabKey>[] = [
     { key: 'face', label: '臉部' },
     { key: 'body', label: '身形' },
-    { key: 'soul', label: '靈魂人設' },
     { key: 'apparel', label: '基礎穿著' },
 ];
 
@@ -195,7 +195,9 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
           interests: [] as string[]
       },
       preferredArchetypes: [] as string[],
-      fidelityScale: 3,
+      // 2026-08-03（企劃案 B-4c）：固定在最乾淨的影棚檔（原本預設 3 ＝街頭）。
+      // 定妝照是素材不是成品，越乾淨越好去背、越好重新打光。滑桿已移除。
+      fidelityScale: 1,
       dofIntensity: 50,
       // 2026-08-03（企劃案 B-4a）：移除 sceneAnchor。
       // 全 repo 僅此一處出現，沒有任何讀取端，也不進 prompt——純垃圾。
@@ -212,7 +214,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
   const [highlightedFields, setHighlightedFields] = useState<Set<string>>(new Set());
   const [generationQuality, setGenerationQuality] = useState<QualityLevel>('standard');
   const [mobileTab, setMobileTab] = useState<'settings' | 'preview'>('settings');
-  const [activeTab, setActiveTab] = useState<'face' | 'body' | 'soul' | 'apparel'>('face');
+  const [activeTab, setActiveTab] = useState<ModelSetupTabKey>('face');
   const [isPresetBannerOpen, setIsPresetBannerOpen] = useState(false);
   const [activeApparelCat, setActiveApparelCat] = useState('full_set');
 
@@ -1125,166 +1127,26 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
               </Card>
             )}
 
-            {/* ===== TAB: 靈魂人設 ===== */}
-            {activeTab === 'soul' && (
-              <>
-                {/* 1. 靈魂藍圖 (已移除姓名/性別/年齡，這三項在核心身分列常駐) */}
-                <Card className="p-0 overflow-hidden border-none home-card group/card">
-                  <div className="p-5 border-b border-[var(--home-line)] flex justify-between items-center bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent transition-all group-hover/card:from-[var(--color-brass)]/10">
-                    <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
-                      <div className="w-1 h-4 bg-brass"></div>
-                      <span className="group-hover/card:text-[var(--color-brass)] transition-colors">靈魂藍圖</span>
-                    </h3>
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={handleRandomize}
-                        className="bg-[rgba(255,255,255,.4)] hover:bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] py-1.5 px-4 rounded-full transition-all group"
-                    >
-                        <span className="text-[10px] font-bold text-[var(--color-brass)]">隨機靈感</span>
-                    </motion.button>
-                  </div>
-                  <div className="p-6 space-y-7">
-                    <div className="grid grid-cols-2 gap-5 py-2">
-                        <Select label="核心氛圍 (VIBE)" options={CORE_VIBE_OPTIONS} value={formState.persona.coreVibe} onChange={e => handlePersonaUpdate('coreVibe', e.target.value)} />
-                        <Select label="MBTI (PERSONALITY)" options={MBTI_OPTIONS} value={formState.persona.mbti} onChange={e => handlePersonaUpdate('mbti', e.target.value)} />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4 pt-2">
-                        <Select label="主力語氣 (TONE OF VOICE)" options={TONE_OPTIONS} value={formState.persona.toneOfVoice} onChange={e => handlePersonaUpdate('toneOfVoice', e.target.value)} />
-                        <div className="flex items-end justify-center pb-1">
-                            <p className="text-[9px] text-[var(--home-muted)] opacity-60">人設細節將隨「隨機靈感」自動生成</p>
-                        </div>
-                    </div>
+            {/* ===== 「靈魂人設」tab 已於 2026-08-03 整個移除（企劃案 B-4b／B-4f） =====
+                Hank 拍板的保留標準：模特兒生成「只留對五官／身形／髮型／服裝這種表面特徵有影響的選項」。
+                原本這個 tab 的 13 個欄位沒有一個符合——它們是人設資料與場景資料，不是外觀。
 
-                    {/* 身份鎖定描述 - 靈魂核心 */}
-                    <div className="pt-4 border-t border-[var(--home-line)] space-y-3">
-                        <div className="flex justify-between items-center">
-                            <label className="block text-[11px] font-bold text-[var(--home-muted)] font-display tracking-[0.2em] leading-tight text-left">
-                                <span className="block text-[var(--home-ink)]">身份鎖定描述</span>
-                            </label>
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={handleGenerateLockedDescriptor}
-                                disabled={isGeneratingDescriptor}
-                                className="text-[10px] text-[var(--color-brass)] font-bold flex items-center gap-2 hover:opacity-80 transition-all disabled:opacity-30"
-                            >
-                                {isGeneratingDescriptor ? (
-                                    <div className="w-3 h-3 border-2 border-brass border-t-transparent rounded-full animate-spin"></div>
-                                ) : (
-                                    <span className="flex items-center gap-1.5 underline decoration-[0.5px] underline-offset-4">AI 草擬身分盒</span>
-                                )}
-                            </motion.button>
-                        </div>
-                        <textarea
-                            className="w-full h-24 bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-[11px] text-[var(--home-muted)] focus:border-brass focus:outline-none transition-all resize-none leading-relaxed placeholder:text-[var(--home-muted)] font-mono scrollbar-none"
-                            placeholder="描述這個 IP 的核心視覺特徵（英文），例如面部細節、骨架神韻等，這是維持生圖一致性的關鍵。"
-                            value={formState.persona.locked_descriptor}
-                            onChange={e => handlePersonaUpdate('locked_descriptor', e.target.value)}
-                        />
-                        <p className="text-[9px] text-[var(--home-muted)] leading-relaxed">
-                            * 身份鎖定是維護 IP 視覺一致性的最高級位字串。建議使用 AI 根據目前設定草擬後，再進行手動精煉。
-                        </p>
-                    </div>
+                為什麼可以直接移除而不是搬家：
+                Model Lounge 的 ModelIdentityEditor 早就有這批欄位的**更完整版本**——
+                寵物有品種/名字/描述三欄（這裡只有一個合併文字框）、標誌物支援多筆增刪
+                （這裡只能編第一筆）、人際關係與長期記憶更是只存在於那邊。
+                也就是說這批資料本來就是「生成時填一次、Lounge 又能改一次」的雙重入口，
+                移除這一份不會遺失任何能力。
 
-                    {/* Style Archetypes (矩陣 v2.0) */}
-                    <div className="pt-4 border-t border-[var(--home-line)]">
-                        <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 flex justify-between items-center font-display tracking-[0.2em]">
-                            <span className="text-[var(--home-ink)]">風格原型偏好</span>
-                            <span className="text-[9px] text-[var(--color-brass)] opacity-60">用於智慧穿搭路由</span>
-                        </label>
-                        <div className="flex flex-wrap gap-2">
-                            {STYLE_ARCHETYPES.filter(a => a.gender.includes(formState.gender as any) || a.gender.includes('unisex')).map(archetype => {
-                                const isSelected = formState.preferredArchetypes.includes(archetype.value);
-                                return (
-                                    <button
-                                        key={archetype.value}
-                                        onClick={() => {
-                                            setFormState(prev => {
-                                                const current = prev.preferredArchetypes;
-                                                const next = current.includes(archetype.value)
-                                                    ? current.filter(v => v !== archetype.value)
-                                                    : [...current, archetype.value];
-                                                return { ...prev, preferredArchetypes: next };
-                                            });
-                                        }}
-                                        className={`px-3 py-1.5 rounded-full text-[10px] font-bold transition-all border ${
-                                            isSelected
-                                            ? 'bg-brass text-black border-brass shadow-[0_0_15px_rgba(var(--color-brass-rgb),0.3)]'
-                                            : 'bg-[rgba(255,255,255,.4)] text-[var(--home-muted)] border-[var(--home-line)] hover:border-brass/50'
-                                        }`}
-                                    >
-                                        {archetype.label}
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    </div>
-                  </div>
-                </Card>
+                連帶處理：
+                - `preferredArchetypes`（風格原型偏好）：本來就是斷鏈欄位（勾了不會寫進 Model，
+                  下游穿搭路由讀不到），且不屬於表面特徵 → 一併移除，不修復（企劃案 B-4e）。
+                - `locked_descriptor`（身份鎖定描述）：手動輸入的內容在生成完成後會被
+                  `generateFacialDescriptor` 依實際生成的臉重新分析並覆寫，填了等於白填
+                  → 移除手動輸入欄（企劃案 B-4f）。它作為下游身份錨點的用途不受影響。
 
-                {/* 3. 環境與足跡 (Life Circuit) */}
-                <Card className="p-0 overflow-hidden border-none home-card">
-                  <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent group">
-                    <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
-                      <div className="w-1 h-4 bg-brass"></div>
-                      <span className="group-hover:text-[var(--color-brass)] transition-colors">環境與生活細節</span>
-                    </h3>
-                  </div>
-                  <div className="p-6 space-y-7">
-                    <div className="grid grid-cols-2 gap-5">
-                        <Select
-                            label="IP 活動縣市 (CITY)"
-                            options={TAIWAN_COUNTIES}
-                            value={formState.lifeCircuit.primaryCity}
-                            onChange={e => handleCircuitUpdate('primaryCity', e.target.value)}
-                        />
-                        <Select
-                            label="具體區域 (DISTRICT)"
-                            options={(TAIWAN_DISTRICT_DATA[formState.lifeCircuit.primaryCity] || []).map(d => ({ value: d, label: d }))}
-                            value={formState.lifeCircuit.primaryDistrict}
-                            onChange={e => handleCircuitUpdate('primaryDistrict', e.target.value)}
-                        />
-                    </div>
-                    <div className="grid grid-cols-2 gap-5">
-                        <div className={getFieldClass('profession')}>
-                            <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 min-h-[2.5rem] font-display tracking-[0.2em] leading-tight text-left">
-                                <span className="block text-[var(--home-ink)]">職業身分</span>
-                            </label>
-                            <input type="text" className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:outline-none transition-all" placeholder="如：藝術家、創作者" value={formState.persona.profession} onChange={e => handlePersonaUpdate('profession', e.target.value)} />
-                        </div>
-                        <Select label="核心興趣 (INTERESTS)" options={INTEREST_OPTIONS} value={formState.lifeCircuit.interests?.[0] || ''} onChange={e => handleCircuitUpdate('interests', [e.target.value])} />
-                    </div>
-                    <div className="grid grid-cols-2 gap-5">
-                        <div className={getFieldClass('pet')}>
-                            <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 min-h-[2.5rem] font-display tracking-[0.2em] leading-tight text-left">
-                                <span className="block text-[var(--home-ink)]">寵物</span>
-                            </label>
-                            <input
-                                type="text"
-                                className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:outline-none transition-all placeholder:text-[var(--home-muted)]"
-                                placeholder="例：橘貓 Mochi、柴犬 Koko"
-                                value={formatPetAnchor(formState.worldAnchors?.pet)}
-                                onChange={e => handlePetAnchorUpdate(e.target.value)}
-                            />
-                        </div>
-                        <div className={getFieldClass('iconicItems')}>
-                            <label className="block text-[11px] font-bold text-[var(--home-muted)] mb-3 min-h-[2.5rem] font-display tracking-[0.2em] leading-tight text-left">
-                                <span className="block text-[var(--home-ink)]">標誌性物品</span>
-                            </label>
-                            <input
-                                type="text"
-                                className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-3 text-sm focus:border-brass focus:outline-none transition-all placeholder:text-[var(--home-muted)]"
-                                placeholder="例：總是帶著的底片相機、特定款式耳環"
-                                value={formState.worldAnchors?.iconicItems[0]?.name || ''}
-                                onChange={e => handleIconicItemsUpdate(e.target.value)}
-                            />
-                        </div>
-                    </div>
-                  </div>
-                </Card>
-              </>
-            )}
+                資料本身仍會被建立（formState 的預設值照舊），只是不再從這裡編輯。
+            */}
 
             {/* ===== TAB: 基礎穿著（打底裝，刻意極簡貼身） ===== */}
             {activeTab === 'apparel' && (
@@ -1425,21 +1287,17 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                         </button>
                     </div>
 
-                    <div className="space-y-4">
-                        <div className="flex justify-between items-start">
-                            <h4 className="text-[10px] font-bold text-[var(--home-muted)] flex flex-col items-start leading-tight">
-                                <span>生活感強度</span>
-                            </h4>
-                            <span className="text-[10px] font-bold text-[var(--color-brass)] pt-1">LV.{formState.fidelityScale}</span>
-                        </div>
-                        <div className="flex gap-2">
-                            {[1,2,3,4,5].map(lvl => (
-                                <button key={lvl} onClick={() => handleFormChange('fidelityScale', lvl)} className={`flex-1 h-10 rounded-xl border text-[10px] font-bold transition-all ${formState.fidelityScale === lvl ? 'bg-brass text-black border-brass shadow-xl shadow-[var(--color-brass)]/20' : 'bg-[rgba(255,255,255,.4)] text-[var(--home-muted)] border-[var(--home-line)]'}`}>
-                                    {lvl === 1 ? '影棚' : lvl === 3 ? '街頭' : lvl === 5 ? '隨手' : lvl}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+                    {/* 「生活感強度」滑桿已於 2026-08-03 移除（企劃案 B-4c）。
+                        它的內容是「影棚乾淨 → 街頭 → 隨手拍」的**場景寫實度**
+                        （最高檔會加入「台灣街頭雜訊：機車、電線、招牌」），
+                        是拍攝情境而非人物表面特徵，卻擺在服裝分頁底下。
+
+                        定妝照一律固定在最乾淨的影棚檔（fidelityScale = 1），理由是它是**素材不是成品**：
+                        之後要進試衣間換裝、進敘事換場景，背景越乾淨越好去背、越好重新打光。
+                        想要街拍或隨手拍的生活感，那是靈魂敘事該問的事。
+
+                        formState.fidelityScale 的預設值已改為 1，資料仍會送出，只是不再可調。
+                    */}
                 </div>
               </Card>
             )}
