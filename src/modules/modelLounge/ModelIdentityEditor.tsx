@@ -124,12 +124,28 @@ const ModelIdentityEditor: React.FC<ModelIdentityEditorProps> = ({ model, onClos
                     location: randomCity,
                 });
                 if (traits) {
+                    /**
+                     * 2026-08-03 實測發現並修正：AI 會把 `toneOfVoice` 回傳成一整段散文
+                     * （例如「充滿活力、率真且隨性，說話帶點街頭酷感，常使用『派』『Chill』…」），
+                     * 但這個欄位在下游是要**查英文對照表**的：
+                     *   `TONE_OF_VOICE_EN_MAP[toneOfVoice] ?? toneOfVoice`
+                     * 查不到就退回原值 → 中文進 prompt → 被 enforce 的 stripChinese 整段清空，
+                     * 結果這個欄位的資訊實際上是**消失**而不是生效（與企劃案 D-9 同一種病）。
+                     *
+                     * 所以只接受落在 TONE_OPTIONS 受控詞彙內的值；AI 給散文就保留亂數種子。
+                     * （這是既有行為的修正，原版 handleRandomize 也有同樣問題。）
+                     */
+                    const toneIsControlled = TONE_OPTIONS.some(o => o.value === traits.toneOfVoice);
+                    // MBTI 只接受 4 個大寫字母，避免 AI 回傳「ESFP 表演者」這類帶說明的字串
+                    const mbtiIsValid = /^[A-Z]{4}$/.test((traits.mbti || '').trim());
+
                     setFormData(prev => ({
                         ...prev,
                         persona: {
                             ...prev.persona,
-                            mbti: traits.mbti || prev.persona.mbti,
-                            toneOfVoice: traits.toneOfVoice || prev.persona.toneOfVoice,
+                            mbti: mbtiIsValid ? traits.mbti.trim() : prev.persona.mbti,
+                            toneOfVoice: toneIsControlled ? traits.toneOfVoice : prev.persona.toneOfVoice,
+                            // catchphrase / postingHabit 是自由文字欄位，不進英文對照表，散文沒問題
                             catchphrase: traits.catchphrase || prev.persona.catchphrase,
                             postingHabit: traits.postingHabit || prev.persona.postingHabit,
                         },
