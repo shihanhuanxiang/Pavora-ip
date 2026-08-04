@@ -54,6 +54,17 @@ export interface AdvancedPhysiqueStats {
     physiqueCurvature: number;
     muscularDensity: number;
     vTaperScale: number;
+    /**
+     * 頭身比（2026-08-04 新增，企劃案 B-6）。
+     *
+     * 為什麼要進 advancedStats：B-6 新增了頭身比滑桿，但這個欄位原本不在任何
+     * 持久化結構裡——調完生成一次是對的，可是存檔、繼承、休息室重生之後
+     * 會**靜默回到預設 7.5**，使用者完全不會察覺自己的設定被丟掉了。
+     *
+     * optional 是為了向後相容：既有的 Model 資料沒有這個欄位，
+     * 讀取端一律用 `?? 7.5` 兜底。
+     */
+    headBodyRatio?: number;
 }
 
 export interface WorldAnchors {

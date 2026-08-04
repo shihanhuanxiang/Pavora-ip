@@ -316,7 +316,10 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
             </div>
           </div>
       );
-      case WorkflowStep.VIRTUAL_FITTING_ROOM: return <VirtualFittingRoom {...navProps} onAdvancedEdit={handleAdvancedEdit} initialImage={editingImage} masterTaxonomy={masterTaxonomy} apparelStructure={apparelStructure} />;
+      // 2026-08-04（企劃案 D-2）：不再傳 masterTaxonomy / apparelStructure。
+      // 試衣間裡它們唯一的用途是餵給從未被渲染的 vtoStructure 死碼，已一併移除。
+      // 服裝設計（APPAREL_DESIGN）與個人衣櫥仍需要，維持原樣。
+      case WorkflowStep.VIRTUAL_FITTING_ROOM: return <VirtualFittingRoom {...navProps} onAdvancedEdit={handleAdvancedEdit} initialImage={editingImage} />;
       case WorkflowStep.PERSONAL_WARDROBE: return <PersonalWardrobe onGoHome={handleGoHome} apparelStructure={apparelStructure} />;
       case WorkflowStep.APPAREL_DESIGN: return <ApparelDesign onGoHome={handleGoHome} onAdvancedEdit={handleAdvancedEdit} masterTaxonomy={masterTaxonomy} apparelStructure={apparelStructure} />;
       case WorkflowStep.HAIR_SALON: return <HairAndMakeupStudio onGoHome={handleGoHome} initialImage={editingImage} onContinueEditing={handleAdvancedEdit} />;

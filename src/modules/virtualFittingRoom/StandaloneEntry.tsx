@@ -36,9 +36,12 @@ const StandaloneEntry: React.FC = () => {
       </header>
       
       <main>
-        {/* 
-          Notice we DO NOT pass 'masterTaxonomy' or 'apparelStructure'.
-          The component will detect this and use 'useTaxonomy' hook to fetch data itself.
+        {/*
+          2026-08-04（企劃案 D-2）：這段註解原本寫「我們刻意不傳 masterTaxonomy／
+          apparelStructure，元件會自己用 useTaxonomy hook 抓資料」。
+          那個 fallback 已經不存在了——那兩個 prop 與 useTaxonomy 呼叫在 VirtualFittingRoom
+          裡唯一的用途是餵給從未被渲染的 vtoStructure 死碼，已一併移除。
+          現在不傳它們不是「靠 hook 兜底」，而是元件根本不需要。
         */}
         <VirtualFittingRoom 
             onGoHome={handleGoHome}

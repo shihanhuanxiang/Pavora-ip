@@ -8,6 +8,15 @@ export interface TaxonomyData {
 }
 
 // --- Constants for loading ---
+//
+// ⚠️ 這份清單就是唯一的權威來源。`data/manifest.json` **沒有任何程式讀取**，
+//    它只是人工對照用的檔案（2026-08-04 企劃案 D-4 已把它更正並標註）。
+//    要新增服裝資料檔，改這裡，不是改 manifest。
+//
+// 注意 `special_costume.json` 目前是**空檔（0 筆）**，載入它是無害的（會得到空陣列），
+// 刻意保留在清單裡：企劃案階段 6（A-1，約 181 筆）會補婚紗／和服／Cosplay 等題材，
+// 「特殊服飾」這一類屆時會被填滿。若現在把它拿掉，階段 6 又要記得加回來。
+// （企劃案 D-5）
 const PAVORA_CATEGORY_FILES = [
   "accessories.json", "bags.json", "bottoms.json", "costumes.json", "cultural_wear.json",
   "dresses.json", "footwear.json", "intimates.json", "outerwear.json", "swimwear.json",

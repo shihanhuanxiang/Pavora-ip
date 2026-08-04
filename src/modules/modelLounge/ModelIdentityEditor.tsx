@@ -51,7 +51,9 @@ const ModelIdentityEditor: React.FC<ModelIdentityEditorProps> = ({ model, onClos
             bustTension: model.advancedStats?.bustTension ?? 50,
             physiqueCurvature: model.advancedStats?.physiqueCurvature ?? 50,
             muscularDensity: model.advancedStats?.muscularDensity ?? 50,
-            vTaperScale: model.advancedStats?.vTaperScale ?? 50
+            vTaperScale: model.advancedStats?.vTaperScale ?? 50,
+            // 2026-08-04（企劃案 B-6）：頭身比。舊資料無此欄位 → 落回 7.5（新預設值）。
+            headBodyRatio: model.advancedStats?.headBodyRatio ?? 7.5
         },
         worldAnchors: {
             pet: model.worldAnchors?.pet || { breed: '', name: '', description: '', traits: [] },

@@ -10,11 +10,18 @@ interface SliderProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 
   step?: number;
   unit: string;
   safetyStatus?: 'safe' | 'warning' | 'risky';
+  /**
+   * 2026-08-04（企劃案 B-7f）：中性的檔位標籤，例如「第 3 檔 / 4」。
+   * 傳了就取代 Normal/Extreme/Risky 三態字樣——那三個字對分檔型滑桿是錯的語意
+   * （高檔位不等於危險，而且切點落在檔位中間會讓同一檔顯示不同字樣）。
+   * 不傳則行為完全不變，既有滑桿不受影響。
+   */
+  tierLabel?: string;
   isLoading?: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Slider: React.FC<SliderProps> = ({ label, tooltip, value, min, max, step = 1, unit, safetyStatus, isLoading, onChange, ...props }) => {
+const Slider: React.FC<SliderProps> = ({ label, tooltip, value, min, max, step = 1, unit, safetyStatus, tierLabel, isLoading, onChange, ...props }) => {
     const percentage = ((value - min) / (max - min)) * 100;
 
     const [isDragging, setIsDragging] = React.useState(false);
@@ -61,7 +68,19 @@ const Slider: React.FC<SliderProps> = ({ label, tooltip, value, min, max, step =
                     className={`text-xs font-mono font-bold px-2 py-0.5 rounded border flex flex-col items-center leading-none ${getStatusStyles()}`}
                 >
                     <span>{value}{unit}</span>
-                    {safetyStatus && (
+                    {/*
+                      2026-08-04（企劃案 B-7f 驗收修正）：優先顯示 `tierLabel`。
+
+                      原本這裡只會印 Normal / Extreme / Risky 三種字樣。對「上身輪廓」
+                      與「體態曲線」這兩支滑桿而言那是錯的語意——第五輪測試最高檔
+                      7/7 全部順利產出，把它標成 Risky 與唯一的實測證據相反，
+                      而且 Extreme/Risky 切在檔位中間，同一檔內顏色會變但 prompt 完全一樣。
+                      改法：需要表達「第幾檔」的呼叫端傳 `tierLabel`，
+                      不傳的呼叫端維持原本三態字樣（不影響既有滑桿）。
+                    */}
+                    {tierLabel ? (
+                        <span className="text-[7px] tracking-tighter opacity-70 mt-0.5">{tierLabel}</span>
+                    ) : safetyStatus && (
                         <span className="text-[7px] uppercase tracking-tighter opacity-70 mt-0.5">
                             {safetyStatus === 'safe' ? 'Normal' : safetyStatus === 'warning' ? 'Extreme' : 'Risky'}
                         </span>

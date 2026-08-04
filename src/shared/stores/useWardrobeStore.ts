@@ -1,3 +1,16 @@
+/**
+ * ⚠️ 2026-08-04（企劃案 D-1）：**這個 store 全 repo 零引用。**
+ *
+ * grep `useWardrobeStore` 只命中下面這一行宣告，沒有任何元件在用它。
+ * 它是當初為「統一三套衣櫥」而建的，但**從未接線**——三套衣櫥
+ * （靈魂敘事 / 服裝設計 / 虛擬試衣間）目前各自管自己的資料。
+ *
+ * 為什麼保留而不刪：統一衣櫥是企劃案 A-1／A-3（階段 4／階段 6）的正式待辦，
+ * 屆時這個 store 的 schema 與 IndexedDB 接法可以直接沿用。
+ *
+ * ⛳ 但請不要因為看到這個檔案就以為衣櫥已經統一了 —— 它還沒有。
+ *    現況與規劃見 `盤點_C軌_2026-08-01/規劃_衣櫥架構與PR-G_2026-08-01.md`。
+ */
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import type { StoredApparelItem } from '../types/types';

@@ -125,6 +125,38 @@ export const TONE_OPTIONS = [
     { value: '沉穩優雅', label: '沉穩優雅 (Elegant & Calm)' }
 ];
 
+/**
+ * 天氣的確定性 zh→en 映射（2026-08-04 新增，企劃案 D-9）。
+ *
+ * 為什麼需要：`narrativeService` 的 `weatherPool` 是中文（'晴天'、'午後雷陣雨'…），
+ * 而 `[Lighting]` 的修補分支會把它插進**英文標籤**的句子裡。
+ * 鐵則沒被破壞（`runPromptPipeline` 的 `stripChinese` 會兜底），
+ * 但兜底方式是**整段移除中文**而不是翻譯——結果那個分支下
+ * 天氣與地點資訊實際上是被清空，不是正確帶入英文。
+ *
+ * 這裡走確定性映射而不是呼叫翻譯 API：天氣是有限集合，映射零成本零延遲也不會失敗。
+ * 未命中時由呼叫端退回中性描述（見 narrativeService 的 `weatherEn`）。
+ */
+export const WEATHER_EN_MAP: Record<string, string> = {
+    '晴天': 'clear sunny',
+    '晴朗': 'clear sunny',
+    '晴朗多雲': 'sunny with scattered clouds',
+    '悶熱晴天': 'hot hazy sunny',
+    '午後雷陣雨': 'late-afternoon thunderstorm',
+    '多雲': 'overcast cloudy',
+    '陰天': 'grey overcast',
+    '陰天偶陣雨': 'grey overcast with light rain',
+    '冬日晴朗': 'crisp winter sunlight',
+    '濕冷多雲': 'cold damp overcast',
+    '春雨綿綿': 'soft continuous spring drizzle',
+    '陽光普照': 'bright full sunlight',
+    '微風晴天': 'sunny with a light breeze',
+    '秋高氣爽': 'clear crisp autumn',
+    '晴朗微涼': 'clear and cool',
+    '舒適晴天': 'mild pleasant sunshine',
+    '秋日金黃陽光': 'golden autumn sunlight'
+};
+
 // T8 確定性 zh→en 映射（同 TAIWAN_COUNTY_EN_MAP 說明）。
 // 注意：toneOfVoice 可能被 AI 生成值覆寫成非 preset 中文，該情況由
 // modelCreationService 的 ensureEnglishPrompt 防禦性翻譯兜底。

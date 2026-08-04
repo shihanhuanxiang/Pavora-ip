@@ -156,6 +156,78 @@ const TAIWAN_SCENE_ANCHORS: Record<string, string> = {
     dadaocheng_retro: "Dadaocheng historical district. Baroque-style facades, tea house interiors, nostalgic wooden textures, heritage vibe, warm afternoon sun filtering through old windows."
 };
 
+/**
+ * 數值型參數的安全取值（2026-08-04，B-7 驗收修正）。
+ *
+ * 這裡原本散落著 `params.bustTension || 50` 這種寫法，而 **0 是 falsy** ——
+ * 滑桿拉到最左端會被 `||` 悄悄換成中間值，滑桿最左端等於失效，
+ * 而且不會有任何錯誤訊息。全部改用這個函式。
+ */
+const num = (v: any, fallback: number): number =>
+    typeof v === 'number' && Number.isFinite(v) ? v : fallback;
+
+/**
+ * 女性體型與上身輪廓的措辭來源（2026-08-04，B-7 驗收修正後抽出）。
+ *
+ * 為什麼要抽成函式：驗收發現主路徑用 4 段邊界、多視角分支自己寫了 3 段，
+ * 於是 `bustTension` 落在 26–50（**含預設值 50**）時，兩段 prompt
+ * 同時說「clear but modest forward projection」與「clean near-vertical front line」
+ * ——模型只能二選一，正是「靜默降級」最典型的來源。
+ * 邊界與措辭現在只有這一份，兩條路徑都從這裡取，不可能再走鐘。
+ */
+const femaleContour = (pc: number) => {
+    if (pc <= 30) return {
+        main: `Lean editorial runway figure type — long slender lines, straight silhouette, minimal hip curve; garments hang with a clean straight drape.`,
+        perView: `clean straight drape with a lightly defined waistline, identical in every view.`
+    };
+    if (pc <= 55) return {
+        main: `Natural feminine figure type with a defined waistline — balanced proportions, soft everyday silhouette; garments follow a gently tailored fit.`,
+        perView: `a gently tailored fit with a defined waistline; the waist seam must read the same in the side profile as in the front view.`
+    };
+    if (pc <= 75) return {
+        main: `Hourglass figure type — clearly defined waist and balanced shoulder-to-hip line; garments tailored to follow the waist-to-hip line and drape cleanly over the silhouette.`,
+        perView: `clearly defined waist with a balanced shoulder-to-hip line; the tailored waist seam must read consistently in the side profile.`
+    };
+    return {
+        main: `Full hourglass figure type — pronounced waist definition with a curvier shoulder-to-hip line; garments tailored for a fuller-figured fit that follows the body's curve.`,
+        perView: `pronounced waist definition with a curvier shoulder-to-hip line; the tailored waist seam must read consistently in the side profile.`
+    };
+};
+
+/**
+ * 上身輪廓四檔。措辭移植 `AB測試_上身輪廓/round5_final.ps1` 的 `$Bust`，
+ * 把寫死的「針織背心」泛化為任意服裝。
+ *
+ * 級距校準（B-7 驗收修正）：第五輪的 5 檔裡 lv0↔lv1 與 lv3↔lv4 兩對都差異過小。
+ * 砍掉 lv1 解掉第一對；第二對則靠**兩端各自寫得更極端**來拉開——
+ * 第一版只是原句照搬，LEVEL 1 甚至比 lv0 更弱（`Very flat`→`Flat`、
+ * `zero`→`essentially zero`、`completely vertical`→`reads as vertical`），
+ * 那是反向操作。現在 LEVEL 1 恢復第五輪的絕對措辭，LEVEL 4 加上
+ * 「布料被拉開到織紋可見」與「腰線落差是整張圖最明顯的線條」兩個可畫出來的特徵。
+ */
+const femaleBodice = (bt: number) => {
+    if (bt <= 25) return {
+        level: 1,
+        main: `Very flat upper torso. The upper garment falls straight down from the collarbone to the waist with zero forward projection. In side profile the front line is completely vertical.`,
+        perView: `the upper garment drapes with a completely vertical front line in every view, including both profiles.`
+    };
+    if (bt <= 50) return {
+        level: 2,
+        main: `Moderate upper fullness, typical balanced proportions for this build. Clear but modest forward projection, a natural gentle curve in the front line of the garment.`,
+        perView: `a modest forward projection with a gentle curve in the front line, consistent between the front view and both profiles.`
+    };
+    if (bt <= 75) return {
+        level: 3,
+        main: `Substantial upper fullness on this frame. Distinct forward projection; the fabric is visibly stretched across the upper front with mild horizontal tension lines, giving clear contrast against the narrower waist.`,
+        perView: `the fabric is visibly stretched across the upper front with the same mild tension lines in every view; the side profile shows the same distinct forward projection as the front view.`
+    };
+    return {
+        level: 4,
+        main: `Maximum upper fullness on this frame. Strongly pronounced forward projection, unmistakable in both front and side view. The fabric is stretched taut across the upper front — the weave is pulled open and horizontal tension lines are obvious — and the garment silhouette narrows sharply below it, making the upper-to-waist contrast the most prominent line in the image.`,
+        perView: `the fabric is stretched taut across the upper front with the same obvious tension lines in every view; both profiles must show the same strongly pronounced forward projection as the front view, with the same sharp narrowing to the waist.`
+    };
+};
+
 // 5. BUILDER FUNCTION
 export const buildModelPrompt = (params: any) => {
     const hasFaceRef = params.faceReferences && params.faceReferences.length > 0;
@@ -163,6 +235,28 @@ export const buildModelPrompt = (params: any) => {
     const aestheticDesc = AESTHETIC_MAP[genderKey][params.aestheticStyle] || AESTHETIC_MAP[genderKey]['realistic'];
     const archetypeDesc = hasFaceRef ? "" : (FACE_ARCHETYPE_MAP[genderKey][params.archetype] || FACE_ARCHETYPE_MAP[genderKey]['standard']);
     const stylistKeywords = getStylistKeywords(params);
+
+    /**
+     * 這次生成的服裝描述裡到底有沒有鞋（2026-08-04 驗收修正）。
+     *
+     * 為什麼需要提前算：`[COMPOSITION RULE]` 與 `[NEGATIVE PROMPT]` 都會提到鞋，
+     * 但 `outfitPrompt` 直到 [OUTFIT MANDATE] 才組出來。結果是——
+     * 預設的 `f_full_knit_vest_shorts` 與 20 組快速預設卡**全部都沒有鞋**，
+     * 於是幾乎每一次生成都同時送出三句互斥指令：
+     *   「MUST show the entire feet and shoes clearly」
+     *   「沒提到鞋履就是裸足」（D-12 配件白名單）
+     *   `(missing shoes:2.0)` ← 全串權重最高
+     * 模型只能二選一，而勝出的通常是「硬長出一雙鞋」——那正好回到 D-12
+     * 要解決的「鞋款每次都不同」，等於自我抵銷。
+     * 現在改成：有鞋才要求露鞋、才把 missing shoes 列入負面詞。
+     */
+    const outfitTextForFootwearCheck: string = [
+        params.customOutfitPrompt,
+        ...(Array.isArray(params.outfitItems) ? params.outfitItems.map((i: any) => i?.prompt) : []),
+        params.outfitPreset?.prompt
+    ].filter(Boolean).join(' ');
+    const hasFootwear = /\b(shoe|shoes|sneaker|sneakers|heel|heels|boot|boots|sandal|sandals|loafer|loafers|flats|pumps)\b/i
+        .test(outfitTextForFootwearCheck);
 
     // --- 🛡️ SAFETY COMPLIANCE TRANSLATION LAYER (PHASE 2) ---
     const translateOutfit = (rawPrompt: string) => {
@@ -298,7 +392,10 @@ export const buildModelPrompt = (params: any) => {
     // --- COMPOSITION MANDATE (CRITICAL FOR FOOTWEAR) ---
     prompt += `[🚨 COMPOSITION RULE: FULL BODY MANDATORY 🚨]\n`;
     prompt += `- Frame the shot from HEAD TO TOE. \n`;
-    prompt += `- MUST show the entire feet and shoes clearly. \n`;
+    // 2026-08-04 驗收修正：改為條件輸出（理由見上方 hasFootwear 的說明）。
+    prompt += hasFootwear
+        ? `- MUST show the entire feet and shoes clearly. \n`
+        : `- MUST show the entire feet clearly. The description above names no footwear, so the model is barefoot — do NOT invent shoes. \n`;
     prompt += `- Ensure a safe margin (padding) between the feet and the bottom edge of the image. \n`;
     prompt += `- The model must be standing vertically within the frame.\n\n`;
 
@@ -335,51 +432,81 @@ export const buildModelPrompt = (params: any) => {
         prompt += `- This block controls SURFACE APPEARANCE ONLY. It must NOT influence lighting, background, depth of field, pose, gaze or wardrobe — every one of those is already fixed by the blocks above and must not be re-interpreted here.\n\n`;
     }
 
-    // --- PHYSIOLOGICAL FEATURE CONTROLS (PHASE 2: ANATOMICAL MAPPING) ---
+    /**
+     * --- 體型與上身輪廓（企劃案 B-7，2026-08-04 落地）---
+     *
+     * 措辭來源：`盤點_C軌_2026-08-01/AB測試_上身輪廓/` 五輪 36 張實圖驗證。
+     * 移植時把測試裡寫死的「針織背心」泛化為任意服裝（production 的服裝來自 outfitItems）。
+     *
+     * 三段缺一不可（第五輪才發現第三段是必要條件）：
+     *   1. 體型固定段 —— 明寫「此體型固定不變，僅上身量感可變」
+     *   2. 上身量感段 —— 描述前突程度與布料張力，逐檔遞增
+     *   3. 服裝鎖段   —— 見下方 [OUTFIT MANDATE]（B-7c）
+     *
+     * 為什麼第三段是必要的：沒有服裝鎖，模型會「改衣服剪裁」來假裝改身體
+     * （第四輪 R4_8 自己長出七分袖與胸下抓褶）。那種作弊正面看得過去，
+     * 一到側面或換裝就穿幫。鎖死服裝設計後，第五輪側面圖證明**改變的是身體本身**。
+     *
+     * 措辭原則（實測結論，不是猜的）：
+     *   - 成衣打版措辭「效果」勝過解剖名詞，不只是比較安全（第四輪 ③ vs ④）。
+     *     因為它描述的是模型畫得出來的具體物件：褶子、接縫、繃緊的垂墜。
+     *   - 禁用：breast / bust size / cleavage / busty / 罩杯代號 / chest size。
+     *   - 級距定為 4 檔。實測第五輪的 5 檔裡，lv0↔lv1 與 lv3↔lv4 差異過小，
+     *     使用者分辨不出的檔位等於不存在。此處取最能分辨的四段
+     *     （原 lv0 / lv2 / lv3 / lv4），並把頂端措辭寫得更極端以拉開級距。
+     */
     if (params.gender === 'female') {
-        const bt = params.bustTension || 50;
-        const pc = params.physiqueCurvature || 50;
-        
-        prompt += `[FIGURE TYPE & GARMENT FIT — FEMALE]\n`;
-        // Mapping Curvature (0-100) -> Figure Type Contour
-        if (pc <= 30) prompt += `- Contour: Lean editorial runway figure type — long slender lines, straight silhouette, minimal hip curve; garments hang with a clean straight drape. \n`;
-        else if (pc <= 55) prompt += `- Contour: Natural feminine figure type with a defined waistline — balanced proportions, soft everyday silhouette; garments follow a gently tailored fit. \n`;
-        else if (pc <= 75) prompt += `- Contour: Hourglass figure type — clearly defined waist and balanced shoulder-to-hip line; garments tailored to follow the waist-to-hip line and drape cleanly over the silhouette. \n`;
-        else prompt += `- Contour: Full hourglass figure type — pronounced waist definition with a curvier shoulder-to-hip line; garments tailored for a fuller-figured fit that follows the body's curve. \n`;
+        // 2026-08-04（B-7 驗收修正）：原本寫 `params.bustTension || 50`。
+        // 0 是 falsy，所以滑桿拉到最左端（最平）會被 `||` 換成 50，
+        // 反而輸出「標準檔」措辭——滑桿最左端等於失效。
+        // B-7a 把滑桿搬到明面之後，使用者第一個動作就是拉到底，會立刻撞到。
+        const bt = num(params.bustTension, 50);
+        const pc = num(params.physiqueCurvature, 50);
 
-        // Mapping Bust Tension (0-100) -> Upper-garment Fit
-        if (bt > 80) {
-            prompt += `- Upper-garment Fit: Tailored for a fuller-bust figure type — upper garments cut with a fuller fit through the chest, fabric drapes with a clean structured line. \n`;
-        } else if (bt > 55) {
-            prompt += `- Upper-garment Fit: Tailored for a full-bust figure type — upper garments follow a rounded fuller fit through the chest with natural drape. \n`;
-        } else if (bt > 30) {
-            prompt += `- Upper-garment Fit: Standard feminine fit through the chest with natural garment drape. \n`;
-        } else {
-            prompt += `- Upper-garment Fit: Lean editorial fit — minimal chest projection, straight garment line, high-fashion silhouette. \n`;
-        }
+        const bodice = femaleBodice(bt);
+        prompt += `[FIGURE TYPE — FEMALE, FIXED]\n`;
+        prompt += `- Contour: ${femaleContour(pc).main} \n`;
+        prompt += `- This overall build — waist definition, arms, hips and leg line — is FIXED and must render identically every time. Only the upper-bodice fullness specified below may vary. \n\n`;
+
+        prompt += `[UPPER-BODICE FULLNESS]\n`;
+        prompt += `- LEVEL ${bodice.level} of 4. ${bodice.main} \n\n`;
     } else {
-        const md = params.muscularDensity || 50;
-        const vt = params.vTaperScale || 50;
+        // 2026-08-04（B-7 驗收修正）：同上，0 是 falsy 的坑。
+        const md = num(params.muscularDensity, 50);
+        const vt = num(params.vTaperScale, 50);
 
-        prompt += `[FIGURE TYPE & GARMENT FIT — MALE]\n`;
+        prompt += `[FIGURE TYPE — MALE, FIXED]\n`;
         // Mapping Muscular Density (0-100)
         if (md <= 30) prompt += `- Density: Slim lean figure type, subtle muscle tone; garments follow a slim tailored fit. \n`;
         else if (md <= 70) prompt += `- Density: Athletic figure type, defined build; garments follow a fitted athletic cut. \n`;
         else prompt += `- Density: Muscular athletic figure type, broad structured shoulders and defined build; garments tailored for a broad muscular fit. \n`;
 
         // Mapping Shoulder Frame (0-100) -> V-Taper Figure/Fit
-        if (vt > 80) {
-            prompt += `- Frame Architecture: Pronounced V-taper figure type with an ultra-broad shoulder-to-waist line; garments tailored with a strong shoulder line, structured across the upper back to follow the wide frame. \n`;
-        } else {
+        //
+        // 2026-08-04（驗收發現）：原本只有 `> 80` 與 else **兩段**，
+        // 也就是 0–80 這一大段輸出的字完全一樣——「肩背比例」是 0–100 的滑桿，
+        // 卻只有兩個有效位置，使用者拉了半天沒反應。
+        // 改為與女性一致的四檔（邊界 25 / 50 / 75），措辭同樣走成衣打版語言。
+        if (vt <= 25) {
+            prompt += `- Frame Architecture: Narrow straight frame — shoulder line close to waist width; garments hang with a clean straight drape and minimal shoulder structure. \n`;
+        } else if (vt <= 50) {
             prompt += `- Frame Architecture: Natural V-taper figure type with professional athletic proportions; garments follow a balanced shoulder-to-waist tailored line. \n`;
+        } else if (vt <= 75) {
+            prompt += `- Frame Architecture: Clear V-taper figure type — visibly broader shoulder line tapering to the waist; garments tailored with a defined shoulder seam and a structured upper back. \n`;
+        } else {
+            prompt += `- Frame Architecture: Pronounced V-taper figure type with an ultra-broad shoulder-to-waist line; garments tailored with a strong shoulder line, structured across the upper back to follow the wide frame. \n`;
         }
+        // B-7：男性同樣加體型固定句。理由與女性一致——沒有這句，模型會用改剪裁來假裝改體型。
+        prompt += `- This overall build is FIXED and must render identically every time. \n\n`;
     }
 
     if (params.isExpertMode) {
         prompt += `[🚨 MANDATORY BIOLOGICAL METRICS (PHYSICAL TRUTH) 🚨]\n`;
         prompt += `- BIOMETRIC ENFORCEMENT: The model's physique MUST strictly adhere to these precise metrics. No approximation allowed. \n`;
         prompt += `- HEIGHT: Exactly ${params.height}cm (This affects limb length and vertical proportions). \n`;
-        prompt += `- PROPORTION RATIO: Head-to-body ratio must be strictly ${params.headBodyRatio || 8.0} heads. \n`;
+        // 2026-08-04（企劃案 B-6）：fallback 由 8.0 改為 7.5，與 ModelGenerationDefaults 對齊。
+        // 真人約 7、時尚模特 8–8.5；網紅 IP 用 7.5 較有真實感，超過 8.5 開始出現明顯 AI 感。
+        prompt += `- PROPORTION RATIO: Head-to-body ratio must be strictly ${num(params.headBodyRatio, 7.5)} heads. \n`;
         prompt += `- SILHOUETTE: ${params.proportionMode} physique mode. The body volume and skeletal structure must be a 100% match for these specifications.\n\n`;
         
         prompt += `[EXPERT SURFACE REALISM]\n`;
@@ -451,7 +578,10 @@ export const buildModelPrompt = (params: any) => {
     const hairDetailParts = [hairLengthDesc, hairBangDesc].filter(Boolean);
     const hairDetailSuffix = hairDetailParts.length > 0 ? `, ${hairDetailParts.join(', ')}` : '';
     prompt += `Hair: Confirming "${params.hairColor}" color. Style: ${params.hairStyle}${hairDetailSuffix}.\n`;
-    prompt += `Body: ${params.proportionMode} proportions. Height: ${params.height}cm. Head-to-body ratio: ${params.headBodyRatio || 8.0} heads.\n\n`;
+    // 2026-08-04（B-6 驗收修正）：這處 fallback 原本漏改，還是 8.0。
+    // 後果是 headBodyRatio 未帶入時，專家模式下上方 [MANDATORY BIOLOGICAL METRICS]
+    // 說 7.5、這裡說 8.0——同一份 prompt 兩個互斥數字。
+    prompt += `Body: ${params.proportionMode} proportions. Height: ${params.height}cm. Head-to-body ratio: ${num(params.headBodyRatio, 7.5)} heads.\n\n`;
 
     let outfitPrompt = '';
     if (params.customOutfitPrompt) {
@@ -465,8 +595,60 @@ export const buildModelPrompt = (params: any) => {
     
     prompt += `[OUTFIT MANDATE]\n`;
     prompt += `- Description: ${translateOutfit(outfitPrompt)}.\n`;
-    prompt += `- Aesthetic: Stick to a clean, solid color palette. Use high-end technical fabrics like matte lycra or double-knit jersey. \n`;
-    prompt += `- Silhouette Architecture: Prioritize form-fitting silhouettes that precisely map the model's physical structure. Highlight the anatomical curves and torso-to-hip transitions using clear visible seams and structural lines. \n`;
+    // 2026-08-04（B-7 驗收發現）：原句是
+    //   "Stick to a clean, solid color palette. Use high-end technical fabrics like
+    //    matte lycra or double-knit jersey."
+    // 它緊接在 `- Description:` 之後，於是**直接覆蓋服裝資料指定的材質**
+    // （例如 `ribbed knit sleeveless vest top` 會被 matte lycra / jersey 蓋掉）。
+    // 而且 `solid color palette` 沒有指名任何顏色，導致下面 Design Lock 的
+    // 「每次都一樣」找不到可錨定的對象——第五輪能成立是因為服裝連顏色都寫死。
+    // 改為「未指定時才套用」，並把顏色一致性明講出來。
+    // 服裝資料本身缺顏色的根因記錄在企劃案 D-12，歸階段 6 處理。
+    prompt += `- Aesthetic: Where the description above does not specify a fabric or colour, default to a clean solid colour and a high-end technical knit. Never override a fabric, colour or detail that the description does specify. \n`;
+    // 2026-08-04（企劃案 B-7c）：改寫 Silhouette Architecture。
+    //
+    // 原句是全篇風險最高的一句，而且**每次生成都會出現**（不受滑桿控制）：
+    //   "Prioritize form-fitting silhouettes that precisely map the model's physical
+    //    structure. Highlight the anatomical curves and torso-to-hip transitions..."
+    // `precisely map the model's physical structure` ＋ `Highlight the anatomical curves`
+    // ＝ 明確要求強調解剖曲線，還用了 `anatomical` 這個詞。
+    //
+    // 新句同樣要求貼身、同樣要求可見接縫，但描述對象換成**衣服的結構**而非身體的曲線。
+    // 實測結論支持這個方向：成衣打版措辭效果勝過解剖名詞，不只是比較安全。
+    //
+    // ⚠️ 2026-08-04（B-7 驗收修正）：第一版新句寫成
+    //   "...Use clear seam lines and structural panels to define the garment's fit..."
+    // 那跟下面的 Design Lock「不得新增未指定的接縫、褶、抓皺」**直接互相否定**，
+    // 而且更糟的是：它把第四輪發現、第五輪靠鎖死服裝才排除的作弊路徑重新開回去
+    // （R4_8 自己長出七分袖與胸下抓褶，靠改剪裁假裝改身體）。
+    // 現在只講合身度，把「要不要有可見接縫」的決定權還給 `- Description`。
+    prompt += `- Silhouette Architecture: Prioritize close-fitting garment construction that follows the figure type cleanly, with smooth uninterrupted panels unless the description above specifies seams or detailing. \n`;
+    prompt += `- Fit Legibility: The fabric follows the body closely enough that the figure underneath stays legible through the drape. \n`;
+    // 2026-08-04（企劃案 B-7，第五輪新發現的必要條件）：服裝鎖段。
+    //
+    // 沒有這段，模型會靠「改衣服剪裁」來假裝改身體——第四輪 R4_8 自己長出七分袖
+    // 與胸下抓褶。那種作弊正面看得過去，一到側面或換裝就穿幫，而定妝照的下游
+    // （虛擬試衣間、場景轉移）正是要換裝的。鎖死設計後第五輪側面圖才證明
+    // 改變的是身體本身。這段不可省略。
+    prompt += `- Design Lock: The garment DESIGN described above is fixed — same cut, same neckline, same sleeve length, same hem length, same fabric, same colour every time. Do NOT redesign it. Do NOT add sleeves, extra seams, darts, gathering or ruching that were not specified. Only HOW THE BODY FILLS the garment may differ. \n`;
+    // 2026-08-04（企劃案 D-12）：配件白名單。
+    //
+    // B-5 出圖實測發現：六張用同一筆服裝資料生成的定妝照，包款、襪子、鞋款全都不同
+    // ——因為服裝資料只描述主件，模型就自行補齊了它覺得該有的配件。
+    // 定妝照是要餵給試衣間與場景轉移的**素材**，素材不可重現就沒有穩定基準，
+    // 而且多出來的包與襪子在試穿時會變成殘留物。
+    // 這一行比逐筆改資料有效：只要描述沒提到，就一律不准出現。
+    //
+    // ⚠️ 2026-08-04 驗收修正：第一版寫成 "Render ONLY the garments and footwear named
+    // in the description above." 那是**危險的**——UI 允許只勾上衣不勾下身
+    // （ModelSetup 的 top / bottom 分類是各自獨立的），此時「只准畫描述提到的衣物」
+    // 就等於明確指示模型不要畫下半身；選 `m_top_shirtless`（描述＝shirtless）更是全裸指令。
+    // 現在把白名單限縮到**配件**，並補一條「上下身必須都有衣物」的保底。
+    prompt += `- Accessory Whitelist: Do NOT add any accessory that was not named in the description — no bag, no backpack, no socks, no hat, no cap, no scarf, no belt, no jewellery, no watch, no glasses, no hair accessory. \n`;
+    // 保底條款。注意措辭要容許 `m_top_shirtless` ——那是刻意保留的男性打底選項，
+    // 若寫成「上下身一律都要有衣物」就會跟它直接打架。
+    // 硬性底線只放在下身；上身則是「除非描述明確說 shirtless」。
+    prompt += `- Coverage Floor: A lower garment is ALWAYS present. If the description above does not name one, add plain, unobtrusive, neutral-coloured fitted shorts. An upper garment is likewise always present unless the description explicitly specifies shirtless. \n`;
     prompt += `- Compliance Policy: Ensure the garment construction is sophisticated and follows high-end fashion standards. Avoid any speculative artifacts. \n\n`;
 
     if (params.isMultiAngle) {
@@ -479,17 +661,44 @@ export const buildModelPrompt = (params: any) => {
         prompt += `- BACKGROUND: The exact same seamless neutral grey studio backdrop specified in the casting studio specification above. No props, no furniture, no environment. Just the character.\n`;
         prompt += `- COMPOSITION: Use a strictly organized 2-ROW GRID structure.\n\n`;
         
+        /**
+         * 2026-08-04（企劃案 B-7b）：改寫多視角分支的體型措辭。
+         *
+         * 這裡原本是全案最嚴重的不一致點——主路徑早已改成成衣打版語言，
+         * 但這條分支還留著解剖描述＋貼身強調：
+         *   "Bust has natural full rounded projection visible in side profile and
+         *    front view. Clothing fits snugly across chest."
+         * `Bust has ... full rounded projection` ＋ `fits snugly across chest`
+         * 正是最容易觸發的組合。後果是：**同一個滑桿值，走不同路徑會得到
+         * 完全不同風險等級的 prompt**，而使用者完全不知道自己切換了風險。
+         *
+         * 另外兩處也一併改：`dramatic hourglass figure` / `full rounded hips` /
+         * `strong S-curve` 同樣是身體描述。改為描述四視角之間的**版型一致性**。
+         *
+         * 這段原本被 `if (pc > 55 || bt > 55)` 包住——低檔位時完全沒有一致性指令，
+         * 那是錯的：四視角要一致跟體型豐不豐無關。改為無條件輸出。
+         *
+         * ⚠️ 2026-08-04 驗收修正兩件事：
+         *  1. 第一版在這裡自己寫了 3 段邊界（`>75` / `>55` / else），而主路徑是 4 段。
+         *     結果 `bustTension` 落在 26–50（**含預設值 50**）時，主路徑說
+         *     「clear but modest forward projection」、這裡說「clean near-vertical
+         *     front line」——同一份 prompt 自相矛盾。現在改為共用 femaleContour /
+         *     femaleBodice，邊界與措辭只有一份。
+         *  2. 整段原本被 `if (params.gender === 'female')` 框住，男性的八宮格參考表
+         *     完全沒有跨視角一致性指令。一致性與性別無關，改為兩性共用。
+         */
+        prompt += `[FIT CONSISTENCY MANDATE FOR ALL VIEWS]\n`;
+        prompt += `- CRITICAL: All 4 body views MUST show the same figure type and the same garment fit. Bodice structure, seam lines and hem lengths must match between the front, side and back views.\n`;
         if (params.gender === 'female') {
-            const pc = params.physiqueCurvature || 50;
-            const bt = params.bustTension || 50;
-            if (pc > 55 || bt > 55) {
-                prompt += `[PHYSIQUE MANDATE FOR ALL VIEWS]\n`;
-                prompt += `- CRITICAL: All 4 body views MUST show consistent body proportions. The silhouette MUST be visible and consistent across front, side, and back views.\n`;
-                if (pc > 75) prompt += `- Body has dramatic hourglass figure — significantly cinched waist, full rounded hips, strong S-curve visible in side profile.\n`;
-                else if (pc > 55) prompt += `- Body has clear hourglass silhouette — visibly cinched waist with full hip line, S-curve clearly visible in side profile.\n`;
-                if (bt > 55) prompt += `- Bust has natural full rounded projection visible in side profile and front view. Clothing fits snugly across chest.\n`;
-            }
+            const pc = num(params.physiqueCurvature, 50);
+            const bt = num(params.bustTension, 50);
+            prompt += `- Contour across views: ${femaleContour(pc).perView}\n`;
+            prompt += `- Upper-bodice fit across views: ${femaleBodice(bt).perView}\n`;
+        } else {
+            prompt += `- Frame across views: the shoulder-to-waist line and the garment's shoulder structure must read identically in the front, both profiles and the back view.\n`;
         }
+        // B-7：多視角同樣需要服裝鎖。八格是同一次生成，設計漂移會讓整張參考表作廢。
+        prompt += `- Design Lock: The garment design is identical in all 8 panels. Do NOT redesign it between views and do NOT add sleeves, seams, darts or gathering in any panel.\n`;
         prompt += `[ROW 1: FULL BODY TURNAROUND (Top Half of Frame)]:\n`;
         prompt += `- 4 full-length figures aligned horizontally: FRONT VIEW, LEFT PROFILE, RIGHT PROFILE, BACK VIEW.\n`;
         prompt += `- All figures must be at the same scale and perfectly aligned at the head and feet.\n\n`;
@@ -518,9 +727,21 @@ export const buildModelPrompt = (params: any) => {
     prompt += `[NEGATIVE PROMPT]\n`;
     // 2026-07-20：無參考圖時加西方臉負面詞（有參考圖時人種由參考圖決定，不加以免干擾）。
     const ethnicityNegatives = hasFaceRef ? "" : ", (Caucasian face:1.5), (Western facial features:1.4), (European bone structure:1.4)";
-    const baseNegatives = "(3D render:1.5), (illustration:1.5), (painting:1.5), (cartoon:1.5), (CG), (anime), (unreal engine), (mutated), (deformed), (low quality), (blurry), (extra limbs), (fused bodies), (mutated hands), (deformed face), (merged characters), (different outfits), (asymmetric clothing)" + ethnicityNegatives;
+    // 2026-08-04（企劃案 B-7e）：常駐加入三條內容安全負面詞。
+    //
+    // 這**反而會降低**觸發率，不是提高——它明確告訴模型「我要的不是那種東西」，
+    // 同時也是內容安全的自我保護。上身輪廓可調之後，這三條是必要的配套。
+    // （第五輪測試的 [NEGATIVE CONSTRAINTS] 就含這三條，全 7 張皆順利產出。）
+    const safetyNegatives = ", (cleavage emphasis:1.6), (suggestive posing:1.6), (revealing framing:1.6)";
+    const baseNegatives = "(3D render:1.5), (illustration:1.5), (painting:1.5), (cartoon:1.5), (CG), (anime), (unreal engine), (mutated), (deformed), (low quality), (blurry), (extra limbs), (fused bodies), (mutated hands), (deformed face), (merged characters), (different outfits), (asymmetric clothing)" + safetyNegatives + ethnicityNegatives;
     if (!params.isMultiAngle) {
-        prompt += `${baseNegatives}, (cropped feet:2.0), (cut off legs:2.0), (missing shoes:2.0), (out of frame:1.8), (half body), (close up), (distorted limbs), (extra toes), (blurry feet).`;
+        // 2026-08-04 驗收修正：`(missing shoes:2.0)` 改為條件輸出。
+        // 沒選鞋時它是全串權重最高的一條，會逼模型硬長出一雙鞋，
+        // 直接抵銷 D-12 想解決的「鞋款每次都不同」。改成沒鞋時反過來壓制自作聰明的鞋。
+        const footwearNegatives = hasFootwear
+            ? `, (missing shoes:2.0)`
+            : `, (invented footwear:1.6), (unrequested shoes:1.6)`;
+        prompt += `${baseNegatives}, (cropped feet:2.0), (cut off legs:2.0)${footwearNegatives}, (out of frame:1.8), (half body), (close up), (distorted limbs), (extra toes), (blurry feet).`;
     } else {
         prompt += `${baseNegatives}, (cluttered background:1.8), (messy environment:1.8), (outdoors:1.8), (bokeh:1.5), (depth of field:1.5)`;
     }

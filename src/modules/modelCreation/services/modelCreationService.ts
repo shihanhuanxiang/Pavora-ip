@@ -190,7 +190,11 @@ The model MUST have East Asian (Taiwanese) facial bone structure and features. D
                         bustTension: params.bustTension,
                         physiqueCurvature: params.physiqueCurvature,
                         muscularDensity: params.muscularDensity,
-                        vTaperScale: params.vTaperScale
+                        vTaperScale: params.vTaperScale,
+                        // 2026-08-04（企劃案 B-6）：頭身比一併存檔。
+                        // 少了這行，新增的頭身比滑桿調完只影響這一次生成，
+                        // 存檔／繼承／休息室重生後會靜默回到預設值。
+                        headBodyRatio: params.headBodyRatio
                     }
                 });
             } else if (textPart?.text) {

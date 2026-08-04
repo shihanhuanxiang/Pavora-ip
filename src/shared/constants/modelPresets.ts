@@ -20,100 +20,100 @@ export const APPAREL_ITEMS = [
     {
         id: 'f_full_tanktop_shorts',
         label: '無袖背心 + 熱褲 (Tank + Hot Shorts)',
-        prompt: 'fitted ribbed sleeveless tank top with scoop neck, paired with high-waist denim hot pants, casual youthful street style, midriff slightly visible',
+        prompt: 'fitted ribbed sleeveless tank top with scoop neck in plain white, paired with high-waist denim hot pants in mid-blue indigo, casual youthful street style, midriff slightly visible',
         category: 'full_set',
         gender: 'female'
     },
     {
         id: 'f_full_camisole_shorts',
         label: '細肩帶背心 + 短褲 (Cami + Shorts)',
-        prompt: 'delicate spaghetti strap camisole top in pastel tone, paired with loose casual shorts, relaxed K-style summer outfit, soft feminine energy',
+        prompt: 'delicate spaghetti strap camisole top in pale butter yellow, paired with loose casual shorts in off-white, relaxed K-style summer outfit, soft feminine energy',
         category: 'full_set',
         gender: 'female'
     },
     {
         id: 'f_full_croptee_miniskirt',
         label: '短版T + 迷你裙 (Crop Tee + Mini Skirt)',
-        prompt: 'cropped fitted short sleeve t-shirt, paired with high-waist pleated mini skirt, classic Korean IG girl aesthetic, clean and youthful',
+        prompt: 'cropped fitted short sleeve t-shirt in plain white, paired with high-waist pleated mini skirt in navy, classic Korean IG girl aesthetic, clean and youthful',
         category: 'full_set',
         gender: 'female'
     },
     {
         id: 'f_full_offsholder_shorts',
         label: '一字領上翼 + 熱褲 (Off-shoulder + Shorts)',
-        prompt: 'off-shoulder fitted top showing collarbone, paired with high-waist shorts, summer date outfit, soft warm tones',
+        prompt: 'off-shoulder fitted top in soft cream showing collarbone, paired with high-waist shorts in warm beige, summer date outfit',
         category: 'full_set',
         gender: 'female'
     },
     {
         id: 'f_full_knit_vest_shorts',
         label: '針織背心 + 休閒短褲 (Knit Vest + Casual Shorts)',
-        prompt: 'ribbed knit sleeveless vest top, paired with relaxed casual shorts, Korean college girl style, layered with optional small bag',
+        prompt: 'ribbed knit sleeveless vest top in oatmeal beige, paired with relaxed casual shorts in charcoal grey, Korean college girl style',
         category: 'full_set',
         gender: 'female'
     },
     {
         id: 'f_full_sporty_set',
         label: '運動背心 + 緊身短褲 (Sporty Set)',
-        prompt: 'athletic sleeveless sports top, paired with high-waist tight biker shorts, activewear K-beauty style, clean sporty energy',
+        prompt: 'athletic sleeveless sports top in matte black, paired with high-waist tight biker shorts in matte black, activewear K-beauty style, clean sporty energy',
         category: 'full_set',
         gender: 'female'
     },
     
     // --- TOPS (上身：專業細分) ---
-    { id: 'f_top_racerback', label: '高強度工字背心 (Pro Racerback)', prompt: 'high-impact technical racerback tank', category: 'top', gender: 'female' },
-    { id: 'f_top_bandeau', label: '細膩平口束胸 (Ribbed Bandeau)', prompt: 'delicate ribbed bandeau top, sleek fit', category: 'top', gender: 'female' },
-    { id: 'f_top_halter', label: '掛脖挖肩背心 (Halter Neck Tank)', prompt: 'halter neck bodysuit top, showing defined shoulders', category: 'top', gender: 'female' },
-    { id: 'f_top_crop_tee', label: '超短版修身T (Micro Crop Tee)', prompt: 'ultra-cropped fitted short sleeve t-shirt', category: 'top', gender: 'female' },
+    { id: 'f_top_racerback', label: '高強度工字背心 (Pro Racerback)', prompt: 'high-impact technical racerback tank in matte black', category: 'top', gender: 'female' },
+    { id: 'f_top_bandeau', label: '細膩平口束胸 (Ribbed Bandeau)', prompt: 'delicate ribbed bandeau top in plain white, sleek fit', category: 'top', gender: 'female' },
+    { id: 'f_top_halter', label: '掛脖挖肩背心 (Halter Neck Tank)', prompt: 'halter neck bodysuit top in matte black, showing defined shoulders', category: 'top', gender: 'female' },
+    { id: 'f_top_crop_tee', label: '超短版修身T (Micro Crop Tee)', prompt: 'ultra-cropped fitted short sleeve t-shirt in plain white', category: 'top', gender: 'female' },
     
     // --- BOTTOMS (下身：身形強化) ---
-    { id: 'f_bottom_leggings', label: '修身高腰壓力褲 (High-waist Compression)', prompt: 'sculpting high-waisted compression leggings', category: 'bottom', gender: 'female' },
-    { id: 'f_bottom_split_yoga', label: '側開衩瑜珈褲 (Split-Hem Yoga)', prompt: 'fitted yoga pants with side slits at ankles', category: 'bottom', gender: 'female' },
-    { id: 'f_bottom_hot_pants', label: '無縫提臀短褲 (Seamless Lift Shorts)', prompt: 'seamless booty-lifting athletic shorts', category: 'bottom', gender: 'female' },
-    { id: 'f_bottom_denim_shorts', label: '毛邊丹寧極短褲 (Raw-edge Denim)', prompt: 'ultra-short raw-edge denim shorts', category: 'bottom', gender: 'female' },
+    { id: 'f_bottom_leggings', label: '修身高腰壓力褲 (High-waist Compression)', prompt: 'high-waisted compression leggings in charcoal grey', category: 'bottom', gender: 'female' },
+    { id: 'f_bottom_split_yoga', label: '側開衩瑜珈褲 (Split-Hem Yoga)', prompt: 'fitted yoga pants in charcoal grey with side slits at ankles', category: 'bottom', gender: 'female' },
+    { id: 'f_bottom_hot_pants', label: '無縫提臀短褲 (Seamless Lift Shorts)', prompt: 'high-cut seamless athletic shorts in matte black', category: 'bottom', gender: 'female' },
+    { id: 'f_bottom_denim_shorts', label: '毛邊丹寧極短褲 (Raw-edge Denim)', prompt: 'ultra-short raw-edge denim shorts in mid-blue indigo', category: 'bottom', gender: 'female' },
     
     // --- FOOTWEAR (鞋履) ---
     { id: 'foot_barefoot', label: '極致赤足 (Studio Barefoot)', prompt: 'clean realistic barefoot, high detail', category: 'footwear', gender: 'both' },
-    { id: 'foot_transparent_heels', label: '透明細帶高跟 (Clear Strappy Heels)', prompt: 'minimalist transparent strap high heels, invisible look', category: 'footwear', gender: 'female' },
-    { id: 'foot_white_sneakers', label: '全白極簡板鞋 (Minimalist Trainers)', prompt: 'all-white minimal design sneakers', category: 'footwear', gender: 'both' },
+    { id: 'foot_transparent_heels', label: '透明細帶高跟 (Clear Strappy Heels)', prompt: 'minimalist clear-strap high heels with a nude-tone sole, invisible look', category: 'footwear', gender: 'female' },
+    { id: 'foot_white_sneakers', label: '全白極簡板鞋 (Minimalist Trainers)', prompt: 'all-white minimal design low-top sneakers, no socks visible', category: 'footwear', gender: 'both' },
 
     // --- FULL SETS MALE (成套預設：男性日常街頭風格) ---
     { 
         id: 'm_full_pro_sculpt', 
         label: '修身掛脖 + 運動短褲 (Athlete Set)', 
-        prompt: 'tight athletic tank, high-cut performance shorts, showing muscular leg definition', 
+        prompt: 'tight athletic tank in matte black, high-cut performance shorts in matte black', 
         category: 'full_set', 
         gender: 'male' 
     },
     {
         id: 'm_full_tee_shorts',
         label: '素色T恤 + 休閒短褲 (Tee + Casual Shorts)',
-        prompt: 'clean solid color fitted crew-neck t-shirt, paired with relaxed casual shorts, everyday Korean street style, simple and clean',
+        prompt: 'fitted crew-neck t-shirt in plain white, paired with relaxed casual shorts in warm beige, everyday Korean street style, simple and clean',
         category: 'full_set',
         gender: 'male'
     },
     {
         id: 'm_full_polo_chinos',
         label: 'Polo衫 + 卡其褲 (Polo + Chinos)',
-        prompt: 'fitted short-sleeve polo shirt in neutral tone, paired with slim chino pants, smart casual Korean male style, clean preppy energy',
+        prompt: 'fitted short-sleeve polo shirt in soft cream, paired with slim chino pants in warm beige, smart casual Korean male style, clean preppy energy',
         category: 'full_set',
         gender: 'male'
     },
     {
         id: 'm_full_hoodie_jogger',
         label: '連帽衛衣 + 慢跑褲 (Hoodie + Joggers)',
-        prompt: 'fitted zip-up or pullover hoodie, paired with tapered jogger pants, casual sporty streetwear, relaxed urban male style',
+        prompt: 'fitted pullover hoodie in heather grey, paired with tapered jogger pants in charcoal grey, casual sporty streetwear, relaxed urban male style',
         category: 'full_set',
         gender: 'male'
     },
     {
         id: 'm_full_shirt_jeans',
         label: '開領襯衫 + 牛仔褲 (Shirt + Jeans)',
-        prompt: 'light open-collar linen or cotton shirt slightly unbuttoned, paired with slim straight jeans, casual summer male style, relaxed masculine energy',
+        prompt: 'light open-collar cotton shirt in plain white, slightly unbuttoned, paired with slim straight jeans in mid-blue indigo, casual summer male style',
         category: 'full_set',
         gender: 'male'
     },
-    { id: 'm_top_shirtless', label: '自然赤膊 (Natural Shirtless)', prompt: 'shirtless, showcasing toned muscular torso', category: 'top', gender: 'male' }
+    { id: 'm_top_shirtless', label: '自然赤膊 (Natural Shirtless)', prompt: 'shirtless, no upper garment', category: 'top', gender: 'male' }
 ];
 
 export const FEMALE_PRESETS = APPAREL_ITEMS.filter(i => i.gender !== 'male' && i.category === 'full_set');
@@ -196,16 +196,39 @@ export const PROPORTION_MODE_OPTIONS = [
     { value: 'v_shape', label: '倒三角/寬肩 (V-Shape)' }
 ];
 
+/**
+ * 體態選項按下去之後套用的預設值。
+ *
+ * ⚠️ 2026-08-04（企劃案 B-7 驗收修正）：女性的 bustTension／physiqueCurvature 全面校準。
+ *
+ * 原本八個體態的 `physiqueCurvature` 全落在 72–85、`bustTension` 全落在 72–82，
+ * 換算 prompt 的四個檔位後，**連「標準比例」都會落到最高檔「Full hourglass」**，
+ * 而且 B-7a 把滑桿搬到明面、B-7f 讓數值依檔位變色之後，
+ * 使用者一按「標準比例」就會看到滑桿變紅——標籤說標準、實際送最極端。
+ *
+ * 校準原則：讓每個體態落到**語意相符**的檔位。
+ *   physiqueCurvature 邊界：≤30 精瘦直線 / ≤55 自然女性 / ≤75 沙漏 / >75 豐滿沙漏
+ *   bustTension 邊界：      ≤25 平直    / ≤50 標準     / ≤75 明顯 / >75 飽滿
+ *
+ * ⛳ 這會改變所有使用「體態選項」的新生成結果，屬審美範圍——請 Hank 實際看圖確認。
+ * bust／waist／hip 三個數字自 2026-07-19（P2①）起已不進 prompt，保留僅供 UI 顯示。
+ */
 export const PROPORTION_DEFAULTS = {
     female: {
-        standard: { height: 160, bust: 92, waist: 61, hip: 92, bustTension: 75, physiqueCurvature: 78 },
-        tall: { height: 170, bust: 92, waist: 61, hip: 92, bustTension: 75, physiqueCurvature: 78 },
-        petite: { height: 153, bust: 90, waist: 59, hip: 90, bustTension: 75, physiqueCurvature: 78 },
-        slim: { height: 163, bust: 90, waist: 59, hip: 90, bustTension: 72, physiqueCurvature: 72 },
-        curvy: { height: 160, bust: 96, waist: 63, hip: 96, bustTension: 82, physiqueCurvature: 85 },
-        plus_size: { height: 160, bust: 100, waist: 70, hip: 102, bustTension: 80, physiqueCurvature: 80 },
-        athletic: { height: 163, bust: 91, waist: 62, hip: 91, bustTension: 73, physiqueCurvature: 75 },
-        v_shape: { height: 165, bust: 93, waist: 61, hip: 93, bustTension: 76, physiqueCurvature: 78 }
+        // 標準／高挑／嬌小：體型語意都是「正常」，差別只在身高 → 一律中間檔
+        standard: { height: 160, bust: 92, waist: 61, hip: 92, bustTension: 50, physiqueCurvature: 50 },
+        tall: { height: 170, bust: 92, waist: 61, hip: 92, bustTension: 50, physiqueCurvature: 50 },
+        petite: { height: 153, bust: 90, waist: 59, hip: 90, bustTension: 50, physiqueCurvature: 50 },
+        // 纖細：精瘦直線廓形（第 1 檔），上身標準
+        slim: { height: 163, bust: 90, waist: 59, hip: 90, bustTension: 40, physiqueCurvature: 25 },
+        // 豐腴沙漏：唯一該落最高檔的
+        curvy: { height: 160, bust: 96, waist: 63, hip: 96, bustTension: 85, physiqueCurvature: 85 },
+        // 大碼時尚：豐滿沙漏廓形，上身第 3 檔
+        plus_size: { height: 160, bust: 100, waist: 70, hip: 102, bustTension: 70, physiqueCurvature: 80 },
+        // 運動健美：緊實而非豐滿 → 自然女性廓形＋標準上身
+        athletic: { height: 163, bust: 91, waist: 62, hip: 91, bustTension: 45, physiqueCurvature: 40 },
+        // 倒三角／寬肩：肩線主導，腰臀曲線反而少 → 精瘦直線
+        v_shape: { height: 165, bust: 93, waist: 61, hip: 93, bustTension: 45, physiqueCurvature: 30 }
     },
     male: {
         standard: { height: 180, bust: 95, waist: 80, hip: 95 },
@@ -509,7 +532,10 @@ export const ModelGenerationDefaults = {
     hairColor: 'brown',
     proportionMode: 'standard',
     height: 168,
-    headBodyRatio: 8.0,
+    // 2026-08-04（企劃案 B-6，Hank 2026-08-01 定案）：預設由 8.0 改為 7.5，範圍保留到 8.5。
+    // 真人約 7、時尚模特 8–8.5。網紅 IP 用 7.5 較有真實感；超過 8.5 開始出現明顯 AI 感。
+    // 想拉到 8–8.5 仍可手動調整（滑桿範圍 6.5–8.5）。
+    headBodyRatio: 7.5,
     bust: 85,
     waist: 65,
     hip: 90,

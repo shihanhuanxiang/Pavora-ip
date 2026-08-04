@@ -12,7 +12,8 @@ import {
 import { downloadImage, cropImage, stitchImages } from '../../shared/utils/imageUtils';
 import { useModelStore } from '../../shared/stores/useModelStore';
 import ManualCropModal from '../../shared/components/business/ManualCropModal';
-import type { StoredApparelItem, TaxonomyEntry, ApparelMainCategory } from '../../shared/types/types';
+// 2026-08-04（企劃案 D-2）：TaxonomyEntry / ApparelMainCategory 隨 vtoStructure 死碼移除。
+import type { StoredApparelItem } from '../../shared/types/types';
 import Button from '../../shared/components/common/Button';
 import Card from '../../shared/components/common/Card';
 import Loader from '../../shared/components/common/Loader';
@@ -20,7 +21,7 @@ import PhotoIcon from '../../shared/assets/icons/PhotoIcon';
 import ImagePreviewModal from '../../shared/components/common/ImagePreviewModal';
 import { useHistoryState } from '../../shared/hooks/useHistoryState';
 import ImageCompareSlider from '../../shared/components/common/ImageCompareSlider';
-import { useTaxonomy } from '../../shared/hooks/useTaxonomy';
+// 2026-08-04（企劃案 D-2）：useTaxonomy 隨 vtoStructure 死碼移除（連 loading 旗標都沒人讀）。
 import Select from '../../shared/components/common/Select';
 import FittingRoomIcon from '../../shared/assets/icons/FittingRoomIcon'; 
 import View360Icon from '../../shared/assets/icons/View360Icon'; 
@@ -34,8 +35,10 @@ interface VirtualFittingRoomProps {
   onGoHome?: () => void;
   onAdvancedEdit?: (imageUrl: string, destination: string) => void;
   initialImage?: { url: string; fileData: { data: string; mimeType: string; } } | null;
-  masterTaxonomy?: TaxonomyEntry[];
-  apparelStructure?: ApparelMainCategory[];
+  // 2026-08-04（企劃案 D-2）：移除 masterTaxonomy / apparelStructure 兩個 prop。
+  // 它們唯一的用途是餵給 `vtoStructure`，而那段死碼從未被渲染（見下方墓碑）。
+  // 連帶：`useTaxonomy()` 呼叫在本檔也全無讀取端（連 loading 旗標都沒人用）。
+  // App.tsx 的傳值已同步移除。分類選擇器實際用的是 SimpleVTOCategorySelector，它自帶定義。
 }
 
 type QualityLevel = 'standard' | 'high' | 'ultra';
@@ -64,15 +67,19 @@ const APPAREL_ANGLES = [
     { id: 'detail', label: '特寫/側面 (Detail)' },
 ];
 
-const VTO_MAIN_CATEGORIES = [
-    { id: 'tops', name: '上衣', icon: '👕', keywords: ['tops', '上身', '衣', '衫'] },
-    { id: 'bottoms', name: '褲/裙', icon: '👖', keywords: ['bottoms', '下身', '褲', '裙'] },
-    { id: 'outerwear', name: '外套', icon: '🧥', keywords: ['outerwear', '外套', '夾克'] },
-    { id: 'one-piece', name: '套裝/洋裝', icon: '👗', keywords: ['dresses', 'jumpsuits', 'sets', '洋裝', '連身', '套裝'] },
-    { id: 'bags', name: '包/袋', icon: '👜', keywords: ['bags', '包', '袋'] },
-    { id: 'shoes', name: '鞋子', icon: '👟', keywords: ['footwear', '鞋'] },
-    { id: 'accessories', name: '帽子/眼鏡', icon: '👓', keywords: ['headwear', 'jewelry', 'accessories', '帽', '鏡', '飾'] },
-];
+/**
+ * ⚰️ 2026-08-04（企劃案 D-2）：`VTO_MAIN_CATEGORIES` 與 `vtoStructure` 一併移除。
+ *
+ * `vtoStructure`（原 :625）是一個 38 行的 `useMemo`，把 `apparelStructure` 與
+ * `masterTaxonomy` 分組成 7 大類——**算完之後從來沒有被渲染，也沒有任何讀取端**。
+ * 全檔 grep 只有「宣告」與「它自己引用 VTO_MAIN_CATEGORIES」兩處。
+ *
+ * 實際的分類選擇器是 `SimpleVTOCategorySelector`（下方 import），它自己帶分類定義。
+ * 這段死碼每次 taxonomy 變動都會白算一次，而且會讓接手的人以為
+ * 試衣間已經有一套七大類分組邏輯在運作。
+ *
+ * 分類定義若日後要復用，git 歷史查 937faf1 之前的版本。
+ */
 
 import SimpleVTOCategorySelector from '../../shared/components/business/SimpleVTOCategorySelector';
 
@@ -80,14 +87,8 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
     onGoBack, 
     onGoHome, 
     onAdvancedEdit, 
-    initialImage, 
-    masterTaxonomy: propTaxonomy, 
-    apparelStructure: propStructure 
+    initialImage
 }) => {
-    const { masterTaxonomy: hookTaxonomy, apparelStructure: hookStructure, loading: taxonomyLoading } = useTaxonomy();
-    const masterTaxonomy = propTaxonomy || hookTaxonomy;
-    const apparelStructure = propStructure || hookStructure;
-
     const [baseImage, setBaseImage] = useState<{ url: string; fileData: { data: string; mimeType: string; } } | null>(null);
     const [faceAnchor, setFaceAnchor] = useState<{ url: string; fileData: { data: string; mimeType: string; } } | null>(null);
     const [masterModelImage, setMasterModelImage] = useState<{ url: string; fileData: { data: string; mimeType: string; } } | null>(null);
@@ -622,40 +623,7 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
         }
     };
 
-    const vtoStructure = useMemo(() => {
-        if (!apparelStructure || !masterTaxonomy) return [];
-        
-        // Group taxonomy into the 7 core categories
-        const grouped = VTO_MAIN_CATEGORIES.map(vtoCat => {
-            const children: { id: string, name: string, safeMode: boolean }[] = [];
-            
-            apparelStructure.forEach(mainCat => {
-                const isMatch = vtoCat.keywords.some(kw => 
-                    mainCat.mainCategoryKey?.toLowerCase().includes(kw) || 
-                    mainCat.mainCategory.toLowerCase().includes(kw)
-                );
-                
-                if (isMatch) {
-                    mainCat.groups.forEach(group => {
-                        const firstItemDef = group.items[0];
-                        const representativeItem = masterTaxonomy.find(item => item.id === firstItemDef.id);
-                        children.push({ 
-                            id: group.groupName, 
-                            name: group.groupName, 
-                            safeMode: representativeItem?.category === 'intimates' || representativeItem?.category === 'swimwear' 
-                        });
-                    });
-                }
-            });
-
-            return {
-                ...vtoCat,
-                children: children.filter((v, i, a) => a.findIndex(t => t.id === v.id) === i) // Unique groups
-            };
-        });
-
-        return grouped.filter(g => g.children.length > 0);
-    }, [apparelStructure, masterTaxonomy]);
+    // 2026-08-04（企劃案 D-2）：`vtoStructure` 死碼已移除，說明見檔頭 VTO_MAIN_CATEGORIES 墓碑。
 
     const handleDownload = useCallback(() => { if (generatedLook) downloadImage(generatedLook, `pavora-look-${Date.now()}.jpg`, 'VirtualFittingRoom'); }, [generatedLook]);
     const beforeImage = history[cursor - 1] || baseImage?.url;

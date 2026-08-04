@@ -192,21 +192,56 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
     formStateRef.current = formState;
   }, [formState]);
 
-  // Safety Matrix for Parameters
+  /**
+   * 滑桿數值的視覺分級。
+   *
+   * 2026-08-04（企劃案 B-7 驗收修正）：門檻改為對齊 prompt 的實際檔位邊界。
+   *
+   * 原本 bustTension 是 `>85 紅 / >65 黃`，而 prompt 的四檔邊界是 25/50/75。
+   * 兩者對不上的後果：`bt=60` 與 `bt=70` 送出的 prompt **逐字元完全相同**
+   * （都落 LEVEL 3），UI 卻一個綠一個黃——那是在教使用者一個不存在的因果。
+   * physiqueCurvature 同病（原 >90/>75，實際邊界 30/55/75）。
+   *
+   * 另外把語意改對：這兩支滑桿的高檔位**不代表危險**。第五輪測試最高檔
+   * 7/7 全部順利產出（見企劃案 B-7 實測結論），把它染紅並暗示「會被擋」
+   * 與唯一的實測證據相反。現在顏色只表示「檔位高低」，
+   * 對應的說明文字也不再做任何風險承諾。
+   */
   const getSafetyStatus = useCallback((field: string, value: number): 'safe' | 'warning' | 'risky' => {
-      if (field === 'bust') {
-          if (value > 105) return 'risky';
-          if (value > 95) return 'warning';
-      }
+      // 2026-08-04：移除 `field === 'bust'` 分支（原 105/95 門檻）。
+      // 三圍數字自 2026-07-19（P2①）起已不進 prompt，也沒有對應滑桿，
+      // 這個分支全檔零呼叫端——現在只有 physiqueCurvature 與 bustTension 兩個呼叫點。
+
+      // 對齊 prompts/modelCreation.ts 的 femaleBodice 四檔邊界（25 / 50 / 75）
       if (field === 'bustTension') {
-          if (value > 85) return 'risky';
-          if (value > 65) return 'warning';
+          if (value > 75) return 'risky';   // LEVEL 4
+          if (value > 50) return 'warning'; // LEVEL 3
       }
+      // 對齊 femaleContour 的四段邊界（30 / 55 / 75）
       if (field === 'physiqueCurvature') {
-          if (value > 90) return 'risky';
-          if (value > 75) return 'warning';
+          if (value > 75) return 'risky';
+          if (value > 55) return 'warning';
       }
       return 'safe';
+  }, []);
+
+  /**
+   * 2026-08-04（企劃案 B-7f 驗收修正）：滑桿的檔位標籤。
+   *
+   * 邊界必須與 `prompts/modelCreation.ts` 的 `femaleBodice`（25／50／75）
+   * 與 `femaleContour`（30／55／75）完全一致 —— 兩者邊界不同，不能共用一份。
+   * 顯示「第 N 檔 / 4」比顏色可靠：同一檔內移動不會改變 prompt，使用者看得到。
+   */
+  const getTierLabel = useCallback((field: string, value: number): string | undefined => {
+      if (field === 'bustTension') {
+          const t = value <= 25 ? 1 : value <= 50 ? 2 : value <= 75 ? 3 : 4;
+          return `第 ${t} 檔 / 4`;
+      }
+      if (field === 'physiqueCurvature') {
+          const t = value <= 30 ? 1 : value <= 55 ? 2 : value <= 75 ? 3 : 4;
+          return `第 ${t} 檔 / 4`;
+      }
+      return undefined;
   }, []);
 
   useEffect(() => {
@@ -236,7 +271,9 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
             bustTension: inheritedModel.advancedStats?.bustTension ?? prev.bustTension,
             physiqueCurvature: inheritedModel.advancedStats?.physiqueCurvature ?? prev.physiqueCurvature,
             muscularDensity: inheritedModel.advancedStats?.muscularDensity ?? prev.muscularDensity,
-            vTaperScale: inheritedModel.advancedStats?.vTaperScale ?? prev.vTaperScale
+            vTaperScale: inheritedModel.advancedStats?.vTaperScale ?? prev.vTaperScale,
+            // 2026-08-04（企劃案 B-6）：頭身比回填。舊資料沒有此欄位，`??` 會落回現值。
+            headBodyRatio: inheritedModel.advancedStats?.headBodyRatio ?? prev.headBodyRatio
         }));
 
         addNotification({
@@ -365,6 +402,8 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                     physiqueCurvature: meta.advancedStats?.physiqueCurvature ?? prev.physiqueCurvature,
                     muscularDensity: meta.advancedStats?.muscularDensity ?? prev.muscularDensity,
                     vTaperScale: meta.advancedStats?.vTaperScale ?? prev.vTaperScale,
+                    // 2026-08-04（企劃案 B-6）：頭身比一併從嵌入的中繼資料還原。
+                    headBodyRatio: meta.advancedStats?.headBodyRatio ?? prev.headBodyRatio,
                 }));
                 addNotification({
                     type: 'success',
@@ -810,9 +849,98 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                     <div className="space-y-4">
                         <Select label="體態選項 (Physique)" options={PROPORTION_MODE_OPTIONS} value={formState.proportionMode} onChange={e => handlePhysiqueChange(e.target.value)} />
                         <Slider label="身高 (Height)" min={150} max={200} unit="cm" value={formState.height} onChange={e => handleFormChange('height', Number(e.target.value))} />
+                        {/* 2026-08-04（企劃案 B-6）：新增頭身比滑桿。
+                            預設 7.5、範圍 6.5–8.5。真人約 7、時尚模特 8–8.5；
+                            網紅 IP 用 7.5 較有真實感，超過 8.5 開始出現明顯 AI 感。
+                            原本這個欄位只有預設值、完全沒有 UI，改也改不動。 */}
+                        <Slider
+                            label="頭身比 (Head-to-Body)"
+                            tooltip="數字越大身材越修長。真人約 7 頭身、時尚模特 8–8.5。網紅 IP 建議 7.5，超過 8.5 會開始出現明顯的 AI 感。"
+                            min={6.5}
+                            max={8.5}
+                            step={0.5}
+                            unit="頭身"
+                            value={formState.headBodyRatio}
+                            onChange={e => handleFormChange('headBodyRatio', Number(e.target.value))}
+                        />
                     </div>
 
-                    {/* 進階微調摺疊區：身材滑桿 + 網美等級 + 精確體型約束開關 */}
+                    {/* ===== 2026-08-04（企劃案 B-7a）：身材滑桿移出「進階微調」摺疊區 =====
+                        原本這兩支滑桿藏在預設收合的摺疊區裡，使用者以為根本沒有這個功能。
+                        上身輪廓經五輪 36 張實圖驗證確認可控（見企劃案 B-7 實測結論），
+                        它是服裝試穿與網紅 IP 的核心需求，不該藏起來。 */}
+                    <div className="pt-5 border-t border-[var(--home-line)] space-y-4">
+                        <div>
+                            <div className="text-[11px] font-bold text-[var(--home-ink)] tracking-[0.2em]">體型微調</div>
+                            <p className="text-[9px] text-[var(--home-muted)] mt-1.5 leading-relaxed">
+                                {formState.gender === 'female'
+                                    ? '「體態曲線」決定腰臀線條，「上身輪廓」決定上身版型的飽滿程度。兩者分開控制：調整上身時，整體體型會被鎖住不變。'
+                                    : '「肌肉線條」決定體格厚度，「肩背比例」決定肩寬與腰身的落差。'}
+                            </p>
+                        </div>
+                        <div className="space-y-4">
+                            {formState.gender === 'female' ? (
+                                <>
+                                    <Slider
+                                        label="體態曲線"
+                                        tooltip="腰臀線條的明顯程度。往右走腰線越明顯、肩臀落差越大。"
+                                        min={0}
+                                        max={100}
+                                        unit="%"
+                                        value={formState.physiqueCurvature}
+                                        safetyStatus={getSafetyStatus('physiqueCurvature', formState.physiqueCurvature)}
+                                        tierLabel={getTierLabel('physiqueCurvature', formState.physiqueCurvature)}
+                                        onChange={e => handleFormChange('physiqueCurvature', Number(e.target.value))}
+                                    />
+                                    <Slider
+                                        label="上身輪廓"
+                                        tooltip="上身版型的飽滿程度，共四檔。系統會用服裝版型與布料張力的方式描述，不會動到整體體型。"
+                                        min={0}
+                                        max={100}
+                                        unit="%"
+                                        value={formState.bustTension}
+                                        safetyStatus={getSafetyStatus('bustTension', formState.bustTension)}
+                                        tierLabel={getTierLabel('bustTension', formState.bustTension)}
+                                        onChange={e => handleFormChange('bustTension', Number(e.target.value))}
+                                    />
+                                </>
+                            ) : (
+                                <>
+                                    <Slider
+                                        label="肌肉線條"
+                                        tooltip="體格厚度與肌肉輪廓的明顯程度。"
+                                        min={0}
+                                        max={100}
+                                        unit="%"
+                                        value={formState.muscularDensity}
+                                        onChange={e => handleFormChange('muscularDensity', Number(e.target.value))}
+                                    />
+                                    <Slider
+                                        label="肩背比例"
+                                        tooltip="肩寬與腰身的落差。往右走肩線越寬、倒三角越明顯。"
+                                        min={0}
+                                        max={100}
+                                        unit="%"
+                                        value={formState.vTaperScale}
+                                        onChange={e => handleFormChange('vTaperScale', Number(e.target.value))}
+                                    />
+                                </>
+                            )}
+                        </div>
+                        {/* 2026-08-04（企劃案 B-7f）：補上滑桿變色的說明。
+                            getSafetyStatus 早就會讓滑桿數值變黃變紅，但從來沒告訴使用者那代表什麼。
+                            驗收修正：門檻已改為對齊 prompt 的四個檔位，文字也不再宣稱「會被擋」——
+                            第五輪最高檔 7/7 全部順利產出，原本的風險警語與實測證據相反。 */}
+                        {formState.gender === 'female' && (
+                            <p className="text-[9px] text-[var(--home-muted)] leading-relaxed pt-1">
+                                兩支滑桿各分四檔，數值方塊會直接顯示目前是<span className="font-bold">第幾檔</span>。
+                                <span className="font-bold">同一檔內移動不會改變生成結果</span>，要看到差異請跨過檔位邊界。
+                                兩者的邊界不同：上身輪廓在 25 / 50 / 75 分檔，體態曲線在 30 / 55 / 75 分檔。
+                            </p>
+                        )}
+                    </div>
+
+                    {/* 進階微調摺疊區：網美等級 + 精確體型約束開關（身材滑桿已於 B-7a 移出） */}
                     <div className="pt-4 border-t border-[var(--home-line)]">
                         <button
                             type="button"
@@ -825,53 +953,8 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
 
                         {showAdvanced && (
                           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="space-y-6 overflow-hidden pt-5">
-                              {/* 身材滑桿：以服裝版型語言呈現，依性別顯示對應維度 */}
-                              <div className="space-y-4">
-                                  {formState.gender === 'female' ? (
-                                      <>
-                                          <Slider
-                                              label="體態曲線"
-                                              min={0}
-                                              max={100}
-                                              unit="%"
-                                              value={formState.physiqueCurvature}
-                                              safetyStatus={getSafetyStatus('physiqueCurvature', formState.physiqueCurvature)}
-                                              onChange={e => handleFormChange('physiqueCurvature', Number(e.target.value))}
-                                          />
-                                          <Slider
-                                              label="上身輪廓"
-                                              min={0}
-                                              max={100}
-                                              unit="%"
-                                              value={formState.bustTension}
-                                              safetyStatus={getSafetyStatus('bustTension', formState.bustTension)}
-                                              onChange={e => handleFormChange('bustTension', Number(e.target.value))}
-                                          />
-                                      </>
-                                  ) : (
-                                      <>
-                                          <Slider
-                                              label="肌肉線條"
-                                              min={0}
-                                              max={100}
-                                              unit="%"
-                                              value={formState.muscularDensity}
-                                              onChange={e => handleFormChange('muscularDensity', Number(e.target.value))}
-                                          />
-                                          <Slider
-                                              label="肩背比例"
-                                              min={0}
-                                              max={100}
-                                              unit="%"
-                                              value={formState.vTaperScale}
-                                              onChange={e => handleFormChange('vTaperScale', Number(e.target.value))}
-                                          />
-                                      </>
-                                  )}
-                              </div>
-
                               {/* 網美等級（原本被 isExpertMode gate，改收進進階區） */}
-                              <div className="space-y-3 pt-4 border-t border-[var(--home-line)]">
+                              <div className="space-y-3">
                                   <label className="block text-[11px] font-bold text-[var(--home-muted)] tracking-[0.2em] flex flex-col leading-tight">
                                       <span className="text-[var(--home-ink)]">網美等級</span>
                                   </label>

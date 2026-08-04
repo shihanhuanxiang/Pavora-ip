@@ -14,6 +14,9 @@ import { DEPTH_MODULES } from "../constants/depthModules";
 import { COMPOSER_INJECTION_RULES } from "../constants/injectionRules";
 import { WardrobeService } from "./wardrobeService";
 import { getPresetById } from '../constants/visualPresets';
+// 2026-08-04（企劃案 D-9）：[Lighting] 修補分支需要確定性 zh→en 映射，
+// 否則中文變數塞進英文標籤會被 stripChinese 整段清空（資訊消失而非翻譯）。
+import { WEATHER_EN_MAP, TAIWAN_COUNTY_EN_MAP } from '../../../shared/constants/personaPresets';
 import { isSceneCombinationSafe } from "../../../domains/scene/sceneSafeMatrix";
 import { sanitizeHardcodedSubjectTerms } from "../../modelCreation/services/personaService";
 
@@ -1369,10 +1372,30 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
             return `${promptText}\n${fallbackLine}`;
         };
 
+        /**
+         * 2026-08-04（企劃案 D-9）：英文 fallback 改走確定性英文映射。
+         *
+         * 原本這行是：
+         *   `[Lighting]: natural ${weather} lighting matching ${effectiveCity} ${location}, ...`
+         * `weather`（'晴天'）、`effectiveCity`（'台北市'）、`location`（自由輸入的事件名）
+         * 三個全是中文，塞進英文標籤的句子裡。鐵則沒被破壞（`stripChinese` 會兜底），
+         * 但兜底方式是**整段移除中文**而不是翻譯 —— 所以走到這個分支時，
+         * 天氣與地點資訊實際上是被清空，而不是正確帶入英文。
+         *
+         * `location` 刻意不翻譯也不放進來：它是自由輸入，沒有確定性映射，
+         * 而地點本來就由 [Environment] 段落負責。與其塞一個會被清掉的中文，
+         * 不如不放 —— 這裡只需要交代「光」。
+         */
+        const weatherEn = WEATHER_EN_MAP[weather] || 'natural daylight';
+        // `primaryCity` 是自由文字輸入（ModelIdentityEditor 的 placeholder 就寫「如: 台北市, 東京」），
+        // 所以未命中映射時**不要硬猜 Taiwan** —— 東京的 IP 被寫成「typical of Taiwan」是錯的。
+        // 未命中就整段省略地點子句，只交代光。
+        const cityEn = TAIWAN_COUNTY_EN_MAP[effectiveCity];
+        const cityClause = cityEn ? ` typical of ${cityEn}` : '';
         const repairedVisualPrompt = ensurePromptSection(
             data.visualPrompt,
             /^\s*(\[Lighting\]|【Lighting】|Lighting)\s*[:：]/im,
-            `[Lighting]: natural ${weather} lighting matching ${effectiveCity} ${location}, realistic ambient shadows, no studio lighting`,
+            `[Lighting]: natural ${weatherEn} light${cityClause}, realistic ambient shadows, no studio lighting`,
             /^\s*(\[Camera\]|【Camera】|Camera)\s*[:：]/im
         );
 
