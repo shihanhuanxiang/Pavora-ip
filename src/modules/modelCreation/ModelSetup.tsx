@@ -877,6 +877,21 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                                     ? '「體態曲線」決定腰臀線條，「上身輪廓」決定上身版型的飽滿程度。兩者分開控制：調整上身時，整體體型會被鎖住不變。'
                                     : '「肌肉線條」決定體格厚度，「肩背比例」決定肩寬與腰身的落差。'}
                             </p>
+                            {/* 2026-08-04（企劃案 B-7，11 張實圖判讀後 Hank 拍板方案 C）：
+                                誠實說明這個功能的實際作用範圍。
+                                實測結論：體型鎖死時，上身輪廓在「正面定妝照」的差異很細微
+                                （A1 vs A4 幾乎看不出），但在「側面輪廓」與「換裝後的衣感」上差異是真的
+                                （八宮格 B1 vs B4 的側面前突弧線明顯不同）。
+                                根因是這個生圖模型把「上身量感」與「整體豐腴度」當成同一個維度——
+                                要纖細身材＋飽滿上身，它會拒絕。E1 vs E2（體型跟著放開）差異就明顯得多。
+                                不寫清楚的話，使用者會拉滿滑桿、看定妝照沒變化、以為功能壞了。 */}
+                            {formState.gender === 'female' && (
+                                <p className="text-[9px] text-[var(--home-muted)] mt-2 leading-relaxed">
+                                    「上身輪廓」的差異<span className="font-bold">主要體現在側面輪廓與換裝後的衣感</span>，
+                                    正面定妝照的變化較細微——這是生圖模型的特性，不是設定沒生效。
+                                    要看效果請到虛擬試衣間換上衣服比較。
+                                </p>
+                            )}
                         </div>
                         <div className="space-y-4">
                             {formState.gender === 'female' ? (
@@ -1035,8 +1050,25 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                     正式服裝（洋裝／西裝／禮服）屬於試衣間與靈魂敘事，不歸這裡。
                     詳見 CLAUDE.md 第 7 節架構原則第 3 條。
                   */}
+                  {/*
+                    2026-08-04（Hank 指定）：成套預設整組改為 12 套（男女各 6），
+                    全部是無袖短版上衣＋短褲，依**覆蓋度三級**排序，每級 2 套。
+
+                    理由是試錯率：打底裝的布料只要延伸到新服裝的覆蓋範圍之外，換裝時就會殘留。
+                    無袖消掉袖子殘留、短版消掉下擺殘留、短褲消掉褲管殘留。
+                    改之前 11 套裡有 6 套不符合，其中 `m_full_hoodie_jogger`（連帽外套＋長褲）
+                    與 `m_full_shirt_jeans`（長袖襯衫＋牛仔褲）是最糟的組合。
+
+                    三級的長度差異寫在每張卡的 label 上（腰上／腰腹／胸下），
+                    因為使用者要看的是「這件多短」，不是內部分級代號。
+                    ⛔ 紅燈（純內著／泳裝版型）禁止新增 —— 橙燈已是不被擋的下限。
+                    詳細規格與理由見 `modelPresets.ts` 的 APPAREL_ITEMS 區塊註解。
+                  */}
                   <p className="mt-2 text-[11px] leading-relaxed text-[var(--home-muted)]">
-                    這裡選的是模特兒的<span className="font-bold text-[var(--home-ink)]">基礎穿著</span>。越貼身簡潔，之後在試衣間換裝越乾淨。
+                    這裡選的是模特兒的<span className="font-bold text-[var(--home-ink)]">基礎穿著</span>。
+                    12 套全部是<span className="font-bold text-[var(--home-ink)]">無袖短版上衣＋短褲</span>，
+                    依長度分三段（<span className="font-bold text-[var(--home-ink)]">腰上 → 腰腹 → 胸下</span>）——
+                    袖子、下擺、褲管越少，換裝時殘留就越少，試錯率明顯下降。
                     <br />
                     想要正式服裝或造型變化，請到<span className="font-bold text-[var(--home-ink)]">虛擬試衣間</span>或<span className="font-bold text-[var(--home-ink)]">靈魂敘事</span>。
                   </p>

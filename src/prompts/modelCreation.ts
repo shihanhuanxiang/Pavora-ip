@@ -177,20 +177,20 @@ const num = (v: any, fallback: number): number =>
  */
 const femaleContour = (pc: number) => {
     if (pc <= 30) return {
-        main: `Lean editorial runway figure type — long slender lines, straight silhouette, minimal hip curve; garments hang with a clean straight drape.`,
-        perView: `clean straight drape with a lightly defined waistline, identical in every view.`
+        main: `Slim and slender throughout. Narrow waist with clear waist definition, slim arms, slim hips, long lean legs.`,
+        perView: `the waist, hip and leg lines stay equally narrow in the front, both profiles and the back view.`
     };
     if (pc <= 55) return {
-        main: `Natural feminine figure type with a defined waistline — balanced proportions, soft everyday silhouette; garments follow a gently tailored fit.`,
-        perView: `a gently tailored fit with a defined waistline; the waist seam must read the same in the side profile as in the front view.`
+        main: `Naturally proportioned. Defined waist, softly rounded hips balanced with the shoulder width, slim arms, long legs.`,
+        perView: `the waist and hip lines read the same in the front, both profiles and the back view.`
     };
     if (pc <= 75) return {
-        main: `Hourglass figure type — clearly defined waist and balanced shoulder-to-hip line; garments tailored to follow the waist-to-hip line and drape cleanly over the silhouette.`,
-        perView: `clearly defined waist with a balanced shoulder-to-hip line; the tailored waist seam must read consistently in the side profile.`
+        main: `Hourglass build. Clearly cinched waist with a fuller hip line, shoulder and hip widths balanced against each other, slim arms.`,
+        perView: `the cinched waist and fuller hip line read consistently in the front, both profiles and the back view.`
     };
     return {
-        main: `Full hourglass figure type — pronounced waist definition with a curvier shoulder-to-hip line; garments tailored for a fuller-figured fit that follows the body's curve.`,
-        perView: `pronounced waist definition with a curvier shoulder-to-hip line; the tailored waist seam must read consistently in the side profile.`
+        main: `Full hourglass build. Pronounced waist definition with a notably fuller hip line and a strong shoulder-to-hip curve.`,
+        perView: `the pronounced waist and fuller hip line read consistently in the front, both profiles and the back view.`
     };
 };
 
@@ -208,23 +208,23 @@ const femaleContour = (pc: number) => {
 const femaleBodice = (bt: number) => {
     if (bt <= 25) return {
         level: 1,
-        main: `Very flat upper torso. The upper garment falls straight down from the collarbone to the waist with zero forward projection. In side profile the front line is completely vertical.`,
-        perView: `the upper garment drapes with a completely vertical front line in every view, including both profiles.`
+        main: `Flat upper torso. In side profile the front line runs almost vertically from the collarbone down to the waist, with only the slightest curve. The fabric lies loose and untensioned across the upper front — no stretch marks, no strain anywhere.`,
+        perView: `the front line runs almost vertically from collarbone to waist in every view; the fabric stays loose and untensioned across the upper front.`
     };
     if (bt <= 50) return {
         level: 2,
-        main: `Moderate upper fullness, typical balanced proportions for this build. Clear but modest forward projection, a natural gentle curve in the front line of the garment.`,
-        perView: `a modest forward projection with a gentle curve in the front line, consistent between the front view and both profiles.`
+        main: `Clearly visible upper fullness, the balanced everyday proportion for this build. In side profile there is an unmistakable forward curve, and the fabric just begins to take up tension across the upper front.`,
+        perView: `an unmistakable forward curve in the side profile, with the fabric just beginning to take up tension across the upper front — the same in every view.`
     };
     if (bt <= 75) return {
         level: 3,
-        main: `Substantial upper fullness on this frame. Distinct forward projection; the fabric is visibly stretched across the upper front with mild horizontal tension lines, giving clear contrast against the narrower waist.`,
-        perView: `the fabric is visibly stretched across the upper front with the same mild tension lines in every view; the side profile shows the same distinct forward projection as the front view.`
+        main: `Substantial upper fullness on this frame. Strong forward projection; the thin knit is visibly stretched across the upper front with clear horizontal tension lines radiating from the fullest point, and the contrast against the narrow waist is obvious.`,
+        perView: `the thin knit is visibly stretched across the upper front with the same clear tension lines in every view; both profiles show the same strong forward projection as the front view.`
     };
     return {
         level: 4,
-        main: `Maximum upper fullness on this frame. Strongly pronounced forward projection, unmistakable in both front and side view. The fabric is stretched taut across the upper front — the weave is pulled open and horizontal tension lines are obvious — and the garment silhouette narrows sharply below it, making the upper-to-waist contrast the most prominent line in the image.`,
-        perView: `the fabric is stretched taut across the upper front with the same obvious tension lines in every view; both profiles must show the same strongly pronounced forward projection as the front view, with the same sharp narrowing to the waist.`
+        main: `Maximum upper fullness this frame can carry. Dramatic forward projection, unmistakable from every angle. The thin knit is stretched drum-taut across the upper front — the weave is visibly pulled open, the fabric strains at the side seams, and deep tension lines run from the fullest point toward the arms. Below it the fabric falls slack and the silhouette cuts sharply in to the narrow waist, making the upper-to-waist contrast the single most prominent line in the image.`,
+        perView: `the thin knit is stretched drum-taut across the upper front with the weave visibly pulled open in every view; both profiles must show the same dramatic forward projection as the front view, with the same sharp cut in to the waist below it.`
     };
 };
 
@@ -477,9 +477,12 @@ export const buildModelPrompt = (params: any) => {
 
         prompt += `[FIGURE TYPE — MALE, FIXED]\n`;
         // Mapping Muscular Density (0-100)
-        if (md <= 30) prompt += `- Density: Slim lean figure type, subtle muscle tone; garments follow a slim tailored fit. \n`;
-        else if (md <= 70) prompt += `- Density: Athletic figure type, defined build; garments follow a fitted athletic cut. \n`;
-        else prompt += `- Density: Muscular athletic figure type, broad structured shoulders and defined build; garments tailored for a broad muscular fit. \n`;
+        // 2026-08-04（B-7 出圖實測修正）：同女性 —— 這裡不再描述「衣服怎麼合身」。
+        // 原本每句尾都掛著 `garments follow a slim tailored fit` 之類的垂墜宣告，
+        // 那會跟下面 Frame Architecture 的肩線量感互搶控制權。體格歸體格，垂墜歸服裝段。
+        if (md <= 30) prompt += `- Density: Slim and lean, subtle muscle tone, narrow ribcage. \n`;
+        else if (md <= 70) prompt += `- Density: Athletic build with visible but not bulky muscle definition. \n`;
+        else prompt += `- Density: Muscular athletic build, thick chest and back, clearly defined arms. \n`;
 
         // Mapping Shoulder Frame (0-100) -> V-Taper Figure/Fit
         //
@@ -488,13 +491,13 @@ export const buildModelPrompt = (params: any) => {
         // 卻只有兩個有效位置，使用者拉了半天沒反應。
         // 改為與女性一致的四檔（邊界 25 / 50 / 75），措辭同樣走成衣打版語言。
         if (vt <= 25) {
-            prompt += `- Frame Architecture: Narrow straight frame — shoulder line close to waist width; garments hang with a clean straight drape and minimal shoulder structure. \n`;
+            prompt += `- Frame Architecture: Narrow straight frame — shoulder width close to waist width, minimal taper. \n`;
         } else if (vt <= 50) {
-            prompt += `- Frame Architecture: Natural V-taper figure type with professional athletic proportions; garments follow a balanced shoulder-to-waist tailored line. \n`;
+            prompt += `- Frame Architecture: Natural V-taper — shoulders moderately wider than the waist, balanced athletic proportions. \n`;
         } else if (vt <= 75) {
-            prompt += `- Frame Architecture: Clear V-taper figure type — visibly broader shoulder line tapering to the waist; garments tailored with a defined shoulder seam and a structured upper back. \n`;
+            prompt += `- Frame Architecture: Clear V-taper — visibly broad shoulders and upper back narrowing to the waist. \n`;
         } else {
-            prompt += `- Frame Architecture: Pronounced V-taper figure type with an ultra-broad shoulder-to-waist line; garments tailored with a strong shoulder line, structured across the upper back to follow the wide frame. \n`;
+            prompt += `- Frame Architecture: Pronounced V-taper — very broad shoulders and upper back with a sharp narrowing to the waist. \n`;
         }
         // B-7：男性同樣加體型固定句。理由與女性一致——沒有這句，模型會用改剪裁來假裝改體型。
         prompt += `- This overall build is FIXED and must render identically every time. \n\n`;
@@ -623,7 +626,13 @@ export const buildModelPrompt = (params: any) => {
     // （R4_8 自己長出七分袖與胸下抓褶，靠改剪裁假裝改身體）。
     // 現在只講合身度，把「要不要有可見接縫」的決定權還給 `- Description`。
     prompt += `- Silhouette Architecture: Prioritize close-fitting garment construction that follows the figure type cleanly, with smooth uninterrupted panels unless the description above specifies seams or detailing. \n`;
-    prompt += `- Fit Legibility: The fabric follows the body closely enough that the figure underneath stays legible through the drape. \n`;
+    // 2026-08-04（B-7 出圖實測修正）：恢復第五輪那句的**物理成因**。
+    //
+    // 第五輪有效的原句是 "The fabric is thin and stretchy so the body shape underneath
+    // is clearly legible."，我第一版泛化成「follows the body closely enough that the
+    // figure stays legible」——把「薄、有彈性」這個真正的成因抽掉了，只剩結果的空話。
+    // 模型畫得出「薄而有彈性的針織被撐開」，畫不出「足夠貼身以致可辨讀」。
+    prompt += `- Fit Legibility: The knit fabric is thin and stretchy, so the shape of the body underneath is clearly legible through it. \n`;
     // 2026-08-04（企劃案 B-7，第五輪新發現的必要條件）：服裝鎖段。
     //
     // 沒有這段，模型會靠「改衣服剪裁」來假裝改身體——第四輪 R4_8 自己長出七分袖
@@ -648,8 +657,13 @@ export const buildModelPrompt = (params: any) => {
     // 保底條款。注意措辭要容許 `m_top_shirtless` ——那是刻意保留的男性打底選項，
     // 若寫成「上下身一律都要有衣物」就會跟它直接打架。
     // 硬性底線只放在下身；上身則是「除非描述明確說 shirtless」。
-    prompt += `- Coverage Floor: A lower garment is ALWAYS present. If the description above does not name one, add plain, unobtrusive, neutral-coloured fitted shorts. An upper garment is likewise always present unless the description explicitly specifies shirtless. \n`;
-    prompt += `- Compliance Policy: Ensure the garment construction is sophisticated and follows high-end fashion standards. Avoid any speculative artifacts. \n\n`;
+    // 2026-08-04（11 張實圖修正）：原本寫 `neutral-coloured`，實測（`C_coverage_floor`）
+    // 模型補出膚色系短褲，看起來像內衣而不是衣服。改為明確指定炭灰。
+    prompt += `- Coverage Floor: A lower garment is ALWAYS present. If the description above does not name one, add plain fitted mid-thigh shorts in charcoal grey — a clearly clothing-like colour, never a skin or nude tone. An upper garment is likewise always present unless the description explicitly specifies shirtless. \n`;
+    // 2026-08-04（B-7 出圖實測修正）：原句 "Ensure the garment construction is
+    // sophisticated and follows high-end fashion standards." 會把布料往「結構化剪裁」推
+    // ——那跟上面「薄、有彈性、身形可辨讀」相反。這是累積壓制的一環，改為只要求乾淨寫實。
+    prompt += `- Compliance Policy: Render the garment cleanly and realistically. No speculative artifacts, no invented construction details. \n\n`;
 
     if (params.isMultiAngle) {
         prompt += `[🚨 PROFESSIONAL CHARACTER REFERENCE SHEET (MODEL SETTING) 🚨]\n`;

@@ -16,50 +16,119 @@ export const APPAREL_CATEGORIES = [
 ];
 
 export const APPAREL_ITEMS = [
-    // --- FULL SETS FEMALE (成套預設：IG 日常年輕風格) ---
+    /*
+     * --- 打底裝 12 套（成套預設）---
+     *
+     * 2026-08-04（Hank 指定）：男女各 6 套，依「覆蓋度三級」排序，每級 2 套。
+     * 12 套的剪裁完全由所屬級別決定，只有顏色不同。
+     *
+     * 為什麼要短：打底裝的布料只要延伸到新服裝的覆蓋範圍之外，換裝時就會殘留。
+     * 無袖消掉袖子殘留、短版消掉下擺殘留、短褲消掉褲管殘留 —— 試錯率直接下降。
+     *
+     * 三級（覆蓋度由多到少）：
+     *   綠燈 — 下擺在自然腰線略上，短褲到大腿中段
+     *   黃燈 — 下擺在腰腹中段，短褲到大腿上段
+     *   橙燈 — 下擺在胸線下方（帶寬版鬆緊下襬），高衩短褲
+     *
+     * ⛔ 紅燈（純內著／泳裝／比基尼版型）**禁止新增**，會違反生圖協議被擋。
+     *    橙燈已經是不被擋的下限；再往下不是「更短」，是「產不出圖」。
+     *
+     * 措辭刻意框在「機能運動打底」這個真實商業品類裡 —— 它本身就是被大量
+     * 商業攝影的類別，語境比「極簡衣物」安全得多。橙燈的關鍵結構特徵是
+     * `wide elastic underband`，那是讓它讀成「短版運動背心」而不是內衣的差別。
+     *
+     * 顏色一律寫死（企劃案 D-12）：素材不可重現，下游試衣間就沒有穩定基準。
+     */
+    // 女性 · 綠燈 （腰上短版 + 大腿中段短褲）
     {
         id: 'f_full_tanktop_shorts',
-        label: '無袖背心 + 熱褲 (Tank + Hot Shorts)',
-        prompt: 'fitted ribbed sleeveless tank top with scoop neck in plain white, paired with high-waist denim hot pants in mid-blue indigo, casual youthful street style, midriff slightly visible',
-        category: 'full_set',
-        gender: 'female'
-    },
-    {
-        id: 'f_full_camisole_shorts',
-        label: '細肩帶背心 + 短褲 (Cami + Shorts)',
-        prompt: 'delicate spaghetti strap camisole top in pale butter yellow, paired with loose casual shorts in off-white, relaxed K-style summer outfit, soft feminine energy',
-        category: 'full_set',
-        gender: 'female'
-    },
-    {
-        id: 'f_full_croptee_miniskirt',
-        label: '短版T + 迷你裙 (Crop Tee + Mini Skirt)',
-        prompt: 'cropped fitted short sleeve t-shirt in plain white, paired with high-waist pleated mini skirt in navy, classic Korean IG girl aesthetic, clean and youthful',
-        category: 'full_set',
-        gender: 'female'
-    },
-    {
-        id: 'f_full_offsholder_shorts',
-        label: '一字領上翼 + 熱褲 (Off-shoulder + Shorts)',
-        prompt: 'off-shoulder fitted top in soft cream showing collarbone, paired with high-waist shorts in warm beige, summer date outfit',
+        label: '腰上短版 + 大腿中段短褲・白／丹寧藍',
+        prompt: 'fitted sleeveless cropped tank top in plain white, hem ending just above the natural waist, paired with fitted mid-thigh shorts in mid-blue indigo, smooth single-piece stretch knit, no seams or detailing',
         category: 'full_set',
         gender: 'female'
     },
     {
         id: 'f_full_knit_vest_shorts',
-        label: '針織背心 + 休閒短褲 (Knit Vest + Casual Shorts)',
-        prompt: 'ribbed knit sleeveless vest top in oatmeal beige, paired with relaxed casual shorts in charcoal grey, Korean college girl style',
+        label: '腰上短版 + 大腿中段短褲・燕麥／炭灰',
+        prompt: 'fitted sleeveless cropped tank top in oatmeal beige, hem ending just above the natural waist, paired with fitted mid-thigh shorts in charcoal grey, smooth single-piece stretch knit, no seams or detailing',
+        category: 'full_set',
+        gender: 'female'
+    },
+    // 女性 · 黃燈 （腰腹短版 + 大腿上段短褲）
+    {
+        id: 'f_full_camisole_shorts',
+        label: '腰腹短版 + 大腿上段短褲・奶油黃／米白',
+        prompt: 'fitted sleeveless cropped athletic tank in pale butter yellow, hem ending midway up the midriff, paired with fitted upper-thigh athletic shorts in off-white, smooth single-piece stretch knit, no seams or detailing',
+        category: 'full_set',
+        gender: 'female'
+    },
+    {
+        id: 'f_full_offsholder_shorts',
+        label: '腰腹短版 + 大腿上段短褲・奶油／米棕',
+        prompt: 'fitted sleeveless cropped athletic tank in soft cream, hem ending midway up the midriff, paired with fitted upper-thigh athletic shorts in warm beige, smooth single-piece stretch knit, no seams or detailing',
+        category: 'full_set',
+        gender: 'female'
+    },
+    // 女性 · 橙燈 （胸下短版 + 高衩短褲）
+    {
+        id: 'f_full_croptee_miniskirt',
+        label: '胸下短版 + 高衩短褲・白／深藍',
+        prompt: 'fitted sleeveless athletic crop tank in plain white with a wide elastic underband, hem sitting just below the bustline, paired with high-cut fitted athletic shorts in navy, smooth single-piece stretch knit, no seams or detailing, standard commercial activewear',
         category: 'full_set',
         gender: 'female'
     },
     {
         id: 'f_full_sporty_set',
-        label: '運動背心 + 緊身短褲 (Sporty Set)',
-        prompt: 'athletic sleeveless sports top in matte black, paired with high-waist tight biker shorts in matte black, activewear K-beauty style, clean sporty energy',
+        label: '胸下短版 + 高衩短褲・黑／黑',
+        prompt: 'fitted sleeveless athletic crop tank in matte black with a wide elastic underband, hem sitting just below the bustline, paired with high-cut fitted athletic shorts in matte black, smooth single-piece stretch knit, no seams or detailing, standard commercial activewear',
         category: 'full_set',
         gender: 'female'
     },
-    
+    // 男性 · 綠燈 （腰上短版 + 大腿中段短褲）
+    {
+        id: 'm_full_tee_shorts',
+        label: '腰上短版 + 大腿中段短褲・白／米棕',
+        prompt: 'fitted sleeveless cropped tank top in plain white, hem ending just above the natural waist, paired with fitted mid-thigh shorts in warm beige, smooth single-piece stretch knit, no seams or detailing',
+        category: 'full_set',
+        gender: 'male'
+    },
+    {
+        id: 'm_full_shirt_jeans',
+        label: '腰上短版 + 大腿中段短褲・白／丹寧藍',
+        prompt: 'fitted sleeveless cropped tank top in plain white, hem ending just above the natural waist, paired with fitted mid-thigh shorts in mid-blue indigo, smooth single-piece stretch knit, no seams or detailing',
+        category: 'full_set',
+        gender: 'male'
+    },
+    // 男性 · 黃燈 （腰腹短版 + 大腿上段短褲）
+    {
+        id: 'm_full_polo_chinos',
+        label: '腰腹短版 + 大腿上段短褲・奶油／米棕',
+        prompt: 'fitted sleeveless cropped athletic tank in soft cream, hem ending midway up the midriff, paired with fitted upper-thigh athletic shorts in warm beige, smooth single-piece stretch knit, no seams or detailing',
+        category: 'full_set',
+        gender: 'male'
+    },
+    {
+        id: 'm_full_base_yellow_02',
+        label: '腰腹短版 + 大腿上段短褲・麻灰／炭灰',
+        prompt: 'fitted sleeveless cropped athletic tank in heather grey, hem ending midway up the midriff, paired with fitted upper-thigh athletic shorts in charcoal grey, smooth single-piece stretch knit, no seams or detailing',
+        category: 'full_set',
+        gender: 'male'
+    },
+    // 男性 · 橙燈 （胸下短版 + 高衩短褲）
+    {
+        id: 'm_full_pro_sculpt',
+        label: '胸下短版 + 高衩短褲・黑／黑',
+        prompt: 'fitted sleeveless athletic crop tank in matte black with a wide elastic underband, hem sitting just below the bustline, paired with high-cut fitted athletic shorts in matte black, smooth single-piece stretch knit, no seams or detailing, standard commercial activewear',
+        category: 'full_set',
+        gender: 'male'
+    },
+    {
+        id: 'm_full_hoodie_jogger',
+        label: '胸下短版 + 高衩短褲・麻灰／炭灰',
+        prompt: 'fitted sleeveless athletic crop tank in heather grey with a wide elastic underband, hem sitting just below the bustline, paired with high-cut fitted athletic shorts in charcoal grey, smooth single-piece stretch knit, no seams or detailing, standard commercial activewear',
+        category: 'full_set',
+        gender: 'male'
+    },
     // --- TOPS (上身：專業細分) ---
     { id: 'f_top_racerback', label: '高強度工字背心 (Pro Racerback)', prompt: 'high-impact technical racerback tank in matte black', category: 'top', gender: 'female' },
     { id: 'f_top_bandeau', label: '細膩平口束胸 (Ribbed Bandeau)', prompt: 'delicate ribbed bandeau top in plain white, sleek fit', category: 'top', gender: 'female' },
@@ -77,42 +146,6 @@ export const APPAREL_ITEMS = [
     { id: 'foot_transparent_heels', label: '透明細帶高跟 (Clear Strappy Heels)', prompt: 'minimalist clear-strap high heels with a nude-tone sole, invisible look', category: 'footwear', gender: 'female' },
     { id: 'foot_white_sneakers', label: '全白極簡板鞋 (Minimalist Trainers)', prompt: 'all-white minimal design low-top sneakers, no socks visible', category: 'footwear', gender: 'both' },
 
-    // --- FULL SETS MALE (成套預設：男性日常街頭風格) ---
-    { 
-        id: 'm_full_pro_sculpt', 
-        label: '修身掛脖 + 運動短褲 (Athlete Set)', 
-        prompt: 'tight athletic tank in matte black, high-cut performance shorts in matte black', 
-        category: 'full_set', 
-        gender: 'male' 
-    },
-    {
-        id: 'm_full_tee_shorts',
-        label: '素色T恤 + 休閒短褲 (Tee + Casual Shorts)',
-        prompt: 'fitted crew-neck t-shirt in plain white, paired with relaxed casual shorts in warm beige, everyday Korean street style, simple and clean',
-        category: 'full_set',
-        gender: 'male'
-    },
-    {
-        id: 'm_full_polo_chinos',
-        label: 'Polo衫 + 卡其褲 (Polo + Chinos)',
-        prompt: 'fitted short-sleeve polo shirt in soft cream, paired with slim chino pants in warm beige, smart casual Korean male style, clean preppy energy',
-        category: 'full_set',
-        gender: 'male'
-    },
-    {
-        id: 'm_full_hoodie_jogger',
-        label: '連帽衛衣 + 慢跑褲 (Hoodie + Joggers)',
-        prompt: 'fitted pullover hoodie in heather grey, paired with tapered jogger pants in charcoal grey, casual sporty streetwear, relaxed urban male style',
-        category: 'full_set',
-        gender: 'male'
-    },
-    {
-        id: 'm_full_shirt_jeans',
-        label: '開領襯衫 + 牛仔褲 (Shirt + Jeans)',
-        prompt: 'light open-collar cotton shirt in plain white, slightly unbuttoned, paired with slim straight jeans in mid-blue indigo, casual summer male style',
-        category: 'full_set',
-        gender: 'male'
-    },
     { id: 'm_top_shirtless', label: '自然赤膊 (Natural Shirtless)', prompt: 'shirtless, no upper garment', category: 'top', gender: 'male' }
 ];
 
