@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Button from '../../shared/components/common/Button';
 import Card from '../../shared/components/common/Card';
 import ModelSetup from '../modelCreation/ModelSetup';
@@ -14,7 +14,8 @@ import StyleAnchorIcon from '../../shared/assets/icons/StyleAnchorIcon';
 import ModelLoungeIcon from '../../shared/assets/icons/ModelLoungeIcon';
 import CompositeCardIcon from '../../shared/assets/icons/CompositeCardIcon';
 
-import { useBrandStore } from '../../shared/stores/useBrandStore';
+// 2026-08-05（企劃案 B-8 步驟 2）：代言人改由 useModelStore 提供。
+import { useModelStore } from '../../shared/stores/useModelStore';
 import AsyncImage from '../../shared/components/common/AsyncImage';
 
 interface BrandIdentityHubProps {
@@ -28,7 +29,17 @@ type HubTab = 'ambassadors' | 'creation' | 'lounge' | 'matrix' | 'salon' | 'pres
 
 const BrandIdentityHub: React.FC<BrandIdentityHubProps> = ({ onGoHome, onModelSelect, initialImage, initialTab = 'ambassadors' }) => {
   const [activeTab, setActiveTab] = useState<HubTab>(initialTab);
-  const { ambassadors, removeAmbassadors, activeAmbassadorId, setActiveAmbassador } = useBrandStore();
+  /**
+   * 2026-08-05（企劃案 B-8 步驟 2）：代言人改由 useModelStore 提供。
+   *
+   * ⚠️ **「移除代言人」的語意在此改變，這是刻意的。**
+   * 舊的 `removeAmbassadors` 會刪掉代言人紀錄**並刪掉它在 IndexedDB 的圖**。
+   * 合併之後那張圖就是 IP 本人的圖 —— 再照舊刪就會把 IP 的照片一起毀掉。
+   * 所以現在改為 `setAmbassador(id, false)`：**只取消標記，不刪除任何資料**。
+   * 使用者要真的刪除這個人，去 IP 休息室刪 IP，那裡才是刪除的正確位置。
+   */
+  const { models, activeAmbassadorId, setActiveAmbassador, setAmbassador } = useModelStore();
+  const ambassadors = useMemo(() => models.filter(m => m.isAmbassador === true), [models]);
 
   const tabs = [
     { id: 'ambassadors', zh: '代言人管理', en: 'Ambassadors', icon: <ModelLoungeIcon /> },
@@ -67,7 +78,13 @@ const BrandIdentityHub: React.FC<BrandIdentityHubProps> = ({ onGoHome, onModelSe
                     </div>
                     <div className="text-center">
                       <h4 className="font-bold mb-1">{amb.name}</h4>
-                      <p className="text-[10px] text-[var(--color-text-dim)] uppercase tracking-widest mb-4">{amb.ethnicity} · {amb.gender}</p>
+                      {/* 2026-08-05（B-8 步驟 2）：原本顯示 `{amb.ethnicity} · {amb.gender}`。
+                          `ethnicity` 在 Model 上不存在（它在舊 Ambassador 上是硬寫死的 'Asian'，
+                          下游零消費），照抄過來只會渲染成空白加一個孤零零的分隔點。
+                          改為顯示真正有資料的性別與年齡。 */}
+                      <p className="text-[10px] text-[var(--color-text-dim)] uppercase tracking-widest mb-4">
+                        {[amb.gender, amb.age ? `${amb.age}` : null].filter(Boolean).join(' · ') || 'IP'}
+                      </p>
                       
                       <div className="flex flex-col gap-2">
                         <Button 
@@ -78,10 +95,10 @@ const BrandIdentityHub: React.FC<BrandIdentityHubProps> = ({ onGoHome, onModelSe
                           {activeAmbassadorId === amb.id ? '當前使用中' : '設為當前代言人'}
                         </Button>
                         <button 
-                          onClick={() => removeAmbassadors([amb.id])}
+                          onClick={() => setAmbassador(amb.id, false)}
                           className="text-[10px] text-red-500/50 hover:text-red-500 transition-colors uppercase tracking-widest font-bold"
                         >
-                          移除
+                          取消代言人
                         </button>
                       </div>
                     </div>

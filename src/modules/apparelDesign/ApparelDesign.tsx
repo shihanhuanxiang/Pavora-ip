@@ -15,7 +15,8 @@ import TrendingUpIcon from '../../shared/assets/icons/TrendingUpIcon';
 import Select from '../../shared/components/common/Select';
 import { useTaxonomy } from '../../shared/hooks/useTaxonomy';
 import ExpandIcon from '../../shared/assets/icons/ExpandIcon'; 
-import { useBrandStore } from '../../shared/stores/useBrandStore';
+// 2026-08-05（企劃案 B-8 步驟 2）：代言人改由 useModelStore 提供。
+import { useModelStore } from '../../shared/stores/useModelStore';
 import AsyncImage from '../../shared/components/common/AsyncImage';
 import { imageUrlToimageData, downloadImage } from '../../shared/utils/imageUtils';
 
@@ -55,7 +56,11 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onAdvancedEdit,
   const [quality, setQuality] = useState<QualityLevel>('standard');
   const [lockToAmbassador, setLockToAmbassador] = useState(false);
 
-  const { ambassadors, activeAmbassadorId } = useBrandStore();
+  // 2026-08-05（企劃案 B-8 步驟 2）：代言人改由 useModelStore 提供。
+    // 行為等價替換 —— 下游只讀 .id / .name / .imageUrl，Model 三者皆有；
+    // 圖片本來就同存一個 IndexedDB（idb:// URL），不需搬移。
+    const { models, activeAmbassadorId } = useModelStore();
+    const ambassadors = useMemo(() => models.filter(m => m.isAmbassador === true), [models]);
   const activeAmbassador = useMemo(() => ambassadors.find(a => a.id === activeAmbassadorId), [ambassadors, activeAmbassadorId]);
 
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);

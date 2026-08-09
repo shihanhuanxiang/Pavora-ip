@@ -123,6 +123,24 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
     return saved ? saved === 'dark' : true;
   });
 
+  /**
+   * B-8 步驟 2（2026-08-05）：把舊的品牌代言人併進 Model。
+   *
+   * 放在 App 掛載後跑，因為那時兩個 store 都已經 hydrate 完畢。
+   * 內部有 `pavora-b8-ambassador-migrated` 旗標，只會實際執行一次。
+   * **非破壞性**：只寫 `isAmbassador`，不刪任何舊資料（舊 key 留著當備份）。
+   *
+   * 為什麼需要它：步驟 2 把讀取端切成 `models.filter(isAmbassador)` 之後，
+   * 現有使用者沒有任何 Model 帶這個標記，代言人會從畫面上消失。
+   */
+  useEffect(() => {
+    useModelStore.getState().migrateAmbassadorsFromBrandStore().then(r => {
+      if (!r.skipped) {
+        console.info(`[B-8] 代言人遷移完成：對應 ${r.matched} 位，補建孤兒 ${r.orphans} 位。舊資料保留未刪。`);
+      }
+    });
+  }, []);
+
   useEffect(() => {
     const html = document.documentElement;
     if (isDarkMode) {

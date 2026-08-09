@@ -101,6 +101,23 @@ export interface Model {
     imageUrl: string;
     type: 'standard' | 'custom';
     schemaVersion?: string;
+    /**
+     * 這個 IP 是否同時是「品牌代言人」（2026-08-05 新增，企劃案 B-8 步驟 1）。
+     *
+     * 背景：專案原本有**兩套平行的「人」**——`Model`（IP）與 `BrandAmbassador`
+     * （`useBrandStore.ambassadors`）。Hank 拍板合併成一套。
+     *
+     * 盤點（`盤點_C軌_2026-08-01/盤點_B8_合併代言人_2026-08-05.md`）證明合併可行且低風險：
+     *   - `BrandAmbassador` 是 `Model` 的**貧化子集**。它多出來的 3 個欄位裡，
+     *     `ethnicity`／`bodyType` 是硬寫死值（'Asian'／'Standard'）、`faceAnchorParams` 零讀取。
+     *   - 全 repo 的生圖身份錨點只讀 `imageUrl`（10 處）與 `name`（3 處），
+     *     **沒有任何一處讀那 3 個獨有欄位**——而 Model 兩者都有。
+     *   - 圖片兩者都存在同一個 IndexedDB（`idb://` URL），合併時零遷移。
+     *
+     * ⚠️ 步驟 1 只是**新增**這個欄位與對應的 store API，`useBrandStore` 完全不動、
+     * 兩套並存，現有行為零改變。真正把讀取端切過來是步驟 2，資料遷移是步驟 3。
+     */
+    isAmbassador?: boolean;
     persona?: IPPersona;
     visualIdentityHint?: VisualIdentityHint;
     visualConstants?: IPVisualConstants;

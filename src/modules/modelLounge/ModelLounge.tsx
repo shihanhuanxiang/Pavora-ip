@@ -5,7 +5,7 @@ import Button from '../../shared/components/common/Button';
 import Card from '../../shared/components/common/Card';
 import ImagePreviewModal from '../../shared/components/common/ImagePreviewModal';
 import { useModelStore } from '../../shared/stores/useModelStore';
-import { useBrandStore } from '../../shared/stores/useBrandStore';
+// 2026-08-05（企劃案 B-8 步驟 2）：代言人改由 useModelStore 提供。
 import { STORY_ARCS } from '../narrative/constants/storyElements';
 import AsyncImage from '../../shared/components/common/AsyncImage';
 import PortfolioSelectModal from '../../components/PortfolioSelectModal';
@@ -53,7 +53,8 @@ const DESTINATIONS = [
 
 const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHubMode, initialPortfolioModelId, focusPortfolioAssets }) => {
   const { models, removeModels, addModel, updateModel, syncWithCloud } = useModelStore();
-  const { addAmbassador, ambassadors } = useBrandStore();
+  // 2026-08-05（企劃案 B-8 步驟 2）：晉升代言人改為在 Model 上標記，不再另建一筆資料。
+  const { setAmbassador, getAmbassadorModels } = useModelStore();
   const { addNotification } = useNotification();
   const [selectedModels, setSelectedModels] = useState<Set<string>>(new Set());
   const [previewingImage, setPreviewingImage] = useState<{images: string[], startIndex: number} | null>(null);
@@ -189,32 +190,28 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
     }
   };
 
+  /**
+   * 晉升為品牌代言人（2026-08-05 改寫，企劃案 B-8 步驟 2）。
+   *
+   * 改寫前是「用 Model 的資料**另外建一筆** BrandAmbassador」，於是同一個人
+   * 在系統裡有兩份資料，兩邊各自被編輯就會不同步。
+   * 現在只是在既有的 Model 上標記 `isAmbassador = true`，資料只有一份。
+   *
+   * 連帶消失的三個欄位（`ethnicity`／`bodyType`／`faceAnchorParams`）不是損失：
+   * 盤點證實前兩個是硬寫死的 'Asian'／'Standard'、第三個全 repo 零讀取，
+   * 而所有生圖身份錨點只讀 `name` 與 `imageUrl` —— Model 兩者都有。
+   * 原本那兩個 TODO（「待 Hank 裁決是否新增欄位」）的答案就是：不用新增。
+   *
+   * 上限檢查已搬進 `useModelStore.setAmbassador`（常數 `AMBASSADOR_LIMIT`），
+   * 超過會 throw，這裡接住轉成通知。
+   */
   const handlePromoteToAmbassador = async (model: Model) => {
-    if (ambassadors.length >= 5) {
-      addNotification({ type: 'warning', message: '品牌代言人上限為 5 位，請先移除現有代言人。' });
-      return;
+    try {
+      await setAmbassador(model.id, true);
+      addNotification({ type: 'success', message: '已成功晉升為品牌代言人！' });
+    } catch (e: any) {
+      addNotification({ type: 'warning', message: e?.message || '晉升失敗，請稍後再試。' });
     }
-
-    const normalizedGenderRaw = (model.gender || '').toString().trim().toUpperCase();
-    const normalizedGender: 'male' | 'female' | 'non-binary' =
-      normalizedGenderRaw === 'M' || normalizedGenderRaw === 'MALE'
-        ? 'male'
-        : normalizedGenderRaw === 'F' || normalizedGenderRaw === 'FEMALE'
-        ? 'female'
-        : 'non-binary';
-
-    await addAmbassador({
-      id: `amb_${Date.now()}`,
-      name: model.name,
-      imageUrl: model.imageUrl,
-      gender: normalizedGender,
-      // TODO(P2): Model 型別尚無 ethnicity/bodyType 欄位，下游目前零消費；待資料模型補欄位後改讀 model 實際值（待 Hank 裁決是否新增欄位）
-      ethnicity: 'Asian',
-      // TODO(P2): Model 型別尚無 ethnicity/bodyType 欄位，下游目前零消費；待資料模型補欄位後改讀 model 實際值（待 Hank 裁決是否新增欄位）
-      bodyType: 'Standard',
-      createdAt: new Date().toISOString()
-    });
-    addNotification({ type: 'success', message: '已成功晉升為品牌代言人！' });
   };
 
   const handlePortfolioImport = async (selectedItems: PortfolioItem[]) => {

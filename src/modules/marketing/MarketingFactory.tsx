@@ -1,6 +1,7 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useMemo } from 'react';
 import Loader from '../../shared/components/common/Loader';
-import { useBrandStore } from '../../shared/stores/useBrandStore';
+// 2026-08-05（企劃案 B-8 步驟 2）：代言人改由 useModelStore 提供。
+import { useModelStore } from '../../shared/stores/useModelStore';
 import { 
     fileToBase64, 
     removeBackground, 
@@ -81,7 +82,11 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
     const [useAmbassador, setUseAmbassador] = useState(true);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     
-    const { ambassadors, activeAmbassadorId } = useBrandStore();
+    // 2026-08-05（企劃案 B-8 步驟 2）：代言人改由 useModelStore 提供。
+    // 行為等價替換 —— 下游只讀 .id / .name / .imageUrl，Model 三者皆有；
+    // 圖片本來就同存一個 IndexedDB（idb:// URL），不需搬移。
+    const { models, activeAmbassadorId } = useModelStore();
+    const ambassadors = useMemo(() => models.filter(m => m.isAmbassador === true), [models]);
     const activeAmbassador = ambassadors.find(a => a.id === activeAmbassadorId);
     
     const fileInputRef = useRef<HTMLInputElement>(null);

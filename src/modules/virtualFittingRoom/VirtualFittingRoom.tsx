@@ -27,7 +27,7 @@ import FittingRoomIcon from '../../shared/assets/icons/FittingRoomIcon';
 import View360Icon from '../../shared/assets/icons/View360Icon'; 
 import { autoFaceCrop } from '../../shared/utils/vision/faceCrop';
 import SparklesIcon from '../../shared/assets/icons/SparklesIcon';
-import { useBrandStore } from '../../shared/stores/useBrandStore';
+// 2026-08-05（企劃案 B-8 步驟 2）：代言人改由 useModelStore 提供，useBrandStore 不再需要。
 import AsyncImage from '../../shared/components/common/AsyncImage';
 
 interface VirtualFittingRoomProps {
@@ -171,7 +171,11 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
     const [lightingPreset, setLightingPreset] = useState<string>('original');
     const [isGhostMode, setIsGhostMode] = useState(false);
 
-    const { ambassadors, activeAmbassadorId, setActiveAmbassador } = useBrandStore();
+    // 2026-08-05（企劃案 B-8 步驟 2）：代言人改由 useModelStore 提供。
+    // 行為等價替換 —— 下游只讀 .id / .name / .imageUrl，Model 三者皆有；
+    // 圖片本來就同存一個 IndexedDB（idb:// URL），不需搬移。
+    const { models, activeAmbassadorId, setActiveAmbassador } = useModelStore();
+    const ambassadors = useMemo(() => models.filter(m => m.isAmbassador === true), [models]);
     const activeAmbassador = useMemo(() => ambassadors.find(a => a.id === activeAmbassadorId), [ambassadors, activeAmbassadorId]);
 
     // Collapsible Sections State

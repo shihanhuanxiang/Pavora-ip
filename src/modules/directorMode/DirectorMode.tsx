@@ -17,7 +17,8 @@ import DownloadIcon from '../../shared/assets/icons/DownloadIcon';
 import SparklesIcon from '../../shared/assets/icons/SparklesIcon';
 import ImagePreviewModal from '../../shared/components/common/ImagePreviewModal';
 import { downloadImage } from '../../shared/utils/imageUtils';
-import { useBrandStore } from '../../shared/stores/useBrandStore';
+// 2026-08-05（B-8 盤點 F2）：移除 useBrandStore 的死 import。
+// 全檔只有這一行提到它，沒有任何呼叫。
 import VideoPlayer from '../../shared/components/common/VideoPlayer';
 
 import { useNotificationStore } from '../../shared/stores/useNotificationStore';

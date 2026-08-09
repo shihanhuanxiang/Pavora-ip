@@ -12,7 +12,7 @@ import { downloadImage } from '../../shared/utils/imageUtils';
 import PhotoIcon from '../../shared/assets/icons/PhotoIcon';
 import ImagePreviewModal from '../../shared/components/common/ImagePreviewModal';
 import { useModelStore } from '../../shared/stores/useModelStore';
-import { useBrandStore } from '../../shared/stores/useBrandStore';
+// 2026-08-05（B-8 盤點 F1）：useBrandStore 的 import 隨死引用一併移除。
 import AsyncImage from '../../shared/components/common/AsyncImage';
 import DownloadIcon from '../../shared/assets/icons/DownloadIcon';
 import ModelIcon from '../../shared/assets/icons/ModelIcon';
@@ -137,9 +137,10 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
   const [savedModelIds, setSavedModelIds] = useState<Set<string>>(new Set());
 
   const { addModel, updateModelGallery } = useModelStore();
-  const { addAmbassador, ambassadors, activeAmbassadorId } = useBrandStore();
+  // 2026-08-05（B-8 盤點 F1）：移除代言人引用。
+  // `addAmbassador` 與下方的 `activeAmbassador` 在本檔**完全沒有讀取端**，
+  // 是 2026-08-03（B-4a）移除 `lockToAmbassador` 之後漏清的殘留。
   const { addNotification } = useNotification();
-  const activeAmbassador = useMemo(() => ambassadors.find(a => a.id === activeAmbassadorId), [ambassadors, activeAmbassadorId]);
 
   const [formState, setFormState] = useState({
       ...ModelGenerationDefaults,
