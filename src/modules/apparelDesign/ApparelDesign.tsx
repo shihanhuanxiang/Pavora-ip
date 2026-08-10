@@ -1,8 +1,8 @@
 
 import React, { useState, useCallback, useRef, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { generateApparelDesignSequence, getFriendlyErrorMessage, fileToBase64, getFashionTrends } from '../../shared/services/geminiService';
-import { saveMultipleApparel, savePortfolioItem } from '../../shared/services/storageService';
+import { generateApparelDesignSequence, getFriendlyErrorMessage, fileToBase64, getFashionTrends, analyzeApparelItem } from '../../shared/services/geminiService';
+import { saveMultipleApparel, savePortfolioItem, saveApparel } from '../../shared/services/storageService';
 import type { TaxonomyEntry, BrandDefinition, ApparelMainCategory, StoredApparelItem } from '../../shared/types/types';
 import { PAVORA_DESIGN_BRANDS, BRAND_OPTIONS } from '../../shared/constants/constants';
 import Button from '../../shared/components/common/Button';
@@ -24,14 +24,37 @@ import DeepApparelSelector from '../../shared/components/business/DeepApparelSel
 
 interface ApparelDesignProps {
   onGoHome?: () => void;
+  /**
+   * ⚠️ 2026-08-09 起本模組**不再使用** `onAdvancedEdit`（見下方 `onSendApparelToFittingRoom`）。
+   * 保留這個 prop 只為了讓 `App.tsx` 現有的傳值不必同步改動；
+   * 確認沒有其他需求後可連同 App 的傳值一起刪除。
+   */
   onAdvancedEdit?: (imageUrl: string, destination: string) => void;
+  /**
+   * 2026-08-09（企劃案 A-2／AD-4＋A-3／5-2）：「立即試穿此設計」的正確通道。
+   *
+   * 舊寫法是 `onAdvancedEdit(img, 'fitting_room')`，而 `onAdvancedEdit` 會把圖塞進
+   * 試衣間的 **`initialImage`＝模特兒槽**，觸發 `analyzeAndLockModel` 跑去圖上抓人臉。
+   * 平拍圖沒有臉，必定失敗（規劃檔 4-3 bug 2）。
+   *
+   * 新通道只做兩件事：**先把服裝入庫**（呼叫端負責），再把 id 交給試衣間放進「服裝」槽。
+   * 完全不碰模特兒槽。先入庫的理由：舊做法是「把圖直接塞過去」，塞失敗就沒了。
+   */
+  onSendApparelToFittingRoom?: (apparelId: string) => void;
+  /**
+   * 2026-08-09（企劃案 A-3／5-1 反向跳轉）：從試衣間送過來的服裝，直接當**參考圖**。
+   * 本模組沒有「模特兒槽」，所以 initialImage 在這裡沒有歧義。
+   * 消費完呼叫 `onInitialImageConsumed`，避免下次進來又被塞一次舊圖。
+   */
+  initialImage?: { url: string; fileData: { data: string; mimeType: string; } } | null;
+  onInitialImageConsumed?: () => void;
   masterTaxonomy?: TaxonomyEntry[];
   apparelStructure?: ApparelMainCategory[];
 }
 
 type QualityLevel = 'standard' | 'high' | 'ultra';
 
-const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onAdvancedEdit, masterTaxonomy: propTaxonomy, apparelStructure: propStructure }) => {
+const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onSendApparelToFittingRoom, initialImage, onInitialImageConsumed, masterTaxonomy: propTaxonomy, apparelStructure: propStructure }) => {
   // Phase 3: Self-Sufficiency Logic
   const { masterTaxonomy: hookTaxonomy, apparelStructure: hookStructure, loading: taxonomyLoading } = useTaxonomy();
   const masterTaxonomy = propTaxonomy || hookTaxonomy;
@@ -39,12 +62,6 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onAdvancedEdit,
   const isDataReady = (propTaxonomy && propStructure) || (!taxonomyLoading && masterTaxonomy.length > 0);
 
   const [taxonomyEntry, setTaxonomyEntry] = useState<TaxonomyEntry | null>(null);
-  // Set default entry only when data is ready
-  React.useEffect(() => {
-      if (isDataReady && !taxonomyEntry && masterTaxonomy.length > 0) {
-          setTaxonomyEntry(masterTaxonomy.find(item => item.id === 'tops_tee_01') || null);
-      }
-  }, [isDataReady, masterTaxonomy, taxonomyEntry]);
 
   const [brand, setBrand] = useState<BrandDefinition | null>(null);
   const [customBrandStyle, setCustomBrandStyle] = useState('');
@@ -52,7 +69,32 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onAdvancedEdit,
   const [customColor, setCustomColor] = useState('#ffffff');
   const [pattern, setPattern] = useState('');
   const [referenceImage, setReferenceImage] = useState<{ url: string; fileData: { data: string; mimeType: string; } } | null>(null);
-  
+
+  // 2026-08-09（企劃案 A-2／AD-2）：上傳參考圖後的自動分析結果。
+  // `detectedItemType` 是比對不到 taxonomy 時的退路 —— 寧可送模型一句
+  // 「Midi Slip Dress」，也不要謊報成 T-Shirt。
+  const [isAnalyzingRef, setIsAnalyzingRef] = useState(false);
+  const [refAnalysis, setRefAnalysis] = useState<{
+      item_type?: string;
+      color?: string;
+      material?: string;
+      occasion?: string;
+      season?: string;
+      matchedTaxonomyName?: string | null;
+  } | null>(null);
+
+  // 2026-08-09（企劃案 D-6）：預設分類**只在沒有參考圖時**套用。
+  //
+  // 舊寫法無條件把 `tops_tee_01` 填進去，於是「上傳一件洋裝」的指令照樣寫
+  // `Item Type: T-Shirt`，與附圖直接矛盾 —— 這是 D-6「表單驗證形同虛設」的實際後果。
+  // 有參考圖時分類交給 AD-2 的自動分析決定；分析不出來就維持 null，
+  // 由 `handleGenerate` 退回中性的「Reference Design」，不再謊報。
+  React.useEffect(() => {
+      if (isDataReady && !taxonomyEntry && !referenceImage && masterTaxonomy.length > 0) {
+          setTaxonomyEntry(masterTaxonomy.find(item => item.id === 'tops_tee_01') || null);
+      }
+  }, [isDataReady, masterTaxonomy, taxonomyEntry, referenceImage]);
+
   const [quality, setQuality] = useState<QualityLevel>('standard');
   const [lockToAmbassador, setLockToAmbassador] = useState(false);
 
@@ -105,13 +147,22 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onAdvancedEdit,
       const images = await generateApparelDesignSequence({
         taxonomyEntry: taxonomyEntry || { display_name_zh: '參考設計', display_name_en: 'Reference Design' } as any,
         brandDefinition: brand,
-        customBrandStyle: brand?.id === 'custom' ? customBrandStyle : '',
+        // 2026-08-09（企劃案 A-2／AD-3）：品牌欄位改可疊加。
+        // 舊寫法是二選一——只有選「自訂品牌」時才送 customBrandStyle，
+        // 於是「選 Chanel，但要更街頭一點」這種最常見的表達方式無法輸入。
+        // `buildApparelBasePrompt` 本來就把 stylePrompt 與 customBrandStyle 用空白串起來，
+        // 這裡只要不再擋，兩者自然疊加。
+        customBrandStyle,
         colors,
         pattern,
         referenceImage: referenceImage?.fileData,
+        // AD-2 的分析結果餵回 img2img 指令：比對不到 taxonomy 時當品項名，
+        // 材質描述則寫進 [ABSOLUTE BASE] 幫模型鎖住原始布料。
+        detectedItemType: refAnalysis?.item_type,
+        sourceAnalysis: refAnalysis?.material,
         faceReferences: finalFaceRefs
       }, config, onProgress);
-      
+
       console.log("Generation success", images);
       setGeneratedImages(images);
       setSelectedForDownload(new Set());
@@ -121,15 +172,7 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onAdvancedEdit,
     } finally {
       setIsLoading(false);
     }
-  }, [taxonomyEntry, brand, customBrandStyle, colors, pattern, referenceImage, quality, lockToAmbassador, activeAmbassador]);
-
-  if (taxonomyLoading && masterTaxonomy.length === 0) {
-      return (
-          <div className="min-h-screen flex items-center justify-center bg-[var(--color-bg-deep)]">
-              <Loader message="正在同步全球時尚分類系統..." />
-          </div>
-      );
-  }
+  }, [taxonomyEntry, brand, customBrandStyle, colors, pattern, referenceImage, refAnalysis, quality, lockToAmbassador, activeAmbassador]);
 
   const handleGetTrends = async () => {
     setIsTrendsLoading(true);
@@ -149,7 +192,8 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onAdvancedEdit,
     if (generatedImages.length < 3) return;
     const name = `${taxonomyEntry?.display_name_zh || '參考設計'} - ${brand?.display_name || '自訂'}`;
     const newItems: StoredApparelItem[] = [
-        { id: `apparel-${Date.now()}-packshot`, name: `${name} (平拍)`, imageUrl: generatedImages[0], category: taxonomyEntry?.category || 'unknown' },
+        // 平拍圖已是 #FFFFFF 白底（PACKSHOT_SUFFIX 明文要求），試衣間套用時可跳過去背（企劃案 5-4）
+        { id: `apparel-${Date.now()}-packshot`, name: `${name} (平拍)`, imageUrl: generatedImages[0], category: taxonomyEntry?.category || 'unknown', isWhiteBackground: true },
         { id: `apparel-${Date.now()}-front`, name: `${name} (正面)`, imageUrl: generatedImages[1], category: 'model-shot' },
         { id: `apparel-${Date.now()}-back`, name: `${name} (背面)`, imageUrl: generatedImages[2], category: 'model-shot' },
     ];
@@ -172,17 +216,140 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onAdvancedEdit,
       setColors(prev => prev.filter(c => c !== color));
   };
   
+  /**
+   * 2026-08-09（企劃案 A-2／AD-2）：把參考圖的分析結果比對回 taxonomy。
+   *
+   * 比對邏輯刻意保守：先試完整英文名包含關係，再退到關鍵字命中數最高者，
+   * **命中 0 個就回 null**。寧可讓分類留空（生圖指令用偵測到的品項名），
+   * 也不要硬塞一個看起來很像、實際是別種衣服的分類——那正是 D-6 的病根。
+   */
+  const matchTaxonomyByAnalysis = useCallback((analysis: any): TaxonomyEntry | null => {
+      if (!analysis || masterTaxonomy.length === 0) return null;
+      const itemType = String(analysis.item_type || '').toLowerCase().trim();
+      const keywords: string[] = Array.isArray(analysis.item_type_keywords)
+          ? analysis.item_type_keywords.map((k: any) => String(k).toLowerCase().trim()).filter(Boolean)
+          : [];
+      if (!itemType && keywords.length === 0) return null;
+
+      // 第一輪：taxonomy 的英文名整串出現在偵測到的品項名裡（例如 'Midi Slip Dress' 命中 'Slip Dress'）
+      if (itemType) {
+          const exact = masterTaxonomy.find(t => {
+              const en = String(t.display_name_en || '').toLowerCase().trim();
+              return en.length > 2 && itemType.includes(en);
+          });
+          if (exact) return exact;
+      }
+
+      // 第二輪：關鍵字命中數最高者，且至少要命中 1 個
+      let best: TaxonomyEntry | null = null;
+      let bestScore = 0;
+      for (const t of masterTaxonomy) {
+          const en = String(t.display_name_en || '').toLowerCase();
+          if (!en) continue;
+          let score = 0;
+          for (const k of keywords) {
+              if (k.length > 2 && en.includes(k)) score++;
+          }
+          if (score > bestScore) { bestScore = score; best = t; }
+      }
+      return bestScore > 0 ? best : null;
+  }, [masterTaxonomy]);
+
+  /**
+   * AD-2 的核心：分析參考圖並回填表單。
+   * 分析失敗**不擋流程**——參考圖照樣可用，只是分類與顏色要使用者自己填。
+   */
+  const runReferenceAnalysis = useCallback(async (fileData: { data: string; mimeType: string }) => {
+      setRefAnalysis(null);
+      setIsAnalyzingRef(true);
+      try {
+          const analysis = await analyzeApparelItem(fileData);
+          const matched = matchTaxonomyByAnalysis(analysis);
+          if (matched) setTaxonomyEntry(matched);
+          setRefAnalysis({
+              item_type: analysis?.item_type,
+              color: analysis?.color,
+              material: analysis?.material,
+              occasion: analysis?.occasion,
+              season: analysis?.season,
+              matchedTaxonomyName: matched ? matched.display_name_zh : null
+          });
+
+          // 顏色回填：只在使用者還沒挑過顏色時做，不覆蓋既有選擇。
+          // 回填的是「偵測到的原色」，所以預設行為＝忠實還原，不是擅自改色。
+          const hex = String(analysis?.color || '').match(/#[0-9a-fA-F]{6}/)?.[0];
+          if (hex) {
+              setColors(prev => (prev.length === 0 ? [hex.toLowerCase()] : prev));
+          }
+      } catch (e) {
+          console.warn('參考圖自動分析失敗，改由使用者手動填寫', e);
+      } finally {
+          setIsAnalyzingRef(false);
+      }
+  }, [matchTaxonomyByAnalysis]);
+
   const handleReferenceImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
         const file = event.target.files[0];
+        // 清空 value，讓下次重選同一個檔案仍會觸發 change（2026-07-11 在試衣間實測過的坑）
+        event.target.value = '';
         try {
             const fileData = await fileToBase64(file);
             setReferenceImage({ url: URL.createObjectURL(file), fileData });
+            await runReferenceAnalysis(fileData);
         } catch (err) {
             setError('讀取參考圖失敗。');
         }
     }
   };
+
+  /**
+   * 2026-08-09（企劃案 A-3／5-1）：接住從試衣間送來的服裝，當作參考圖。
+   * 只消費一次（consumedInitialRef 把關），並回報給 App 清掉導覽狀態，
+   * 否則使用者下次進來會被塞一張莫名其妙的舊圖。
+   */
+  const consumedInitialRef = useRef<string | null>(null);
+  useEffect(() => {
+      if (!initialImage || consumedInitialRef.current === initialImage.url) return;
+      consumedInitialRef.current = initialImage.url;
+      setReferenceImage(initialImage);
+      runReferenceAnalysis(initialImage.fileData).finally(() => onInitialImageConsumed?.());
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialImage]);
+
+  const handleClearReferenceImage = () => {
+      setReferenceImage(null);
+      setRefAnalysis(null);
+  };
+
+  /**
+   * 2026-08-09（企劃案 A-2／AD-4＋A-3／5-2）：「立即試穿此設計」。
+   *
+   * 順序是**先入庫、再跳轉**，不可顛倒：舊做法把圖直接塞進導覽狀態，塞失敗就沒了。
+   * 入庫之後即使跳轉出任何問題，那件衣服都還在個人衣櫥裡等著。
+   *
+   * 只送「平拍圖」（index 0）。第 2、3 張是模特兒穿著的照片，
+   * 拿去試衣間會變成「把一個人的照片當服裝素材」，那是另一種版本的同一個 bug。
+   */
+  const handleTryOnInFittingRoom = useCallback(async (imageUrl: string) => {
+      if (!onSendApparelToFittingRoom) return;
+      setError(null);
+      try {
+          const item: StoredApparelItem = {
+              id: `apparel-${Date.now()}-tryon`,
+              name: `${taxonomyEntry?.display_name_zh || refAnalysis?.item_type || '參考設計'} - ${brand?.display_name || '自訂'}`,
+              imageUrl,
+              category: taxonomyEntry?.category || 'unknown',
+              // 平拍圖本來就被要求 #FFFFFF 白底，試衣間不需要再去背一次（企劃案 5-4）
+              isWhiteBackground: true
+          };
+          await saveApparel(item);
+          onSendApparelToFittingRoom(item.id);
+      } catch (e) {
+          console.error('送往試衣間失敗', e);
+          setError('送往試衣間失敗，請重試。');
+      }
+  }, [onSendApparelToFittingRoom, taxonomyEntry, refAnalysis, brand]);
 
   const toggleDownloadSelection = (index: number) => {
       setSelectedForDownload(prev => {
@@ -202,6 +369,23 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onAdvancedEdit,
     downloadImage(url, `${designId}_${type}.jpg`, 'ApparelDesign');
   };
   
+  /**
+   * ⚠️ 2026-08-09：這個提早 return **必須留在所有 Hook 之後**。
+   *
+   * 它原本卡在 `handleGenerate` 與 `handleGetTrends` 之間——當時那之後只剩普通函式，
+   * 所以沒出事。本輪在後面新增了 `useCallback` / `useRef` / `useEffect`（AD-2、AD-4、反向跳轉），
+   * 若維持原位，資料載入中的那一次 render 會少跑好幾個 Hook，
+   * React 會直接以「Rendered fewer hooks than expected」崩潰。
+   * 往這個元件加 Hook 的人請一併確認這一段仍在最後。
+   */
+  if (taxonomyLoading && masterTaxonomy.length === 0) {
+      return (
+          <div className="min-h-screen flex items-center justify-center bg-[var(--color-bg-deep)]">
+              <Loader message="正在同步全球時尚分類系統..." />
+          </div>
+      );
+  }
+
   const handleDownloadSelected = () => {
     selectedForDownload.forEach((index, i) => {
       const url = generatedImages[index];
@@ -305,7 +489,7 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onAdvancedEdit,
                                 <img src={referenceImage.url} alt="Reference" className="w-full h-48 object-contain" />
                                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                                     <button onClick={() => setPreviewingImage({images:[referenceImage.url], startIndex: 0})} className="p-2 bg-[var(--color-bg-surface)]/20 hover:bg-[var(--color-bg-surface)]/40 rounded-full transition-colors"><ExpandIcon className="w-5 h-5"/></button>
-                                    <button onClick={() => setReferenceImage(null)} className="p-2 bg-red-500/20 hover:bg-red-500/40 text-red-500 rounded-full transition-colors">
+                                    <button onClick={handleClearReferenceImage} className="p-2 bg-red-500/20 hover:bg-red-500/40 text-red-500 rounded-full transition-colors">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.277H8.084a2.25 2.25 0 0 1-2.244-2.277L4.14 5.928m14.352 0a22.906 22.906 0 0 0-2.384-.126M12 18.75V16.5m0-2.25V12m0-2.25V9.75M15 6.75V4.5a2.25 2.25 0 0 0-2.25-2.25h-1.5a2.25 2.25 0 0 0-2.25 2.25v2.25" />
                                         </svg>
@@ -320,6 +504,37 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onAdvancedEdit,
                                 <PhotoIcon className="w-8 h-8 opacity-50 group-hover:scale-110 transition-transform" />
                                 <span className="text-[10px] font-bold uppercase tracking-widest">點擊上傳參考圖</span>
                             </button>
+                        )}
+
+                        {/* 2026-08-09（企劃案 A-2／AD-2）：上傳後自動分析的結果，唯讀顯示。
+                            這一塊存在的意義是讓使用者看得到「AI 認為這是什麼」——
+                            分類填錯的話，改分類就好；不顯示的話使用者根本不知道要改。 */}
+                        {referenceImage && (isAnalyzingRef || refAnalysis) && (
+                            <div className="mt-3 p-3 rounded-xl bg-[var(--color-bg-surface)] border border-[var(--color-border)] space-y-2">
+                                {isAnalyzingRef ? (
+                                    <div className="flex items-center gap-2 text-[10px] text-[var(--color-text-dim)] uppercase tracking-widest">
+                                        <div className="w-3 h-3 border border-[var(--color-gold)]/30 border-t-[var(--color-gold)] rounded-full animate-spin"></div>
+                                        正在辨識這件服裝...
+                                    </div>
+                                ) : (
+                                    <>
+                                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-gold)]">AI 辨識結果</p>
+                                        {refAnalysis?.item_type && (
+                                            <p className="text-[11px] text-[var(--color-text-main)]">
+                                                品項：{refAnalysis.item_type}
+                                                {refAnalysis.matchedTaxonomyName
+                                                    ? <span className="text-[var(--color-text-dim)]">（已自動選為「{refAnalysis.matchedTaxonomyName}」）</span>
+                                                    : <span className="text-[var(--color-text-dim)]">（分類庫裡沒有對應項目，將直接使用這個名稱）</span>}
+                                            </p>
+                                        )}
+                                        {refAnalysis?.color && <p className="text-[11px] text-[var(--color-text-dim)]">顏色：{refAnalysis.color}</p>}
+                                        {refAnalysis?.material && <p className="text-[11px] text-[var(--color-text-dim)]">材質：{refAnalysis.material}</p>}
+                                        <p className="text-[10px] text-[var(--color-text-dim)]/70 leading-relaxed pt-1 border-t border-[var(--color-border)]">
+                                            有參考圖時，生成會以這張圖為基底、保留版型，只改你在下方指定的顏色／花紋／品牌風格。都不填＝忠實重拍。
+                                        </p>
+                                    </>
+                                )}
+                            </div>
                         )}
                     </div>
 
@@ -351,14 +566,24 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onAdvancedEdit,
                         {BRAND_OPTIONS.map(opt => <option key={opt.id} value={opt.id} className="bg-[var(--color-bg-surface)]">{opt.name}</option>)}
                     </select>
                     
-                    {brand?.id === 'custom' && (
-                        <textarea 
-                            value={customBrandStyle} 
-                            onChange={e => setCustomBrandStyle(e.target.value)} 
-                            placeholder="輸入自訂品牌風格提示詞，例如：'Minimalist Japanese aesthetics with architectural silhouettes'..." 
+                    {/* 2026-08-09（企劃案 A-2／AD-3）：品牌欄位改可疊加，textarea 一律顯示。
+                        舊版只在選「自訂品牌」時才出現，等於強迫二選一——
+                        「選 Chanel，但要更街頭一點」這種最自然的講法無處可寫。
+                        後端 `buildApparelBasePrompt` 本來就把品牌 stylePrompt 與這欄串接，
+                        所以放開限制即可疊加，不需要改 prompt 結構。 */}
+                    <div>
+                        <label className="block mb-2 text-[10px] font-bold text-[var(--color-text-dim)] uppercase tracking-widest">
+                            {brand && brand.id !== 'custom' ? `補充風格描述（會疊加在 ${brand.display_name} 之上）` : '風格描述'}
+                        </label>
+                        <textarea
+                            value={customBrandStyle}
+                            onChange={e => setCustomBrandStyle(e.target.value)}
+                            placeholder={brand && brand.id !== 'custom'
+                                ? "例如：'但要更街頭一點，落肩剪裁'..."
+                                : "輸入風格提示詞，例如：'Minimalist Japanese aesthetics with architectural silhouettes'..."}
                             className="w-full bg-[var(--color-bg-input)] border border-[var(--color-border)] text-[var(--color-text-main)] text-sm rounded-lg p-3 focus:border-[var(--color-gold)] outline-none transition-all min-h-[100px]"
                         />
-                    )}
+                    </div>
                 </div>
             </CollapsibleCard>
 
@@ -526,11 +751,15 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onAdvancedEdit,
                                     >
                                         <DownloadIcon className="w-4 h-4"/>
                                     </button>
-                                    {onAdvancedEdit && (
-                                        <button 
-                                            onClick={() => onAdvancedEdit(img, 'fitting_room')} 
+                                    {/* 2026-08-09（企劃案 A-2／AD-4）：只有平拍圖（index 0）可以送去試穿。
+                                        第 2、3 張是模特兒穿著的照片，送過去等於「把人的照片當服裝素材」。
+                                        並改走 onSendApparelToFittingRoom（先入庫、只填服裝槽），
+                                        不再用 onAdvancedEdit（那條路會把圖塞進模特兒槽去抓臉，平拍圖沒有臉，必定失敗）。 */}
+                                    {onSendApparelToFittingRoom && index === 0 && (
+                                        <button
+                                            onClick={() => handleTryOnInFittingRoom(img)}
                                             className="p-2 bg-[var(--color-bg-deep)]/60 hover:bg-[var(--color-gold)] text-[var(--color-text-main)] hover:text-[var(--color-bg-deep)] rounded-full backdrop-blur-md transition-all"
-                                            title="立即試穿此設計"
+                                            title="拿去試穿（會先存進衣櫥）"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />

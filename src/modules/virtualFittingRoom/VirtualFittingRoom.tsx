@@ -10,6 +10,10 @@ import {
     detectMultiAngleLayout
 } from '../../shared/services/geminiService';
 import { downloadImage, cropImage, stitchImages } from '../../shared/utils/imageUtils';
+// 2026-08-09（企劃案 A-3／5-3）：試衣間開始讀個人衣櫥。
+// 改版前它只認自己記憶體裡的一份清單（關掉就沒了），從未呼叫 getApparel()，
+// 所以服裝設計存進去的東西試衣間永遠看不到——沒修這個，兩邊的跳轉是假的。
+import { getApparel } from '../../shared/services/storageService';
 import { useModelStore } from '../../shared/stores/useModelStore';
 import ManualCropModal from '../../shared/components/business/ManualCropModal';
 // 2026-08-04（企劃案 D-2）：TaxonomyEntry / ApparelMainCategory 隨 vtoStructure 死碼移除。
@@ -34,7 +38,15 @@ interface VirtualFittingRoomProps {
   onGoBack?: () => void;
   onGoHome?: () => void;
   onAdvancedEdit?: (imageUrl: string, destination: string) => void;
+  /** ⚠️ `initialImage` 進的是**模特兒槽**（會跑 analyzeAndLockModel 去抓臉）。服裝不要走這裡。 */
   initialImage?: { url: string; fileData: { data: string; mimeType: string; } } | null;
+  /**
+   * 2026-08-09（企劃案 A-3／5-2）：從服裝設計送過來的服裝，走**服裝槽**。
+   * 這裡收的是個人衣櫥的 id 而不是圖——服裝在跳轉前就已入庫，跳轉失敗也不會遺失。
+   * 消費完會呼叫 `onInitialApparelConsumed`，避免使用者下次再進來又被塞一次。
+   */
+  initialApparelId?: string | null;
+  onInitialApparelConsumed?: () => void;
   // 2026-08-04（企劃案 D-2）：移除 masterTaxonomy / apparelStructure 兩個 prop。
   // 它們唯一的用途是餵給 `vtoStructure`，而那段死碼從未被渲染（見下方墓碑）。
   // 連帶：`useTaxonomy()` 呼叫在本檔也全無讀取端（連 loading 旗標都沒人用）。
@@ -86,8 +98,10 @@ import SimpleVTOCategorySelector from '../../shared/components/business/SimpleVT
 const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({ 
     onGoBack, 
     onGoHome, 
-    onAdvancedEdit, 
-    initialImage
+    onAdvancedEdit,
+    initialImage,
+    initialApparelId,
+    onInitialApparelConsumed
 }) => {
     const [baseImage, setBaseImage] = useState<{ url: string; fileData: { data: string; mimeType: string; } } | null>(null);
     const [faceAnchor, setFaceAnchor] = useState<{ url: string; fileData: { data: string; mimeType: string; } } | null>(null);
@@ -165,7 +179,15 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
     
     const [mobileTab, setMobileTab] = useState<'settings' | 'preview'>('settings');
     const [zoom, setZoom] = useState(1);
-    const [wardrobe, setWardrobe] = useState<{ id: string; url: string; fileData: { data: string; mimeType: string }; category: string }[]>([]);
+    // `isWhiteBackground`：這件素材已是白底平拍圖，套用時跳過 AI 去背（企劃案 5-4）
+    const [wardrobe, setWardrobe] = useState<{ id: string; url: string; fileData: { data: string; mimeType: string }; category: string; isWhiteBackground?: boolean }[]>([]);
+
+    // 2026-08-09（企劃案 A-3／5-3）：個人衣櫥（localStorage + IndexedDB，與服裝設計共用）。
+    // ⚠️ UI 上這是**次級入口**，手動上傳維持主位（Hank 明定）——試衣間的主體功能
+    // 是試穿指定的那件商品，衣櫥只是「或從之前存過的挑一件」。
+    const [closetItems, setClosetItems] = useState<StoredApparelItem[]>([]);
+    const [isClosetOpen, setIsClosetOpen] = useState(false);
+    const [incomingApparelNote, setIncomingApparelNote] = useState<string | null>(null);
     const [activeLayers, setActiveLayers] = useState<{ id: string; category: string; url: string }[]>([]);
     const [tuckStatus, setTuckStatus] = useState<'tucked' | 'untucked'>('untucked');
     const [lightingPreset, setLightingPreset] = useState<string>('original');
@@ -223,6 +245,95 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
             analyzeAndLockModel(initialImage);
         }
     }, [initialImage, baseImage, analyzeAndLockModel]);
+
+    /**
+     * 2026-08-09（企劃案 A-3／5-3）：載入個人衣櫥。
+     * 掛載時讀一次即可 —— 衣櫥的寫入端（服裝設計）在別的頁面，
+     * 回到這一頁時元件本來就會重新掛載。
+     */
+    useEffect(() => {
+        try {
+            setClosetItems(getApparel());
+        } catch (e) {
+            console.warn('讀取個人衣櫥失敗', e);
+        }
+    }, []);
+
+    /**
+     * 2026-08-09（企劃案 A-3／5-2）：接住從服裝設計送來的服裝。
+     *
+     * 三段式（規劃檔 5-2），關鍵是**任何一段都不會讓那件衣服消失**：
+     * 1. 服裝一律先放進衣櫥清單（它本來就已經入庫了，這裡只是拉進當前 session）
+     * 2. 沒有模特兒、但有選定的 IP → 用那個 IP 當底圖
+     * 3. 兩者都沒有 → 停在模特兒區並提示，服裝在衣櫥等著
+     *
+     * 刻意**不自動套用**：套用需要一個模特兒，而這條路徑上多半還沒有。
+     * 自動套用失敗只會跳一個看起來像壞掉的錯誤。
+     */
+    const consumedApparelRef = useRef<string | null>(null);
+    useEffect(() => {
+        if (!initialApparelId || consumedApparelRef.current === initialApparelId) return;
+        consumedApparelRef.current = initialApparelId;
+
+        let cancelled = false;
+        (async () => {
+            try {
+                const item = getApparel().find(i => i.id === initialApparelId);
+                if (!item) {
+                    setError('找不到剛才送過來的服裝，請回服裝設計重試。');
+                    onInitialApparelConsumed?.();
+                    return;
+                }
+                const fileData = await imageUrlToimageData(item.imageUrl);
+                if (cancelled) return;
+
+                setWardrobe(prev => (
+                    prev.some(w => w.id === item.id)
+                        ? prev
+                        : [{
+                            id: item.id,
+                            url: item.imageUrl,
+                            fileData,
+                            category: item.category,
+                            isWhiteBackground: item.isWhiteBackground
+                        }, ...prev].slice(0, 20)
+                ));
+                setClosetItems(getApparel());
+                setOpenSections(prev => new Set(prev).add('apparel'));
+
+                // 第 2 段：沒有模特兒但有選定的 IP，就拿它當底圖。
+                const { models, activeModelId } = useModelStore.getState();
+                const activeModel = models.find((m: any) => m.id === activeModelId);
+                if (!baseImage && activeModel?.imageUrl) {
+                    try {
+                        const modelData = await imageUrlToimageData(activeModel.imageUrl);
+                        if (!cancelled) {
+                            await analyzeAndLockModel({ url: activeModel.imageUrl, fileData: modelData });
+                            setIncomingApparelNote(`已把「${item.name}」放進下方衣櫥，模特兒帶入了目前的 IP「${activeModel.name}」。點衣櫥裡那件即可試穿。`);
+                        }
+                    } catch (e) {
+                        console.warn('帶入當前 IP 當底圖失敗', e);
+                        if (!cancelled) setIncomingApparelNote(`已把「${item.name}」放進下方衣櫥。請先選擇模特兒或上傳照片，再點那件衣服試穿。`);
+                    }
+                } else if (!baseImage) {
+                    // 第 3 段：兩者都沒有。服裝已在衣櫥，不會遺失。
+                    setIncomingApparelNote(`已把「${item.name}」放進下方衣櫥。請先選擇模特兒或上傳照片，再點那件衣服試穿。`);
+                } else {
+                    setIncomingApparelNote(`已把「${item.name}」放進下方衣櫥。點它即可試穿。`);
+                }
+            } catch (e) {
+                console.error('載入送來的服裝失敗', e);
+                if (!cancelled) setError('載入送來的服裝失敗，請到個人衣櫥手動選取。');
+            } finally {
+                if (!cancelled) onInitialApparelConsumed?.();
+            }
+        })();
+
+        return () => { cancelled = true; };
+        // baseImage 刻意不列入依賴：這個效果只該在「收到新的 initialApparelId」時跑一次，
+        // 由 consumedApparelRef 把關。把 baseImage 放進來會讓它在載入底圖後又跑一遍。
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [initialApparelId]);
 
     const handleBaseImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
@@ -517,7 +628,13 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
         }
     };
 
-    const handleApplyApparel = useCallback(async (apparelImage: { data: string; mimeType: string }, category: string, safeMode: boolean = false) => {
+    /**
+     * `skipBgRemoval`（2026-08-09，企劃案 A-3／5-4）：素材已是白底平拍圖時跳過 AI 去背。
+     * 手動上傳的圖一律維持 false（背景什麼樣子只有使用者知道）；
+     * 只有服裝設計產出的平拍圖會帶 true —— 它在生成時就被要求 #FFFFFF 底，
+     * 再去背一次等於讓模型把乾淨的圖重繪一遍，白白耗損品質。
+     */
+    const handleApplyApparel = useCallback(async (apparelImage: { data: string; mimeType: string }, category: string, safeMode: boolean = false, skipBgRemoval: boolean = false) => {
         setError(null); 
         const currentLookUrl = generatedLook || baseImage?.url;
         if (!currentLookUrl) {
@@ -533,7 +650,8 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
                 id: `item-${Date.now()}`,
                 url: imageUrl,
                 fileData: apparelImage,
-                category
+                category,
+                isWhiteBackground: skipBgRemoval || undefined
             };
             setWardrobe(prev => [newItem, ...prev].slice(0, 20)); // Keep last 20 items
         }
@@ -558,6 +676,7 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
                 resolution: quality === 'ultra' ? '4K' : '2K' as '2K' | '4K',
                 aspectRatio: targetAspectRatio,
                 isFirstTime,
+                skipBgRemoval,
                 tuckStatus: category.toLowerCase().includes('上衣') || category.toLowerCase().includes('top') ? tuckStatus : undefined,
                 lightingPreset,
                 isGhostMode,
@@ -582,7 +701,33 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
         } finally {
             setIsLoading(false);
         }
-    }, [baseImage, faceAnchor, generatedLook, setGeneratedLook, quality, targetAspectRatio, affectedCategories, wardrobe, tuckStatus]);
+        // 2026-08-09：補上 lightingPreset / isGhostMode 兩個依賴。
+        // 它們在上面的 config 裡被讀取，卻不在依賴陣列裡——使用者改了燈光或幽靈模式後，
+        // 這個 callback 仍會送出舊值，直到其他依賴變動才「突然生效」。
+    }, [baseImage, faceAnchor, generatedLook, setGeneratedLook, quality, targetAspectRatio, affectedCategories, wardrobe, tuckStatus, lightingPreset, isGhostMode]);
+
+    /**
+     * 2026-08-09（企劃案 A-3／5-3）：從個人衣櫥挑一件來試穿。
+     *
+     * 分類的取法刻意有優先序：使用者在上方挑過 VTO 分類就用那個（他最清楚要穿在哪一層），
+     * 沒挑過才退回素材自己記錄的 category。兩者都沒有就擋下來並提示，
+     * 而不是猜一個分類送出去 —— 分類錯了會讓保護區域算錯，是會毀圖的。
+     */
+    const handleApplyFromCloset = useCallback(async (item: StoredApparelItem) => {
+        setError(null);
+        const category = selectedVtoCategory || item.category;
+        if (!category || category === 'unknown' || category === 'model-shot') {
+            setError('請先在上方選擇服飾類別，再從衣櫥挑選單品。');
+            return;
+        }
+        try {
+            const fileData = await imageUrlToimageData(item.imageUrl);
+            await handleApplyApparel(fileData, category, true, item.isWhiteBackground === true);
+        } catch (e) {
+            console.error('讀取衣櫥素材失敗', e);
+            setError('讀取衣櫥素材失敗，該圖可能已被刪除。');
+        }
+    }, [selectedVtoCategory, handleApplyApparel]);
 
     const handleRestoreIdentity = async () => {
         if (!generatedLook || !faceAnchor) return;
@@ -1022,25 +1167,93 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
                                             }}
                                         />
                                         
+                                        {/* 2026-08-09（企劃案 A-3／5-2）：從服裝設計送過來的提示。
+                                            重點在最後一句「服裝已在衣櫥」——舊做法塞圖失敗就沒了，
+                                            使用者無從得知衣服去哪了。 */}
+                                        {incomingApparelNote && (
+                                            <div className="mt-4 p-3 rounded-lg bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/30 flex items-start justify-between gap-3">
+                                                <p className="text-[11px] text-[var(--color-text-main)] leading-relaxed">{incomingApparelNote}</p>
+                                                <button
+                                                    onClick={() => setIncomingApparelNote(null)}
+                                                    className="text-[10px] text-[var(--color-text-dim)] hover:text-[var(--color-gold)] font-bold shrink-0"
+                                                >
+                                                    知道了
+                                                </button>
+                                            </div>
+                                        )}
+
                                         {wardrobe.length > 0 && (
                                             <div className="mt-4">
                                                 <label className="block text-[11px] font-bold text-[var(--color-text-dim)] mb-3 uppercase tracking-widest">我的視覺衣櫥 (Wardrobe)</label>
                                                 <div className="grid grid-cols-4 gap-2">
                                                     {wardrobe.map(item => (
-                                                        <button 
-                                                            key={item.id}
-                                                            onClick={() => handleApplyApparel(item.fileData, item.category, true)}
-                                                            className="relative aspect-[3/4] rounded-lg overflow-hidden border border-white/10 hover:border-[var(--color-gold)] transition-all group"
-                                                        >
-                                                            <img src={item.url} className="w-full h-full object-cover" />
-                                                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                                                                <span className="text-[8px] font-bold text-white uppercase">試穿</span>
-                                                            </div>
-                                                        </button>
+                                                        <div key={item.id} className="relative group">
+                                                            <button
+                                                                onClick={() => handleApplyApparel(item.fileData, item.category, true, item.isWhiteBackground === true)}
+                                                                className="relative w-full aspect-[3/4] rounded-lg overflow-hidden border border-white/10 hover:border-[var(--color-gold)] transition-all"
+                                                            >
+                                                                <img src={item.url} className="w-full h-full object-cover" />
+                                                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                                                    <span className="text-[8px] font-bold text-white uppercase">試穿</span>
+                                                                </div>
+                                                            </button>
+                                                            {/* 反向跳轉（企劃案 5-1）：試穿完覺得「酒紅色會更好」，跳去服裝設計改，改完再跳回來。 */}
+                                                            {onAdvancedEdit && (
+                                                                <button
+                                                                    onClick={() => onAdvancedEdit(item.url, 'apparel')}
+                                                                    title="拿去服裝設計改顏色／改風格"
+                                                                    className="absolute top-1 right-1 px-1.5 py-0.5 rounded bg-black/70 text-[8px] font-bold text-white opacity-0 group-hover:opacity-100 hover:bg-[var(--color-gold)] hover:text-black transition-all"
+                                                                >
+                                                                    改設計
+                                                                </button>
+                                                            )}
+                                                        </div>
                                                     ))}
                                                 </div>
                                             </div>
                                         )}
+
+                                        {/* 2026-08-09（企劃案 A-3／5-3）：個人衣櫥＝**次級入口**。
+                                            預設收合、放在手動上傳與本次 session 衣櫥之後，
+                                            刻意不搶版面（Hank 明定：手動上傳維持主位）。 */}
+                                        <div className="mt-4 pt-4 border-t border-white/5">
+                                            <button
+                                                onClick={() => {
+                                                    setIsClosetOpen(prev => {
+                                                        if (!prev) setClosetItems(getApparel());
+                                                        return !prev;
+                                                    });
+                                                }}
+                                                className="text-[10px] font-bold text-[var(--color-text-dim)] hover:text-[var(--color-gold)] uppercase tracking-widest transition-colors flex items-center gap-2"
+                                            >
+                                                <span>{isClosetOpen ? '▾' : '▸'}</span>
+                                                或從個人衣櫥挑之前存過的（{closetItems.length}）
+                                            </button>
+
+                                            {isClosetOpen && (
+                                                closetItems.length > 0 ? (
+                                                    <div className="grid grid-cols-4 gap-2 mt-3">
+                                                        {closetItems.map(item => (
+                                                            <button
+                                                                key={item.id}
+                                                                onClick={() => handleApplyFromCloset(item)}
+                                                                title={item.name}
+                                                                className="relative aspect-[3/4] rounded-lg overflow-hidden border border-white/10 hover:border-[var(--color-gold)] transition-all group"
+                                                            >
+                                                                <AsyncImage src={item.imageUrl} className="w-full h-full object-cover" />
+                                                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                                                    <span className="text-[8px] font-bold text-white uppercase px-1 text-center leading-tight">{item.name}</span>
+                                                                </div>
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                ) : (
+                                                    <p className="mt-3 text-[10px] text-[var(--color-text-dim)] leading-relaxed">
+                                                        個人衣櫥還是空的。在「服裝設計」生成後按「儲存衣櫥」，或按平拍圖上的「拿去試穿」，就會出現在這裡。
+                                                    </p>
+                                                )
+                                            )}
+                                        </div>
                                     </>
                                 )}
                             </div>

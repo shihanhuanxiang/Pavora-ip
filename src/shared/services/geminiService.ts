@@ -5,7 +5,7 @@ import { EGEN_ANALYSIS_PROMPT, EGEN_STYLE_DEF_PROMPT, EGEN_COPYWRITING_PROMPT } 
 import { REELS_VIDEO_PROMPT, SOCIAL_COPY_PROMPT, CAMPAIGN_STRATEGY_PROMPT } from "../../prompts/marketing";
 import { SCENE_ANALYSIS_PROMPT, buildSceneCompositionPrompt, DETAIL_TUNE_PROMPT } from "../../prompts/scene";
 import { getGeminiClient, confirmPaidFeature, ensureAuthorized, getImagenUsage } from "./core/geminiClient";
-import { buildApparelBasePrompt, PACKSHOT_SUFFIX, MODEL_FRONT_SUFFIX, MODEL_BACK_SUFFIX, ANALYZE_APPAREL_PROMPT } from "../../prompts/apparel";
+import { buildApparelBasePrompt, buildApparelRedesignPrompt, PACKSHOT_SUFFIX, MODEL_FRONT_SUFFIX, MODEL_BACK_SUFFIX, ANALYZE_APPAREL_PROMPT } from "../../prompts/apparel";
 import { buildSalonPrompt, STYLE_ANALYSIS_PROMPT, STYLIST_FEEDBACK_PROMPT } from "../../prompts/hair";
 import { PCPE_DIAGNOSIS_PROMPT, PCPE_CARDS_PROMPT, PCPE_OPTIONS_PROMPT, buildPCPEPosterPrompt } from "../../prompts/pcpe";
 import { buildOptimizationPrompt, REALISM_ANALYSIS_PROMPT } from "../../prompts/optimization";
@@ -355,7 +355,12 @@ export const generateApparelDesignSequence = async (params: any, config: any, on
         ...params,
         customBrandStyle: await ensureEnglishPrompt(params.customBrandStyle, 'a fashion brand aesthetic description')
     };
-    const basePrompt = buildApparelBasePrompt(safeParams);
+    // 2026-08-09（企劃案 A-2／AD-1）：有參考圖走 img2img 指令，沒有才走「從零設計」。
+    // 兩者不可共用 —— 從零設計的規格書配上一張沒有說明的圖，等於叫模型自由發揮。
+    const hasReferenceImage = !!(params.referenceImage && params.referenceImage.data);
+    const basePrompt = hasReferenceImage
+        ? buildApparelRedesignPrompt(safeParams)
+        : buildApparelBasePrompt(safeParams);
     const refs = params.faceReferences || [];
     
     const generateOne = async (suffix: string, faceRefs: any[]) => {

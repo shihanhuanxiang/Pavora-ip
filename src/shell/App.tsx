@@ -109,6 +109,20 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
     return saved ? JSON.parse(saved) : null;
   });
 
+  /**
+   * 2026-08-09（企劃案 A-3／5-2）：服裝設計送往試衣間的「服裝槽」通道。
+   *
+   * 與 `editingImage` 是**兩條完全不同的路**，不可混用：
+   * - `editingImage` → 試衣間的 `initialImage` → **模特兒槽**（會跑 analyzeAndLockModel 抓臉）
+   * - `pendingApparelId` → 試衣間的 `initialApparelId` → **服裝槽**（放進衣櫥，不碰模特兒）
+   *
+   * 這裡存的是個人衣櫥的 id 而不是圖片本身：服裝在跳轉前就已經入庫，
+   * 就算導覽出任何問題，那件衣服都還在衣櫥裡（舊做法是直接塞圖，塞失敗就沒了）。
+   */
+  const [pendingApparelId, setPendingApparelId] = useState<string | null>(() => {
+    return sessionStorage.getItem('pavora_pending_apparel_id');
+  });
+
   const [isQuotaModalVisible, setQuotaModalVisible] = useState(false);
   const [imagenUsage, setImagenUsage] = useState(0);
   const [paidModalConfig, setPaidModalConfig] = useState<{ isOpen: boolean; resolve?: (v: boolean) => void } | null>(null);
@@ -184,6 +198,14 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
     }
   }, [editingImage]);
 
+  useEffect(() => {
+    if (pendingApparelId) {
+      sessionStorage.setItem('pavora_pending_apparel_id', pendingApparelId);
+    } else {
+      sessionStorage.removeItem('pavora_pending_apparel_id');
+    }
+  }, [pendingApparelId]);
+
   const toggleTheme = useCallback(() => setIsDarkMode(prev => !prev), []);
   const handlePaidConfirm = () => { if (paidModalConfig?.resolve) paidModalConfig.resolve(true); setPaidModalConfig(null); };
   const handlePaidCancel = () => { if (paidModalConfig?.resolve) paidModalConfig.resolve(false); setPaidModalConfig(null); };
@@ -250,6 +272,20 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
         setIsTransitioning(false);
     }
   }, [handleNavigate, addNotification]);
+
+  /**
+   * 2026-08-09（企劃案 A-2／AD-4＋A-3／5-2）：把一件**已經入庫**的服裝送進試衣間。
+   *
+   * 刻意做的兩件事：
+   * 1. `setEditingImage(null)` —— 跳轉不碰模特兒槽。sessionStorage 裡可能還留著
+   *    上一次編輯的圖，不清掉的話那張舊圖會被當成模特兒載入，正是這次要修的病。
+   * 2. 只傳 id，不傳圖。圖已經在個人衣櫥（IndexedDB），試衣間自己去讀。
+   */
+  const handleSendApparelToFittingRoom = useCallback((apparelId: string) => {
+    setEditingImage(null);
+    setPendingApparelId(apparelId);
+    handleNavigate('fitting_room');
+  }, [handleNavigate]);
 
   const handleModelSelect = useCallback((model: any, destination: string) => {
     setSelectedModel(model);
@@ -337,9 +373,9 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
       // 2026-08-04（企劃案 D-2）：不再傳 masterTaxonomy / apparelStructure。
       // 試衣間裡它們唯一的用途是餵給從未被渲染的 vtoStructure 死碼，已一併移除。
       // 服裝設計（APPAREL_DESIGN）與個人衣櫥仍需要，維持原樣。
-      case WorkflowStep.VIRTUAL_FITTING_ROOM: return <VirtualFittingRoom {...navProps} onAdvancedEdit={handleAdvancedEdit} initialImage={editingImage} />;
+      case WorkflowStep.VIRTUAL_FITTING_ROOM: return <VirtualFittingRoom {...navProps} onAdvancedEdit={handleAdvancedEdit} initialImage={editingImage} initialApparelId={pendingApparelId} onInitialApparelConsumed={() => setPendingApparelId(null)} />;
       case WorkflowStep.PERSONAL_WARDROBE: return <PersonalWardrobe onGoHome={handleGoHome} apparelStructure={apparelStructure} />;
-      case WorkflowStep.APPAREL_DESIGN: return <ApparelDesign onGoHome={handleGoHome} onAdvancedEdit={handleAdvancedEdit} masterTaxonomy={masterTaxonomy} apparelStructure={apparelStructure} />;
+      case WorkflowStep.APPAREL_DESIGN: return <ApparelDesign onGoHome={handleGoHome} onAdvancedEdit={handleAdvancedEdit} onSendApparelToFittingRoom={handleSendApparelToFittingRoom} initialImage={editingImage} onInitialImageConsumed={() => setEditingImage(null)} masterTaxonomy={masterTaxonomy} apparelStructure={apparelStructure} />;
       case WorkflowStep.HAIR_SALON: return <HairAndMakeupStudio onGoHome={handleGoHome} initialImage={editingImage} onContinueEditing={handleAdvancedEdit} />;
       // 改用 currentModel：Header 換 IP 後場景轉移要跟著換人
       case WorkflowStep.SCENE_GENERATION: return <SceneGeneration onGoHome={handleGoHome} initialImage={editingImage} onContinueEditing={handleAdvancedEdit} selectedModel={currentModel} />;

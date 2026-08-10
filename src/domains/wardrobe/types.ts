@@ -32,7 +32,14 @@ export interface WardrobeOutfit {
 }
 export type OutfitV2 = WardrobeOutfit;
 
-export interface WardrobeItem { id: string; name: string; imageUrl: string; category: string; schemaVersion?: string; analysis?: any; tags?: string[]; color?: string; }
+/**
+ * `isWhiteBackground`（2026-08-09，企劃案 A-3／5-4 修重複去背）：
+ * 這張圖已經是白底平拍圖，試衣間套用時可以跳過 AI 去背那一步。
+ * 服裝設計產出的平拍圖本來就被要求 `#FFFFFF` 底（`prompts/apparel.ts` 的 PACKSHOT_SUFFIX），
+ * 再跑一次去背等於讓模型把乾淨的圖重繪一遍，白白耗損品質。
+ * 沒有這個旗標（undefined）＝維持原本行為，一律去背。
+ */
+export interface WardrobeItem { id: string; name: string; imageUrl: string; category: string; schemaVersion?: string; analysis?: any; tags?: string[]; color?: string; isWhiteBackground?: boolean; }
 export type StoredApparelItem = WardrobeItem;
 
 export interface OutfitPreset { id: string; label: string; prompt: string; category: string; gender: 'male' | 'female'; }
