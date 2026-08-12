@@ -51,6 +51,9 @@ import ExpandIcon from '../../shared/assets/icons/ExpandIcon';
 // 2026-08-05（企劃案 B-8 步驟 2）：代言人改由 useModelStore 提供，useBrandStore 不再需要。
 import { useModelStore } from '../../shared/stores/useModelStore';
 import AsyncImage from '../../shared/components/common/AsyncImage';
+// 2026-08-12（企劃案 A-5 / PR-G2）：沿用 A-4 抽出的共用頁籤元件（`variant="dark"` 是本輪新增的暗色系）。
+// ⛔ 不要在本檔另寫一份頁籤——A-4 抽元件的全部意義就是避免「改一個顏色要改四個地方」。
+import TabBar from '../../shared/components/common/TabBar';
 import { useNotification } from '../../shared/context/NotificationContext';
 
 interface SceneGenerationProps {
@@ -176,8 +179,25 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
     const [selectedResults, setSelectedResults] = useState<Set<string>>(new Set());
     const [isRegenerating, setIsRegenerating] = useState<string | null>(null);
 
-    // Collapsible Sections State
-    const [openSections, setOpenSections] = useState<Set<string>>(new Set(['subject']));
+    /**
+     * 2026-08-12（企劃案 A-5 / PR-G2）：手風琴 → 排他頁籤。
+     *
+     * 改版前是 `openSections: Set<string>`（可同時展開多區）＋ CSS `max-height` 收合，
+     * 三個區塊的 DOM 永遠常駐。現在改成一次只顯示一區、切走即卸載。
+     *
+     * 🪦 連帶移除的是**頂部進度條**（原 `steps` 陣列與 header 裡的 Step Indicator）。
+     * 理由：改頁籤後兩者顯示的是同一件事，還多一份要同步的狀態；
+     * 頁籤標籤自己帶編號，順序感就有了。第 ④ 步「執行融合」不需要指示器——
+     * **常駐的生成鈕本身就是**。順帶解決「四格進度條對三個區塊」的尷尬。
+     */
+    type SceneTab = 'subject' | 'background' | 'settings';
+    const [activeTab, setActiveTab] = useState<SceneTab>('subject');
+
+    const SCENE_TABS = [
+        { key: 'subject' as const, label: '① 模特兒與身份' },
+        { key: 'background' as const, label: '② 場景姿勢' },
+        { key: 'settings' as const, label: '③ 畫質比例' },
+    ];
 
     const MODEL_ANGLES = [
         { id: 'front', label: '正面主鏡', en: 'Front cinematic view' },
@@ -185,22 +205,6 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
         { id: 'selfie_high', label: '生活自拍(高)', en: 'High-angle POV selfie' },
         { id: 'selfie_pov', label: '第一人稱親密', en: 'First-person intimate POV' }
     ];
-
-    const steps = [
-        { id: 'subject', label: '上傳角色', completed: !!originalBaseImage },
-        { id: 'background', label: '場景配置', completed: !!(background || backgroundImage) },
-        { id: 'settings', label: '參數微調', completed: !!(pose && expression) },
-        { id: 'generate', label: '執行融合', completed: !!currentImage }
-    ];
-
-    const toggleSection = (sectionId: string) => {
-        setOpenSections(prev => {
-            const next = new Set(prev);
-            if (next.has(sectionId)) next.delete(sectionId);
-            else next.add(sectionId);
-            return next;
-        });
-    };
     
     const fileInputRef = useRef<HTMLInputElement>(null);
     const backgroundFileInputRef = useRef<HTMLInputElement>(null);
@@ -854,34 +858,8 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                         <span className="text-[9px] uppercase tracking-[0.5em] text-[var(--color-gold)] font-light">Scene Transfer Studio</span>
                     </div>
 
-                    {/* Step Indicator */}
-                    <div className="flex items-center gap-2 md:gap-4">
-                        {steps.map((step, idx) => (
-                            <React.Fragment key={step.id}>
-                                <div className="flex flex-col items-center gap-1">
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all duration-500 ${
-                                        openSections.has(step.id) 
-                                            ? 'border-[var(--color-gold)] bg-[var(--color-gold)] text-black shadow-[0_0_15px_rgba(212,175,55,0.4)]' 
-                                            : step.completed 
-                                                ? 'border-[var(--color-gold)] text-[var(--color-gold)] bg-[var(--color-gold)]/10' 
-                                                : 'border-gray-800 text-gray-600'
-                                    }`}>
-                                        {step.completed && !openSections.has(step.id) ? (
-                                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
-                                        ) : (
-                                            <span className="text-xs font-bold">{idx + 1}</span>
-                                        )}
-                                    </div>
-                                    <span className={`text-[9px] font-bold uppercase tracking-widest ${openSections.has(step.id) ? 'text-[var(--color-gold)]' : 'text-gray-600'}`}>
-                                        {step.label}
-                                    </span>
-                                </div>
-                                {idx < steps.length - 1 && (
-                                    <div className={`w-4 md:w-8 h-[2px] mb-4 transition-colors duration-500 ${step.completed ? 'bg-[var(--color-gold)]/50' : 'bg-gray-800'}`}></div>
-                                )}
-                            </React.Fragment>
-                        ))}
-                    </div>
+                    {/* 🪦 2026-08-12（A-5）：頂部四格進度條已移除。見上方 activeTab 的說明。
+                        要「現在做到哪」的訊息，看左欄頁籤（標籤自帶 ①②③）與常駐生成鈕即可。 */}
 
                     <div className="flex items-center gap-4">
                         <div className="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
@@ -900,22 +878,27 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <div className="lg:col-span-4 flex flex-col gap-6">
-                    {/* 1. 模特兒與身份 */}
+                {/* 2026-08-12（A-5）：pb-28 是給下方 sticky 生成鈕的留白。
+                    這是 2026-08-01 PR-A 踩過的坑（sticky 遮住底部內容），沿用同一個解法。 */}
+                <div className="lg:col-span-4 flex flex-col gap-6 pb-28">
+                    <TabBar
+                        tabs={SCENE_TABS}
+                        active={activeTab}
+                        onChange={setActiveTab}
+                        layoutId="scene-generation-tab-glare"
+                        variant="dark"
+                    />
+
+                    {/* ① 模特兒與身份 */}
+                    {activeTab === 'subject' && (
                     <Card className="p-0 overflow-hidden border-gray-800/50 hover:border-[var(--color-gold)]/30 transition-all duration-500">
-                        <div 
-                            role="button"
-                            tabIndex={0}
-                            onClick={() => toggleSection('subject')}
-                            onKeyDown={(e) => e.key === 'Enter' && toggleSection('subject')}
-                            className={`w-full flex justify-between items-center p-5 cursor-pointer transition-all duration-500 ${openSections.has('subject') ? 'bg-[var(--color-gold)]/5 text-black' : 'bg-transparent text-gray-400 hover:bg-white/5'}`}
-                        >
+                        <div className="w-full flex justify-between items-center p-5 bg-[var(--color-gold)]/5">
                             <div className="flex items-center gap-4">
-                                <div className={`w-10 h-10 rounded-lg flex items-center justify-center border transition-all duration-500 ${openSections.has('subject') ? 'bg-[var(--color-gold)] border-[var(--color-gold)] text-black' : 'bg-gray-900 border-gray-800 text-gray-500'}`}>
+                                <div className="w-10 h-10 rounded-lg flex items-center justify-center border bg-[var(--color-gold)] border-[var(--color-gold)] text-black">
                                     <PhotoIcon className="w-5 h-5" />
                                 </div>
                                 <div className="text-left">
-                                    <h3 className={`text-sm font-bold tracking-[0.15em] uppercase ${openSections.has('subject') ? 'text-[var(--color-gold)]' : 'text-gray-300'}`}>
+                                    <h3 className="text-sm font-bold tracking-[0.15em] uppercase text-[var(--color-gold)]">
                                         01. 模特兒與身份
                                     </h3>
                                     <p className="text-[9px] text-gray-500 uppercase tracking-widest mt-0.5">Subject & Identity Lock</p>
@@ -923,20 +906,19 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                             </div>
                             <div className="flex items-center gap-3 mr-4">
                                 {isMatrixMode && (
-                                    <button 
-                                        onClick={(e) => { e.stopPropagation(); handleClearModelMatrix(); }}
+                                    <button
+                                        onClick={handleClearModelMatrix}
                                         className="text-[9px] text-red-500 hover:text-red-400 uppercase font-bold transition-colors"
                                     >
                                         清空矩陣
                                     </button>
                                 )}
-                                <span className={`transition-transform duration-500 ${openSections.has('subject') ? 'rotate-180 text-[var(--color-gold)]' : 'text-gray-600'}`}>
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                                </span>
                             </div>
                         </div>
 
-                        <div className={`collapsible-content ${openSections.has('subject') ? 'open p-6' : ''}`}>
+                        {/* 2026-08-12（A-5）：`collapsible-content` 改成條件 render（切走即卸載）。
+                            ⚠️ `index.html` 的全域 `.collapsible-content` CSS **不可刪**——虛擬試衣間還在用它。 */}
+                        <div className="p-6">
                             {isMatrixMode ? (
                                 <div className="space-y-6 mb-6">
                                     <label className="block text-[10px] font-bold text-gray-500 mb-3 uppercase tracking-[0.2em]">多角度矩陣上傳 (虛擬試衣間模式)</label>
@@ -1040,7 +1022,19 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                 </div>
                             ) : (
                                 <div className="mb-6">
-                                    <label className="block text-[10px] font-bold text-gray-500 mb-3 uppercase tracking-[0.2em]">選擇品牌代言人 (鎖定面部)</label>
+                                    {/* 2026-08-12（企劃案 C-03-03：三種身份輸入管道沒收成一個區塊）。
+                                        這一頁其實有三個管道，但過去各自散著、沒有任何說明，
+                                        使用者看不出它們的關係與優先序。這裡不動控制項本身，
+                                        只補上「身份來源①②③」的分層與一句話說明。 */}
+                                    <div className="mb-4 pb-3 border-b border-gray-800">
+                                        <p className="text-[11px] font-bold text-[var(--color-gold)] uppercase tracking-[0.2em]">身份來源</p>
+                                        <p className="text-[9px] text-gray-500 mt-1 leading-relaxed">
+                                            以下三個管道擇一即可。選代言人最快（同時鎖臉＋自動帶入底圖）。
+                                        </p>
+                                    </div>
+                                    <label className="block text-[10px] font-bold text-gray-500 mb-3 uppercase tracking-[0.2em]">
+                                        ① 選品牌代言人（鎖定面部，並自動帶入為底圖）
+                                    </label>
                                     <div className="grid grid-cols-4 gap-2 mb-4">
                                         {ambassadors.map(ambassador => (
                                             <button 
@@ -1056,12 +1050,16 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                                 )}
                                             </button>
                                         ))}
-                                        <button 
+                                        {/* ⚠️ 2026-08-12（03-03）：這顆按鈕過去只寫「＋上傳」，但它開的是
+                                            `faceAnchorInputRef`——上傳的是**臉部錨點**，不是新增一位代言人。
+                                            標籤照舊會讓人以為能在這裡加代言人（代言人只能從 IP 休息室晉升）。 */}
+                                        <button
                                             onClick={() => faceAnchorInputRef.current?.click()}
+                                            title="上傳一張臉部照片當身份錨點（不會新增代言人；代言人請到 IP 休息室晉升）"
                                             className="aspect-square rounded-xl border-2 border-dashed border-gray-800 flex flex-col items-center justify-center text-gray-500 hover:border-[var(--color-gold)] hover:text-[var(--color-gold)] transition-all bg-black/20"
                                         >
                                             <span className="text-xl mb-1">+</span>
-                                            <span className="text-[8px] font-bold uppercase tracking-widest">上傳</span>
+                                            <span className="text-[8px] font-bold uppercase tracking-widest leading-tight text-center">上傳<br/>臉部</span>
                                         </button>
                                     </div>
                                 </div>
@@ -1077,11 +1075,16 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                                 <div className="w-16 h-16 rounded-full bg-gray-900 border border-gray-800 flex items-center justify-center mb-4 group-hover:border-[var(--color-gold)] group-hover:bg-[var(--color-gold)]/5 transition-all duration-500">
                                                     <PhotoIcon className="w-8 h-8 text-gray-600 group-hover:text-[var(--color-gold)] transition-colors" />
                                                 </div>
-                                                <span className="text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em] group-hover:text-gray-300 transition-colors">上傳人物照片 (作為主角錨點)</span>
+                                                <span className="text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em] group-hover:text-gray-300 transition-colors">② 上傳人物照片（作為主角底圖）</span>
                                             </div>
                                         )}
-                                        <div className="absolute top-3 right-3 w-20 h-20 bg-black border border-[var(--color-gold)]/50 rounded-xl shadow-2xl overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300" onClick={() => faceAnchorInputRef.current?.click()}>
-                                            {faceAnchor ? <AsyncImage src={faceAnchor.url} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-[9px] text-[var(--color-gold)] text-center p-2 font-bold uppercase tracking-widest leading-tight">臉部<br/>鎖定</div>}
+                                        {/* ③（進階）只換臉部錨點：底圖維持上面那張，但生圖時用這張臉。 */}
+                                        <div
+                                            className="absolute top-3 right-3 w-20 h-20 bg-black border border-[var(--color-gold)]/50 rounded-xl shadow-2xl overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300"
+                                            title="③ 進階：只替換臉部錨點。底圖維持左側那張，生圖時用這張臉。"
+                                            onClick={() => faceAnchorInputRef.current?.click()}
+                                        >
+                                            {faceAnchor ? <AsyncImage src={faceAnchor.url} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-[9px] text-[var(--color-gold)] text-center p-2 font-bold uppercase tracking-widest leading-tight">③ 臉部<br/>錨點</div>}
                                         </div>
                                     </div>
                                 )}
@@ -1196,32 +1199,26 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                             </div>
                         </div>
                     </Card>
-                    {/* 2. 場景、姿勢與表情 */}
+                    )}
+
+                    {/* ② 場景、姿勢與表情 */}
+                    {activeTab === 'background' && (
                     <Card className="p-0 overflow-hidden border-gray-800/50 hover:border-[var(--color-gold)]/30 transition-all duration-500">
-                        <div 
-                            role="button"
-                            tabIndex={0}
-                            onClick={() => toggleSection('background')}
-                            onKeyDown={(e) => e.key === 'Enter' && toggleSection('background')}
-                            className={`w-full flex justify-between items-center p-5 cursor-pointer transition-all duration-500 ${openSections.has('background') ? 'bg-[var(--color-gold)]/5 text-black' : 'bg-transparent text-gray-400 hover:bg-white/5'}`}
-                        >
+                        <div className="w-full flex justify-between items-center p-5 bg-[var(--color-gold)]/5">
                             <div className="flex items-center gap-4">
-                                <div className={`w-10 h-10 rounded-lg flex items-center justify-center border transition-all duration-500 ${openSections.has('background') ? 'bg-[var(--color-gold)] border-[var(--color-gold)] text-black' : 'bg-gray-900 border-gray-800 text-gray-500'}`}>
+                                <div className="w-10 h-10 rounded-lg flex items-center justify-center border bg-[var(--color-gold)] border-[var(--color-gold)] text-black">
                                     <SceneTransferIcon className="w-5 h-5" />
                                 </div>
                                 <div className="text-left">
-                                    <h3 className={`text-sm font-bold tracking-[0.15em] uppercase ${openSections.has('background') ? 'text-[var(--color-gold)]' : 'text-gray-300'}`}>
+                                    <h3 className="text-sm font-bold tracking-[0.15em] uppercase text-[var(--color-gold)]">
                                         02. 場景、姿勢與表情
                                     </h3>
                                     <p className="text-[9px] text-gray-500 uppercase tracking-widest mt-0.5">Environment & Pose</p>
                                 </div>
                             </div>
-                            <span className={`transition-transform duration-500 ${openSections.has('background') ? 'rotate-180 text-[var(--color-gold)]' : 'text-gray-600'}`}>
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </span>
                         </div>
 
-                        <div className={`collapsible-content ${openSections.has('background') ? 'open p-6' : ''}`}>
+                        <div className="p-6">
                             <div className="flex justify-end mb-4">
                                 <button onClick={handleRandomize} className="p-1.5 rounded-full bg-[var(--color-bg-input)] border border-[var(--color-gold)]/40 text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-black transition-all duration-300" title="隨機生成場景配置"><DiceIcon className="w-4 h-4" /></button>
                             </div>
@@ -1455,33 +1452,26 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                             </div>
                         </div>
                     </Card>
+                    )}
 
-                    {/* 3. 渲染品質與比例 */}
+                    {/* ③ 渲染品質與比例 */}
+                    {activeTab === 'settings' && (
                     <Card className="p-0 overflow-hidden border-gray-800/50 hover:border-[var(--color-gold)]/30 transition-all duration-500">
-                        <div 
-                            role="button"
-                            tabIndex={0}
-                            onClick={() => toggleSection('settings')}
-                            onKeyDown={(e) => e.key === 'Enter' && toggleSection('settings')}
-                            className={`w-full flex justify-between items-center p-5 cursor-pointer transition-all duration-500 ${openSections.has('settings') ? 'bg-[var(--color-gold)]/5 text-black' : 'bg-transparent text-gray-400 hover:bg-white/5'}`}
-                        >
+                        <div className="w-full flex justify-between items-center p-5 bg-[var(--color-gold)]/5">
                             <div className="flex items-center gap-4">
-                                <div className={`w-10 h-10 rounded-lg flex items-center justify-center border transition-all duration-500 ${openSections.has('settings') ? 'bg-[var(--color-gold)] border-[var(--color-gold)] text-black' : 'bg-gray-900 border-gray-800 text-gray-500'}`}>
+                                <div className="w-10 h-10 rounded-lg flex items-center justify-center border bg-[var(--color-gold)] border-[var(--color-gold)] text-black">
                                     <TuneIcon className="w-5 h-5" />
                                 </div>
                                 <div className="text-left">
-                                    <h3 className={`text-sm font-bold tracking-[0.15em] uppercase ${openSections.has('settings') ? 'text-[var(--color-gold)]' : 'text-gray-300'}`}>
+                                    <h3 className="text-sm font-bold tracking-[0.15em] uppercase text-[var(--color-gold)]">
                                         03. 渲染品質與比例
                                     </h3>
                                     <p className="text-[9px] text-gray-500 uppercase tracking-widest mt-0.5">Quality & Aspect Ratio</p>
                                 </div>
                             </div>
-                            <span className={`transition-transform duration-500 ${openSections.has('settings') ? 'rotate-180 text-[var(--color-gold)]' : 'text-gray-600'}`}>
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </span>
                         </div>
 
-                        <div className={`collapsible-content ${openSections.has('settings') ? 'open p-6' : ''}`}>
+                        <div className="p-6">
                             <div className="space-y-6">
                                 <div className="grid grid-cols-2 gap-4">
                                     <Select label={
@@ -1529,10 +1519,24 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                             </div>
                         </div>
                     </Card>
+                    )}
 
-                    <Button onClick={() => handleGenerate()} isLoading={isLoading} disabled={!originalBaseImage} className="w-full text-xl py-5 shadow-2xl tracking-widest uppercase btn-primary">
-                        <SparklesIcon className="w-6 h-6 mr-2" /> 執行場景融合
-                    </Button>
+                    {/* 2026-08-12（A-5）：生成鈕改 sticky——切到任何一個頁籤都看得到它。
+                        它同時取代了原本進度條的第 ④ 格「執行融合」。
+                        外層 `pb-28` 是配套的防遮擋留白（PR-A 踩過的坑）。 */}
+                    {/* ⚠️ sticky 底欄**必須有不透明底**。第一版只寫 `sticky bottom-4` 沒有背景，
+                        Chrome 實測（2026-08-12）下方內容會從按鈕後面透出來，看起來像壞掉。
+                        補 `bg + backdrop-blur + border-t`，讓它讀起來是一條浮動操作列。 */}
+                    <div className="sticky bottom-0 z-30 mt-auto -mx-1 px-1 pt-3 pb-3 bg-[var(--color-bg-deep)]/95 backdrop-blur-md border-t border-[var(--color-border)]">
+                        <Button onClick={() => handleGenerate()} isLoading={isLoading} disabled={!originalBaseImage} className="w-full text-xl py-5 shadow-2xl tracking-widest uppercase btn-primary">
+                            <SparklesIcon className="w-6 h-6 mr-2" /> 執行場景融合
+                        </Button>
+                        {!originalBaseImage && (
+                            <p className="mt-2 text-center text-[10px] text-[var(--color-text-dim)]">
+                                請先到「① 模特兒與身份」選一位代言人或上傳人物照片。
+                            </p>
+                        )}
+                    </div>
                 </div>
 
                 {/* 右側：結果預覽與核心控制列 */}
