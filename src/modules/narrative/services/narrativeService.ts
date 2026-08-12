@@ -345,11 +345,21 @@ const injectHandOccupation = (outfit: OutfitV2): string => {
         return outfit.hand_occupation.left_hand || "one hand holding phone";
     } else if (roll < 0.65) { // 5% 雙手忙
         return outfit.hand_occupation.both_busy ? "both hands occupied with items" : "carrying bags in both hands";
-    } else if (roll < 0.9) { // 25% 自然狀態
+    } else { // 35% 自然狀態
         return "hands in natural relaxed pose";
-    } else { // 10% 極致細節
-        return "extreme close-up on fingers touching a texture";
     }
+    /**
+     * 2026-08-13（企劃案 I-2）：**移除原本 10% 的「極致細節」分支**。
+     *
+     * 它原本回傳 `extreme close-up on fingers touching a texture`——
+     * 這句話會被 LLM 讀成「這張是特寫」，直接改寫掉整張圖的景別。
+     * 第三關 29 張抽樣裡的大頭照與看不到衣服的半身照就是它造成的：
+     * 服裝審美判斷需要全身，一張手指特寫等於整張作廢。
+     *
+     * 這個分支不是「偶爾來點變化」那麼無害——它跟 PAVORA 的主要用途
+     * （看清楚衣服）**直接衝突**，而且沒有任何地方擋得住它。
+     * 要做手部特寫請走獨立的景別選項，不要藏在機率引擎裡。
+     */
 };
 
 /**
@@ -1245,6 +1255,55 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
     // 3. V1.1 Layered Prompt Composition
     const finalVisualPrompt = buildFinalVisualPromptV11(model, sceneContext, outfit, targetTier, options);
 
+    /**
+     * 2026-08-13（企劃案 I-1／I-2／I-3）：三個「強制值」，給下方的提示詞模板與生成後的回檢共用。
+     *
+     * 背景：`finalVisualPrompt` 只是塞給 LLM 的**建議值**，LLM 重寫成五個模塊時
+     * 想不採用就不採用，而事後只有 `[Lighting]` 與 `[Apparel]` 兩道回檢。
+     * 場景、景別、表情三條過去完全裸奔——第三關 29 張抽樣裡場景被換掉、
+     * 大頭照、手遮臉全部源於此。
+     */
+    /**
+     * ⚠️ `{subject}` **不可以**在這裡展開成 `buildSubjectToken(model)`。
+     * 場景的 promptSkeleton 多半長成 `{subject} in a seamless pure white studio...`，
+     * 展開後整段人物描述（年齡、髮色、眼型…）會被寫進 `[Environment]`，
+     * 而人物本來就由 `[Subject]` 負責——2026-08-13 第一次實測就踩到這個。
+     * 這裡只要地點，主體用中性代稱帶過。
+     */
+    const sceneEnforceText = String(
+        (sceneContext as any)?.promptSkeleton || (sceneContext as any)?.prompt_skeleton || ''
+    ).replace(/\{subject\}/g, 'the subject').trim();
+
+    /**
+     * 服裝生成一律預設全身：PAVORA 的主要用途是看清楚衣服，不是通用預設。
+     *
+     * ⚠️ 2026-08-13 第二次修正：初版只寫「全身＋佔畫面 60-75%」，
+     * 結果四張圖全變成正面站定、置中、雙手下垂的證件照式構圖——**畫面死掉了**。
+     * 景別要鎖，但**站位、重心、與環境的互動不能一起鎖死**，否則人物會像貼上去的。
+     * 另外要明講參考圖只用於臉部識別：img2img 的來源是一張正面站姿定妝照，
+     * 不講清楚，模型會連姿勢一起抄。
+     */
+    const DEFAULT_FRAMING_EN = 'full-length shot, head to toe in frame, shoes visible, subject occupies 55-80% of frame height';
+    // 這段**無論 LLM 有沒有寫景別都要加**：它管的是「畫面活不活」，不是景別。
+    const CAMERA_ALWAYS_EN = 'subject may walk, lean, shift weight or interact with elements of the location rather than standing centred and static, off-centre composition allowed, the reference image supplies facial identity only and its pose, framing and background must not be copied';
+    const povModes: string[] = Array.isArray((sceneContext as any)?.pov_modes) ? (sceneContext as any).pov_modes : [];
+    // `pov_modes` 過去從未進過提示詞（企劃案 I-2）。只當視角提示，不覆蓋景別。
+    const sceneFramingHint = povModes.length > 0 ? `（視角可參考：${povModes.join(' / ')}）` : '';
+
+    const expressionStyleEn = model.visualConstants?.expressionStyle?.trim();
+    const handsIdle = /relax|natural|自然|放鬆/i.test(
+        `${outfit.hand_occupation?.left_hand || ''} ${outfit.hand_occupation?.right_hand || ''}`
+    ) || (!outfit.hand_occupation?.left_hand && !outfit.hand_occupation?.right_hand);
+    const expressionEnforceText = [
+        expressionStyleEn
+            ? `表情必須是「${expressionStyleEn}」`
+            : '表情自然收斂、可有細微變化，但不得誇張大笑、張大嘴或戲劇性驚訝',
+        handsIdle
+            ? '手可以自然垂放、碰觸衣物或身旁物件，但**絕不可遮住或疊在臉上**'
+            : '手部只做上方「道具/手部狀態」指定的動作，不得額外加戲',
+        '姿勢不可每張都相同：可走動、倚靠、重心偏移、與場景物件互動，不要正面站定置中'
+    ].join('；');
+
     // 有寵物時，偶爾在場景描述加入寵物（15% 機率，限居家場景）
     let petNote = '';
     const pet = model.worldAnchors?.pet;
@@ -1324,11 +1383,17 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
 3. 提示詞架構 (Visual Prompt):
    - 核心提示詞預設值: ${finalVisualPrompt}
    - 你必須產出英文提示詞，並將其拆分為以下模塊格式：
-     [Subject]: (包含生理寫實細節)
+     [Subject]: (包含生理寫實細節；表情與手部依下方硬性規定，不得自行加戲)
      [Apparel]: (包含本次指定的完整穿搭)
-     [Environment]: (包含 ${effectiveCity} 的場景碎屑與雜訊)
+     [Environment]: (**必須忠實重述下方指定場景，不得換地點**，只能補 ${effectiveCity} 的場景碎屑與雜訊)
      [Lighting]: (包含對應天氣與 Tier 的光影語法)
-     [Camera]: (包含對應 Tier 的攝影機設定與術語)
+     [Camera]: (**必須寫明景別**，見下方硬性規定；再加對應 Tier 的攝影機設定與術語)
+4. 硬性規定 (這四條優先於上面任何敘事考量):
+   - 指定場景（不可更換）: ${sceneEnforceText || '（本次未指定場景，可自由發揮）'}
+   - 景別: ${DEFAULT_FRAMING_EN}；${CAMERA_ALWAYS_EN}${sceneFramingHint}
+   - 環境: [Environment] 必須寫得具體有血肉——地面材質、牆面、光的落點、現場雜物與縱深；人物要**站在這個空間裡**（接地陰影、光向一致、景深銜接），不是貼在背景前面
+   - 臉部: 臉必須完整可見不被遮擋，手不得放在臉上或擋住五官。
+   - 表情與手部: ${expressionEnforceText}
 
 [輸出要求]
 請直接回傳一個符合以下格式的 JSON 字串，不要有任何 Markdown 標籤：
@@ -1373,6 +1438,43 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
                 ? data.contentCategory 
                 : fallbackCategory;
 
+        /**
+         * 2026-08-13（企劃案 I-1／I-2）：**先把五個模塊正規化成「一段一行」**，再跑所有回檢。
+         *
+         * 這是一個既有 bug，不是本輪新增的：`ensurePromptSection` 與 `repairApparelSection`
+         * 都是**逐行比對**（`split('\n')` 再找開頭是 `[Apparel]:` 的那一行），
+         * 但 LLM 有時把五個模塊**全部寫在同一行**。此時：
+         *   - `findIndex` 全部回傳 -1
+         *   - 兩道回檢都走「找不到 → 追加一行」的分支
+         *   - 結果同一個模塊出現兩次，內容還可能互相打架
+         * 2026-08-13 實測就抓到 `[Environment]` 與 `[Camera]` 各出現兩次。
+         *
+         * 正規化順手做兩件事：同名模塊合併、依固定順序輸出。
+         * 只處理英文版（那才是送去生圖的）；ZH 是顯示層，維持原樣。
+         */
+        const SECTION_ORDER = ['Subject', 'Apparel', 'Environment', 'Lighting', 'Camera'] as const;
+        const normalizeVisualPromptSections = (promptValue: unknown): string => {
+            const text = typeof promptValue === 'string' ? promptValue.trim() : '';
+            if (!text) return text;
+            const re = /\[(Subject|Apparel|Environment|Lighting|Camera)\]\s*[:：]/gi;
+            const hits = Array.from(text.matchAll(re));
+            if (hits.length < 2) return text;
+            const bucket = new Map<string, string[]>();
+            hits.forEach((m, i) => {
+                const start = (m.index ?? 0) + m[0].length;
+                const end = i + 1 < hits.length ? (hits[i + 1].index ?? text.length) : text.length;
+                const key = m[1].charAt(0).toUpperCase() + m[1].slice(1).toLowerCase();
+                const body = text.slice(start, end).trim().replace(/^[,;、]\s*/, '').replace(/[\s,;]+$/, '');
+                if (!body) return;
+                if (!bucket.has(key)) bucket.set(key, []);
+                bucket.get(key)!.push(body);
+            });
+            const out = SECTION_ORDER
+                .filter(k => bucket.has(k))
+                .map(k => `[${k}]: ${bucket.get(k)!.join(', ')}`);
+            return out.length >= 2 ? out.join('\n') : text;
+        };
+
         const ensurePromptSection = (
             promptValue: unknown,
             sectionPattern: RegExp,
@@ -1415,7 +1517,7 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
         const cityEn = TAIWAN_COUNTY_EN_MAP[effectiveCity];
         const cityClause = cityEn ? ` typical of ${cityEn}` : '';
         const repairedVisualPrompt = ensurePromptSection(
-            data.visualPrompt,
+            normalizeVisualPromptSections(data.visualPrompt),
             /^\s*(\[Lighting\]|【Lighting】|Lighting)\s*[:：]/im,
             `[Lighting]: natural ${weatherEn} light${cityClause}, realistic ambient shadows, no studio lighting`,
             /^\s*(\[Camera\]|【Camera】|Camera)\s*[:：]/im
@@ -1464,7 +1566,110 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
             return `${promptText}\n${apparelFallbackLine}`;
         };
 
-        const repairedApparelVisualPrompt = repairApparelSection(repairedVisualPrompt);
+        /**
+         * 2026-08-13（企劃案 I-1）：`[Environment]` 強制回檢 —— **覆寫，不是補寫**。
+         *
+         * 場景是使用者明確點選的，沒有讓 LLM 改的理由。過去這一段完全沒有回檢，
+         * 於是 LLM 會跟著事件文字／`primaryCity`／`weather` 走，把指定的
+         * 「乾冰薄霧逆光棚」寫成霓虹街頭。做法：把 scene 的 promptSkeleton 放在該段最前面，
+         * 由它決定「這是哪裡」。
+         *
+         * ⚠️ 2026-08-13 第二次修正：初版把 LLM 原本寫的環境描述降級成
+         * 「incidental local texture」尾巴，結果背景只剩下場景骨架那一句
+         * （「a white-cube gallery space with wooden floors」之類），**背景整個變空、
+         * 人物像貼上去的拼貼**。場景骨架是給「地點正確性」用的，不是給「畫面豐富度」用的——
+         * LLM 寫的場景碎屑要**平權保留**，它才是背景的血肉。
+         * 另外補一段融合語句：接地陰影、光向與色溫一致、景深銜接。
+         * 沒有這段，全身人像放在一個平坦背景前就是去背貼圖的長相。
+         */
+        const SCENE_INTEGRATION_EN = 'the subject is physically present within this location, grounded with contact shadows where the feet meet the surface, light on the subject matching the ambient direction and colour temperature of the location, natural depth of field with the background falling off behind the subject, foreground and mid-ground elements of the location partially overlapping or framing the subject, absolutely not a cut-out or composited or pasted-on look';
+        const enforceEnvironmentSection = (promptText: string) => {
+            if (!sceneEnforceText) return promptText;
+            const isEnvLine = (line: string) =>
+                /^\s*(\[Environment\]|【Environment】|Environment|\[環境\]|【環境】|環境)\s*[:：]/i.test(line.trim());
+            const lines = promptText.split('\n');
+            const idx = lines.findIndex(isEnvLine);
+            const enforced = `[Environment]: ${sceneEnforceText}, ${SCENE_INTEGRATION_EN}`;
+            if (idx < 0) {
+                const apparelIdx = lines.findIndex(line =>
+                    /^\s*(\[Apparel\]|【Apparel】|Apparel)\s*[:：]/i.test(line.trim()));
+                if (apparelIdx >= 0) { lines.splice(apparelIdx + 1, 0, enforced); return lines.join('\n'); }
+                return `${promptText}\n${enforced}`;
+            }
+            /**
+             * 場景骨架在前（決定「這是哪裡」），LLM 寫的環境描述**平權接在後面**
+             * （決定「這裡長什麼樣、有什麼雜訊」），融合語句收尾。
+             * 不要降級 LLM 那段——降級的結果就是空背景（2026-08-13 實測）。
+             */
+            const llmEnv = lines[idx]
+                .replace(/^\s*\[?[^\]:：]*\]?\s*[:：]\s*/, '')
+                .trim()
+                .replace(/[\s,;.]+$/, '');
+            lines[idx] = llmEnv
+                ? `[Environment]: ${sceneEnforceText}, ${llmEnv}, ${SCENE_INTEGRATION_EN}`
+                : enforced;
+            return lines.join('\n');
+        };
+
+        /**
+         * 2026-08-13（企劃案 I-2）：`[Camera]` 景別強制。
+         * 模板過去對景別隻字未提，`pov_modes` 也從未進過提示詞，所以景別是純隨機。
+         * 這裡只補「沒寫景別」的情況，不覆蓋 LLM 已經寫對的全身景別。
+         */
+        const FRAMING_KEYWORDS = /full[- ]length|full[- ]body|head to toe|wide shot|three[- ]quarter (length|shot)|cowboy shot/i;
+        const enforceCameraSection = (promptText: string) => {
+            const isCamLine = (line: string) =>
+                /^\s*(\[Camera\]|【Camera】|Camera)\s*[:：]/i.test(line.trim());
+            const lines = promptText.split('\n');
+            const idx = lines.findIndex(isCamLine);
+            if (idx < 0) return `${promptText}\n[Camera]: ${DEFAULT_FRAMING_EN}, ${CAMERA_ALWAYS_EN}`;
+            // 景別：LLM 已經寫對就不覆蓋；沒寫才補。
+            if (!FRAMING_KEYWORDS.test(lines[idx])) {
+                lines[idx] = `${lines[idx].trim().replace(/[\s,;.]+$/, '')}, ${DEFAULT_FRAMING_EN}`;
+            }
+            // 反呆板：永遠補（除非已經有了）。這段與景別無關，不能被上面的 early return 吃掉。
+            if (!/off-centre composition allowed/i.test(lines[idx])) {
+                lines[idx] = `${lines[idx].trim().replace(/[\s,;.]+$/, '')}, ${CAMERA_ALWAYS_EN}`;
+            }
+            return lines.join('\n');
+        };
+
+        /**
+         * 2026-08-13（企劃案 I-3）：`[Subject]` 表情與手部強制。
+         * `visualConstants.expressionStyle` 與 `hand_occupation` 過去都只是建議值，
+         * LLM 把日記的「微情緒」延伸成誇張表情與手遮臉的動作，沒有任何地方擋得住。
+         */
+        /**
+         * ⚠️ 2026-08-13 第二次修正：初版無條件寫死「calm neutral expression」＋
+         * 「hands relaxed at the sides, no added gestures」，結果四張圖的表情與姿勢
+         * **完全一樣**，變成證件照。
+         *
+         * 這一關要擋的是「臉被擋住」與「誇張到不能用」，**不是要把人變成假人**。
+         * 規則改成：只設下限（不遮臉、不要誇張到失真），不設上限（不指定唯一表情），
+         * 且未指定手部時只禁止「擋住臉的手勢」，不禁止所有手勢。
+         */
+        const enforceSubjectSection = (promptText: string) => {
+            const guards: string[] = ['face fully visible and unobstructed', 'hands away from the face'];
+            if (expressionStyleEn) guards.push(`expression must be ${expressionStyleEn}`);
+            else guards.push('a natural understated expression with subtle variation, no exaggerated laughing, no wide-open mouth, no theatrical surprise');
+            if (handsIdle) guards.push('hands may rest naturally, touch the garment or a nearby surface, but must never cover or overlap the face');
+            const lines = promptText.split('\n');
+            const idx = lines.findIndex(line =>
+                /^\s*(\[Subject\]|【Subject】|Subject)\s*[:：]/i.test(line.trim()));
+            const missing = guards.filter(g => !promptText.toLowerCase().includes(g.toLowerCase().slice(0, 18)));
+            if (missing.length === 0) return promptText;
+            const text = missing.join(', ');
+            if (idx >= 0) { lines[idx] = `${lines[idx].trim()}, ${text}`; return lines.join('\n'); }
+            return `[Subject]: ${text}\n${promptText}`;
+        };
+
+        const repairedApparelVisualPrompt = enforceSubjectSection(
+            enforceCameraSection(
+                enforceEnvironmentSection(
+                    repairApparelSection(repairedVisualPrompt)
+                )
+            )
+        );
         // Stage B equivalence: runPromptPipeline enforce mode wraps the same
         // sanitizePromptText call sanitizeFinalPrompt aliases.
         // Stage 1b: enforce now also strips Chinese (full-English rule); the
