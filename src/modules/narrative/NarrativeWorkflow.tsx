@@ -973,6 +973,9 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         mountain:['mountain_outdoor', 'rural_field'],
         culture: ['temple_old_town', 'festival_event'],
         home:    ['home_cozy'],
+        // 2026-08-12（階段 6）：新增「模特兒攝影」。婚紗／旗袍／Cosplay 共 140 筆的唯一落點。
+        // ⚠️ 漏了這一行，新場合的卡片在 Step1 的分類篩選下**根本不會出現**（企劃案 A-1 陷阱 4）。
+        photoshoot: ['model_photoshoot'],
     };
 
     const refreshRandomCards = React.useCallback(() => {
@@ -1663,6 +1666,9 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         { label: '山林田野', value: 'mountain' },
                                                         { label: '文化廟町', value: 'culture' },
                                                         { label: '居家日常', value: 'home' },
+                                                        // 2026-08-12（階段 6）：與 STEP1_CATEGORY_CONTEXTS 的 photoshoot 對應。
+                                                        // 兩處必須同時存在——少了 chip 使用者選不到，少了對應表選了也篩不出東西。
+                                                        { label: '模特兒攝影', value: 'photoshoot' },
                                                     ] as Array<{label: string; value: string | null}>).map(c => (
                                                         <button key={String(c.value)}
                                                             onClick={() => setPickerCategory(c.value)}

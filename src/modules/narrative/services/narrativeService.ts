@@ -1167,6 +1167,28 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
         lowerEvent.includes("花東") || lowerEvent.includes("池上") ||
         lowerEvent.includes("縱谷")
     ) contextId = "rural_field";
+    /**
+     * 2026-08-12（企劃案 A-1／階段 6）：新增 `model_photoshoot`「模特兒攝影」。
+     *
+     * 這是這批 140 筆服裝（婚紗／旗袍／Cosplay）唯一的落點。Hank 2026-08-12 拍板用**一個**
+     * 攝影場合取代原本規劃的三個（婚禮／傳統節慶／Cosplay 攝影棚），理由是：
+     * IP 穿婚紗出現在「婚禮」→ 她是新娘，得編故事；出現在「外拍」→ 她就是在拍照的模特兒，
+     * 那正是她的真實身分。
+     *
+     * ⚠️ 位置刻意放在 `festival_event` **之前**：
+     * 「廟會」「市集」等字樣會先被 festival 抓走，而「攝影」「外拍」不會與它衝突；
+     * 但放在最後那個包山包海的 `urban_street` 分支之後就永遠輪不到（它會先吃掉「街」）。
+     *
+     * ⚠️ 這段邏輯在本檔**有第二份拷貝**（`previewShootConfig` 附近，約 2180 行起）。
+     * 改這裡就要一起改那裡，否則預覽與實際產出會用不同的判斷。
+     */
+    else if (
+        lowerEvent.includes("外拍") || lowerEvent.includes("棚拍") ||
+        lowerEvent.includes("攝影棚") || lowerEvent.includes("攝影") ||
+        lowerEvent.includes("寫真") || lowerEvent.includes("拍攝") ||
+        lowerEvent.includes("婚紗照") || lowerEvent.includes("平面模特") ||
+        lowerEvent.includes("試鏡") || lowerEvent.includes("走秀")
+    ) contextId = "model_photoshoot";
     else if (
         lowerEvent.includes("音樂祭") || lowerEvent.includes("市集") ||
         lowerEvent.includes("藝術節") || lowerEvent.includes("演唱會") ||
@@ -1585,7 +1607,10 @@ export const generateRandomEventWithScene = (model: Model): { text: string; scen
     }
     const scene = effectivePool[Math.floor(Math.random() * effectivePool.length)];
     
-    const sceneTextForContext = `${scene.category || ""} ${(scene as any).context_id || ""} ${scene.name_zh || ""} ${scene.event || ""} ${scene.city || ""}`;
+    // 2026-08-12 修：這行原本讀 `(scene as any).context_id`，但**場景的欄位名是 `scene_context_id`**
+    // （`domains/scene/types.ts`），所以那一段字串永遠是空的——這個推斷少吃了一個訊號源，
+    // 是企劃案 A-1 節「順帶抓到一個 bug」那條。保留舊欄位當 fallback，萬一有資料真的用舊名。
+    const sceneTextForContext = `${scene.category || ""} ${(scene as any).scene_context_id || (scene as any).context_id || ""} ${scene.name_zh || ""} ${scene.event || ""} ${scene.city || ""}`;
 
     const pickOne = (items: string[]) => items[Math.floor(Math.random() * items.length)];
 
@@ -2178,7 +2203,11 @@ export const previewShootConfig = (
     // Context inference from eventText
     const lower = eventText.toLowerCase();
     let contextId = 'urban_street';
-    if (scene.depth_module_id === 1 || /家|宅|房間|沙發|床|廚房|陽台|窩/.test(lower)) contextId = 'home_cozy';
+    // 2026-08-12（階段 6）：`model_photoshoot` 必須放在**最前面的判斷群**裡。
+    // 這是上面那份主流程邏輯的第二份拷貝（企劃案 A-1 陷阱 2：三份獨立拷貝，改一份不會同步）。
+    // 「攝影」「外拍」與其他關鍵字不衝突，但放在後面會被 `逛`／`廟` 之類的寬鬆條件先攔走。
+    if (/外拍|棚拍|攝影棚|攝影|寫真|拍攝|婚紗照|平面模特|試鏡|走秀/.test(lower)) contextId = 'model_photoshoot';
+    else if (scene.depth_module_id === 1 || /家|宅|房間|沙發|床|廚房|陽台|窩/.test(lower)) contextId = 'home_cozy';
     else if (/上班|公司|會議|辦公|開會|工作/.test(lower)) contextId = 'office_pro';
     else if (/逛|買|購物|超商|便利|百貨/.test(lower)) contextId = 'shopping_random';
     else if (/咖啡廳|咖啡店|咖啡|下午茶|brunch|甜點店/.test(lower)) contextId = 'cafe_aesthetic';
