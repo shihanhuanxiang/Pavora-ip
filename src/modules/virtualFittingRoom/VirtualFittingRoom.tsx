@@ -292,7 +292,12 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
                         ? prev
                         : [{
                             id: item.id,
-                            url: item.imageUrl,
+                            // ⚠️ 這裡**不能**直接用 `item.imageUrl`。個人衣櫥存的是 `idb://` URL，
+                            // 而下方衣櫥格子是普通的 `<img src>`（不是 AsyncImage），
+                            // 瀏覽器不認識 idb:// → 顯示破圖。2026-08-09 Chrome 實測抓到
+                            // （naturalWidth=0、complete=true）。統一用剛才已經讀出來的 fileData 組 data URL，
+                            // 與 handleApplyApparel 建立衣櫥項目的方式一致。
+                            url: `data:${fileData.mimeType};base64,${fileData.data}`,
                             fileData,
                             category: item.category,
                             isWhiteBackground: item.isWhiteBackground

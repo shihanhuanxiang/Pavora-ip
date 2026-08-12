@@ -856,7 +856,19 @@ const FantasySeries: React.FC<FantasySeriesProps> = ({ onGoHome, initialImage, o
                         </div>
                         {generatedImage && (
                             <div className="mt-4 p-4 bg-[var(--color-bg-surface)]/80 backdrop-blur-md flex flex-wrap justify-center gap-4 border-t border-[var(--color-border)]">
-                                <Button onClick={() => { downloadImage(generatedImage, `pavora_fantasy_${Date.now()}.jpg`, 'FantasySeries'); alert('已儲存並下載至作品集！'); }} variant="light">儲存作品</Button>
+                                {/* 2026-08-10（企劃案 C-03-02，就是這一行被點名的）：真的入庫。
+                                    改版前只 downloadImage 然後跳「已儲存並下載至作品集！」，
+                                    `savePortfolioItem` 有 import、零呼叫端 —— 作品庫裡什麼都沒有。 */}
+                                <Button onClick={async () => {
+                                    downloadImage(generatedImage, `pavora_fantasy_${Date.now()}.jpg`, 'FantasySeries');
+                                    try {
+                                        await savePortfolioItem({ imageUrl: generatedImage, sourceModule: 'FantasySeries' });
+                                        alert('已成功儲存至作品庫並下載！');
+                                    } catch (e) {
+                                        console.error('入庫失敗', e);
+                                        alert('已下載，但存入作品庫失敗，請稍後再試。');
+                                    }
+                                }} variant="light">儲存作品</Button>
                                 <Button onClick={handleDownload} variant="secondary" className="flex items-center gap-2"><DownloadIcon className="w-4 h-4" /> 下載 JPG</Button>
                                 <Button onClick={() => setPreviewingImage(generatedImage)} variant="secondary" className="flex items-center gap-2"><ExpandIcon className="w-4 h-4" /> 放大</Button>
                                 <Button onClick={() => onContinueEditing(generatedImage, 'scene')} variant="secondary" className="border-[var(--color-gold)] text-[var(--gold-color)]">前往場景轉移 &rarr;</Button>

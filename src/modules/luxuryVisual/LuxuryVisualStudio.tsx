@@ -417,14 +417,26 @@ const LuxuryVisualStudio: React.FC<LuxuryVisualStudioProps> = ({ onGoHome, initi
                                 <div className="mt-8 p-6 bg-[var(--color-bg-deep)]/80 backdrop-blur-2xl rounded-xl flex flex-wrap justify-center gap-6 border border-[var(--color-border)] sticky bottom-4 z-10 shadow-2xl">
                                     <Button onClick={() => setIsPreviewOpen(true)} variant="secondary" className="px-10"><ExpandIcon className="w-5 h-5 mr-2" /> 放大</Button>
                                     <Button onClick={() => downloadImage(resultUrl, `pavora_${Date.now()}.jpg`, 'LuxuryVisual')} variant="light" className="px-10"><DownloadIcon className="w-5 h-5 mr-2" /> 下載</Button>
+                                    {/* 2026-08-10（企劃案 C-03-02）：真的入庫。改版前只下載卻回報
+                                        「已成功儲存並下載至作品集」，`savePortfolioItem` 有 import、零呼叫端。 */}
                                     <Button onClick={async () => {
                                         const { addNotification } = useNotificationStore.getState();
                                         downloadImage(resultUrl, `pavora_luxury_${Date.now()}.jpg`, 'LuxuryVisual');
-                                        addNotification({
-                                            type: 'success',
-                                            title: '儲存成功',
-                                            message: '已成功儲存並下載至作品集！'
-                                        });
+                                        try {
+                                            await savePortfolioItem({ imageUrl: resultUrl, sourceModule: 'LuxuryVisual' });
+                                            addNotification({
+                                                type: 'success',
+                                                title: '儲存成功',
+                                                message: '已成功儲存至作品庫並下載！'
+                                            });
+                                        } catch (e) {
+                                            console.error('入庫失敗', e);
+                                            addNotification({
+                                                type: 'warning',
+                                                title: '只完成下載',
+                                                message: '已下載，但存入作品庫失敗，請稍後再試。'
+                                            });
+                                        }
                                     }} variant="secondary">儲存至資產庫</Button>
                                 </div>
                             </div>

@@ -95,10 +95,24 @@ const MacroCraftStudio: React.FC<MacroCraftStudioProps> = ({ onGoHome }) => {
         }
     };
 
+    /**
+     * 2026-08-10（企劃案 C-03-02「對使用者說謊」等級）：真的把圖存進作品庫。
+     *
+     * 改版前這裡**只下載**，然後跳「已成功儲存並下載至作品集！」——
+     * `savePortfolioItem` 有 import 但**零呼叫端**。使用者以為存了，作品庫裡什麼都沒有。
+     * 同一個病在 `FantasySeries` / `LuxuryVisualStudio` / `StyleAnchorStudio` 也各有一份（本輪一併修）。
+     * 失敗時改口說「只下載了，入庫失敗」，不要繼續謊報成功。
+     */
     const handleSave = async () => {
         if (resultUrl) {
             downloadImage(resultUrl, `macro_craft_${Date.now()}.jpg`, 'MacroCraft');
-            alert('已成功儲存並下載至作品集！');
+            try {
+                await savePortfolioItem({ imageUrl: resultUrl, sourceModule: 'MacroCraft' });
+                alert('已成功儲存至作品庫並下載！');
+            } catch (e) {
+                console.error('入庫失敗', e);
+                alert('已下載，但存入作品庫失敗，請稍後再試。');
+            }
         }
     };
 

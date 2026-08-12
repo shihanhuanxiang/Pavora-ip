@@ -95,15 +95,27 @@ const StyleAnchorStudio: React.FC<StyleAnchorStudioProps> = ({ onGoHome }) => {
         }
     };
 
+    // 2026-08-10（企劃案 C-03-02）：真的入庫。改版前只下載卻回報「已儲存至作品集」，
+    // `savePortfolioItem` 有 import、零呼叫端。同病四處，本輪一併修。
     const handleSave = async () => {
         if (resultUrl) {
             downloadImage(resultUrl, `style_anchor_${Date.now()}.jpg`, 'StyleAnchor');
             const { addNotification } = useNotificationStore.getState();
-            addNotification({
-                type: 'success',
-                title: '儲存成功',
-                message: '已成功儲存並下載至作品集！'
-            });
+            try {
+                await savePortfolioItem({ imageUrl: resultUrl, sourceModule: 'StyleAnchor' });
+                addNotification({
+                    type: 'success',
+                    title: '儲存成功',
+                    message: '已成功儲存至作品庫並下載！'
+                });
+            } catch (e) {
+                console.error('入庫失敗', e);
+                addNotification({
+                    type: 'warning',
+                    title: '只完成下載',
+                    message: '已下載，但存入作品庫失敗，請稍後再試。'
+                });
+            }
         }
     };
 

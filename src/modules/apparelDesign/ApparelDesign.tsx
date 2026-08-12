@@ -59,7 +59,9 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onSendApparelTo
   const { masterTaxonomy: hookTaxonomy, apparelStructure: hookStructure, loading: taxonomyLoading } = useTaxonomy();
   const masterTaxonomy = propTaxonomy || hookTaxonomy;
   const apparelStructure = propStructure || hookStructure;
-  const isDataReady = (propTaxonomy && propStructure) || (!taxonomyLoading && masterTaxonomy.length > 0);
+  // 🪦 2026-08-10：`isDataReady` 隨上方「預設分類」死碼一併移除——它唯一的讀取端就是那段。
+  // （順帶記錄它為什麼靠不住：`(propTaxonomy && propStructure)` 對**空陣列**也是 true，
+  //  所以它會在資料其實還沒到的時候就回報 ready。要復用請先修這點。）
 
   const [taxonomyEntry, setTaxonomyEntry] = useState<TaxonomyEntry | null>(null);
 
@@ -83,17 +85,24 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onSendApparelTo
       matchedTaxonomyName?: string | null;
   } | null>(null);
 
-  // 2026-08-09（企劃案 D-6）：預設分類**只在沒有參考圖時**套用。
-  //
-  // 舊寫法無條件把 `tops_tee_01` 填進去，於是「上傳一件洋裝」的指令照樣寫
-  // `Item Type: T-Shirt`，與附圖直接矛盾 —— 這是 D-6「表單驗證形同虛設」的實際後果。
-  // 有參考圖時分類交給 AD-2 的自動分析決定；分析不出來就維持 null，
-  // 由 `handleGenerate` 退回中性的「Reference Design」，不再謊報。
-  React.useEffect(() => {
-      if (isDataReady && !taxonomyEntry && !referenceImage && masterTaxonomy.length > 0) {
-          setTaxonomyEntry(masterTaxonomy.find(item => item.id === 'tops_tee_01') || null);
-      }
-  }, [isDataReady, masterTaxonomy, taxonomyEntry, referenceImage]);
+  /**
+   * 🪦 2026-08-10：**移除「預設分類」那段死碼**（企劃案 D-6 的診斷有誤，實查記錄在
+   *    `盤點_C軌_2026-08-01/B8_看圖驗收_結果_2026-08-10.md` 第三節）。
+   *
+   * 舊碼是 `masterTaxonomy.find(item => item.id === 'tops_tee_01')`。
+   * 實查 `masterTaxonomy` 有 512 筆，**id 全部帶變體後綴**（`tops_tee_01-v0`／`-v1`…），
+   * 所以那個 find **永遠是 undefined** —— 預設值從來沒生效過。
+   *
+   * 因此 D-6 說的「上傳洋裝卻寫 Item Type: T-Shirt」在現行版本不會發生：
+   * 沒選分類時 `handleGenerate` 走的是中性的 `Reference Design`。
+   *
+   * 實際的問題是另一個：一進本頁分類為空、「開始生成設計」是 disabled，
+   * 而畫面沒有任何說明，使用者只覺得「按不動」。
+   * → 死碼移除，改在生成鈕下方明講要先做什麼（見下方 needsInput 提示）。
+   *
+   * ⚠️ 想恢復預設分類的人請注意：要比對的是**帶後綴的 id**，
+   *    而且那樣做等於自動幫使用者選一件他沒挑的衣服 —— 先確認這是想要的行為。
+   */
 
   const [quality, setQuality] = useState<QualityLevel>('standard');
   const [lockToAmbassador, setLockToAmbassador] = useState(false);
@@ -686,6 +695,15 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onSendApparelTo
                     </>
                 )}
             </motion.button>
+
+            {/* 2026-08-10：按鈕 disabled 時明講原因。
+                在此之前完全沒有提示——一進本頁按鈕就是灰的（預設分類那段是死碼，見上方墓碑），
+                使用者只會覺得「按不動」而不知道要先選分類。 */}
+            {!taxonomyEntry && !referenceImage && !isLoading && (
+                <p className="text-[11px] text-[var(--color-text-dim)] text-center leading-relaxed -mt-2">
+                    請先在上方選一個服裝分類，或上傳一張參考圖（上傳後會自動辨識分類）。
+                </p>
+            )}
           </div>
           
           {/* Right Panel: Results */}
