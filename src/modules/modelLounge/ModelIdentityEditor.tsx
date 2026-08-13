@@ -17,6 +17,36 @@ interface ModelIdentityEditorProps {
     onClose: () => void;
 }
 
+/**
+ * 2026-08-13（企劃案 D-11）：`toneOfVoice` / `coreVibe` 由自由文字改為受控詞彙下拉。
+ *
+ * 為什麼要改：這兩個欄位在下游是要查 `TONE_OF_VOICE_EN_MAP` / `CORE_VIBE_EN_MAP` 的，
+ * 查不到就退回中文原值、再被 `runPromptPipeline` 的 enforce 整段清空——
+ * **不會報錯，資訊直接消失**（同 D-9 的病根）。
+ * 改版前 ModelSetup 的靈魂人設 tab 用的是受控 `<Select>`，那個入口在 B-4b 被移除後，
+ * 這裡就成了唯一入口，卻是自由文字。
+ *
+ * ⚠️ 原生 `<option>` 的底色在部分平台吃不到 author CSS（PITFALLS 第 12 節），
+ * 所以用 inline style 明寫深色底＋淺色字，不能只靠 class。
+ */
+const CONTROLLED_SELECT_CLASS =
+    'w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:border-[var(--color-gold)] outline-none appearance-none cursor-pointer';
+const OPTION_STYLE: React.CSSProperties = { backgroundColor: '#151515', color: '#eaeaea' };
+
+/**
+ * 舊資料保護：既有 IP 可能存著不在受控清單裡的自由文字（改版前手打的）。
+ * 直接換成下拉會讓 `value` 對不到任何 option，React 會顯示成空白，
+ * 使用者一存檔就把原本的值洗掉。這裡把既有值補成一個額外選項，明確標示它不在標準清單內。
+ */
+const renderLegacyOption = (
+    current: string | undefined,
+    options: ReadonlyArray<{ value: string; label: string }>
+) => {
+    const v = (current || '').trim();
+    if (!v || options.some(o => o.value === v)) return null;
+    return <option value={v} style={OPTION_STYLE}>{`${v}（既有自訂值，建議改選標準詞彙）`}</option>;
+};
+
 const ModelIdentityEditor: React.FC<ModelIdentityEditorProps> = ({ model, onClose }) => {
     const { updateModel } = useModelStore();
     const { addNotification } = useNotification();
@@ -336,21 +366,31 @@ const ModelIdentityEditor: React.FC<ModelIdentityEditorProps> = ({ model, onClos
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
                                     <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest text-[9px]">主力語氣 (Tone)</label>
-                                    <input 
-                                        placeholder="例如: 溫柔, 疏離"
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[var(--color-gold)] outline-none"
+                                    <select
+                                        className={CONTROLLED_SELECT_CLASS}
                                         value={formData.persona.toneOfVoice}
                                         onChange={(e) => setFormData({...formData, persona: {...formData.persona, toneOfVoice: e.target.value}})}
-                                    />
+                                    >
+                                        <option value="" style={OPTION_STYLE}>— 請選擇 —</option>
+                                        {TONE_OPTIONS.map(o => (
+                                            <option key={o.value} value={o.value} style={OPTION_STYLE}>{o.label}</option>
+                                        ))}
+                                        {renderLegacyOption(formData.persona.toneOfVoice, TONE_OPTIONS)}
+                                    </select>
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest text-[9px]">人格核心氛圍 (Vibe)</label>
-                                    <input 
-                                        placeholder="例如: 賽博龐克執法官"
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[var(--color-gold)] outline-none"
+                                    <select
+                                        className={CONTROLLED_SELECT_CLASS}
                                         value={formData.persona.coreVibe}
                                         onChange={(e) => setFormData({...formData, persona: {...formData.persona, coreVibe: e.target.value}})}
-                                    />
+                                    >
+                                        <option value="" style={OPTION_STYLE}>— 請選擇 —</option>
+                                        {CORE_VIBE_OPTIONS.map(o => (
+                                            <option key={o.value} value={o.value} style={OPTION_STYLE}>{o.label}</option>
+                                        ))}
+                                        {renderLegacyOption(formData.persona.coreVibe, CORE_VIBE_OPTIONS)}
+                                    </select>
                                 </div>
                                 <div className="space-y-2 col-span-2">
                                     <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest text-[9px]">

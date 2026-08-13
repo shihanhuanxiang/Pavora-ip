@@ -383,7 +383,16 @@ export const buildModelPrompt = (params: any) => {
      * 其中 <30 那條會產生「背景完全模糊」——對定妝照是反效果。
      */
     prompt += `[CASTING STUDIO SPECIFICATION — FIXED, DO NOT DEVIATE]\n`;
-    prompt += `- Background: seamless solid neutral grey studio backdrop (approx #B0B0B0), completely empty. No props, no furniture, no environment, no texture, no gradient vignette.\n`;
+    /**
+     * 2026-08-13（企劃案 D-13）：色碼改成語意描述。
+     *
+     * 原本寫 `approx #B0B0B0`，2026-08-04 階段 3-d 六張實測發現**模型只把色碼當參考**，
+     * `B1_after_realistic` 的背景明顯比 `B2` / `B3` 深。
+     * 單張要去背不受影響，但要做「同一個 IP 多套穿搭並排」的素材庫時，深淺不一看得出來。
+     * 生圖模型對語意的服從度高於 hex，所以改成講「亮度落在哪個區間」＋明確排除兩端。
+     * 色碼留在括號裡當人類讀者的參考，不再是唯一敘述。
+     */
+    prompt += `- Background: seamless solid neutral mid-grey studio backdrop, neither light nor dark, roughly 70% brightness — clearly lighter than charcoal and clearly darker than off-white (reference value around #B0B0B0). The same tone across the entire frame, completely empty. No props, no furniture, no environment, no texture, no gradient vignette.\n`;
     prompt += `- Lighting: soft even studio lighting from a large softbox key with fill. Minimal shadow, no dramatic contrast, no coloured gels, no rim-light drama.\n`;
     prompt += `- Shadows: NO cast shadow on the backdrop. Minimal contact shadow under the feet only.\n`;
     prompt += `- Optics: deep depth of field (f/8 equivalent). The subject and the garment must be sharp edge to edge, with clean crisp silhouette boundaries. NO bokeh, NO background blur, NO soft focus.\n`;

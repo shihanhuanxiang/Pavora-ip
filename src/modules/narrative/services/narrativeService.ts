@@ -1234,6 +1234,19 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
     const forcedOutfit = options?.forcedOutfitId
         ? [...OUTFIT_SEEDS_V2, ...userOutfits].find(o => o.outfit_id === options.forcedOutfitId)
         : undefined;
+    /**
+     * 2026-08-13（企劃案 I 區附帶項）：`forcedOutfitId` 找不到時原本**靜默** fallback 成隨機選一套。
+     * 不報錯、不警告，畫面照樣出得來——只是穿的是別套衣服。
+     * 批次出圖時這會被誤判成「模型不聽話」（2026-08-13 我自己就踩到，打錯一個 id 找了半天）。
+     * 不 throw：使用者手上的舊資料可能指向已刪除的服裝，硬擋會讓整個生成失敗，代價比走 fallback 大。
+     */
+    if (options?.forcedOutfitId && !forcedOutfit) {
+        console.warn(
+            `[narrativeService] forcedOutfitId "${options.forcedOutfitId}" 不存在於 OUTFIT_SEEDS_V2 或使用者衣櫥，` +
+            `已改用評分制自動選衣。若你預期的是指定服裝，請檢查 outfit_id 是否拼錯或該筆資料已被移除。`
+        );
+    }
+
     const outfit = forcedOutfit || pickOutfit(model, contextCandidates, targetTier);
 
     // Update recent_outfit_ids cooldown (keep last 10 for better variety)
@@ -1539,7 +1552,37 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
                 ...(outfit.pillars.props ?? [])
             ].filter((part): part is string => Boolean(part && part.trim()));
 
-            if (outfitParts.length === 0) return promptText;
+            /**
+             * 2026-08-13（企劃案 I-0）：`pillars` 全空時**改以 `prompt_skeleton` 為權威覆寫**。
+             *
+             * 原本這裡直接 `return promptText`——`pillars` 沒填，服裝就完全沒有強制層。
+             * 2026-08-13 第三關複驗 15 張實測：LLM 會把 `[Apparel]` **改寫成摘要版**，
+             * 例如指定的
+             *   `long open V-neck front with the closure point set just above the waist seam,
+             *    fully lined with taped edges, held closed with concealed fashion tape`
+             * 被縮成 `long open V-neck`——**深度限定與「這是有版型的成衣」那組結構詞全被丟掉**，
+             * 而那兩件正是領口分級能不能生效、以及會不會誤觸安全過濾的關鍵。
+             *
+             * `prompt_skeleton` 就是這一套服裝的規格，沒有讓 LLM 改寫的理由，
+             * 所以直接覆寫（同 `[Environment]` 的處理）。
+             * ⚠️ 這是**過渡措施**：W-4 主件擴寫把 `pillars` 補齊之後，
+             * 上面那條逐欄位比對才是主路徑，這個分支會自然不再被走到。
+             */
+            if (outfitParts.length === 0) {
+                const skeleton = (outfit.prompt_skeleton || '').trim();
+                if (!skeleton) return promptText;
+                const lines0 = promptText.split('\n');
+                const idx0 = lines0.findIndex(line =>
+                    /^\s*(\[Apparel\]|【Apparel】|Apparel)\s*[:：]/i.test(line.trim()));
+                if (idx0 >= 0) {
+                    lines0[idx0] = `[Apparel]: ${skeleton}`;
+                    return lines0.join('\n');
+                }
+                const subjIdx = lines0.findIndex(line =>
+                    /^\s*(\[Subject\]|【Subject】|Subject)\s*[:：]/i.test(line.trim()));
+                if (subjIdx >= 0) { lines0.splice(subjIdx + 1, 0, `[Apparel]: ${skeleton}`); return lines0.join('\n'); }
+                return `${promptText}\n[Apparel]: ${skeleton}`;
+            }
 
             const lines = promptText.split('\n');
             const apparelIndex = lines.findIndex(line => /^\s*(\[Apparel\]|【Apparel】|Apparel|\[穿搭\]|【穿搭】|穿搭)\s*[:：]/i.test(line.trim()));
@@ -1616,7 +1659,12 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
          * 模板過去對景別隻字未提，`pov_modes` 也從未進過提示詞，所以景別是純隨機。
          * 這裡只補「沒寫景別」的情況，不覆蓋 LLM 已經寫對的全身景別。
          */
-        const FRAMING_KEYWORDS = /full[- ]length|full[- ]body|head to toe|wide shot|three[- ]quarter (length|shot)|cowboy shot/i;
+        /**
+         * ⚠️ 只認「真的看得到鞋子」的景別。
+         * `three-quarter shot` 與 `cowboy shot` 都切在大腿或膝蓋，對服裝審美等於廢圖，
+         * 所以**不列入**——LLM 寫了這兩個，照樣補上全身指令。
+         */
+        const FRAMING_KEYWORDS = /full[- ]length|full[- ]body|head to toe/i;
         const enforceCameraSection = (promptText: string) => {
             const isCamLine = (line: string) =>
                 /^\s*(\[Camera\]|【Camera】|Camera)\s*[:：]/i.test(line.trim());
