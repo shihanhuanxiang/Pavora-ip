@@ -17,6 +17,17 @@ export interface TaxonomyData {
 // 刻意保留在清單裡：企劃案階段 6（A-1，約 181 筆）會補婚紗／和服／Cosplay 等題材，
 // 「特殊服飾」這一類屆時會被填滿。若現在把它拿掉，階段 6 又要記得加回來。
 // （企劃案 D-5）
+//
+// `sportswear.json` **刻意不在清單裡**（企劃案 D-14，2026-08-13 查證結論）：
+//   1. 它是空檔（`items: []`，`total_items: 0`），載入與否對現況零差別；
+//   2. 「運動服」這個類別**已經被 `functional_wear.json` 的 40 筆覆蓋**
+//      （tag 含 running / compression / base layer / cycling jersey / quick dry…），
+//      再開一個 `sportswear` 主類會在 UI 上出現兩個語意重疊的分類；
+//   3. 真要啟用它，**不是把檔名加進這個陣列就好**——`MAIN_CATEGORY_ORDER` 與
+//      `MAIN_CATEGORY_TRANSLATIONS` 兩處都沒有 `sportswear`，只加檔名會得到一個
+//      沒有排序位置、顯示成英文 key 的分類。三處要一起改。
+// 這與 `special_costume.json`（同樣是空檔卻留在清單裡）的差別是刻意的：
+// 「特殊服飾」在階段 6 會被填滿且無人重疊，「運動服」則已有歸屬。
 const PAVORA_CATEGORY_FILES = [
   "accessories.json", "bags.json", "bottoms.json", "costumes.json", "cultural_wear.json",
   "dresses.json", "footwear.json", "intimates.json", "outerwear.json", "swimwear.json",

@@ -1,0 +1,3778 @@
+[
+ {
+  "outfit_id": "F-SHOOT-WED-001",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_sweet",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 2,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory silk mikado A-line bodice with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges",
+   "layer_outer": null,
+   "bottom": "lined tulle A-line skirt falling from a seamed natural waist, floor-length with a short sweep",
+   "shoes": "ivory satin pointed pumps",
+   "accessories": [
+    "single pearl stud earrings",
+    "thin ivory ribbon belt at the natural waist"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "hard",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "lightly holding the skirt at the side seam",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "ivory silk mikado A-line wedding gown, crisp structured bodice with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, seamed natural waistline emphasised by a thin ivory ribbon belt, lined tulle skirt falling floor-length with a short sweep, ivory satin pointed pumps, single pearl stud earrings, low polished chignon"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-002",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_sweet",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 2,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory silk satin corset bodice with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, smooth unadorned satin surface",
+   "layer_outer": null,
+   "bottom": "full lined tulle ball skirt from a tightly boned dropped waist, floor-length",
+   "shoes": "ivory satin heels",
+   "accessories": [
+    "delicate pearl drop earrings",
+    "narrow satin waist band at the drop-waist seam"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "hard",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "resting on the tulle skirt",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "ivory silk satin ball gown, boned corset bodice with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, tightly cinched drop-waist seam marked by a narrow satin band, full lined tulle skirt floor-length, ivory satin heels, delicate pearl drop earrings, soft romantic updo"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-003",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_mature",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory duchess satin mermaid bodice with sculpted panel seams and a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, narrow shoulder straps",
+   "layer_outer": null,
+   "bottom": "matte crepe under-layer mermaid skirt flaring below the knee into a sweep train",
+   "shoes": "ivory satin pointed pumps",
+   "accessories": [
+    "single pearl stud earrings",
+    "slim ivory satin waist stay at the sculpted waist seam"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "hard",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "ivory duchess satin mermaid wedding gown with sculpted panel seams, long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, held closed with concealed fashion tape, narrow shoulder straps, sharply sculpted waist seam, matte crepe under-layer flaring below the knee into a sweep train, ivory satin pointed pumps, single pearl stud earrings, low polished chignon"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-004",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_mature",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory matte satin trumpet bodice with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, clean sleeveless armholes",
+   "layer_outer": null,
+   "bottom": "matte crepe trumpet skirt flaring from mid-thigh, floor-length",
+   "shoes": "ivory satin block-heel sandals",
+   "accessories": [
+    "small gold hoop earrings",
+    "narrow self-fabric waist tie at the seamed waist"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "hard",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "touching the waist tie",
+   "both_busy": false
+  },
+  "prompt_skeleton": "ivory matte satin trumpet wedding gown, long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, clean sleeveless armholes, seamed waist marked by a narrow self-fabric tie, matte crepe skirt flaring from mid-thigh to floor-length, ivory satin block-heel sandals, small gold hoop earrings, sleek centre-parted low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-005",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "minimalist",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory crepe sheath bodice with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, narrow shoulder straps",
+   "layer_outer": null,
+   "bottom": "ivory silk blend column skirt skimming the hip, hemline ending at the ankle with a high side slit to mid-thigh",
+   "shoes": "ivory leather strappy heeled sandals",
+   "accessories": [
+    "slim gold cuff bracelet",
+    "concealed inner waist stay defining the natural waist"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "ivory crepe sheath wedding gown, long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, narrow shoulder straps, concealed inner waist stay defining the natural waist, silk blend column skirt hemline ending at the ankle with a high side slit to mid-thigh, ivory leather strappy heeled sandals, slim gold cuff bracelet, sleek straight hair"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-006",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "feminine_sweet",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory silk chiffon empire bodice with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges",
+   "layer_outer": null,
+   "bottom": "georgette empire skirt falling from a high waist seam under the bust, floor-length and catching the wind",
+   "shoes": "barefoot",
+   "accessories": [
+    "small pearl earrings",
+    "narrow ivory ribbon at the high empire waist seam"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "hard",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "holding hair away from the face in the wind",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "ivory silk chiffon empire-waist wedding gown, long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, high empire waist seam under the bust marked by a narrow ivory ribbon, georgette skirt floor-length and catching the wind, barefoot, small pearl earrings, loose soft waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-007",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "vintage_retro",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 2,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory matte satin fitted bodice with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, cap sleeves",
+   "layer_outer": null,
+   "bottom": "lined silk organza tea-length skirt gathered at a nipped-in natural waist, hemline ending just below the knee",
+   "shoes": "ivory satin slingback kitten heels",
+   "accessories": [
+    "pearl cluster earrings",
+    "wide matte satin waist sash tied at the back"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "hard",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "adjusting the satin sash",
+   "both_busy": false
+  },
+  "prompt_skeleton": "ivory tea-length wedding gown, matte satin fitted bodice with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, cap sleeves, nipped-in natural waist wrapped in a wide matte satin sash, lined silk organza skirt hemline ending just below the knee, ivory satin slingback kitten heels, pearl cluster earrings, soft retro side-parted waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-008",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "minimalist",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory crepe sleeveless bodice with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, satin trim along the neckline edge",
+   "layer_outer": null,
+   "bottom": "ivory crepe wide-leg trousers from a sharply defined waist seam, hemline ending at the ankle with a pressed centre crease",
+   "shoes": "ivory satin pointed pumps",
+   "accessories": [
+    "slim gold chain necklace",
+    "self-fabric belt with a covered buckle at the waist seam"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in the trouser pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "ivory crepe bridal jumpsuit with satin trim along the neckline edge, sleeveless bodice with a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, sharply defined waist seam with a self-fabric belt and covered buckle, wide-leg trousers hemline ending at the ankle with a pressed centre crease, ivory satin pointed pumps, slim gold chain necklace, sleek low ponytail"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-009",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "korean_chic",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory silk cropped bridal top with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, hem ending at the high waist",
+   "layer_outer": null,
+   "bottom": "lined tulle high-waist bridal skirt, floor-length with a soft sweep",
+   "shoes": "ivory satin block-heel sandals",
+   "accessories": [
+    "layered fine gold necklaces",
+    "exposed high-waist seam with a narrow grosgrain band"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "hard",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "resting on the tulle skirt",
+   "both_busy": false
+  },
+  "prompt_skeleton": "two-piece bridal separates, ivory silk cropped top with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, hem ending at the high waist with a narrow grosgrain band, lined tulle high-waist skirt floor-length with a soft sweep, ivory satin block-heel sandals, layered fine gold necklaces, soft half-up styled hair"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-010",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "feminine_sweet",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 2,
+  "pillars": {
+   "layer_inner": null,
+   "top": "dusty sage chiffon bodice with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, narrow ruched straps",
+   "layer_outer": null,
+   "bottom": "georgette skirt gathered at a cinched natural waist, hemline ending just below the knee",
+   "shoes": "nude leather strappy heeled sandals",
+   "accessories": [
+    "small gold hoop earrings",
+    "self-fabric tie belt cinching the natural waist"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "lightly holding the chiffon skirt",
+   "both_busy": false
+  },
+  "prompt_skeleton": "dusty sage chiffon bridesmaid dress, bodice with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, narrow ruched straps, natural waist cinched by a self-fabric tie belt, georgette skirt hemline ending just below the knee, nude leather strappy heeled sandals, small gold hoop earrings, loose soft waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-011",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "korean_chic",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "muted terracotta viscose wrap bodice crossing into a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, elbow-length sleeves",
+   "layer_outer": null,
+   "bottom": "matching crepe wrap skirt from a knotted waist, hemline ending just below the knee with a front overlap opening",
+   "shoes": "tan leather heeled mules",
+   "accessories": [
+    "slim gold bangle",
+    "self-fabric wrap sash knotted at the side waist"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "resting on the knotted sash",
+   "both_busy": false
+  },
+  "prompt_skeleton": "muted terracotta viscose wrap dress, bodice crossing into a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, elbow-length sleeves, self-fabric sash knotted at the side waist, crepe wrap skirt hemline ending just below the knee with a front overlap opening, tan leather heeled mules, slim gold bangle, sleek low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-012",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_office",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 2,
+  "pillars": {
+   "layer_inner": null,
+   "top": "deep navy crepe fitted bodice with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, lined lace three-quarter sleeves",
+   "layer_outer": null,
+   "bottom": "navy crepe straight skirt from a seamed natural waist, hemline ending just below the knee with a back vent",
+   "shoes": "navy leather low-heel pumps",
+   "accessories": [
+    "pearl stud earrings",
+    "narrow navy patent belt at the natural waist"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "deep navy crepe formal dress with lined lace three-quarter sleeves, fitted bodice with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, seamed natural waist marked by a narrow navy patent belt, straight skirt hemline ending just below the knee with a back vent, navy leather low-heel pumps, pearl stud earrings, neat polished low chignon"
+ },
+ {
+  "outfit_id": "M-SHOOT-WED-013",
+  "season": "all-year",
+  "gender": "M",
+  "style_archetype": "masculine_formal",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 1,
+  "pillars": {
+   "layer_inner": "crisp white cotton dress shirt with a V-neckline opening at the collarbone, top button open, no tie",
+   "top": "midnight black wool suiting tuxedo jacket with satin peak lapels, single-button closure at the natural waist",
+   "layer_outer": null,
+   "bottom": "matching black wool tuxedo trousers with a satin side stripe, pressed crease, hemline ending at the ankle",
+   "shoes": "black patent leather oxfords",
+   "accessories": [
+    "black satin cummerbund defining the waistline",
+    "simple silver cufflinks"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "adjusting a cufflink",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "midnight black wool suiting tuxedo with satin peak lapels, crisp white dress shirt underneath with a V-neckline with the closure point at the collarbone, top button open and no tie, single-button jacket closing at the natural waist over a black satin cummerbund defining the waistline, matching tuxedo trousers with a satin side stripe and pressed crease, hemline ending at the ankle, black patent leather oxfords, simple silver cufflinks, neatly combed short hair"
+ },
+ {
+  "outfit_id": "M-SHOOT-WED-014",
+  "season": "all-year",
+  "gender": "M",
+  "style_archetype": "masculine_clean",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 1,
+  "pillars": {
+   "layer_inner": "pale blue cotton dress shirt with a V-neckline opening at the collarbone, collar open at the throat",
+   "top": "warm grey wool blend single-breasted suit jacket with notch lapels, buttoned at the natural waist",
+   "layer_outer": null,
+   "bottom": "matching warm grey wool blend trousers with a pressed crease, hemline ending at the ankle",
+   "shoes": "brown leather derby shoes",
+   "accessories": [
+    "brown leather belt at the waistline",
+    "plain steel watch"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "hand in the trouser pocket",
+   "both_busy": false
+  },
+  "prompt_skeleton": "warm grey wool blend single-breasted suit with notch lapels, pale blue dress shirt underneath with a V-neckline with the closure point at the collarbone and the collar open at the throat, jacket buttoned at the natural waist over a brown leather belt at the waistline, matching trousers with a pressed crease, hemline ending at the ankle, brown leather derby shoes, plain steel watch, softly styled short hair"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-015",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "minimalist",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 2,
+  "pillars": {
+   "layer_inner": null,
+   "top": "champagne crepe sleeveless bodice with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges",
+   "layer_outer": null,
+   "bottom": "silk blend straight skirt from a seamed natural waist, hemline ending just below the knee with a side slit",
+   "shoes": "champagne satin slingback heels",
+   "accessories": [
+    "gold statement earrings",
+    "thin matching self-fabric belt at the natural waist"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "champagne crepe wedding-guest dress, sleeveless bodice with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, seamed natural waist with a thin matching self-fabric belt, silk blend straight skirt hemline ending just below the knee with a side slit, champagne satin slingback heels, gold statement earrings, sleek centre-parted straight hair"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-016",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "feminine_sweet",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 2,
+  "pillars": {
+   "layer_inner": null,
+   "top": "small-scale ditsy floral viscose wrap bodice with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, short puff sleeves",
+   "layer_outer": null,
+   "bottom": "matching rayon wrap skirt from a tied waist, hemline ending just below the knee",
+   "shoes": "tan woven leather heeled sandals",
+   "accessories": [
+    "small gold pendant necklace",
+    "self-fabric wrap tie cinched at the natural waist"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "holding the skirt against the breeze",
+   "both_busy": false
+  },
+  "prompt_skeleton": "small-scale ditsy floral viscose wrap dress, bodice with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, short puff sleeves, self-fabric wrap tie cinched at the natural waist, rayon wrap skirt hemline ending just below the knee, tan woven leather heeled sandals, small gold pendant necklace, loose airy waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-017",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "minimalist",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory crepe bodice with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, completely undecorated, wide set-in shoulder straps",
+   "layer_outer": null,
+   "bottom": "silk blend column skirt from a clean seamed waist, floor-length with no train",
+   "shoes": "ivory leather flat mules",
+   "accessories": [
+    "single slim gold ring",
+    "concealed inner waist stay marking the natural waist"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "completely undecorated ivory crepe minimal wedding gown, long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, wide set-in shoulder straps, clean seamed natural waist with a concealed inner waist stay, silk blend column skirt floor-length with no train, ivory leather flat mules, single slim gold ring, severe sleek low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-018",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_sweet",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 2,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory lace bodice over a solid opaque lining with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, long fitted lace sleeves",
+   "layer_outer": null,
+   "bottom": "lined tulle skirt from a seamed natural waist, floor-length with a short sweep",
+   "shoes": "ivory satin pointed pumps",
+   "accessories": [
+    "pearl drop earrings",
+    "narrow lace-covered belt at the natural waist"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "hard",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "lightly holding the tulle skirt",
+   "both_busy": false
+  },
+  "prompt_skeleton": "ivory lace wedding gown over a solid opaque lining with absolutely no sheer panels, deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, long fitted lace sleeves, seamed natural waist with a narrow lace-covered belt, lined tulle skirt floor-length with a short sweep, ivory satin pointed pumps, pearl drop earrings, soft romantic updo"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-019",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_mature",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 2,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory silk mikado structured bodice with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, clean sleeveless armholes",
+   "layer_outer": null,
+   "bottom": "silk mikado A-line skirt from a crisp seamed waist, floor-length",
+   "shoes": "ivory satin pointed pumps",
+   "accessories": [
+    "oversized structured mikado bow at the back waist seam",
+    "single pearl stud earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "hard",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "ivory silk mikado wedding gown with an oversized structured bow at the back waist seam, structured bodice with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, clean sleeveless armholes, crisp seamed waist, mikado A-line skirt floor-length, ivory satin pointed pumps, single pearl stud earrings, sleek high chignon"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-020",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "vintage_retro",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 2,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory matte satin fitted bodice with a squared neckline dropping into a deep V-neck opening at the centre front, closure point set at mid-chest, fully lined with taped edges, wide straps",
+   "layer_outer": null,
+   "bottom": "matte crepe skirt from a nipped-in seamed waist, floor-length with a soft sweep",
+   "shoes": "ivory satin block-heel sandals",
+   "accessories": [
+    "small pearl earrings",
+    "narrow satin waist band at the nipped-in seam"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "hard",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "ivory matte satin wedding gown with a squared neckline dropping into a deep V-neck opening at the centre front with the closure point set at mid-chest, fully lined with taped edges, wide straps, nipped-in seamed waist with a narrow satin band, matte crepe skirt floor-length with a soft sweep, ivory satin block-heel sandals, small pearl earrings, soft retro waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-021",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_office",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 1,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory matte satin bateau bodice with a shallow V-neckline, closure point at the collarbone, fully lined, lined lace elbow sleeves",
+   "layer_outer": null,
+   "bottom": "matte satin A-line skirt from a seamed natural waist, floor-length",
+   "shoes": "ivory satin low-heel pumps",
+   "accessories": [
+    "pearl stud earrings",
+    "slim satin waist belt at the natural waist"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "hard",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "ivory matte satin bateau-neck wedding gown with lined lace elbow sleeves, shallow V-neckline with the closure point at the collarbone, fully lined, seamed natural waist with a slim satin belt, matte satin A-line skirt floor-length, ivory satin low-heel pumps, pearl stud earrings, neat polished low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-022",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "vintage_retro",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 2,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory silk chiffon bodice with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, voluminous gathered poet sleeves cuffed at the wrist",
+   "layer_outer": null,
+   "bottom": "silk chiffon skirt from a high seamed waist, floor-length and softly flowing",
+   "shoes": "ivory satin flat sandals",
+   "accessories": [
+    "fine gold drop earrings",
+    "narrow chiffon sash tied at the high waist seam"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "hard",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "lightly touching the sleeve cuff",
+   "both_busy": false
+  },
+  "prompt_skeleton": "ivory silk chiffon wedding gown with voluminous gathered poet sleeves cuffed at the wrist, bodice with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, high seamed waist tied with a narrow chiffon sash, softly flowing chiffon skirt floor-length, ivory satin flat sandals, fine gold drop earrings, loose romantic waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-023",
+  "season": "winter",
+  "gender": "F",
+  "style_archetype": "feminine_office",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 1,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory crepe high-neck bodice with a narrow V-neckline slit, closure point at the collarbone, fully lined, long fitted sleeves",
+   "layer_outer": null,
+   "bottom": "matte satin column skirt from a seamed natural waist, floor-length with a back slit",
+   "shoes": "ivory satin pointed pumps",
+   "accessories": [
+    "small pearl studs",
+    "self-fabric covered belt at the natural waist"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "ivory crepe high-neck modest wedding gown with long fitted sleeves, narrow V-neckline slit with the closure point at the collarbone, fully lined, seamed natural waist with a self-fabric covered belt, matte satin column skirt floor-length with a back slit, ivory satin pointed pumps, small pearl studs, severe centre-parted low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-WED-024",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_sweet",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 2,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory matte satin bodice scattered with hand-sewn freshwater pearls, deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, narrow straps",
+   "layer_outer": null,
+   "bottom": "lined tulle skirt from a seamed natural waist, floor-length with a soft sweep",
+   "shoes": "ivory satin pointed pumps",
+   "accessories": [
+    "single pearl drop earrings",
+    "pearl-beaded waist band at the natural waist seam"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "hard",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "lightly holding the tulle skirt",
+   "both_busy": false
+  },
+  "prompt_skeleton": "ivory matte satin wedding gown scattered with hand-sewn freshwater pearls and absolutely no rhinestones, deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, narrow straps, seamed natural waist with a pearl-beaded band, lined tulle skirt floor-length with a soft sweep, ivory satin pointed pumps, single pearl drop earrings, soft romantic updo"
+ },
+ {
+  "outfit_id": "F-SHOOT-TRAD-001",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_mature",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "deep indigo silk brocade fitted bodice with cheongsam-inspired princess seams and a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, the stand collar reduced to a narrow band sitting only at the back of the neck and open at the front",
+   "layer_outer": null,
+   "bottom": "matching silk brocade fitted skirt panel with matte crepe piping, hemline ending just below the knee with a high side slit to mid-thigh",
+   "shoes": "black leather pointed low-heel pumps",
+   "accessories": [
+    "single jade bangle",
+    "matte crepe covered belt at the sharply nipped-in waist"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "holding a small structured top-handle bag",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "a modern fitted V-neck cocktail dress with cheongsam-inspired detailing, absolutely not a traditional qipao, deep indigo silk brocade fully lined, long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, the stand collar reduced to a narrow band at the back of the neck only and open at the front, sharply nipped-in waist with a matte crepe covered belt, hemline ending just below the knee with a high side slit to mid-thigh, black leather pointed low-heel pumps, single jade bangle, small structured top-handle bag, sleek low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-TRAD-002",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "feminine_mature",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "muted sage silk blend crossover wrap bodice with tonal jacquard, deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, long sheer flowing tie-sleeves as the only heritage cue",
+   "layer_outer": null,
+   "bottom": "matching flared mini skirt from a tightly nipped waist, hemline ending at mid-thigh",
+   "shoes": "black strappy heeled sandals",
+   "accessories": [
+    "delicate layered gold necklace",
+    "narrow woven sash tied at the side waist",
+    "sheer matte black tights"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "lightly holding the tie-sleeve",
+   "both_busy": false
+  },
+  "prompt_skeleton": "a fitted short wrap mini dress with hanfu-inspired detailing, absolutely not a traditional hanfu and not a long loose robe, muted sage silk blend with subtle tonal jacquard, crossover wrap front forming a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, tightly nipped waist with a narrow woven sash tied at the side, flared hemline ending at mid-thigh, long sheer flowing tie-sleeves as the only heritage cue, sheer matte black tights, black strappy heeled sandals, delicate layered gold necklace, half-up styled hair with loose face-framing strands"
+ },
+ {
+  "outfit_id": "F-SHOOT-TRAD-003",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "feminine_mature",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "crisp matte cotton lawn wrap bodice in off-white with fine indigo linework, deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, short wide kimono sleeves, collar band pulled back off the nape",
+   "layer_outer": null,
+   "bottom": "matching cotton lawn wrapped mini skirt panel, hemline ending at mid-thigh",
+   "shoes": "barefoot",
+   "accessories": [
+    "structured wide obi-style belt in muted terracotta cinching the waist tightly",
+    "small tortoiseshell hair claw",
+    "thin gold anklet"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "resting on the obi belt",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "a fitted short yukata-style mini dress, absolutely not a traditional yukata and not a full-length robe, crisp matte cotton lawn in off-white with fine indigo linework, absolutely no satin sheen and no shiny stripes, wrap front with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, structured wide obi-style belt in muted terracotta cinching the waist tightly, hemline ending at mid-thigh, short wide kimono sleeves, collar band pulled back off the nape, bare legs, barefoot, small tortoiseshell hair claw with loose styled waves, thin gold anklet"
+ },
+ {
+  "outfit_id": "F-SHOOT-TRAD-004",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "korean_chic",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted ivory silk camisole with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges",
+   "top": "powder blue silk blend cropped jeogori-inspired bolero jacket with a single ribbon tie, hem ending above the natural waist, worn open",
+   "layer_outer": null,
+   "bottom": "lined organza high-waist full mini skirt in deep plum, hemline ending just above the knee",
+   "shoes": "ivory leather block-heel mary janes",
+   "accessories": [
+    "long silk ribbon sash tied at the high empire waist",
+    "small pearl drop earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "holding the ribbon sash",
+   "both_busy": false
+  },
+  "prompt_skeleton": "a modern two-piece look with hanbok-inspired detailing, absolutely not a traditional hanbok, powder blue silk blend cropped jeogori-inspired bolero jacket worn open with a single ribbon tie, hem ending above the natural waist, fitted ivory silk camisole underneath with a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, long silk ribbon sash tied at the high empire waist, lined organza high-waist full mini skirt in deep plum, hemline ending just above the knee, ivory leather block-heel mary janes, small pearl drop earrings, soft low chignon"
+ },
+ {
+  "outfit_id": "F-SHOOT-TRAD-005",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "feminine_mature",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "fitted deep teal silk lined blouse bodice with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, cropped just above the waist",
+   "layer_outer": "single shoulder silk drape pinned at the shoulder and falling behind the back, replacing a full sari wrap",
+   "bottom": "matching silk cotton high-waist wrapped pencil skirt, hemline ending just below the knee with a high front slit to mid-thigh",
+   "shoes": "gold leather strappy heeled sandals",
+   "accessories": [
+    "stacked thin gold bangles",
+    "wide gold-edged waistband at the exposed high waist"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "holding the shoulder drape",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "a modern draped two-piece with sari-inspired detailing, absolutely not a full traditional sari wrap, fitted deep teal silk lined blouse cropped just above the waist with a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, a single shoulder silk drape pinned at the shoulder and falling behind the back, wide gold-edged waistband at the exposed high waist, silk cotton high-waist wrapped pencil skirt, hemline ending just below the knee with a high front slit to mid-thigh, gold leather strappy heeled sandals, stacked thin gold bangles, sleek centre-parted low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-TRAD-006",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_mature",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "wine silk brocade cropped lined blouse with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, short fitted sleeves, hem ending well above the high waist",
+   "layer_outer": null,
+   "bottom": "matching brocade high-waist flared skirt with chiffon under-layer, hemline ending just above the knee",
+   "shoes": "gold leather heeled mules",
+   "accessories": [
+    "chandelier gold earrings",
+    "wide brocade waistband at the exposed high waist"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "lightly holding the flared skirt",
+   "both_busy": false
+  },
+  "prompt_skeleton": "a modern short two-piece with lehenga-inspired detailing, absolutely not a traditional floor-length lehenga, wine silk brocade cropped lined blouse with short fitted sleeves and a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, hem ending well above the high waist, wide brocade waistband at the exposed high waist, matching high-waist flared skirt with a chiffon under-layer, hemline ending just above the knee, gold leather heeled mules, chandelier gold earrings, glossy centre-parted long hair"
+ },
+ {
+  "outfit_id": "F-SHOOT-TRAD-007",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "feminine_mature",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "pale champagne silk blend body-skimming tunic with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, three-quarter sleeves, side slits opening from the hip",
+   "layer_outer": null,
+   "bottom": "matching silk blend slim cigarette trousers, hemline ending at the ankle",
+   "shoes": "nude leather pointed heeled sandals",
+   "accessories": [
+    "fine gold chain necklace",
+    "concealed inner waist stay shaping the tunic at the natural waist"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "a modern body-skimming tunic-and-trouser look with ao dai-inspired detailing, pale champagne silk blend, deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, three-quarter sleeves, concealed inner waist stay shaping the tunic at the natural waist, side slits opening from the hip to reveal the leg line, matching slim cigarette trousers with the hemline ending at the ankle, nude leather pointed heeled sandals, fine gold chain necklace, long straight glossy hair"
+ },
+ {
+  "outfit_id": "F-SHOOT-TRAD-008",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "feminine_mature",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory lace blouse over a solid opaque lining with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, fitted long sleeves, absolutely no sheer panels",
+   "layer_outer": null,
+   "bottom": "small-scale batik print sarong-style pencil skirt, hemline ending just below the knee with a high front slit to mid-thigh",
+   "shoes": "tan leather heeled sandals",
+   "accessories": [
+    "gold filigree brooch closing the blouse at the waist",
+    "wide batik sash wrapped at the natural waist"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "resting on the batik sash",
+   "both_busy": false
+  },
+  "prompt_skeleton": "a modern fitted two-piece with kebaya-inspired detailing, ivory lace blouse over a solid opaque lining with absolutely no sheer panels, fitted long sleeves, long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, closed at the waist with a gold filigree brooch, wide batik sash wrapped at the natural waist, small-scale batik print sarong-style pencil skirt, hemline ending just below the knee with a high front slit to mid-thigh, tan leather heeled sandals, sleek low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-TRAD-009",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "vintage_retro",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "forest green linen laced bodice with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, cross-laced with a flat cord, sleeveless",
+   "layer_outer": null,
+   "bottom": "cotton full gathered mini skirt from a tightly boned waist, hemline ending just above the knee",
+   "shoes": "brown leather ankle boots",
+   "accessories": [
+    "short cream cotton apron tied in a bow at the front waist",
+    "small gold locket necklace"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "adjusting the apron bow",
+   "both_busy": false
+  },
+  "prompt_skeleton": "a modern fitted mini dress with dirndl-inspired detailing, forest green linen laced bodice cross-laced with a flat cord, sleeveless, long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, tightly boned waist with a short cream cotton apron tied in a bow at the front waist, cotton full gathered skirt with the hemline ending just above the knee, brown leather ankle boots, small gold locket necklace, loose braided half-up hair"
+ },
+ {
+  "outfit_id": "F-SHOOT-TRAD-010",
+  "season": "winter",
+  "gender": "F",
+  "style_archetype": "korean_chic",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "charcoal fine-gauge wool rib-knit fitted top with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, long sleeves",
+   "layer_outer": null,
+   "bottom": "wool tartan pleated wrap mini skirt, hemline ending at mid-thigh with a fringed overlap edge",
+   "shoes": "black leather chunky loafers",
+   "accessories": [
+    "wide black leather belt with a brushed silver buckle at the high waist",
+    "sheer matte black tights",
+    "small silver hoop earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand tucked into the belt",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "a modern fitted look with kilt-inspired detailing, charcoal fine-gauge wool rib-knit top with long sleeves and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, wide black leather belt with a brushed silver buckle at the high waist, wool tartan pleated wrap mini skirt with a fringed overlap edge, hemline ending at mid-thigh, sheer matte black tights, black leather chunky loafers, small silver hoop earrings, sleek straight hair"
+ },
+ {
+  "outfit_id": "F-SHOOT-TRAD-011",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "street_edgy",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "bright cobalt cotton fitted mini tunic dress with a densely embroidered neckline forming a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, short wide sleeves",
+   "layer_outer": null,
+   "bottom": "matching cotton tunic skirt panel, hemline ending at mid-thigh with side vents",
+   "shoes": "tan leather flat gladiator sandals",
+   "accessories": [
+    "woven leather belt cinching the waist over the tunic",
+    "large brass hoop earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "touching an earring",
+   "both_busy": false
+  },
+  "prompt_skeleton": "a modern fitted mini tunic dress with dashiki-inspired detailing, absolutely not a loose traditional dashiki, bright cobalt cotton with a densely embroidered neckline forming a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, short wide sleeves, woven leather belt cinching the waist over the tunic, hemline ending at mid-thigh with side vents, tan leather flat gladiator sandals, large brass hoop earrings, high sleek ponytail"
+ },
+ {
+  "outfit_id": "F-SHOOT-TRAD-012",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "minimalist",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 2,
+  "pillars": {
+   "layer_inner": null,
+   "top": "dusty rose silk blend fitted tunic blouse with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, long sleeves, hem ending at the high hip",
+   "layer_outer": null,
+   "bottom": "matching silk blend high-waist column skirt, hemline ending at the ankle with a high side slit to mid-thigh",
+   "shoes": "nude leather heeled mules",
+   "accessories": [
+    "narrow tonal belt marking the high waist under the tunic hem",
+    "small gold stud earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "a modern fitted two-piece with baju kurung-inspired detailing, absolutely not a loose traditional cut, dusty rose silk blend fitted tunic blouse with long sleeves and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, hem ending at the high hip over a narrow tonal belt marking the high waist, matching high-waist column skirt with the hemline ending at the ankle and a high side slit to mid-thigh, nude leather heeled mules, small gold stud earrings, sleek centre-parted low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-TRAD-013",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "minimalist",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 2,
+  "pillars": {
+   "layer_inner": null,
+   "top": "sand cotton blend fitted shirt-dress bodice with a low mandarin stand collar opening into a deep V-neck placket, closure point set at mid-chest, fully lined with taped edges, rolled long sleeves",
+   "layer_outer": null,
+   "bottom": "matching cotton blend shirt-dress skirt, hemline ending just above the knee with a front button placket left open at the hem",
+   "shoes": "tan leather ankle boots",
+   "accessories": [
+    "wide woven leather belt cinching the shirt-dress at the natural waist",
+    "thin gold chain bracelet"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in a hip pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "a modern fitted shirt-dress with baju melayu-inspired detailing, sand cotton blend, low mandarin stand collar opening into a deep V-neck placket with the closure point set at mid-chest, fully lined with taped edges, rolled long sleeves, wide woven leather belt cinching the natural waist, hemline ending just above the knee with the front button placket left open at the hem, tan leather ankle boots, thin gold chain bracelet, loose low ponytail"
+ },
+ {
+  "outfit_id": "F-SHOOT-TRAD-014",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "cultural_traditional",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted black silk camisole with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges",
+   "top": "ink black silk blend cropped mandarin-collar jacket with knotted frog buttons left undone, hem ending at the natural waist, worn open",
+   "layer_outer": null,
+   "bottom": "black cotton twill high-waist tailored shorts, hemline ending at mid-thigh",
+   "shoes": "black leather heeled ankle boots",
+   "accessories": [
+    "wide black obi-style waist wrap over the shorts waistband",
+    "single jade pendant on a fine chain",
+    "sheer matte black tights"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in a shorts pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "a modern short look built on a mandarin-collar jacket, ink black silk blend cropped jacket with knotted frog buttons left undone and worn open, hem ending at the natural waist, fitted black silk camisole underneath with a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, wide black obi-style waist wrap over the waistband, high-waist tailored shorts with the hemline ending at mid-thigh, sheer matte black tights, black leather heeled ankle boots, single jade pendant on a fine chain, sleek high bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-TRAD-015",
+  "season": "winter",
+  "gender": "F",
+  "style_archetype": "vintage_retro",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 2,
+  "pillars": {
+   "layer_inner": null,
+   "top": "camel alpaca fine-knit fitted bodysuit top with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, long sleeves",
+   "layer_outer": "short cropped woven wool poncho cape with a geometric Andean motif, ending at the natural waist",
+   "bottom": "camel wool blend high-waist knit mini skirt, hemline ending at mid-thigh",
+   "shoes": "brown suede knee-high boots",
+   "accessories": [
+    "wide tan leather belt buckled over the poncho at the natural waist",
+    "small brass drop earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 3,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "holding the poncho edge",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "a modern short look with Andean poncho-inspired detailing, absolutely not a bulky full-length poncho, short cropped woven wool poncho cape with a geometric Andean motif ending at the natural waist, camel alpaca fine-knit fitted top underneath with long sleeves and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, wide tan leather belt buckled over the poncho at the natural waist, camel high-waist knit mini skirt with the hemline ending at mid-thigh, brown suede knee-high boots, small brass drop earrings, loose textured waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-SET-001",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_office",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "ivory silk camisole with narrow straps and a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges",
+   "top": "charcoal wool blend single-breasted blazer with a clean notch lapel and defined shoulder, worn open",
+   "layer_outer": null,
+   "bottom": "matching charcoal wool blend straight-leg trousers with a pressed centre crease, hemline ending at the ankle",
+   "shoes": "black leather pointed heeled loafers",
+   "accessories": [
+    "slim black leather belt at the trouser waistband",
+    "thin gold chain necklace"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in the trouser pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "charcoal wool blend tailored suit set, single-breasted blazer with a clean notch lapel and defined shoulder worn open, ivory silk camisole underneath with narrow straps and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, slim black leather belt at the trouser waistband defining the waist, matching straight-leg trousers with a pressed centre crease, hemline ending at the ankle, black leather pointed heeled loafers, thin gold chain necklace, hair tucked behind the ears"
+ },
+ {
+  "outfit_id": "F-SHOOT-SET-002",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_office",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted black rib-knit bandeau-free camisole with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, narrow shoulder straps",
+   "top": "camel wool blend cropped single-button blazer with a sharp notch lapel, hem ending at the natural waist",
+   "layer_outer": null,
+   "bottom": "black wool blend high-waist pencil skirt, hemline ending just above the knee with a back slit",
+   "shoes": "black leather slingback heels",
+   "accessories": [
+    "sheer matte black tights",
+    "gold statement earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "holding a slim leather portfolio",
+   "both_busy": false
+  },
+  "prompt_skeleton": "two-tone skirt suit, camel wool blend cropped single-button blazer with a sharp notch lapel, hem ending at the natural waist, fitted black rib-knit camisole underneath with narrow shoulder straps and a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, absolutely no strapless and no bandeau, black high-waist pencil skirt with the hemline ending just above the knee and a back slit, sheer matte black tights, black leather slingback heels, gold statement earrings, slim leather portfolio, sleek low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-SET-003",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "korean_chic",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "cream cotton knit fitted tank with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, cropped at the high waist",
+   "layer_outer": "matching cream viscose knit cropped cardigan worn open with the sleeves pushed up",
+   "bottom": "chocolate brown wool blend high-waist mini skirt with a front pleat, hemline ending at mid-thigh",
+   "shoes": "brown leather chunky loafers",
+   "accessories": [
+    "thin brown leather belt at the exposed high waist",
+    "small pearl studs",
+    "sheer matte black tights"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "holding the cardigan edge",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "cream knit twinset over a contrasting bottom, matching viscose knit cropped cardigan worn open with the sleeves pushed up, cotton knit fitted tank cropped at the high waist with a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, thin brown leather belt at the exposed high waist, chocolate brown wool blend high-waist mini skirt with a front pleat, hemline ending at mid-thigh, sheer matte black tights, brown leather chunky loafers, small pearl studs, soft low ponytail"
+ },
+ {
+  "outfit_id": "F-SHOOT-SET-004",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "sporty_active",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted white cotton rib-knit crop tank with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges",
+   "top": "slate grey poly knit cropped zip jacket with contrast white side taping, zip pulled down, hem ending at the high waist",
+   "layer_outer": null,
+   "bottom": "matching slate grey cotton fleece high-waist tapered track pants with white side taping, hemline ending at the ankle with a ribbed cuff",
+   "shoes": "white leather low-top sneakers",
+   "accessories": [
+    "elasticated white logo waistband exposed at the high waist",
+    "small silver hoop earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in the jacket pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "slate grey tracksuit set with contrast white side taping, cropped zip jacket with the zip pulled down and the hem ending at the high waist, fitted white cotton rib-knit crop tank underneath with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, elasticated white logo waistband exposed at the high waist, matching high-waist tapered track pants with the hemline ending at the ankle in a ribbed cuff, white leather low-top sneakers, small silver hoop earrings, high sleek ponytail"
+ },
+ {
+  "outfit_id": "F-SHOOT-SET-005",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "minimalist",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "oatmeal cotton modal fitted short-sleeve top with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, cropped at the high waist",
+   "layer_outer": null,
+   "bottom": "charcoal french terry high-waist relaxed trousers with a drawstring, hemline ending at the ankle",
+   "shoes": "cream knit flat slip-ons",
+   "accessories": [
+    "contrast charcoal drawstring tie at the exposed high waist",
+    "thin gold anklet"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "holding a ceramic mug",
+   "both_busy": false
+  },
+  "prompt_skeleton": "two-tone lounge set, oatmeal cotton modal fitted short-sleeve top cropped at the high waist with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, contrast charcoal drawstring tie at the exposed high waist, charcoal french terry high-waist relaxed trousers with the hemline ending at the ankle, cream knit flat slip-ons, thin gold anklet, ceramic mug, loose messy bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-SET-006",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_mature",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "deep burgundy cotton sateen fitted button shirt with contrast ivory piping, buttoned low into a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, sleeves rolled to the elbow",
+   "layer_outer": null,
+   "bottom": "matching rayon high-waist relaxed trousers with contrast ivory piping and a pressed crease, hemline ending at the ankle",
+   "shoes": "burgundy satin flat slippers",
+   "accessories": [
+    "matching self-fabric tie belt knotted at the natural waist",
+    "small gold stud earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in the trouser pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "deep burgundy cotton sateen pyjama-style set with contrast ivory piping, fitted button shirt buttoned low into a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, sleeves rolled to the elbow, matching self-fabric tie belt knotted at the natural waist, high-waist relaxed trousers with a pressed crease, hemline ending at the ankle, burgundy satin flat slippers, small gold stud earrings, loose soft waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-SET-007",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "sporty_active",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "matte black nylon spandex fitted performance top with a deep V-neck opening, closure point set at mid-chest, double-layer front panel with taped edges, wide elastic underband, short sleeves",
+   "layer_outer": null,
+   "bottom": "matte sage nylon spandex high-waist full-length leggings with a wide contour waistband, hemline ending at the ankle",
+   "shoes": "white and sage mesh running trainers",
+   "accessories": [
+    "wide contour waistband exposed at the high waist",
+    "thin black elastic hair tie on the wrist"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "holding a matte water bottle",
+   "both_busy": false
+  },
+  "prompt_skeleton": "two-tone standard commercial activewear set, matte black nylon spandex fitted performance top with short sleeves and a deep V-neck opening with the closure point set at mid-chest, double-layer front panel with taped edges and a wide elastic underband, absolutely no shiny finish, matte sage high-waist full-length leggings with a wide contour waistband exposed at the high waist, hemline ending at the ankle, white and sage mesh running trainers, matte water bottle, high sleek ponytail"
+ },
+ {
+  "outfit_id": "F-SHOOT-SET-008",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "sporty_active",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 4,
+  "pillars": {
+   "layer_inner": null,
+   "top": "matte clay recycled polyamide fitted crop top with a deep V-neck opening, closure point set at mid-chest, double-layer front panel with taped edges, wide elastic underband, hem ending just below the ribcage",
+   "layer_outer": null,
+   "bottom": "matte charcoal recycled polyamide high-waist full-length leggings with a wide seamless waistband, hemline ending at the ankle",
+   "shoes": "barefoot",
+   "accessories": [
+    "wide seamless waistband exposed above the natural waist",
+    "thin gold ring"
+   ],
+   "props": [
+    "rolled cork yoga mat"
+   ]
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "holding a rolled cork yoga mat",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "two-tone standard commercial activewear set, matte clay recycled polyamide fitted crop top with a deep V-neck opening with the closure point set at mid-chest, double-layer front panel with taped edges and a wide elastic underband, hem ending just below the ribcage, absolutely no shiny finish, matte charcoal high-waist full-length leggings with a wide seamless waistband exposed above the natural waist, hemline ending at the ankle, barefoot, rolled cork yoga mat, thin gold ring, low sleek bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-SET-009",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "minimalist",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "white rayon camp shirt with a boxy collar, buttoned low into a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, short sleeves, front hem knotted at the waist",
+   "layer_outer": null,
+   "bottom": "terracotta linen blend high-waist tailored shorts with a pressed crease, hemline ending at mid-thigh",
+   "shoes": "tan woven leather flat sandals",
+   "accessories": [
+    "woven raffia belt at the shorts waistband",
+    "gold shell pendant necklace"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "adjusting the knotted shirt hem",
+   "both_busy": false
+  },
+  "prompt_skeleton": "two-tone resort short set, white rayon camp shirt with a boxy collar buttoned low into a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, short sleeves, front hem knotted at the waist, terracotta linen blend high-waist tailored shorts with a pressed crease and a woven raffia belt at the waistband, hemline ending at mid-thigh, tan woven leather flat sandals, gold shell pendant necklace, loose beachy waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-SET-010",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "street_edgy",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted white cotton rib-knit tank with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges",
+   "top": "mid-wash denim cropped trucker jacket worn open, hem ending at the natural waist",
+   "layer_outer": null,
+   "bottom": "matching mid-wash denim high-waist A-line mini skirt with a raw hem, hemline ending at mid-thigh",
+   "shoes": "white leather low-top sneakers",
+   "accessories": [
+    "tan leather belt with a brass buckle at the skirt waistband",
+    "layered fine silver necklaces"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "styled_daily",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "thumb hooked in the belt",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "mid-wash denim co-ord over a contrasting white base, cropped trucker jacket worn open with the hem ending at the natural waist, fitted white cotton rib-knit tank underneath with a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, tan leather belt with a brass buckle at the skirt waistband, matching denim high-waist A-line mini skirt with a raw hem, hemline ending at mid-thigh, white leather low-top sneakers, layered fine silver necklaces, loose messy bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-SET-011",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "feminine_sweet",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "small-scale abstract print viscose fitted short-sleeve top with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, cropped at the high waist",
+   "layer_outer": null,
+   "bottom": "matching print cotton high-waist wrap mini skirt with a tied side closure, hemline ending at mid-thigh",
+   "shoes": "cream leather heeled mules",
+   "accessories": [
+    "self-fabric wrap tie knotted at the side waist",
+    "small gold hoop earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "resting on the wrap tie",
+   "both_busy": false
+  },
+  "prompt_skeleton": "small-scale abstract print co-ord set, viscose fitted short-sleeve top cropped at the high waist with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, matching cotton high-waist wrap mini skirt with a self-fabric tie knotted at the side waist, hemline ending at mid-thigh, cream leather heeled mules, small gold hoop earrings, soft loose waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-SET-012",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "korean_chic",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "dove grey chiffon finely pleated fitted top with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, short pleated sleeves",
+   "layer_outer": null,
+   "bottom": "deep navy georgette finely pleated high-waist skirt, hemline ending just above the knee",
+   "shoes": "navy patent leather slingback heels",
+   "accessories": [
+    "navy grosgrain waist band at the exposed high waist",
+    "small silver drop earrings",
+    "sheer matte black tights"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "lightly holding the pleated skirt",
+   "both_busy": false
+  },
+  "prompt_skeleton": "two-tone finely pleated set, dove grey chiffon fitted pleated top with short pleated sleeves and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, navy grosgrain waist band at the exposed high waist, deep navy georgette finely pleated high-waist skirt with the hemline ending just above the knee, sheer matte black tights, navy patent leather slingback heels, small silver drop earrings, sleek low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-SET-013",
+  "season": "winter",
+  "gender": "F",
+  "style_archetype": "korean_chic",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted cream silk camisole with narrow shoulder straps and a low V neckline, fully lined",
+   "top": "cream and black tweed boxy cropped jacket with fringed edges and tonal buttons, worn open with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges",
+   "layer_outer": null,
+   "bottom": "matching tweed high-waist mini skirt with a fringed hem, hemline ending at mid-thigh",
+   "shoes": "black leather slingback flats",
+   "accessories": [
+    "sheer matte black tights",
+    "small pearl earrings",
+    "black grosgrain band at the skirt waistband"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "holding the jacket edge",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "cream and black tweed set, boxy cropped tweed jacket with fringed edges and tonal buttons worn open with a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, fitted cream silk camisole underneath with narrow shoulder straps and a low V neckline, absolutely no strapless and no bandeau and no tube top, black grosgrain band at the skirt waistband, matching tweed high-waist mini skirt with a fringed hem, hemline ending at mid-thigh, sheer matte black tights, black leather slingback flats, small pearl earrings, neat shoulder-length hair"
+ },
+ {
+  "outfit_id": "F-SHOOT-SET-014",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "korean_chic",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "oat beige viscose rib-knit close-fitting short-sleeve top with visible fine ribbing, deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, cropped at the high waist",
+   "layer_outer": null,
+   "bottom": "matching oat beige viscose rib-knit high-waist skirt, hemline ending just above the knee with a front slit reaching mid-thigh",
+   "shoes": "black leather heeled mules",
+   "accessories": [
+    "black leather belt with a slim gold buckle at the exposed high waist",
+    "thin gold hoop earrings",
+    "sheer matte black tights"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "resting on the belt buckle",
+   "both_busy": false
+  },
+  "prompt_skeleton": "oat beige viscose rib-knit set with visible fine ribbing texture, close-fitting short-sleeve top cropped at the high waist with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, black leather belt with a slim gold buckle at the exposed high waist for contrast, matching high-waist rib-knit skirt with the hemline ending just above the knee and a front slit reaching mid-thigh, sheer matte black tights, black leather heeled mules, thin gold hoop earrings, sleek low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-SET-015",
+  "season": "winter",
+  "gender": "F",
+  "style_archetype": "vintage_retro",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory wool cable-knit fitted sweater with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, long sleeves, cropped at the high waist",
+   "layer_outer": null,
+   "bottom": "deep forest wool blend cable-knit high-waist mini skirt, hemline ending at mid-thigh",
+   "shoes": "brown leather knee-high riding boots",
+   "accessories": [
+    "wide brown leather belt at the exposed high waist",
+    "gold signet ring"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "hand resting on the belt",
+   "both_busy": false
+  },
+  "prompt_skeleton": "two-tone wool cable-knit set with deep visible cable texture, ivory fitted cable-knit sweater with long sleeves cropped at the high waist, deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, wide brown leather belt at the exposed high waist, deep forest cable-knit high-waist mini skirt with the hemline ending at mid-thigh, brown leather knee-high riding boots, gold signet ring, loose textured waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-SET-016",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "street_techwear",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted black rib-knit crop tank with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges",
+   "top": "faded slate cotton twill cropped utility shirt with double chest pockets, worn open with the sleeves rolled",
+   "layer_outer": null,
+   "bottom": "black ripstop high-waist cargo mini skirt with flap pockets, hemline ending at mid-thigh",
+   "shoes": "black leather lace-up combat boots",
+   "accessories": [
+    "wide black webbing belt with a metal clasp at the high waist",
+    "small steel hoop earrings",
+    "sheer matte black tights"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "styled_daily",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in a cargo pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "two-tone utility co-ord, faded slate cotton twill cropped utility shirt with double chest pockets worn open with the sleeves rolled, fitted black rib-knit crop tank underneath with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, wide black webbing belt with a metal clasp at the high waist, black ripstop high-waist cargo mini skirt with flap pockets, hemline ending at mid-thigh, sheer matte black tights, black leather lace-up combat boots, small steel hoop earrings, high messy bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-001",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_office",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "matte black crepe fitted sleeveless bodice with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges",
+   "layer_outer": null,
+   "bottom": "matching poly-viscose slim tapered leg from a sharply defined waist seam, hemline ending at the ankle",
+   "shoes": "black leather heeled sandals",
+   "accessories": [
+    "slim self-fabric belt at the defined waist seam",
+    "small gold stud earrings",
+    "slim gold bracelet"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "fitted tailored jumpsuit in matte black crepe, sleeveless bodice with a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, sharply defined waist seam with a slim self-fabric belt, slim tapered leg with the hemline ending at the ankle, black leather heeled sandals, small gold stud earrings, slim gold bracelet, sleek straight hair"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-002",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "minimalist",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "black crepe sleeveless bodice with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges",
+   "layer_outer": null,
+   "bottom": "viscose wide-leg trousers with fluid drape from a high waist seam, hemline ending at the ankle",
+   "shoes": "black leather flat sandals",
+   "accessories": [
+    "thin matching self-tie belt at the high waist seam",
+    "small gold stud earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "black crepe wide-leg jumpsuit, sleeveless bodice with a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, high waist seam marked by a thin matching self-tie belt, viscose wide-leg trousers with fluid drape, hemline ending at the ankle, black leather flat sandals, small gold stud earrings, hair loose and straight"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-003",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "minimalist",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 2,
+  "pillars": {
+   "layer_inner": null,
+   "top": "sand crepe fitted bodice with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, wide set-in shoulder straps",
+   "layer_outer": null,
+   "bottom": "linen blend cropped wide culotte leg from a clearly defined waist seam, hemline ending just below the knee",
+   "shoes": "tan woven leather flat sandals",
+   "accessories": [
+    "woven raffia belt at the defined waist seam",
+    "gold shell pendant necklace"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in the side pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "sand crepe and linen blend culotte jumpsuit, fitted bodice with wide set-in shoulder straps and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, clearly defined waist seam cinched by a woven raffia belt, cropped wide culotte leg with the hemline ending just below the knee, tan woven leather flat sandals, gold shell pendant necklace, loose low ponytail"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-004",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "minimalist",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "deep olive stretch jersey fitted sleeveless bodice with a long open V-neck front, closure point set just above the waist seam, double-layer front panel with taped edges",
+   "layer_outer": null,
+   "bottom": "matching crepe straight leg from a seamed natural waist, hemline ending at the ankle",
+   "shoes": "cream leather heeled mules",
+   "accessories": [
+    "tan leather belt with a brass buckle at the seamed waist",
+    "layered fine gold necklaces"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "resting on the belt buckle",
+   "both_busy": false
+  },
+  "prompt_skeleton": "deep olive sleeveless jumpsuit, fitted stretch jersey bodice with a long open V-neck front with the closure point set just above the waist seam, double-layer front panel with taped edges, seamed natural waist cinched by a tan leather belt with a brass buckle, crepe straight leg with the hemline ending at the ankle, cream leather heeled mules, layered fine gold necklaces, sleek low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-005",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "tomboy",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 2,
+  "pillars": {
+   "layer_inner": null,
+   "top": "washed indigo denim short-sleeve bodice with a front button placket left open into a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, chest patch pockets",
+   "layer_outer": null,
+   "bottom": "matching cotton twill straight leg with a rolled cuff, hemline ending at the ankle",
+   "shoes": "white leather low-top sneakers",
+   "accessories": [
+    "tan leather belt at the cinched natural waist",
+    "thin silver chain necklace"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "thumb hooked in the belt",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "washed indigo denim short-sleeve jumpsuit with chest patch pockets, front button placket left open into a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, tan leather belt at the cinched natural waist, cotton twill straight leg with a rolled cuff, hemline ending at the ankle, white leather low-top sneakers, thin silver chain necklace, loose messy bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-006",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_mature",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 4,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ink navy crepe one-shoulder fitted bodice with a single wide structured strap and a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges and boned side seams",
+   "layer_outer": null,
+   "bottom": "matte satin slim straight leg from a sharply seamed waist, hemline ending at the ankle",
+   "shoes": "navy satin pointed heels",
+   "accessories": [
+    "single asymmetric gold ear cuff",
+    "concealed inner waist stay at the seamed waist"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "hard",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "ink navy one-shoulder jumpsuit, crepe fitted bodice with a single wide structured strap and a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges and boned side seams, sharply seamed waist with a concealed inner waist stay, matte satin slim straight leg with the hemline ending at the ankle, navy satin pointed heels, single asymmetric gold ear cuff, sleek centre-parted low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-007",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "feminine_mature",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 4,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory silk blend halter bodice tied at the nape with a fully secured and lined back panel, long open V-neck front, closure point set just above the waist seam, fully lined with taped edges",
+   "layer_outer": null,
+   "bottom": "matching crepe wide-leg trousers from a high seamed waist, hemline ending at the ankle",
+   "shoes": "gold leather strappy heeled sandals",
+   "accessories": [
+    "slim gold waist chain over the high waist seam",
+    "small gold hoop earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "touching the halter tie",
+   "both_busy": false
+  },
+  "prompt_skeleton": "ivory silk blend halter-neck jumpsuit tied at the nape with a fully secured and lined back panel, long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, high seamed waist accented by a slim gold waist chain, crepe wide-leg trousers with the hemline ending at the ankle, gold leather strappy heeled sandals, small gold hoop earrings, sleek high bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-008",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "feminine_sweet",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 4,
+  "pillars": {
+   "layer_inner": null,
+   "top": "dusty pink cotton sateen fitted bodice with a wide structured off-shoulder band and a deep V-neck opening at the centre front, closure point set at mid-chest, fully lined with taped edges and internal boning",
+   "layer_outer": null,
+   "bottom": "matching crepe slim straight leg from a nipped-in waist seam, hemline ending at the ankle",
+   "shoes": "nude leather block-heel sandals",
+   "accessories": [
+    "narrow self-fabric belt at the nipped-in waist seam",
+    "small pearl drop earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "dusty pink off-shoulder jumpsuit, cotton sateen fitted bodice with a wide structured off-shoulder band and internal boning, deep V-neck opening at the centre front with the closure point set at mid-chest, fully lined with taped edges, nipped-in waist seam with a narrow self-fabric belt, crepe slim straight leg with the hemline ending at the ankle, nude leather block-heel sandals, small pearl drop earrings, soft loose waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-009",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "korean_chic",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "chocolate viscose wrap bodice crossing into a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, three-quarter sleeves",
+   "layer_outer": null,
+   "bottom": "matching crepe straight leg from a knotted waist tie, hemline ending at the ankle",
+   "shoes": "tan leather heeled mules",
+   "accessories": [
+    "self-fabric waist tie knotted at the side",
+    "gold statement earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "resting on the knotted waist tie",
+   "both_busy": false
+  },
+  "prompt_skeleton": "chocolate viscose wrap-front jumpsuit, bodice crossing into a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, three-quarter sleeves, self-fabric waist tie knotted at the side, crepe straight leg with the hemline ending at the ankle, tan leather heeled mules, gold statement earrings, sleek low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-010",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_office",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 4,
+  "pillars": {
+   "layer_inner": null,
+   "top": "black suiting fitted bodice with a sharp notch lapel collar and a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, held closed with concealed fashion tape, long sleeves",
+   "layer_outer": null,
+   "bottom": "matching suiting straight leg with a pressed centre crease from a sharply seamed waist, hemline ending at the ankle",
+   "shoes": "black leather pointed heels",
+   "accessories": [
+    "wide black leather belt with a brushed gold buckle at the seamed waist",
+    "small gold stud earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in the trouser pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "black suiting blazer jumpsuit with a sharp notch lapel collar, fitted bodice with a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, held closed with concealed fashion tape, long sleeves, wide black leather belt with a brushed gold buckle at the sharply seamed waist, matching straight leg with a pressed centre crease, hemline ending at the ankle, black leather pointed heels, small gold stud earrings, sleek straight hair"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-011",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "street_edgy",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "mid-wash denim fitted bodice with a front button placket left open into a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, long sleeves rolled to the elbow, utility chest pockets",
+   "layer_outer": null,
+   "bottom": "matching denim slim straight leg with a raw hem, hemline ending at the ankle",
+   "shoes": "brown leather ankle boots",
+   "accessories": [
+    "tan leather belt with a brass buckle at the cinched waist",
+    "layered fine silver necklaces"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in the hip pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "mid-wash denim jumpsuit with utility chest pockets, fitted bodice with the front button placket left open into a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, long sleeves rolled to the elbow, tan leather belt with a brass buckle at the cinched waist, slim straight leg with a raw hem, hemline ending at the ankle, brown leather ankle boots, layered fine silver necklaces, loose textured waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-012",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "korean_chic",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "oat viscose rib-knit close-fitting bodice with visible fine ribbing and a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, long sleeves",
+   "layer_outer": null,
+   "bottom": "matching rib-knit straight leg from a defined elasticated waist seam, hemline ending at the ankle",
+   "shoes": "black leather heeled mules",
+   "accessories": [
+    "black leather belt with a slim gold buckle at the waist seam for contrast",
+    "thin gold hoop earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "resting on the belt",
+   "both_busy": false
+  },
+  "prompt_skeleton": "oat viscose rib-knit jumpsuit with visible fine ribbing texture, close-fitting bodice with long sleeves and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, defined elasticated waist seam with a contrasting black leather belt and slim gold buckle, rib-knit straight leg with the hemline ending at the ankle, black leather heeled mules, thin gold hoop earrings, sleek low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-013",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "sporty_active",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 4,
+  "pillars": {
+   "layer_inner": null,
+   "top": "matte charcoal nylon spandex close-fitting bodice with a front zip pulled down into a deep V-neck opening, closure point set at mid-chest, double-layer front panel with taped edges, wide elastic underband, long sleeves",
+   "layer_outer": null,
+   "bottom": "matching nylon spandex tapered leg from a wide contour waistband, hemline ending at the ankle",
+   "shoes": "white and grey mesh running trainers",
+   "accessories": [
+    "wide contour waistband defining the natural waist",
+    "small steel stud earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "adjusting the front zip",
+   "both_busy": false
+  },
+  "prompt_skeleton": "matte charcoal standard commercial activewear jumpsuit, nylon spandex close-fitting bodice with a front zip pulled down into a deep V-neck opening with the closure point set at mid-chest, double-layer front panel with taped edges and a wide elastic underband, absolutely no shiny finish, long sleeves, wide contour waistband defining the natural waist, tapered leg with the hemline ending at the ankle, white and grey mesh running trainers, small steel stud earrings, high sleek ponytail"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-014",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "tomboy",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "khaki cotton twill fitted bodice with a front zip pulled down into a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, short sleeves",
+   "layer_outer": null,
+   "bottom": "matching linen blend shorts leg from a cinched natural waist, hemline ending at mid-thigh",
+   "shoes": "white leather low-top sneakers",
+   "accessories": [
+    "woven canvas belt with a metal clasp at the cinched waist",
+    "small gold hoop earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in the shorts pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "khaki cotton twill romper, fitted bodice with a front zip pulled down into a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, short sleeves, woven canvas belt with a metal clasp at the cinched natural waist, linen blend shorts leg with the hemline ending at mid-thigh, white leather low-top sneakers, small gold hoop earrings, loose low ponytail"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-015",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "feminine_sweet",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 4,
+  "pillars": {
+   "layer_inner": null,
+   "top": "butter yellow rayon fitted bodice with narrow shoulder straps and a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges",
+   "layer_outer": null,
+   "bottom": "matching cotton shorts leg with a soft gathered hem from a clearly defined waist seam, hemline ending at mid-thigh",
+   "shoes": "cream leather block-heel sandals",
+   "accessories": [
+    "self-fabric bow belt tied at the defined waist seam",
+    "small gold daisy earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "adjusting the bow belt",
+   "both_busy": false
+  },
+  "prompt_skeleton": "butter yellow rayon playsuit, fitted bodice with narrow shoulder straps and a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, self-fabric bow belt tied at the clearly defined waist seam, cotton shorts leg with a soft gathered hem, hemline ending at mid-thigh, cream leather block-heel sandals, small gold daisy earrings, soft loose waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-016",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "feminine_mature",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "pearl grey chiffon micro-pleated fitted bodice with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, short pleated sleeves",
+   "layer_outer": null,
+   "bottom": "georgette micro-pleated flowing wide leg from a high seamed waist, hemline ending at the ankle",
+   "shoes": "silver leather strappy heeled sandals",
+   "accessories": [
+    "narrow silver-toned belt at the high seamed waist",
+    "small silver drop earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "hard",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "lightly holding the pleated leg",
+   "both_busy": false
+  },
+  "prompt_skeleton": "pearl grey micro-pleated jumpsuit, chiffon fitted bodice with short pleated sleeves and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, high seamed waist marked by a narrow silver-toned belt, georgette micro-pleated flowing wide leg with the hemline ending at the ankle, silver leather strappy heeled sandals, small silver drop earrings, sleek centre-parted low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-017",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "street_techwear",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted black rib-knit crop tank with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges",
+   "top": "faded stone ripstop fitted bodice with a front zip pulled down, long sleeves pushed up, double flap chest pockets",
+   "layer_outer": null,
+   "bottom": "matching cotton twill straight cargo leg with thigh flap pockets, hemline ending at the ankle with a drawcord cuff",
+   "shoes": "black leather lace-up combat boots",
+   "accessories": [
+    "wide black webbing belt with a metal clasp cinching the natural waist",
+    "small steel hoop earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "styled_daily",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in a thigh cargo pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "faded stone ripstop cargo jumpsuit with double flap chest pockets, fitted bodice with the front zip pulled down and long sleeves pushed up, fitted black rib-knit crop tank underneath with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, wide black webbing belt with a metal clasp cinching the natural waist, straight cargo leg with thigh flap pockets, hemline ending at the ankle with a drawcord cuff, black leather lace-up combat boots, small steel hoop earrings, high messy bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-018",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "minimalist",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "warm taupe crepe fitted bodice with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, short kimono sleeves",
+   "layer_outer": null,
+   "bottom": "linen blend straight leg from a wide self-belted waist, hemline ending at the ankle",
+   "shoes": "tan leather heeled sandals",
+   "accessories": [
+    "wide matching self-fabric obi belt wrapped twice at the natural waist",
+    "gold cuff bracelet"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "resting on the wide belt",
+   "both_busy": false
+  },
+  "prompt_skeleton": "warm taupe crepe belted jumpsuit, fitted bodice with short kimono sleeves and a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, wide matching self-fabric obi belt wrapped twice at the natural waist, linen blend straight leg with the hemline ending at the ankle, tan leather heeled sandals, gold cuff bracelet, sleek low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-019",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "korean_chic",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "soft white tencel fitted bodice with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, cap sleeves",
+   "layer_outer": null,
+   "bottom": "viscose wide leg gathered under a ruffled paperbag waist, hemline ending at the ankle",
+   "shoes": "tan leather flat sandals",
+   "accessories": [
+    "matching fabric tie drawn through the ruffled paperbag waist",
+    "gold pendant necklace"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "resting on the paperbag waist tie",
+   "both_busy": false
+  },
+  "prompt_skeleton": "soft white tencel paperbag-waist jumpsuit, fitted bodice with cap sleeves and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, ruffled paperbag waist gathered by a matching fabric tie, viscose wide leg with the hemline ending at the ankle, tan leather flat sandals, gold pendant necklace, loose soft waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-020",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "minimalist",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "clay crepe wrap bodice crossing into a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, sleeveless",
+   "layer_outer": null,
+   "bottom": "linen blend cropped wide culotte leg from a knotted wrap waist, hemline ending just below the knee",
+   "shoes": "cream leather flat mules",
+   "accessories": [
+    "self-fabric wrap sash knotted at the side waist",
+    "thin gold anklet"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "holding the wrap sash",
+   "both_busy": false
+  },
+  "prompt_skeleton": "clay crepe wrap culotte jumpsuit, sleeveless bodice crossing into a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, self-fabric wrap sash knotted at the side waist, linen blend cropped wide culotte leg with the hemline ending just below the knee, cream leather flat mules, thin gold anklet, sleek low ponytail"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-021",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_mature",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 4,
+  "pillars": {
+   "layer_inner": null,
+   "top": "graphite silk crepe asymmetric draped bodice with one covered shoulder and a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, soft cowl drape at the front",
+   "layer_outer": null,
+   "bottom": "viscose slim straight leg from an asymmetric gathered waist seam, hemline ending at the ankle",
+   "shoes": "black satin pointed heels",
+   "accessories": [
+    "single wide gold cuff",
+    "asymmetric gathered waist seam held by a covered self-fabric knot"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "hard",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "graphite silk crepe draped jumpsuit, asymmetric bodice with one covered shoulder and a soft cowl drape at the front, long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, asymmetric gathered waist seam held by a covered self-fabric knot, viscose slim straight leg with the hemline ending at the ankle, black satin pointed heels, single wide gold cuff, sleek wet-look low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-022",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_office",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 4,
+  "pillars": {
+   "layer_inner": null,
+   "top": "midnight black suiting fitted bodice with satin peak lapels and a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, held closed with concealed fashion tape, long sleeves",
+   "layer_outer": null,
+   "bottom": "matching suiting straight leg with a satin side stripe and pressed crease, hemline ending at the ankle",
+   "shoes": "black patent leather pointed heels",
+   "accessories": [
+    "black satin cummerbund defining the waistline",
+    "small diamond-cut gold studs"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "adjusting a lapel",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "midnight black tuxedo jumpsuit with satin peak lapels, fitted bodice with a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, held closed with concealed fashion tape, long sleeves, black satin cummerbund defining the waistline, matching straight leg with a satin side stripe and pressed crease, hemline ending at the ankle, black patent leather pointed heels, small diamond-cut gold studs, sleek slicked-back low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-023",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "feminine_mature",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "burnt orange viscose fitted bodice with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, wide set-in shoulder straps",
+   "layer_outer": null,
+   "bottom": "crepe extra-wide palazzo leg with fluid drape from a high seamed waist, hemline ending at the ankle",
+   "shoes": "gold leather flat sandals",
+   "accessories": [
+    "braided tan leather belt at the high seamed waist",
+    "large gold disc earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "holding the palazzo leg against the breeze",
+   "both_busy": false
+  },
+  "prompt_skeleton": "burnt orange viscose palazzo jumpsuit, fitted bodice with wide set-in shoulder straps and a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, high seamed waist cinched by a braided tan leather belt, crepe extra-wide palazzo leg with fluid drape, hemline ending at the ankle, gold leather flat sandals, large gold disc earrings, loose airy waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-024",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "feminine_sweet",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "small-scale tonal geometric print viscose fitted bodice with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, short flutter sleeves",
+   "layer_outer": null,
+   "bottom": "matching cotton straight leg from a cinched natural waist, hemline ending at the ankle",
+   "shoes": "cream leather block-heel sandals",
+   "accessories": [
+    "matching self-fabric tie belt cinched at the natural waist",
+    "small gold hoop earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "resting on the tie belt",
+   "both_busy": false
+  },
+  "prompt_skeleton": "small-scale tonal geometric print viscose jumpsuit with no oversized floral motifs, fitted bodice with short flutter sleeves and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, matching self-fabric tie belt cinched at the natural waist, cotton straight leg with the hemline ending at the ankle, cream leather block-heel sandals, small gold hoop earrings, soft loose waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-025",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "minimalist",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "deep espresso linen blend fitted bodice with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, sleeveless with a visible weave texture",
+   "layer_outer": null,
+   "bottom": "matching linen blend straight leg with natural soft creasing from a defined waist seam, hemline ending at the ankle",
+   "shoes": "tan woven leather flat sandals",
+   "accessories": [
+    "wide contrasting cream leather belt at the defined waist seam",
+    "thin gold hoop earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "styled_daily",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in the side pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "deep espresso linen blend jumpsuit with visible weave texture, sleeveless fitted bodice with a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, defined waist seam cinched by a wide contrasting cream leather belt, straight leg with natural soft creasing, hemline ending at the ankle, tan woven leather flat sandals, thin gold hoop earrings, loose low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-026",
+  "season": "winter",
+  "gender": "F",
+  "style_archetype": "sporty_active",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted white cotton rib-knit crop tank with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges",
+   "top": "heather grey cotton fleece fitted bodice with a front zip pulled down, long raglan sleeves with ribbed cuffs",
+   "layer_outer": null,
+   "bottom": "matching cotton fleece tapered leg from an elasticated drawcord waist, hemline ending at the ankle with a ribbed cuff",
+   "shoes": "white leather chunky sneakers",
+   "accessories": [
+    "contrast white drawcord tie at the elasticated waist",
+    "small silver hoop earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "styled_daily",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in the kangaroo pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "heather grey cotton fleece sweat jumpsuit, fitted bodice with the front zip pulled down and long raglan sleeves with ribbed cuffs, fitted white cotton rib-knit crop tank underneath with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, contrast white drawcord tie at the elasticated waist, tapered leg with the hemline ending at the ankle in a ribbed cuff, white leather chunky sneakers, small silver hoop earrings, high messy bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-027",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "tomboy",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 2,
+  "pillars": {
+   "layer_inner": "fitted white cotton ribbed tank with a V-neckline, closure point at the collarbone, fully lined",
+   "top": "mid-wash denim overall bib with adjustable straps and a utility chest pocket",
+   "layer_outer": null,
+   "bottom": "matching mid-wash denim slightly relaxed leg with a raw hem, hemline ending at the ankle",
+   "shoes": "white low-top canvas sneakers",
+   "accessories": [
+    "side waist tabs buttoned in to shape the overall at the natural waist",
+    "thin silver chain necklace"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "styled_daily",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "thumb hooked under an overall strap",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "mid-wash denim overalls with adjustable straps and a utility chest pocket, worn over a fitted white cotton ribbed tank with a V-neckline with the closure point at the collarbone, fully lined, side waist tabs buttoned in to shape the overall at the natural waist, slightly relaxed leg with a raw hem, hemline ending at the ankle, white low-top canvas sneakers, thin silver chain necklace, messy bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-JMP-028",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_mature",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 4,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory crepe fitted sleeveless bodice with satin trim and a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges",
+   "layer_outer": "matching crepe cape overlay attached at the shoulder seams and falling to the elbow behind the back",
+   "bottom": "matching crepe slim straight leg from a sharply seamed waist, hemline ending at the ankle",
+   "shoes": "ivory satin pointed heels",
+   "accessories": [
+    "satin-covered belt at the sharply seamed waist",
+    "small pearl studs"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "styled_daily",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "ivory crepe cape jumpsuit with satin trim, fitted sleeveless bodice with a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, matching cape overlay attached at the shoulder seams and falling to the elbow behind the back, satin-covered belt at the sharply seamed waist, slim straight leg with the hemline ending at the ankle, ivory satin pointed heels, small pearl studs, sleek low chignon"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-001",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "street_edgy",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "deep crimson gabardine fitted moulded bodice with matte satin trim panels and a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, long sleeves",
+   "layer_outer": "matte satin trimmed short cape attached at the shoulders, falling to the waist behind the back",
+   "bottom": "black gabardine high-waist tailored shorts, hemline ending at mid-thigh",
+   "shoes": "black leather knee-high boots",
+   "accessories": [
+    "wide moulded leather waist belt with a brushed metal clasp",
+    "sheer matte black tights"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 3,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "holding the cape edge",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "hero costume look in deep crimson gabardine with matte satin trim panels, absolutely no foam armour and no plastic sheen, fitted moulded bodice with long sleeves and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, short matte satin trimmed cape attached at the shoulders and falling to the waist behind the back, wide moulded leather waist belt with a brushed metal clasp, black high-waist tailored shorts with the hemline ending at mid-thigh, sheer matte black tights, black leather knee-high boots, high sleek ponytail"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-002",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "street_techwear",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted charcoal rib-knit tank with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges",
+   "top": "matte charcoal nylon shell fitted flight-suit bodice with quilted padded shoulder panels and exposed technical seams, front zip pulled down",
+   "layer_outer": null,
+   "bottom": "matching nylon shell tapered leg with quilted knee panels, hemline ending at the ankle with a drawcord cuff",
+   "shoes": "matte grey tactical lace-up boots",
+   "accessories": [
+    "wide webbing utility belt with matte metal hardware cinching the natural waist",
+    "small steel stud earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand resting on the utility belt",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "sci-fi pilot suit in matte charcoal nylon shell, absolutely no glossy plastic and no rigid foam armour plates, fitted flight-suit bodice with quilted padded shoulder panels and exposed technical seams, front zip pulled down into a deep V-neck opening with the closure point set at mid-chest, fitted charcoal rib-knit tank underneath, fully lined with taped edges, wide webbing utility belt with matte metal hardware cinching the natural waist, tapered leg with quilted knee panels, hemline ending at the ankle with a drawcord cuff, matte grey tactical lace-up boots, small steel stud earrings, hair tied back"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-003",
+  "season": "winter",
+  "gender": "F",
+  "style_archetype": "vintage_retro",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "charcoal wool blend fitted knit top with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, long sleeves",
+   "layer_outer": "deep plum wool blend cropped academic robe with matte satin lining, worn open and ending at the natural waist",
+   "bottom": "charcoal wool blend pleated high-waist mini skirt, hemline ending at mid-thigh",
+   "shoes": "black leather chunky loafers",
+   "accessories": [
+    "wide black leather belt with an antique brass buckle at the high waist",
+    "sheer matte black tights",
+    "small brass pendant"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 3,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "holding a clothbound book against the hip",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "magic academy look, deep plum wool blend cropped academic robe with matte satin lining worn open and ending at the natural waist, absolutely no shiny costume satin, charcoal wool blend fitted knit top underneath with long sleeves and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, wide black leather belt with an antique brass buckle at the high waist, charcoal pleated high-waist mini skirt with the hemline ending at mid-thigh, sheer matte black tights, black leather chunky loafers, small brass pendant, clothbound book, loose low ponytail"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-004",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "vintage_retro",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "warm ivory cotton twill fitted top with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, short sleeves",
+   "layer_outer": "sand cotton twill cropped lab coat with brass-tone buckle straps at the cuffs, worn open, hem ending at the natural waist",
+   "bottom": "chocolate cotton twill high-waist tailored shorts, hemline ending at mid-thigh",
+   "shoes": "brown leather lace-up ankle boots",
+   "accessories": [
+    "brown leather utility waist harness with brass-tone fittings",
+    "sheer matte black tights"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "barely_worn",
+  "layering_count": 3,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in the lab coat pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "alchemist look in cotton twill with brass-tone hardware, absolutely no plastic gemstones and no resin trinkets, sand cropped lab coat with brass-tone buckle straps at the cuffs worn open and ending at the natural waist, warm ivory fitted top underneath with short sleeves and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, brown leather utility waist harness with brass-tone fittings, chocolate high-waist tailored shorts with the hemline ending at mid-thigh, sheer matte black tights, brown leather lace-up ankle boots, loose low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-005",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "street_techwear",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 4,
+  "pillars": {
+   "layer_inner": null,
+   "top": "matte black tech-knit close-fitting top with a deep V-neck opening, closure point set at mid-chest, double-layer front panel with taped edges, long sleeves with thumbholes",
+   "layer_outer": "coated twill cropped bomber in matte gunmetal, worn open, hem ending at the natural waist",
+   "bottom": "matte black coated twill high-waist mini skirt with an asymmetric zip, hemline ending at mid-thigh",
+   "shoes": "black chunky platform boots",
+   "accessories": [
+    "wide webbing belt with matte metal D-rings at the high waist",
+    "sheer matte black tights",
+    "single steel ear cuff"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 3,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in the bomber pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "cyber look in matte black tech-knit and matte gunmetal coated twill, absolutely no wet-look vinyl and no glossy PVC, close-fitting top with long sleeves and thumbholes and a deep V-neck opening with the closure point set at mid-chest, double-layer front panel with taped edges, cropped bomber worn open ending at the natural waist, wide webbing belt with matte metal D-rings at the high waist, high-waist mini skirt with an asymmetric zip, hemline ending at mid-thigh, sheer matte black tights, black chunky platform boots, single steel ear cuff, sleek high ponytail"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-006",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "street_edgy",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted navy rib-knit tank with narrow straps and a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges",
+   "top": "deep navy matte satin structured cropped jacket with clean twill trim and brass-tone buttons, worn open, hem ending at the natural waist",
+   "layer_outer": null,
+   "bottom": "matching twill pleated high-waist mini skirt with a lined underskirt, hemline ending at mid-thigh",
+   "shoes": "white leather ankle boots",
+   "accessories": [
+    "single navy ribbon choker",
+    "white grosgrain band at the skirt waistband",
+    "opaque matte black tights"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "touching the ribbon choker",
+   "both_busy": false
+  },
+  "prompt_skeleton": "stage idol outfit in deep navy matte satin with clean twill trim, absolutely no shiny costume satin, structured cropped jacket with brass-tone buttons worn open and ending at the natural waist, fitted navy rib-knit tank underneath with narrow straps and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, absolutely no strapless and no bandeau, white grosgrain band at the skirt waistband, pleated high-waist mini skirt with a lined underskirt, hemline ending at mid-thigh, opaque matte black tights, white leather ankle boots, single navy ribbon choker, high ponytail"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-007",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "street_techwear",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ink black cotton twill fitted wrap top with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, stretch knit fitted sleeves",
+   "layer_outer": null,
+   "bottom": "matching cotton twill high-waist wrapped mini skirt over fitted stretch knit leggings, skirt hemline ending at mid-thigh",
+   "shoes": "black split-toe canvas boots",
+   "accessories": [
+    "wide charcoal cotton obi sash wrapped twice at the natural waist",
+    "matte black forearm wraps"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "resting on the obi sash",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "ninja-inspired look in ink black cotton twill and stretch knit, absolutely no plastic armour plates and no toy weapons, fitted wrap top with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, fitted stretch knit sleeves, wide charcoal cotton obi sash wrapped twice at the natural waist, high-waist wrapped mini skirt over fitted leggings, skirt hemline ending at mid-thigh, matte black forearm wraps, black split-toe canvas boots, high tight ponytail"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-008",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "cultural_traditional",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "deep indigo cotton linen blend fitted wrap top with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, short wide sleeves",
+   "layer_outer": null,
+   "bottom": "charcoal cotton linen blend pleated hakama-style wide shorts, hemline ending at mid-thigh",
+   "shoes": "black leather split-toe boots",
+   "accessories": [
+    "wide stiffened obi belt in oxblood at the natural waist",
+    "sheer matte black tights"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand resting on the obi belt",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "samurai-inspired look in deep indigo cotton linen blend, absolutely no plastic armour and no swords, fitted wrap top with short wide sleeves and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, wide stiffened oxblood obi belt at the natural waist, charcoal pleated hakama-style wide shorts with the hemline ending at mid-thigh, sheer matte black tights, black leather split-toe boots, high sleek topknot"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-009",
+  "season": "winter",
+  "gender": "F",
+  "style_archetype": "vintage_retro",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "moss green canvas fitted top with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, long sleeves",
+   "layer_outer": "felted wool short hooded cloak in deep forest, ending at the natural waist",
+   "bottom": "brown canvas high-waist tailored shorts, hemline ending at mid-thigh",
+   "shoes": "brown leather lace-up knee boots",
+   "accessories": [
+    "wide brown leather waist belt with a cross-body strap",
+    "opaque matte olive tights"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 3,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "holding the cloak edge",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "ranger-inspired look in felted wool and canvas, absolutely no faux leather and no plastic buckles, short hooded cloak in deep forest ending at the natural waist, moss green canvas fitted top underneath with long sleeves and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, wide brown leather waist belt with a cross-body strap, brown high-waist tailored shorts with the hemline ending at mid-thigh, opaque matte olive tights, brown leather lace-up knee boots, loose braided hair"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-010",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "feminine_mature",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory linen blend fitted wrap bodice with matte satin trim and a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, long flowing tie-sleeves",
+   "layer_outer": null,
+   "bottom": "matching linen blend flared mini skirt, hemline ending at mid-thigh",
+   "shoes": "gold leather flat strappy sandals",
+   "accessories": [
+    "wide gold-edged sash tied high at the empire waist",
+    "thin gold circlet-style headband"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "holding the tie-sleeve",
+   "both_busy": false
+  },
+  "prompt_skeleton": "healer priestess look in ivory linen blend with matte satin trim, absolutely no shiny costume satin and no plastic jewels, fitted wrap bodice with long flowing tie-sleeves and a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, wide gold-edged sash tied high at the empire waist, flared mini skirt with the hemline ending at mid-thigh, gold leather flat strappy sandals, thin gold circlet-style headband, long loose waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-011",
+  "season": "winter",
+  "gender": "F",
+  "style_archetype": "vintage_retro",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ink black cotton sateen fitted bodice with lined lace frill trim and a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, long fitted sleeves",
+   "layer_outer": null,
+   "bottom": "matching cotton sateen tiered ruffle mini skirt from a tightly boned waist, hemline ending at mid-thigh",
+   "shoes": "black leather lace-up heeled boots",
+   "accessories": [
+    "wide black grosgrain waist ribbon tied at the back",
+    "sheer matte black tights",
+    "small cameo brooch"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "lightly holding the ruffle skirt",
+   "both_busy": false
+  },
+  "prompt_skeleton": "victorian frill look in ink black cotton sateen with lined lace frill trim, absolutely no taffeta and no sheer unlined panels, fitted bodice with long fitted sleeves and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, tightly boned waist wrapped in a wide black grosgrain ribbon tied at the back, tiered ruffle mini skirt with the hemline ending at mid-thigh, sheer matte black tights, black leather lace-up heeled boots, small cameo brooch, soft pinned-up curls"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-012",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "cultural_traditional",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "crisp white cotton fitted wrap top with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, short wide sleeves",
+   "layer_outer": null,
+   "bottom": "vermilion silk blend pleated high-waist mini skirt, hemline ending at mid-thigh",
+   "shoes": "black lacquered wooden platform sandals",
+   "accessories": [
+    "wide vermilion sash tied at the natural waist",
+    "white ribbon hair tie",
+    "sheer matte black tights"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "adjusting the vermilion sash",
+   "both_busy": false
+  },
+  "prompt_skeleton": "shrine festival inspired look, crisp white cotton fitted wrap top with short wide sleeves and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, wide vermilion sash tied at the natural waist, vermilion silk blend pleated high-waist mini skirt with the hemline ending at mid-thigh, sheer matte black tights, black lacquered wooden platform sandals, white ribbon hair tie, long straight hair"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-013",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "street_techwear",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted white rib-knit crop tank with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges",
+   "top": "off-white poly-cotton cropped technical jacket with ripstop shoulder panels and a front zip pulled down, hem ending at the natural waist",
+   "layer_outer": null,
+   "bottom": "pale grey ripstop high-waist tapered trousers with zip thigh pockets, hemline ending at the ankle",
+   "shoes": "white and grey technical sneakers",
+   "accessories": [
+    "wide reflective-free webbing belt with matte buckles at the high waist",
+    "small steel stud earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in a thigh pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "space researcher look in off-white poly-cotton and pale grey ripstop, absolutely no metallic foil fabric and no plastic helmet, cropped technical jacket with ripstop shoulder panels and the front zip pulled down, hem ending at the natural waist, fitted white rib-knit crop tank underneath with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, wide webbing belt with matte buckles at the high waist, high-waist tapered trousers with zip thigh pockets, hemline ending at the ankle, white and grey technical sneakers, small steel stud earrings, sleek low ponytail"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-014",
+  "season": "winter",
+  "gender": "F",
+  "style_archetype": "feminine_office",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted black silk camisole with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges",
+   "top": "charcoal gabardine cropped double-breasted jacket with matte buttons, worn open, hem ending at the natural waist",
+   "layer_outer": null,
+   "bottom": "charcoal gabardine high-waist pencil skirt, hemline ending just above the knee with a back slit",
+   "shoes": "black leather heeled ankle boots",
+   "accessories": [
+    "wide black leather trench belt knotted at the natural waist",
+    "sheer matte black seamed tights",
+    "matte black wide-brim hat"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in the jacket pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "film noir detective look in charcoal gabardine with matte buttons, absolutely no shiny vinyl trench fabric, cropped double-breasted jacket worn open and ending at the natural waist, fitted black silk camisole underneath with a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, wide black leather trench belt knotted at the natural waist, high-waist pencil skirt with the hemline ending just above the knee and a back slit, sheer matte black seamed tights, black leather heeled ankle boots, matte black wide-brim hat, soft side-parted waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-015",
+  "season": "winter",
+  "gender": "F",
+  "style_archetype": "street_edgy",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted cream rib-knit crop tank with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges",
+   "top": "warm caramel fleece cropped hoodie with rounded ear detailing on the hood, front zip pulled down, hem ending at the high waist",
+   "layer_outer": null,
+   "bottom": "chocolate knit high-waist mini skirt, hemline ending at mid-thigh",
+   "shoes": "cream leather chunky sneakers",
+   "accessories": [
+    "wide caramel webbing belt at the exposed high waist",
+    "opaque matte brown tights"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in the hoodie pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "beastfolk-inspired look in warm caramel fleece and chocolate knit, absolutely no shaggy fake fur and no plastic claws, cropped hoodie with rounded ear detailing on the hood and the front zip pulled down, hem ending at the high waist, fitted cream rib-knit crop tank underneath with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, wide caramel webbing belt at the exposed high waist, chocolate knit high-waist mini skirt with the hemline ending at mid-thigh, opaque matte brown tights, cream leather chunky sneakers, loose messy bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-016",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_mature",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ivory matte satin fitted moulded bodice with lined organza overlay panels and a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, sleeveless",
+   "layer_outer": "lined organza short cape falling to the waist behind the back, absolutely no feathers",
+   "bottom": "matching matte satin high-waist flared mini skirt, hemline ending at mid-thigh",
+   "shoes": "gold leather strappy heeled sandals",
+   "accessories": [
+    "wide brushed gold waist plate belt at the natural waist",
+    "sheer matte ivory tights"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "hard",
+  "wear_state": "barely_worn",
+  "layering_count": 3,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "holding the organza cape edge",
+   "both_busy": false
+  },
+  "prompt_skeleton": "angelic guardian look in ivory matte satin with lined organza overlay panels, absolutely no feathers and no plastic wings, fitted moulded sleeveless bodice with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, lined organza short cape falling to the waist behind the back, wide brushed gold waist plate belt at the natural waist, high-waist flared mini skirt with the hemline ending at mid-thigh, sheer matte ivory tights, gold leather strappy heeled sandals, long loose waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-017",
+  "season": "winter",
+  "gender": "F",
+  "style_archetype": "vintage_retro",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted black silk camisole with a low V neckline, fully lined",
+   "top": "deep burgundy cotton velvet fitted tailcoat with matte satin lapel trim and a high contrasting collar, deep V-neck opening at the front, closure point set at mid-chest, fully lined with taped edges",
+   "layer_outer": null,
+   "bottom": "black suiting high-waist tailored trousers with a pressed crease, hemline ending at the ankle",
+   "shoes": "black leather heeled ankle boots",
+   "accessories": [
+    "black satin waist wrap defining the natural waist",
+    "single silver signet ring"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "hard",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "adjusting a velvet cuff",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "dark fantasy noble look in deep burgundy cotton velvet with matte satin lapel trim, absolutely no horns and no wings, fitted tailcoat with a high contrasting collar and a deep V-neck opening at the front with the closure point set at mid-chest, fully lined with taped edges, fitted black silk camisole underneath with a low V neckline, black satin waist wrap defining the natural waist, black high-waist tailored trousers with a pressed crease, hemline ending at the ankle, black leather heeled ankle boots, single silver signet ring, sleek dark hair"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-018",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "vintage_retro",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "moss linen fitted wrap top with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, long sleeves",
+   "layer_outer": "deep olive felt cropped shoulder mantle ending above the natural waist",
+   "bottom": "bark brown linen high-waist wrapped mini skirt, hemline ending at mid-thigh",
+   "shoes": "brown leather flat lace-up boots",
+   "accessories": [
+    "braided leather cord belt wrapped twice at the natural waist",
+    "opaque matte olive tights",
+    "small carved wooden pendant"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "barely_worn",
+  "layering_count": 3,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "touching the wooden pendant",
+   "both_busy": false
+  },
+  "prompt_skeleton": "forest druid look in moss linen and deep olive felt, absolutely no plastic leaves and no artificial vines, fitted wrap top with long sleeves and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, cropped felt shoulder mantle ending above the natural waist, braided leather cord belt wrapped twice at the natural waist, bark brown linen high-waist wrapped mini skirt with the hemline ending at mid-thigh, opaque matte olive tights, brown leather flat lace-up boots, small carved wooden pendant, loose braided hair"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-019",
+  "season": "summer",
+  "gender": "F",
+  "style_archetype": "minimalist",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "sand cotton gauze fitted wrap top with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, long loose sleeves",
+   "layer_outer": null,
+   "bottom": "stone canvas high-waist tailored shorts, hemline ending at mid-thigh",
+   "shoes": "tan leather flat gladiator sandals",
+   "accessories": [
+    "wide woven canvas wrap belt at the natural waist",
+    "long draped sand cotton head scarf",
+    "stacked brass bangles"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "holding the head scarf edge",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "desert nomad look in sand cotton gauze and stone canvas, absolutely no plastic beading, fitted wrap top with long loose sleeves and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, wide woven canvas wrap belt at the natural waist, stone high-waist tailored shorts with the hemline ending at mid-thigh, tan leather flat gladiator sandals, long draped sand cotton head scarf, stacked brass bangles, loose sun-bleached waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-020",
+  "season": "winter",
+  "gender": "F",
+  "style_archetype": "feminine_office",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "midnight wool blend fitted knit top with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, long sleeves",
+   "layer_outer": "charcoal twill cropped structured overcoat with brass-tone closures, worn open, hem ending at the natural waist",
+   "bottom": "midnight wool blend high-waist pleated mini skirt, hemline ending at mid-thigh",
+   "shoes": "black leather heeled loafers",
+   "accessories": [
+    "wide black leather belt with an engraved brass buckle at the high waist",
+    "sheer matte black tights",
+    "fine brass chain glasses cord"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 3,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "holding a leather-bound folio",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "arcane scholar look in midnight wool blend and charcoal twill with brass-tone closures, absolutely no plastic gemstones, cropped structured overcoat worn open ending at the natural waist, fitted knit top underneath with long sleeves and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, wide black leather belt with an engraved brass buckle at the high waist, high-waist pleated mini skirt with the hemline ending at mid-thigh, sheer matte black tights, black leather heeled loafers, fine brass chain glasses cord, leather-bound folio, sleek low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-021",
+  "season": "winter",
+  "gender": "F",
+  "style_archetype": "masculine_formal",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted cream rib-knit tank with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges",
+   "top": "navy wool cropped double-breasted captain jacket with brass-tone buttons and shoulder boards, worn open, hem ending at the natural waist",
+   "layer_outer": null,
+   "bottom": "navy wool high-waist tailored shorts with a pressed crease, hemline ending at mid-thigh",
+   "shoes": "black leather knee-high boots",
+   "accessories": [
+    "wide black leather belt with a brass anchor buckle at the high waist",
+    "sheer matte black tights",
+    "navy peaked cap"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand resting on the belt buckle",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "harbour captain look in navy wool with brass-tone buttons and shoulder boards, absolutely no plastic gold braid, cropped double-breasted jacket worn open ending at the natural waist, fitted cream rib-knit tank underneath with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, wide black leather belt with a brass anchor buckle at the high waist, navy high-waist tailored shorts with a pressed crease, hemline ending at mid-thigh, sheer matte black tights, black leather knee-high boots, navy peaked cap, sleek low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-022",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "vintage_retro",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "sand canvas fitted top with real leather trim panels and a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, long sleeves rolled to the elbow",
+   "layer_outer": "brown real leather cropped flight jacket with a shearling collar, worn open, hem ending at the natural waist",
+   "bottom": "brown canvas high-waist tailored shorts, hemline ending at mid-thigh",
+   "shoes": "brown leather lace-up boots",
+   "accessories": [
+    "wide brown leather harness belt with brass fittings at the natural waist",
+    "opaque matte brown tights",
+    "brass-framed goggles worn on the head"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 3,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in the flight jacket pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "airship navigator look in sand canvas and real brown leather with brass fittings, absolutely no faux leather and no plastic buckles, cropped flight jacket with a shearling collar worn open ending at the natural waist, fitted canvas top underneath with leather trim panels, long sleeves rolled to the elbow and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, wide brown leather harness belt with brass fittings at the natural waist, brown high-waist tailored shorts with the hemline ending at mid-thigh, opaque matte brown tights, brown leather lace-up boots, brass-framed goggles worn on the head, loose low ponytail"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-023",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "street_edgy",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted black rib-knit tank with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges",
+   "top": "ink black gabardine cropped asymmetric jacket with matte satin trim, worn open, hem ending at the natural waist",
+   "layer_outer": null,
+   "bottom": "ink black gabardine high-waist wrapped mini skirt with an asymmetric overlap, hemline ending at mid-thigh",
+   "shoes": "black leather lace-up platform boots",
+   "accessories": [
+    "wide black leather belt with a matte silver clasp at the high waist",
+    "sheer matte black tights",
+    "single long silver chain earring"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand in the jacket pocket",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "urban exorcist look in ink black gabardine with matte satin trim, absolutely no glossy vinyl, cropped asymmetric jacket worn open ending at the natural waist, fitted black rib-knit tank underneath with a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, wide black leather belt with a matte silver clasp at the high waist, high-waist wrapped mini skirt with an asymmetric overlap, hemline ending at mid-thigh, sheer matte black tights, black leather lace-up platform boots, single long silver chain earring, sleek straight hair"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-024",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "tomboy",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted white cotton rib-knit crop tank with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges",
+   "top": "faded slate cotton twill mechanic coverall bodice with the front zip pulled down and the sleeves tied around the waist",
+   "layer_outer": null,
+   "bottom": "matching cotton twill straight leg with knee patch panels, hemline ending at the ankle with a rolled cuff",
+   "shoes": "brown leather work boots",
+   "accessories": [
+    "coverall sleeves knotted at the natural waist acting as the waist definition",
+    "small steel hoop earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "styled_daily",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "holding a clean chrome wrench",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "garage mechanic look in faded slate cotton twill, absolutely no oil stains and no torn fabric, coverall bodice with the front zip pulled down and the sleeves knotted at the natural waist acting as the waist definition, fitted white cotton rib-knit crop tank underneath with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, straight leg with knee patch panels, hemline ending at the ankle with a rolled cuff, brown leather work boots, small steel hoop earrings, clean chrome wrench, high messy bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-025",
+  "season": "winter",
+  "gender": "F",
+  "style_archetype": "vintage_retro",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "ink black lined chiffon fitted wrap top with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, long sheer-free bishop sleeves",
+   "layer_outer": "black wool felt cropped structured capelet ending at the natural waist",
+   "bottom": "black wool felt high-waist A-line mini skirt, hemline ending at mid-thigh",
+   "shoes": "black leather buckled heeled boots",
+   "accessories": [
+    "wide black leather belt with an antique silver moon buckle at the high waist",
+    "opaque matte black tights",
+    "small silver crescent pendant"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 3,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "holding the capelet edge",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "modern witchcraft look in ink black lined chiffon and black wool felt, absolutely no sheer unlined panels and no plastic charms, fitted wrap top with long bishop sleeves and a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, cropped structured capelet ending at the natural waist, wide black leather belt with an antique silver moon buckle at the high waist, high-waist A-line mini skirt with the hemline ending at mid-thigh, opaque matte black tights, black leather buckled heeled boots, small silver crescent pendant, long loose waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-026",
+  "season": "winter",
+  "gender": "F",
+  "style_archetype": "street_techwear",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted stone grey rib-knit tank with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges",
+   "top": "stone canvas cropped structured jacket with felt shoulder panels and matte metal rivets, worn open, hem ending at the natural waist",
+   "layer_outer": null,
+   "bottom": "charcoal felt high-waist panelled mini skirt, hemline ending at mid-thigh",
+   "shoes": "grey leather lace-up boots",
+   "accessories": [
+    "wide grey webbing belt with matte metal plates at the high waist",
+    "opaque matte grey tights"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand resting on the belt plates",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "golem scholar look in stone canvas and charcoal felt with matte metal rivets, absolutely no foam armour and no fake stone texture, cropped structured jacket with felt shoulder panels worn open ending at the natural waist, fitted stone grey rib-knit tank underneath with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, wide grey webbing belt with matte metal plates at the high waist, high-waist panelled mini skirt with the hemline ending at mid-thigh, opaque matte grey tights, grey leather lace-up boots, sleek low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-027",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "vintage_retro",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "cream linen fitted wrap top with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, long full sleeves gathered at the cuff",
+   "layer_outer": "deep teal cotton velvet cropped waistcoat with brass-tone lacing, ending at the natural waist",
+   "bottom": "deep teal velvet high-waist wrapped mini skirt, hemline ending at mid-thigh",
+   "shoes": "brown leather flat ankle boots",
+   "accessories": [
+    "braided leather cord belt at the natural waist",
+    "opaque matte cream tights",
+    "small brass hoop earrings"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "hard",
+  "wear_state": "barely_worn",
+  "layering_count": 3,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "holding a small wooden lute against the hip",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "troubadour bard look in cream linen and deep teal cotton velvet with brass-tone lacing, absolutely no shiny costume satin, cropped velvet waistcoat ending at the natural waist, cream linen fitted wrap top underneath with long full sleeves gathered at the cuff and a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, braided leather cord belt at the natural waist, velvet high-waist wrapped mini skirt with the hemline ending at mid-thigh, opaque matte cream tights, brown leather flat ankle boots, small brass hoop earrings, small wooden lute, loose braided half-up hair"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-028",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "masculine_formal",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted ivory silk camisole with a low V neckline, fully lined",
+   "top": "deep sapphire matte satin cropped attendant jacket with twill trim and brass-tone frogging, deep V-neck opening at the front, closure point set at mid-chest, fully lined with taped edges, hem ending at the natural waist",
+   "layer_outer": null,
+   "bottom": "ivory twill high-waist tailored shorts, hemline ending at mid-thigh",
+   "shoes": "black leather knee-high riding boots",
+   "accessories": [
+    "wide sapphire satin waist sash at the natural waist",
+    "sheer matte ivory tights",
+    "white gloves tucked into the sash"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand resting on the waist sash",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "royal attendant look in deep sapphire matte satin with twill trim and brass-tone frogging, absolutely no plastic braid and no shiny costume satin, cropped attendant jacket with a deep V-neck opening at the front with the closure point set at mid-chest, fully lined with taped edges, hem ending at the natural waist, fitted ivory silk camisole underneath with a low V neckline, wide sapphire satin waist sash at the natural waist, ivory twill high-waist tailored shorts with the hemline ending at mid-thigh, sheer matte ivory tights, black leather knee-high riding boots, white gloves tucked into the sash, sleek low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-029",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "street_edgy",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "oxblood canvas fitted top with real leather trim panels and a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, long sleeves",
+   "layer_outer": null,
+   "bottom": "black canvas high-waist tailored shorts with leather side panels, hemline ending at mid-thigh",
+   "shoes": "black leather lace-up knee boots",
+   "accessories": [
+    "wide brown leather harness belt with brass rings at the natural waist",
+    "opaque matte black tights",
+    "brown leather forearm guards"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand resting on the harness belt",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "beast tamer look in oxblood canvas with real leather trim panels, absolutely no faux leather and no whips, fitted top with long sleeves and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, wide brown leather harness belt with brass rings at the natural waist, black high-waist tailored shorts with leather side panels, hemline ending at mid-thigh, opaque matte black tights, brown leather forearm guards, black leather lace-up knee boots, high tight ponytail"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-030",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "vintage_retro",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted cream rib-knit tank with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges",
+   "top": "tobacco coated twill cropped structured jacket with brass-tone buckles, worn open, hem ending at the natural waist",
+   "layer_outer": null,
+   "bottom": "charcoal twill high-waist pleated mini skirt, hemline ending at mid-thigh",
+   "shoes": "brown leather buckled heeled boots",
+   "accessories": [
+    "wide brown leather belt with a large brass gear-style buckle at the high waist",
+    "opaque matte charcoal tights",
+    "brass pocket watch on a chain"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "holding the brass pocket watch",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "time traveller look in tobacco coated twill with brass-tone buckles, absolutely no plastic gears and no glued-on trinkets, cropped structured jacket worn open ending at the natural waist, fitted cream rib-knit tank underneath with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, wide brown leather belt with a large brass gear-style buckle at the high waist, charcoal high-waist pleated mini skirt with the hemline ending at mid-thigh, opaque matte charcoal tights, brown leather buckled heeled boots, brass pocket watch on a chain, loose low bun"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-031",
+  "season": "winter",
+  "gender": "F",
+  "style_archetype": "masculine_formal",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": "fitted charcoal rib-knit tank with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges",
+   "top": "deep forest canvas cropped structured captain coat with felt lapels and matte metal clasps, worn open, hem ending at the natural waist",
+   "layer_outer": null,
+   "bottom": "charcoal felt high-waist panelled mini skirt, hemline ending at mid-thigh",
+   "shoes": "black leather lace-up knee boots",
+   "accessories": [
+    "wide black leather double-buckle belt at the high waist",
+    "opaque matte charcoal tights",
+    "brushed steel shoulder clasp"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 2,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand resting on the double-buckle belt",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "guild captain look in deep forest canvas and charcoal felt with matte metal clasps, absolutely no foam armour and no plastic pauldrons, cropped structured captain coat with felt lapels worn open ending at the natural waist, fitted charcoal rib-knit tank underneath with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, wide black leather double-buckle belt at the high waist, high-waist panelled mini skirt with the hemline ending at mid-thigh, opaque matte charcoal tights, brushed steel shoulder clasp, black leather lace-up knee boots, sleek high ponytail"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-032",
+  "season": "spring_autumn",
+  "gender": "F",
+  "style_archetype": "tomboy",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "olive canvas fitted top with a deep V-neck opening, closure point set at mid-chest, fully lined with taped edges, long sleeves rolled to the elbow",
+   "layer_outer": "heather wool cropped shoulder cape ending above the natural waist",
+   "bottom": "bark brown canvas high-waist tailored shorts with cargo pockets, hemline ending at mid-thigh",
+   "shoes": "brown leather lace-up hiking boots",
+   "accessories": [
+    "wide woven canvas belt with a matte metal clasp at the high waist",
+    "opaque matte olive tights",
+    "small brass compass on a cord"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "safe",
+  "wear_state": "styled_daily",
+  "layering_count": 3,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "holding the small brass compass",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "forest scout look in olive and bark brown canvas with heather wool, absolutely no plastic foliage, cropped wool shoulder cape ending above the natural waist, fitted olive canvas top underneath with long sleeves rolled to the elbow and a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, wide woven canvas belt with a matte metal clasp at the high waist, high-waist tailored shorts with cargo pockets, hemline ending at mid-thigh, opaque matte olive tights, brown leather lace-up hiking boots, small brass compass on a cord, loose low ponytail"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-033",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "feminine_mature",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 3,
+  "pillars": {
+   "layer_inner": null,
+   "top": "pale gold matte satin fitted bodice with linen blend trim panels and a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, long draped sleeves",
+   "layer_outer": null,
+   "bottom": "ivory linen blend high-waist flared mini skirt, hemline ending at mid-thigh",
+   "shoes": "gold leather strappy heeled sandals",
+   "accessories": [
+    "wide brushed gold waist belt at the high waist",
+    "sheer matte ivory tights",
+    "thin gold temple chain"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 1,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "relaxed at side",
+   "right_hand": "holding a draped sleeve",
+   "both_busy": false
+  },
+  "prompt_skeleton": "light priest look in pale gold matte satin with linen blend trim panels, absolutely no metallic foil and no plastic halo props, fitted bodice with long draped sleeves and a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, wide brushed gold waist belt at the high waist, ivory high-waist flared mini skirt with the hemline ending at mid-thigh, sheer matte ivory tights, gold leather strappy heeled sandals, thin gold temple chain, long loose waves"
+ },
+ {
+  "outfit_id": "F-SHOOT-COS-034",
+  "season": "all-year",
+  "gender": "F",
+  "style_archetype": "street_techwear",
+  "context_id": "model_photoshoot",
+  "aesthetic_tier": 4,
+  "pillars": {
+   "layer_inner": null,
+   "top": "matte black tech-knit close-fitting top with a long open V-neck front, closure point set just above the waist seam, double-layer front panel with taped edges, long sleeves",
+   "layer_outer": "matte black coated twill cropped hooded vest ending at the natural waist",
+   "bottom": "matte black coated twill high-waist wrapped mini skirt over fitted tech-knit leggings, skirt hemline ending at mid-thigh",
+   "shoes": "black leather split-toe tabi boots",
+   "accessories": [
+    "wide black leather harness belt with matte metal rings at the natural waist",
+    "matte black forearm wraps"
+   ],
+   "props": []
+  },
+  "fabric_difficulty": "medium",
+  "wear_state": "barely_worn",
+  "layering_count": 3,
+  "compatible_contexts": [
+   "model_photoshoot"
+  ],
+  "hand_occupation": {
+   "left_hand": "hand resting on the harness belt",
+   "right_hand": "relaxed at side",
+   "both_busy": false
+  },
+  "prompt_skeleton": "shadow rogue look in matte black tech-knit and matte coated twill, absolutely no wet-look vinyl and no glossy PVC and no toy daggers, close-fitting top with long sleeves and a long open V-neck front with the closure point set just above the waist seam, double-layer front panel with taped edges, cropped hooded vest ending at the natural waist, wide black leather harness belt with matte metal rings at the natural waist, high-waist wrapped mini skirt over fitted leggings, skirt hemline ending at mid-thigh, matte black forearm wraps, black leather split-toe tabi boots, sleek high ponytail"
+ }
+]
