@@ -1868,6 +1868,22 @@ export const generateRandomEventWithScene = (model: Model): { text: string; scen
     const pickOne = (items: string[]) => items[Math.floor(Math.random() * items.length)];
 
     const inferRandomEventContext = () => {
+        /**
+         * 2026-08-13（企劃案 A-1 陷阱 2／階段 6 的 W-6 收尾）：補上 `photoshoot` 分支。
+         *
+         * 這是 A-1 明文警告的「contextId 推斷邏輯有三份獨立拷貝」的**第三份**。
+         * 它跟前兩份不是同一個詞彙集合（前兩份回傳 `model_photoshoot` 這種 contextId，
+         * 用來當服裝閘門；這一份回傳 home/cafe/office 這組 key，只用來挑隨機微動作與場景碎屑），
+         * 所以 2026-08-12 補場合時漏了它，而且**漏了也不會報錯**——
+         * 棚拍場景會安靜地掉到最後的 `urban`，拿到「側身讓人群先經過」
+         * 「把包包背帶重新拉正」這類街頭動作。純黑背景棚裡出現這種敘述是錯的。
+         *
+         * ⚠️ **必須放在最前面。** 這 46 個場景的 `category` 含「戶外都市」「戶外自然」
+         * （會被下面 `outdoor` 分支的「戶外」吃掉）、C02 咖啡廳靠窗座會被 `cafe` 吃掉。
+         * 判斷鍵用 `model_photoshoot` 這個穩定英文 id（`sceneTextForContext` 已含
+         * `scene_context_id`，見上方），不靠中文關鍵字，避免再被別的分支搶走。
+         */
+        if (/model_photoshoot/i.test(sceneTextForContext)) return "photoshoot";
         if (/家|宅|房間|客廳|臥室|沙發|床|廚房|陽台|home|cozy/i.test(sceneTextForContext)) return "home";
         if (/咖啡|咖啡廳|cafe|茶|甜點|brunch/i.test(sceneTextForContext)) return "cafe";
         if (/辦公|公司|會議|工作|coworking|office/i.test(sceneTextForContext)) return "office";
@@ -1924,6 +1940,30 @@ export const generateRandomEventWithScene = (model: Model): { text: string; scen
     ];
 
     const contextActions: Record<string, string[]> = {
+        /**
+         * 2026-08-13（W-6 收尾）：`photoshoot` 的微動作池。
+         * 判準是「拍攝現場真的會發生的動作」——與攝影師／助理的互動、等打光、
+         * 換位、確認螢幕、整理服裝。刻意**不放**街頭動作（讓人群先經過、背帶滑落）
+         * 與飲食動作，那些在棚裡就是錯的。
+         */
+        photoshoot: [
+            "站在標記膠帶上等下一顆燈調好",
+            "側頭聽攝影師講下一個動作",
+            "低頭確認腳尖有沒有踩過線",
+            "自己把裙襬往旁邊撥開一點",
+            "湊過去看相機螢幕上剛拍的那張",
+            "抬手把被風扇吹亂的髮絲順回去",
+            "換位置時順手把腰帶轉正",
+            "趁換卡的空檔動一動肩膀",
+            "把手臂放鬆垂下重新找角度",
+            "對著反光板的方向微微轉臉",
+            "等助理把地上的線收走",
+            "拉了一下袖口確認長度一致",
+            "深吸一口氣再回到定位",
+            "把重心換到另一隻腳",
+            "聽到快門聲停下來維持住姿勢",
+            "轉身走回起點準備再走一次",
+        ],
         home: [
             "盤腿坐在地毯上翻找遙控器",
             "靠在沙發扶手旁滑手機",
@@ -2146,6 +2186,26 @@ export const generateRandomEventWithScene = (model: Model): { text: string; scen
     ];
 
     const contextDebris: Record<string, string[]> = {
+        /**
+         * 2026-08-13（W-6 收尾）：`photoshoot` 的場景碎屑池。
+         * 全部是拍攝現場的器材與痕跡。⚠️ 這些是**寫進日記文字**的生活雜訊，
+         * 不是 `[Environment]` 的畫面指令——`[Environment]` 由場景的 promptSkeleton
+         * 覆寫（見階段 6-A 的 I-1），所以這裡寫器材不會讓反光板真的入鏡。
+         */
+        photoshoot: [
+            "地上貼著幾條已經翹邊的定位膠帶",
+            "反光板靠在牆邊沒有收起來",
+            "燈架的腳邊纏著一圈延長線",
+            "備用的鞋子成對放在角落",
+            "衣架上還掛著剛換下來的那一套",
+            "桌上放著半瓶已經沒氣的水",
+            "地板上有前一組拍攝留下的鞋印",
+            "相機包敞著口露出鏡頭蓋",
+            "備用電池散在椅子上",
+            "牆角堆著捲起來的背景紙",
+            "梳妝台上攤著沒收的髮夾",
+            "風扇轉到一半停在那裡",
+        ],
         home: [
             "沙發邊放著折到一半的薄毯",
             "茶几上有半包打開的蘇打餅",

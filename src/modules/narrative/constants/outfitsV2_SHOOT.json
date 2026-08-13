@@ -14,7 +14,8 @@
    "shoes": "ivory satin pointed pumps",
    "accessories": [
     "single pearl stud earrings",
-    "thin ivory ribbon belt at the natural waist"
+    "thin ivory ribbon belt at the natural waist",
+    "fingertip-length hem-finished tulle veil with a clean edge"
    ],
    "props": []
   },
@@ -29,7 +30,7 @@
    "right_hand": "relaxed at side",
    "both_busy": false
   },
-  "prompt_skeleton": "ivory silk mikado A-line wedding gown, crisp structured bodice with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, seamed natural waistline emphasised by a thin ivory ribbon belt, lined tulle skirt falling floor-length with a short sweep, ivory satin pointed pumps, single pearl stud earrings, low polished chignon"
+  "prompt_skeleton": "ivory silk mikado A-line wedding gown, crisp structured bodice with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, seamed natural waistline emphasised by a thin ivory ribbon belt, lined tulle skirt falling floor-length with a short sweep, ivory satin pointed pumps, single pearl stud earrings, low polished chignon, fingertip-length hem-finished tulle veil with a clean edge"
  },
  {
   "outfit_id": "F-SHOOT-WED-002",
@@ -46,7 +47,8 @@
    "shoes": "ivory satin heels",
    "accessories": [
     "delicate pearl drop earrings",
-    "narrow satin waist band at the drop-waist seam"
+    "narrow satin waist band at the drop-waist seam",
+    "cathedral-length hem-finished tulle veil falling well past the train"
    ],
    "props": []
   },
@@ -61,7 +63,7 @@
    "right_hand": "relaxed at side",
    "both_busy": false
   },
-  "prompt_skeleton": "ivory silk satin ball gown, boned corset bodice with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, tightly cinched drop-waist seam marked by a narrow satin band, full lined tulle skirt floor-length, ivory satin heels, delicate pearl drop earrings, soft romantic updo"
+  "prompt_skeleton": "ivory silk satin ball gown, boned corset bodice with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, tightly cinched drop-waist seam marked by a narrow satin band, full lined tulle skirt floor-length, ivory satin heels, delicate pearl drop earrings, soft romantic updo, cathedral-length hem-finished tulle veil falling well past the train"
  },
  {
   "outfit_id": "F-SHOOT-WED-003",
@@ -366,7 +368,8 @@
    "shoes": "navy leather low-heel pumps",
    "accessories": [
     "pearl stud earrings",
-    "narrow navy patent belt at the natural waist"
+    "narrow navy patent belt at the natural waist",
+    "single strand freshwater pearl necklace with a silver clasp"
    ],
    "props": []
   },
@@ -381,7 +384,7 @@
    "right_hand": "relaxed at side",
    "both_busy": false
   },
-  "prompt_skeleton": "deep navy crepe formal dress with lined lace three-quarter sleeves, fitted bodice with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, seamed natural waist marked by a narrow navy patent belt, straight skirt hemline ending just below the knee with a back vent, navy leather low-heel pumps, pearl stud earrings, neat polished low chignon"
+  "prompt_skeleton": "deep navy crepe formal dress with lined lace three-quarter sleeves, fitted bodice with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, seamed natural waist marked by a narrow navy patent belt, straight skirt hemline ending just below the knee with a back vent, navy leather low-heel pumps, pearl stud earrings, neat polished low chignon, single strand freshwater pearl necklace with a silver clasp"
  },
  {
   "outfit_id": "M-SHOOT-WED-013",
@@ -521,7 +524,7 @@
   "pillars": {
    "layer_inner": null,
    "top": "ivory crepe bodice with a long open V-neck front, closure point set just above the waist seam, fully lined with taped edges, completely undecorated, wide set-in shoulder straps",
-   "layer_outer": null,
+   "layer_outer": "lined-edge tulle and organza bridal cape attached at the shoulders, falling behind the back and leaving the neckline unobstructed",
    "bottom": "silk blend column skirt from a clean seamed waist, floor-length with no train",
    "shoes": "ivory leather flat mules",
    "accessories": [
@@ -532,7 +535,7 @@
   },
   "fabric_difficulty": "medium",
   "wear_state": "barely_worn",
-  "layering_count": 1,
+  "layering_count": 2,
   "compatible_contexts": [
    "model_photoshoot"
   ],
@@ -541,7 +544,7 @@
    "right_hand": "relaxed at side",
    "both_busy": false
   },
-  "prompt_skeleton": "completely undecorated ivory crepe minimal wedding gown, long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, wide set-in shoulder straps, clean seamed natural waist with a concealed inner waist stay, silk blend column skirt floor-length with no train, ivory leather flat mules, single slim gold ring, severe sleek low bun"
+  "prompt_skeleton": "completely undecorated ivory crepe minimal wedding gown, long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, wide set-in shoulder straps, clean seamed natural waist with a concealed inner waist stay, silk blend column skirt floor-length with no train, ivory leather flat mules, single slim gold ring, severe sleek low bun, a lined-edge tulle and organza bridal cape attached at the shoulders, falling behind the back and leaving the neckline unobstructed"
  },
  {
   "outfit_id": "F-SHOOT-WED-018",
@@ -590,7 +593,8 @@
    "shoes": "ivory satin pointed pumps",
    "accessories": [
     "oversized structured mikado bow at the back waist seam",
-    "single pearl stud earrings"
+    "single pearl stud earrings",
+    "wrist-length matte satin gloves"
    ],
    "props": []
   },
@@ -605,7 +609,7 @@
    "right_hand": "relaxed at side",
    "both_busy": false
   },
-  "prompt_skeleton": "ivory silk mikado wedding gown with an oversized structured bow at the back waist seam, structured bodice with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, clean sleeveless armholes, crisp seamed waist, mikado A-line skirt floor-length, ivory satin pointed pumps, single pearl stud earrings, sleek high chignon"
+  "prompt_skeleton": "ivory silk mikado wedding gown with an oversized structured bow at the back waist seam, structured bodice with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, clean sleeveless armholes, crisp seamed waist, mikado A-line skirt floor-length, ivory satin pointed pumps, single pearl stud earrings, sleek high chignon, wrist-length matte satin gloves"
  },
  {
   "outfit_id": "F-SHOOT-WED-020",
@@ -713,7 +717,7 @@
   "pillars": {
    "layer_inner": null,
    "top": "ivory crepe high-neck bodice with a narrow V-neckline slit, closure point at the collarbone, fully lined, long fitted sleeves",
-   "layer_outer": null,
+   "layer_outer": "lined lace bolero with a single hook closure at the collarbone, cropped above the natural waist",
    "bottom": "matte satin column skirt from a seamed natural waist, floor-length with a back slit",
    "shoes": "ivory satin pointed pumps",
    "accessories": [
@@ -724,7 +728,7 @@
   },
   "fabric_difficulty": "medium",
   "wear_state": "barely_worn",
-  "layering_count": 1,
+  "layering_count": 2,
   "compatible_contexts": [
    "model_photoshoot"
   ],
@@ -733,7 +737,7 @@
    "right_hand": "relaxed at side",
    "both_busy": false
   },
-  "prompt_skeleton": "ivory crepe high-neck modest wedding gown with long fitted sleeves, narrow V-neckline slit with the closure point at the collarbone, fully lined, seamed natural waist with a self-fabric covered belt, matte satin column skirt floor-length with a back slit, ivory satin pointed pumps, small pearl studs, severe centre-parted low bun"
+  "prompt_skeleton": "ivory crepe high-neck modest wedding gown with long fitted sleeves, narrow V-neckline slit with the closure point at the collarbone, fully lined, seamed natural waist with a self-fabric covered belt, matte satin column skirt floor-length with a back slit, ivory satin pointed pumps, small pearl studs, severe centre-parted low bun, a lined lace bolero with a single hook closure at the collarbone, cropped above the natural waist"
  },
  {
   "outfit_id": "F-SHOOT-WED-024",
@@ -1395,7 +1399,8 @@
    "shoes": "cream knit flat slip-ons",
    "accessories": [
     "contrast charcoal drawstring tie at the exposed high waist",
-    "thin gold anklet"
+    "thin gold anklet",
+    "small gold huggie hoop earrings"
    ],
    "props": []
   },
@@ -1410,7 +1415,7 @@
    "right_hand": "holding a ceramic mug",
    "both_busy": false
   },
-  "prompt_skeleton": "two-tone lounge set, oatmeal cotton modal fitted short-sleeve top cropped at the high waist with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, contrast charcoal drawstring tie at the exposed high waist, charcoal french terry high-waist relaxed trousers with the hemline ending at the ankle, cream knit flat slip-ons, thin gold anklet, ceramic mug, loose messy bun"
+  "prompt_skeleton": "two-tone lounge set, oatmeal cotton modal fitted short-sleeve top cropped at the high waist with a deep V-neck opening with the closure point set at mid-chest, fully lined with taped edges, contrast charcoal drawstring tie at the exposed high waist, charcoal french terry high-waist relaxed trousers with the hemline ending at the ankle, cream knit flat slip-ons, thin gold anklet, ceramic mug, loose messy bun, small gold huggie hoop earrings"
  },
  {
   "outfit_id": "F-SHOOT-SET-006",
@@ -2554,7 +2559,8 @@
    "shoes": "tan woven leather flat sandals",
    "accessories": [
     "wide contrasting cream leather belt at the defined waist seam",
-    "thin gold hoop earrings"
+    "thin gold hoop earrings",
+    "stacked thin gold band rings on two fingers"
    ],
    "props": []
   },
@@ -2569,7 +2575,7 @@
    "right_hand": "relaxed at side",
    "both_busy": false
   },
-  "prompt_skeleton": "deep espresso linen blend jumpsuit with visible weave texture, sleeveless fitted bodice with a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, defined waist seam cinched by a wide contrasting cream leather belt, straight leg with natural soft creasing, hemline ending at the ankle, tan woven leather flat sandals, thin gold hoop earrings, loose low bun"
+  "prompt_skeleton": "deep espresso linen blend jumpsuit with visible weave texture, sleeveless fitted bodice with a long open V-neck front with the closure point set just above the waist seam, fully lined with taped edges, defined waist seam cinched by a wide contrasting cream leather belt, straight leg with natural soft creasing, hemline ending at the ankle, tan woven leather flat sandals, thin gold hoop earrings, loose low bun, stacked thin gold band rings on two fingers"
  },
  {
   "outfit_id": "F-SHOOT-JMP-026",

@@ -1,4 +1,5 @@
 import { ExtendedScene } from "../../../shared/types/types";
+import { PHOTOSHOOT_SAFE_MATRIX } from "./taiwanScenesPhotoshoot.safeMatrix";
 
 /**
  * `model_photoshoot`「模特兒攝影」場景池（2026-08-13，企劃案 A-1／階段 6）。
@@ -22,7 +23,7 @@ import { ExtendedScene } from "../../../shared/types/types";
  * ⚠️ `MIN_POOL_SIZE = 12`：本場合的服裝池有 78 件，遠超門檻，
  *    不會觸發「自動補入 urban_street 日常服湊數」那個災難。
  */
-export const TAIWAN_PHOTOSHOOT_SCENES: ExtendedScene[] = [
+const RAW_PHOTOSHOOT_SCENES: ExtendedScene[] = [
   {
     "scene_id": "TW-SHOOT-A01",
     "scene_context_id": "model_photoshoot",
@@ -2508,3 +2509,23 @@ export const TAIWAN_PHOTOSHOOT_SCENES: ExtendedScene[] = [
     }
   }
 ];
+
+/**
+ * 2026-08-13（企劃案 A-1／階段 6 的 W-6）：把 46 個場景的 `safe_matrix` 掛上來。
+ *
+ * 為什麼在這裡 map 而不是寫進上面 46 個物件裡：那是 2510 行的資料檔，
+ * 逐一插入 46 段等於 46 次編輯，而用腳本改 `.ts` 會毀掉行尾（PITFALL 13）。
+ * 規則本體放在隔壁 `taiwanScenesPhotoshoot.safeMatrix.ts`，要調規則看那一份就夠。
+ *
+ * ⚠️ `safe_matrix` **有填就會取代內建 deny-list**（`sceneSafeMatrix.ts` 的
+ * `checkAgainstSceneMatrix` 優先讀場景自帶規則）。所以像 B04 掛衣區這種
+ * 原本靠 `fitting_room_office_food` deny rule 保護的場景，
+ * 必須在自己的 `forbidden_actions` 裡把 `undressing` / `changing_clothes` 補回去——
+ * 那份對照表已經做了，改動它之前先讀該檔的檔頭說明。
+ */
+export const TAIWAN_PHOTOSHOOT_SCENES: ExtendedScene[] = RAW_PHOTOSHOOT_SCENES.map(
+  (scene) => {
+    const matrix = PHOTOSHOOT_SAFE_MATRIX[scene.scene_id];
+    return matrix ? { ...scene, safe_matrix: matrix } : scene;
+  }
+);
