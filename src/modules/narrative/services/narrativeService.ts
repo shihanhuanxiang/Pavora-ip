@@ -77,13 +77,38 @@ export const applyVisualPreset = (
 const pickOutfit = (model: Model, contextInput: string | string[], targetTier: number): OutfitV2 => {
     const contextIds = Array.isArray(contextInput) ? contextInput : [contextInput];
 
-    // 0. Manual override: 使用者鎖定服裝時直接返回
+    /**
+     * 0. Manual override: 使用者鎖定服裝時直接返回。
+     *
+     * ⚠️ 2026-08-13（W-7 黃金測試 G05 抓到）：**這一步原本完全繞過下面的性別過濾。**
+     * 它在第 2 步「硬性篩選：性別」之前就 `return`，所以只要 `active_outfit_id`
+     * 指向一件性別不符的服裝，男性 IP 就會穿女裝——實測 10/10 必然發生，
+     * 不報錯、畫面照出，只有衣服是錯的。
+     *
+     * 什麼時候會踩到：這條路徑在 UI 上是「略過（沿用上次鎖定造型）」那個按鈕
+     * （`NarrativeWorkflow.tsx:1850`），而 B-8 把 IP 與品牌代言人合併之後，
+     * 同一份 `preferences` 結構會在不同人之間搬動；使用者也可能鎖定造型之後才改 IP 性別。
+     *
+     * 修法**不是**拿掉手動覆寫——那是使用者的明確選擇，該尊重。
+     * 而是加一道性別合理性檢查：不符就 warn 並落回正常評分流程，
+     * 讓它挑一件對的，而不是硬出一張錯的圖。`gender: 'U'`（不分性別）一律放行。
+     */
     if (model.preferences?.active_outfit_id) {
         const userOutfits = WardrobeService.getUserOutfits();
         const found = [...OUTFIT_SEEDS_V2, ...userOutfits].find(
             o => o.outfit_id === model.preferences?.active_outfit_id
         );
-        if (found) return found;
+        if (found) {
+            const wantGender = (model.gender && model.gender.length > 0)
+                ? model.gender.charAt(0).toUpperCase()
+                : 'F';
+            if (found.gender === wantGender || found.gender === 'U') return found;
+            console.warn(
+                `[narrativeService] 鎖定的服裝 "${found.outfit_id}"（gender=${found.gender}）` +
+                `與 IP "${model.name}"（gender=${model.gender} → ${wantGender}）不符，已忽略鎖定並改用評分制自動選衣。` +
+                `若這是刻意的跨性別造型，請把該筆服裝的 gender 改成 'U'。`
+            );
+        }
     }
 
     // 1. 建立候選池
@@ -1296,8 +1321,25 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
      * 另外要明講參考圖只用於臉部識別：img2img 的來源是一張正面站姿定妝照，
      * 不講清楚，模型會連姿勢一起抄。
      */
-    const DEFAULT_FRAMING_EN = 'full-length shot, head to toe in frame, shoes visible, subject occupies 55-80% of frame height';
-    // 這段**無論 LLM 有沒有寫景別都要加**：它管的是「畫面活不活」，不是景別。
+    /**
+     * ⚠️ 2026-08-13 第三次修正（W-7 黃金測試 G01 抓到）：**全身是預設，不是鐵律。**
+     *
+     * I-2 初版把全身景別寫成無條件硬性規定塞進模板，LLM 就照辦了——
+     * 結果使用者事件明寫「鏡頭靠很近，像朋友臨時拍下的半身特寫」，
+     * 出來還是 `Full-length shot, head to toe in frame`，**特寫功能整個沒了**。
+     * 黃金測試 G01（無痣臉部特寫）本身就是靠臉部特寫來驗收源頭防火牆的，
+     * 這條規定等於把那組測試變成不可能執行。
+     *
+     * 這跟 6-A 第一版「把每個變數都鎖死導致四張圖一模一樣」是同一類錯誤：
+     * **強制層只設下限，不指定唯一解。**
+     * 服裝抽驗需要全身（看不到鞋子等於廢圖），但靈魂敘事是通用功能，
+     * 使用者明講要特寫時必須讓步。
+     */
+    const wantsCloseUp = /特寫|近拍|半身|大頭|臉部|靠很近|close[- ]?up|portrait|headshot|waist[- ]?up/i.test(event || '');
+    const DEFAULT_FRAMING_EN = wantsCloseUp
+        ? 'framing follows the event description and may be a waist-up or face close-up shot, the face must stay fully visible and the garment at the neckline and shoulders must still read clearly'
+        : 'full-length shot, head to toe in frame, shoes visible, subject occupies 55-80% of frame height';
+    // 這段**無論景別是什麼都要加**：它管的是「畫面活不活」，不是景別。
     const CAMERA_ALWAYS_EN = 'subject may walk, lean, shift weight or interact with elements of the location rather than standing centred and static, off-centre composition allowed, the reference image supplies facial identity only and its pose, framing and background must not be copied';
     const povModes: string[] = Array.isArray((sceneContext as any)?.pov_modes) ? (sceneContext as any).pov_modes : [];
     // `pov_modes` 過去從未進過提示詞（企劃案 I-2）。只當視角提示，不覆蓋景別。
@@ -1671,8 +1713,17 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
             const lines = promptText.split('\n');
             const idx = lines.findIndex(isCamLine);
             if (idx < 0) return `${promptText}\n[Camera]: ${DEFAULT_FRAMING_EN}, ${CAMERA_ALWAYS_EN}`;
-            // 景別：LLM 已經寫對就不覆蓋；沒寫才補。
-            if (!FRAMING_KEYWORDS.test(lines[idx])) {
+            /**
+             * 景別：LLM 已經寫對就不覆蓋；沒寫才補。
+             * ⚠️ `wantsCloseUp` 時**不補全身**——使用者明講要特寫，
+             * 這裡再追加 full-length 就會在同一行出現兩種互斥景別（2026-08-13 W-7 G01）。
+             * 特寫情境下 `DEFAULT_FRAMING_EN` 本身已改寫成「依事件描述、臉需完整可見」，
+             * 但只有在 LLM 完全沒寫任何景別時才補上，避免蓋掉它已經寫好的特寫敘述。
+             */
+            const alreadyHasCloseUp = /close[- ]?up|half[- ]body|waist[- ]?up|portrait crop|head and shoulders/i.test(lines[idx]);
+            if (wantsCloseUp && alreadyHasCloseUp) {
+                // LLM 已經照事件寫了特寫，景別這一段不動。
+            } else if (!FRAMING_KEYWORDS.test(lines[idx])) {
                 lines[idx] = `${lines[idx].trim().replace(/[\s,;.]+$/, '')}, ${DEFAULT_FRAMING_EN}`;
             }
             // 反呆板：永遠補（除非已經有了）。這段與景別無關，不能被上面的 early return 吃掉。
