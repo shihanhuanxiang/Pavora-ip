@@ -1748,7 +1748,24 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
          * 且未指定手部時只禁止「擋住臉的手勢」，不禁止所有手勢。
          */
         const enforceSubjectSection = (promptText: string) => {
-            const guards: string[] = ['face fully visible and unobstructed', 'hands away from the face'];
+            /**
+             * 2026-08-13（W-7 黃金測試抓到）：**無痣規則改成確定性注入。**
+             *
+             * 模板的「生理寫實協議 v2.2（去除「痣」)」只叫 LLM 強調微觀皮膚質地與不對稱性，
+             * **沒有明確叫它寫「不得新增痣」**。實測 14 張裡有 4 張（T02／T08／G02／G03）
+             * 的 final prompt **完全沒有任何無痣敘述**——命中率大約七成，靠運氣。
+             * 而 `GOLDEN_TEST_SET_5` 的 G01 驗收重點明寫「final prompt 必須有
+             * no-new-facial-mark 規則」，內容底線也把痣／雀斑／黑點／birthmark
+             * （含泛化詞 spot／mark／patch／blemish）列為不得出現。
+             *
+             * 靠 LLM 自己想到就等於沒有規則。這裡跟臉部守衛同一道回檢一起確定性補上。
+             * ⚠️ 措辭必須是**否定句**：這些詞本身是禁用詞，正面寫出來就是污染源。
+             */
+            const guards: string[] = [
+                'face fully visible and unobstructed',
+                'hands away from the face',
+                'no added facial marks of any kind: no moles, no freckles, no beauty marks, no birthmarks, no dark spots or patches on the face beyond what the reference image already shows',
+            ];
             if (expressionStyleEn) guards.push(`expression must be ${expressionStyleEn}`);
             else guards.push('a natural understated expression with subtle variation, no exaggerated laughing, no wide-open mouth, no theatrical surprise');
             if (handsIdle) guards.push('hands may rest naturally, touch the garment or a nearby surface, but must never cover or overlap the face');
