@@ -361,10 +361,18 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
 
     const handleSelectOutfit = (outfitId: string) => {
         const currentActive = model.preferences?.active_outfit_id;
+        const willUnset = currentActive === outfitId;
+        /**
+         * 2026-08-14：這裡是**手動**鎖定，所以要標 `active_outfit_pinned: true`。
+         * 產圖流程的 `confirmSceneOutfit()` 也會寫 `active_outfit_id`，但標 `false`，
+         * 使用者按「略過，自動搭配」時只清掉 `false` 那種。
+         * 兩種來源共用一格又分不出來，就是 G03 床邊場景出現夜市竹籤的根因。
+         */
         onUpdate({
             preferences: {
                 ...model.preferences,
-                active_outfit_id: currentActive === outfitId ? null : outfitId
+                active_outfit_id: willUnset ? null : outfitId,
+                active_outfit_pinned: !willUnset
             }
         });
     };

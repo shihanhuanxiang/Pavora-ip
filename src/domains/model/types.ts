@@ -135,6 +135,20 @@ export interface Model {
         active_arc_id?: string | null;
         active_arc_phase_index?: number;
         active_outfit_id?: string | null;
+        /**
+         * 2026-08-14：`active_outfit_id` 是誰寫的。
+         *
+         * `true`  = 使用者在衣櫥手動點「設為當前造型」，是刻意的鎖定，要一直黏著。
+         * `false` = 產圖流程 `confirmSceneOutfit()` 順手記下的「上次挑的那套」，
+         *           使用者下次按「略過，自動搭配」時應該被清掉。
+         * `undefined` = 舊資料（本欄位之前寫入的），一律視同 `false`。
+         *
+         * 為什麼需要這個欄位：在此之前兩種來源共用同一格，而流程只寫不清，
+         * 結果挑過一次衣服後每一次「略過，自動搭配」都在沿用那套舊衣服，
+         * 換場景不換衣服，服裝自帶的 props 還會跟場景打架
+         * （W-7 黃金測試：G03 房間床邊出現夜市食物竹籤）。
+         */
+        active_outfit_pinned?: boolean;
         recent_outfit_ids?: string[];
         visual_preset_id?: string | null;
         face_reference_urls?: string[];

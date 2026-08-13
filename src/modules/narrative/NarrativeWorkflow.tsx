@@ -948,9 +948,27 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         setSelectedBrief(null);
         setDiary(null);
         setNarrativeStep(3);
+        /**
+         * 2026-08-14（W-7 黃金測試後修）：**「略過，自動搭配」要真的自動搭配。**
+         *
+         * 舊行為：這裡「只寫不清」——挑了衣服就寫進 `active_outfit_id`，
+         * 選「略過」時（outfitId === null）既不寫也不清，於是殘留值一直有效。
+         * 後果是挑過一次衣服後，每一次「略過」都在沿用那套舊衣服，
+         * 換場景不換衣服，而且服裝自帶的 props 會跟場景打架
+         * （G03 房間床邊出現夜市的食物竹籤，因為她還穿著 F-TW-NMARKET-104）。
+         *
+         * 新行為靠 `active_outfit_pinned` 分辨兩種來源：
+         * 衣櫥手動鎖定（pinned = true）不動；流程順手記下的（pinned = false）在略過時清掉。
+         * ⚠️ 舊資料沒有這個旗標（undefined），一律視同「流程寫入」，
+         *    所以第一次按略過會被清掉一次——這正是我們要的結果。
+         */
         if (outfitId) {
             updateModel(model.id, {
-                preferences: { ...model.preferences, active_outfit_id: outfitId }
+                preferences: { ...model.preferences, active_outfit_id: outfitId, active_outfit_pinned: false }
+            });
+        } else if (model.preferences?.active_outfit_id && model.preferences?.active_outfit_pinned !== true) {
+            updateModel(model.id, {
+                preferences: { ...model.preferences, active_outfit_id: null, active_outfit_pinned: false }
             });
         }
     };
@@ -1846,8 +1864,15 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                 <div className="flex justify-center mt-6">
                                                     <button onClick={() => confirmSceneOutfit(confirmedScene, null)}
                                                         className="text-[9px] text-gray-600 hover:text-gray-400 transition-colors">
-                                                        {/* B3（2026-07-14 體檢）：文案照實際行為顯示——有殘留鎖定時會沿用，不是重新配對 */}
-                                                        {model.preferences?.active_outfit_id ? '略過（沿用上次鎖定造型）' : '略過，自動搭配'}
+                                                        {/*
+                                                          * B3（2026-07-14 體檢）：文案照實際行為顯示——有殘留鎖定時會沿用，不是重新配對。
+                                                          * 2026-08-14 更新：那個「殘留鎖定」已經被判定為 bug 並修掉（見 confirmSceneOutfit）。
+                                                          * 現在只有衣櫥手動鎖定（active_outfit_pinned === true）才會沿用；
+                                                          * 流程順手記下的那種會在按下略過時被清掉，所以文案照實顯示「自動搭配」。
+                                                          */}
+                                                        {model.preferences?.active_outfit_id && model.preferences?.active_outfit_pinned === true
+                                                            ? '略過（沿用衣櫥鎖定造型）'
+                                                            : '略過，自動搭配'}
                                                     </button>
                                                 </div>
                                             </div>
