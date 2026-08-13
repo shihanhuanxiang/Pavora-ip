@@ -153,8 +153,9 @@ export const NAV_ENTRIES: NavEntry[] = [
     {
         id: 'brand_identity_hub',
         name: '品牌識別中心',
-        tagline: '品牌代言人管理',
-        desc: '整理品牌的代言人、美學調性與合輯卡，讓每次產出風格一致',
+        // 2026-08-14（階段 7 · A3）：代言人移除，本頁的落地籤改為 IP 休息室，文案照實改寫。
+        tagline: 'IP 與品牌調性管理',
+        desc: '整理 IP、美學調性與合輯卡，讓每次產出風格一致',
         icon: <ModelIcon />,
         group: 'shoot',
         ipNeed: 'none',

@@ -316,33 +316,23 @@ export interface BurstImage { index: number; url: string; pose: string; expressi
 export interface BurstPoseExpressionPair { pose: string; expression: string; }
 export interface CardAsset { id: string; src: string; position: { x: number; y: number; }; scale: number; rotation: number; }
 
-export interface BrandAmbassador {
-  id: string;
-  name: string;
-  imageUrl: string;
-  gender: 'male' | 'female' | 'non-binary';
-  ethnicity: string;
-  bodyType: string;
-  faceAnchorParams?: any;
-  hairStyle?: string;
-  makeupStyle?: string;
-  createdAt: string;
-}
+/*
+ * 2026-08-14（階段 7 · A3）：**`BrandAmbassador` 與 `BrandPreset` 已移除。**
+ *
+ * 兩者的唯一消費者是 `shared/stores/useBrandStore.ts`，而那個 store 在 B-8 之後
+ * 就已經是零讀取端（全 repo 只剩註解在提它）。A3 把「代言人」整個概念移除時
+ * 一併刪掉 store 與這兩個型別。
+ *
+ * ⚠️ `BrandPreset` 這個名字在 `modules/pcpe/ProductPosterEngine.tsx:23` 還有一個
+ *    **同名但不同定義**的 local interface，那一份還在用、不要跟這裡搞混。
+ *    （這也正是刪掉共用型別的理由之一：兩個同名型別並存本身就是誤導。）
+ */
 
 export interface BrandDefinition {
     id: string;
     name: string;
     display_name: string;
     stylePrompt: string;
-}
-
-export interface BrandPreset {
-  id: string;
-  name: string;
-  lighting: string;
-  composition: string;
-  cameraParams: any;
-  colorReference?: string; // Hex or description
 }
 
 export interface HairstyleParams { 

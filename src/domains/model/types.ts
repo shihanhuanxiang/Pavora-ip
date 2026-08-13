@@ -102,22 +102,20 @@ export interface Model {
     type: 'standard' | 'custom';
     schemaVersion?: string;
     /**
-     * 這個 IP 是否同時是「品牌代言人」（2026-08-05 新增，企劃案 B-8 步驟 1）。
+     * 2026-08-14（階段 7 · A3）：**`isAmbassador` 已移除。**
      *
-     * 背景：專案原本有**兩套平行的「人」**——`Model`（IP）與 `BrandAmbassador`
-     * （`useBrandStore.ambassadors`）。Hank 拍板合併成一套。
+     * 沿革：專案原本有兩套平行的「人」——`Model`（IP）與 `BrandAmbassador`
+     * （`useBrandStore.ambassadors`）。B-8（2026-08-05）把它們併成一套，
+     * 做法是在 `Model` 上加這個布林旗標。
      *
-     * 盤點（`盤點_C軌_2026-08-01/盤點_B8_合併代言人_2026-08-05.md`）證明合併可行且低風險：
-     *   - `BrandAmbassador` 是 `Model` 的**貧化子集**。它多出來的 3 個欄位裡，
-     *     `ethnicity`／`bodyType` 是硬寫死值（'Asian'／'Standard'）、`faceAnchorParams` 零讀取。
-     *   - 全 repo 的生圖身份錨點只讀 `imageUrl`（10 處）與 `name`（3 處），
-     *     **沒有任何一處讀那 3 個獨有欄位**——而 Model 兩者都有。
-     *   - 圖片兩者都存在同一個 IndexedDB（`idb://` URL），合併時零遷移。
+     * 現在整個「代言人」概念都不要了。Hank 2026-08-14 裁決原文：
+     * 「把代言人移除，那是靈魂敘事這個功能還沒做之前的瑕疵版」。
+     * 臉部來源一律取全站唯一的當前 IP（`useModelStore.getActiveModel()`），
+     * 各模組用自己的「鎖定當前 IP 臉部」開關決定要不要餵進生圖，預設不鎖。
      *
-     * ⚠️ 步驟 1 只是**新增**這個欄位與對應的 store API，`useBrandStore` 完全不動、
-     * 兩套並存，現有行為零改變。真正把讀取端切過來是步驟 2，資料遷移是步驟 3。
+     * ⚠️ 存量資料裡殘留的 `isAmbassador: true` 不必清——沒有任何讀取端，
+     *    留著是無害的死欄位；動使用者存量資料的風險大於留著它。
      */
-    isAmbassador?: boolean;
     persona?: IPPersona;
     visualIdentityHint?: VisualIdentityHint;
     visualConstants?: IPVisualConstants;

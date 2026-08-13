@@ -48,7 +48,7 @@ import ChevronLeftIcon from '../../shared/assets/icons/ChevronLeftIcon';
 import ChevronRightIcon from '../../shared/assets/icons/ChevronRightIcon';
 import ExpandIcon from '../../shared/assets/icons/ExpandIcon';
 
-// 2026-08-05（企劃案 B-8 步驟 2）：代言人改由 useModelStore 提供，useBrandStore 不再需要。
+// 2026-08-14（階段 7 · A3）：代言人已移除，身份來源改為 useModelStore 的 activeModelId。
 import { useModelStore } from '../../shared/stores/useModelStore';
 import AsyncImage from '../../shared/components/common/AsyncImage';
 // 2026-08-12（企劃案 A-5 / PR-G2）：沿用 A-4 抽出的共用頁籤元件（`variant="dark"` 是本輪新增的暗色系）。
@@ -140,7 +140,11 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
     
     const [quality, setQuality] = useState<QualityLevel>('standard');
     const [aspectRatio, setAspectRatio] = useState<AspectRatio>('9:16');
-    const [lockToAmbassador, setLockToAmbassador] = useState(false);
+    /**
+     * 2026-08-14（階段 7 · A3）：`lockToAmbassador` → `lockActiveIpFace`。
+     * 臉部來源從「品牌代言人」換成 Header 選的當前 IP。預設 false（明確開關、預設不鎖）。
+     */
+    const [lockActiveIpFace, setLockActiveIpFace] = useState(false);
     const { addNotification } = useNotification();
 
     const PRESETS = [
@@ -163,12 +167,16 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
         });
     };
 
-    // 2026-08-05（企劃案 B-8 步驟 2）：代言人改由 useModelStore 提供。
-    // 行為等價替換 —— 下游只讀 .id / .name / .imageUrl，Model 三者皆有；
-    // 圖片本來就同存一個 IndexedDB（idb:// URL），不需搬移。
-    const { models, activeAmbassadorId, setActiveAmbassador } = useModelStore();
-    const ambassadors = useMemo(() => models.filter(m => m.isAmbassador === true), [models]);
-    const activeAmbassador = useMemo(() => ambassadors.find(a => a.id === activeAmbassadorId), [ambassadors, activeAmbassadorId]);
+    /*
+     * 2026-08-14（階段 7 · A3）：身份來源從「品牌代言人」換成全站唯一的當前 IP。
+     * 原本是 `models.filter(isAmbassador)` 挑出最多 5 位代言人再看 `activeAmbassadorId`；
+     * 現在直接讀 Header IP 選擇器寫入的 `activeModelId`。
+     *
+     * ⚠️ 訂閱 `models` / `activeModelId` 而不是呼叫 `getActiveModel()` ——
+     * 後者走 zustand 的 `get()`，不會觸發重新渲染。
+     */
+    const { models, activeModelId } = useModelStore();
+    const activeIp = useMemo(() => models.find(m => m.id === activeModelId), [models, activeModelId]);
 
     const [isLoading, setIsLoading] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState('');
@@ -428,8 +436,8 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                 : null;
             const personData = isMatrixMode ? matrixImages : originalBaseImage?.fileData;
             const primaryPerson = isMatrixMode ? (matrixImages![0] as any).fileData : originalBaseImage?.fileData;
-            const identityRef = (lockToAmbassador && activeAmbassador) 
-                ? await imageUrlToimageData(activeAmbassador.imageUrl) 
+            const identityRef = (lockActiveIpFace && activeIp)
+                ? await imageUrlToimageData(activeIp.imageUrl)
                 : (faceAnchor ? faceAnchor.fileData : primaryPerson);
 
             const isSelfieMode = (framing || '').toLowerCase().includes('selfie');
@@ -533,8 +541,8 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
             const personData = isMatrixMode ? matrixImages : originalBaseImage?.fileData;
             const primaryPerson = isMatrixMode ? (matrixImages![0] as any).fileData : originalBaseImage?.fileData;
 
-            const identityRef = (lockToAmbassador && activeAmbassador) 
-                ? await imageUrlToimageData(activeAmbassador.imageUrl) 
+            const identityRef = (lockActiveIpFace && activeIp)
+                ? await imageUrlToimageData(activeIp.imageUrl)
                 : (faceAnchor ? faceAnchor.fileData : primaryPerson);
             
             if (isMultiAngleGen) {
@@ -584,25 +592,34 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
             setIsLoading(false); 
             setLoadingMessage("");
         }
-    }, [originalBaseImage, isMatrixMode, modelMatrix, backgroundImage, background, backgroundSupplement, pose, framing, expression, physics, faceAnchor, quality, aspectRatio, push, gender, lockToAmbassador, activeAmbassador, isMultiAngleGen, addNotification, supermodelPose, poseIntensity, selectedFantasyRace, selectedFantasyJob, battleDamage, companion]);
+    }, [originalBaseImage, isMatrixMode, modelMatrix, backgroundImage, background, backgroundSupplement, pose, framing, expression, physics, faceAnchor, quality, aspectRatio, push, gender, lockActiveIpFace, activeIp, isMultiAngleGen, addNotification, supermodelPose, poseIntensity, selectedFantasyRace, selectedFantasyJob, battleDamage, companion]);
 
-    const handleAmbassadorSelect = async (ambassadorId: string) => {
-        const ambassador = ambassadors.find(a => a.id === ambassadorId);
-        if (ambassador) {
-            setActiveAmbassador(ambassadorId);
-            setLockToAmbassador(true);
-            try {
-                const fileData = await imageUrlToimageData(ambassador.imageUrl);
-                setFaceAnchor({ url: ambassador.imageUrl, fileData });
-                
-                // 如果尚未上傳模特兒，則將代言人作為基礎模特兒
-                if (!originalBaseImage) {
-                    setOriginalBaseImage({ url: ambassador.imageUrl, fileData });
-                    resetHistory(ambassador.imageUrl);
-                }
-            } catch (err) {
-                setError('載入代言人資料失敗。');
+    /**
+     * 2026-08-14（階段 7 · A3）：原本是 `handleAmbassadorSelect(ambassadorId)`
+     * ——從代言人卡牆點一位，它會 `setActiveAmbassador` ＋**自動** `setLockToAmbassador(true)`。
+     *
+     * 代言人移除後改成「套用當前 IP」：身份由 Header 的 IP 選擇器決定，
+     * 這裡只負責把那個 IP 的圖載進來當臉部錨點（沒有底圖時順便當底圖）。
+     *
+     * ⚠️ **不再自動開啟鎖臉** —— 鎖臉由使用者自己勾（Hank 2026-08-14：明確開關、預設不鎖）。
+     * 這個函式現在的語意是「把當前 IP 的照片帶進來」，不是「鎖定這張臉」，兩件事分開。
+     */
+    const handleApplyActiveIp = async () => {
+        if (!activeIp) {
+            setError('尚未選擇 IP，請先從頂端的 IP 選擇器挑一個。');
+            return;
+        }
+        try {
+            const fileData = await imageUrlToimageData(activeIp.imageUrl);
+            setFaceAnchor({ url: activeIp.imageUrl, fileData });
+
+            // 沒有底圖時，順便把這個 IP 當基礎模特兒
+            if (!originalBaseImage) {
+                setOriginalBaseImage({ url: activeIp.imageUrl, fileData });
+                resetHistory(activeIp.imageUrl);
             }
+        } catch (err) {
+            setError('載入 IP 資料失敗。');
         }
     };
 
@@ -1029,39 +1046,77 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                     <div className="mb-4 pb-3 border-b border-gray-800">
                                         <p className="text-[11px] font-bold text-[var(--color-gold)] uppercase tracking-[0.2em]">身份來源</p>
                                         <p className="text-[9px] text-gray-500 mt-1 leading-relaxed">
-                                            以下三個管道擇一即可。選代言人最快（同時鎖臉＋自動帶入底圖）。
+                                            以下三個管道擇一即可。套用當前 IP 最快（自動帶入臉部錨點與底圖）。
                                         </p>
                                     </div>
+                                    {/*
+                                      * 2026-08-14（階段 7 · A3）：這裡原本是一面「品牌代言人」卡牆
+                                      * （最多 5 張，點一張就自動鎖臉）。代言人概念移除後改成單一張
+                                      * 「當前 IP」——身份由 Header 的 IP 選擇器決定，這裡只負責套用。
+                                      * 鎖臉改成下方獨立的勾選框，預設不勾。
+                                      */}
                                     <label className="block text-[10px] font-bold text-gray-500 mb-3 uppercase tracking-[0.2em]">
-                                        ① 選品牌代言人（鎖定面部，並自動帶入為底圖）
+                                        ① 套用當前 IP（帶入臉部錨點，沒有底圖時也當底圖）
                                     </label>
                                     <div className="grid grid-cols-4 gap-2 mb-4">
-                                        {ambassadors.map(ambassador => (
-                                            <button 
-                                                key={ambassador.id}
-                                                onClick={() => handleAmbassadorSelect(ambassador.id)}
-                                                className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all duration-300 ${activeAmbassadorId === ambassador.id && lockToAmbassador ? 'border-[var(--color-gold)] scale-105 shadow-[0_0_15px_rgba(212,175,55,0.4)]' : 'border-gray-800 opacity-60 hover:opacity-100'}`}
+                                        {activeIp ? (
+                                            <button
+                                                key={activeIp.id}
+                                                onClick={handleApplyActiveIp}
+                                                title={`套用 ${activeIp.name} 的照片當身份錨點`}
+                                                className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all duration-300 ${faceAnchor?.url === activeIp.imageUrl ? 'border-[var(--color-gold)] scale-105 shadow-[0_0_15px_rgba(212,175,55,0.4)]' : 'border-gray-800 opacity-60 hover:opacity-100'}`}
                                             >
-                                                <AsyncImage src={ambassador.imageUrl} className="w-full h-full object-cover" />
-                                                {activeAmbassadorId === ambassador.id && lockToAmbassador && (
-                                                    <div className="absolute inset-0 bg-[var(--color-gold)]/10 flex items-center justify-center">
-                                                        <div className="bg-[var(--color-gold)] text-black text-[8px] font-bold px-1.5 py-0.5 rounded uppercase tracking-widest">Locked</div>
+                                                <AsyncImage src={activeIp.imageUrl} className="w-full h-full object-cover" />
+                                                {faceAnchor?.url === activeIp.imageUrl && (
+                                                    <div className="absolute inset-0 bg-[var(--color-gold)]/10 flex items-end justify-center pb-1">
+                                                        <div className="bg-[var(--color-gold)] text-black text-[8px] font-bold px-1.5 py-0.5 rounded uppercase tracking-widest">已套用</div>
                                                     </div>
                                                 )}
                                             </button>
-                                        ))}
+                                        ) : (
+                                            <div className="aspect-square rounded-xl border-2 border-dashed border-gray-800 flex items-center justify-center text-center text-[8px] text-gray-600 leading-tight p-1">
+                                                尚未選擇 IP<br />請用頂端的<br />IP 選擇器
+                                            </div>
+                                        )}
                                         {/* ⚠️ 2026-08-12（03-03）：這顆按鈕過去只寫「＋上傳」，但它開的是
-                                            `faceAnchorInputRef`——上傳的是**臉部錨點**，不是新增一位代言人。
-                                            標籤照舊會讓人以為能在這裡加代言人（代言人只能從 IP 休息室晉升）。 */}
+                                            `faceAnchorInputRef`——上傳的是**臉部錨點**，不是新增一個 IP。 */}
                                         <button
                                             onClick={() => faceAnchorInputRef.current?.click()}
-                                            title="上傳一張臉部照片當身份錨點（不會新增代言人；代言人請到 IP 休息室晉升）"
+                                            title="上傳一張臉部照片當身份錨點（不會新增 IP；建立 IP 請到模特兒生成或 IP 休息室）"
                                             className="aspect-square rounded-xl border-2 border-dashed border-gray-800 flex flex-col items-center justify-center text-gray-500 hover:border-[var(--color-gold)] hover:text-[var(--color-gold)] transition-all bg-black/20"
                                         >
                                             <span className="text-xl mb-1">+</span>
                                             <span className="text-[8px] font-bold uppercase tracking-widest leading-tight text-center">上傳<br/>臉部</span>
                                         </button>
                                     </div>
+
+                                    {/*
+                                      * 2026-08-14（階段 7 · A3）：鎖臉的**明確開關**。
+                                      * 舊版沒有這個勾選框——`lockToAmbassador` 只會在點代言人卡時被
+                                      * 自動設成 true，使用者無法自己關掉也看不到它的狀態。
+                                      * Hank 2026-08-14 指定「明確開關、預設不鎖」，所以獨立成一個可見的勾選框。
+                                      */}
+                                    <label className={`flex items-start gap-3 p-3 rounded-xl border transition-colors ${activeIp ? 'border-gray-800 bg-black/20 cursor-pointer hover:border-[var(--color-gold)]/40' : 'border-gray-900 bg-black/10 opacity-50 cursor-not-allowed'}`}>
+                                        <input
+                                            type="checkbox"
+                                            disabled={!activeIp}
+                                            checked={lockActiveIpFace}
+                                            onChange={(e) => setLockActiveIpFace(e.target.checked)}
+                                            className="mt-0.5 w-4 h-4 rounded border-gray-700 bg-black/40 accent-[var(--color-gold)]"
+                                        />
+                                        <span className="flex-1">
+                                            <span className="block text-[10px] font-bold text-gray-300 uppercase tracking-[0.15em]">
+                                                鎖定當前 IP 的臉部
+                                            </span>
+                                            <span className="block text-[9px] text-gray-500 mt-1 leading-relaxed">
+                                                {activeIp
+                                                    ? (lockActiveIpFace
+                                                        ? `生圖時會把 ${activeIp.name} 的臉當身份錨點送出。`
+                                                        : `未勾選時不送臉部錨點，模特兒的長相由 AI 自由決定。`)
+                                                    : '需要先從頂端的 IP 選擇器選一個 IP。'}
+                                            </span>
+                                        </span>
+                                    </label>
                                 </div>
                             )}
 
@@ -1533,7 +1588,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                         </Button>
                         {!originalBaseImage && (
                             <p className="mt-2 text-center text-[10px] text-[var(--color-text-dim)]">
-                                請先到「① 模特兒與身份」選一位代言人或上傳人物照片。
+                                請先到「① 模特兒與身份」套用當前 IP 或上傳人物照片。
                             </p>
                         )}
                     </div>

@@ -31,7 +31,7 @@ import FittingRoomIcon from '../../shared/assets/icons/FittingRoomIcon';
 import View360Icon from '../../shared/assets/icons/View360Icon'; 
 import { autoFaceCrop } from '../../shared/utils/vision/faceCrop';
 import SparklesIcon from '../../shared/assets/icons/SparklesIcon';
-// 2026-08-05（企劃案 B-8 步驟 2）：代言人改由 useModelStore 提供，useBrandStore 不再需要。
+// 2026-08-14（階段 7 · A3）：代言人已移除，身份來源改為 useModelStore 的 activeModelId。
 import AsyncImage from '../../shared/components/common/AsyncImage';
 
 interface VirtualFittingRoomProps {
@@ -193,12 +193,14 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
     const [lightingPreset, setLightingPreset] = useState<string>('original');
     const [isGhostMode, setIsGhostMode] = useState(false);
 
-    // 2026-08-05（企劃案 B-8 步驟 2）：代言人改由 useModelStore 提供。
-    // 行為等價替換 —— 下游只讀 .id / .name / .imageUrl，Model 三者皆有；
-    // 圖片本來就同存一個 IndexedDB（idb:// URL），不需搬移。
-    const { models, activeAmbassadorId, setActiveAmbassador } = useModelStore();
-    const ambassadors = useMemo(() => models.filter(m => m.isAmbassador === true), [models]);
-    const activeAmbassador = useMemo(() => ambassadors.find(a => a.id === activeAmbassadorId), [ambassadors, activeAmbassadorId]);
+    /*
+     * 2026-08-14（階段 7 · A3）：身份來源從「品牌代言人」換成全站唯一的當前 IP
+     * （Header IP 選擇器寫入的 `activeModelId`）。
+     * ⚠️ 訂閱 `models` / `activeModelId` 而不是 `getActiveModel()` —— 後者走
+     * zustand 的 `get()`，不會觸發重新渲染。
+     */
+    const { models, activeModelId } = useModelStore();
+    const activeIp = useMemo(() => models.find(m => m.id === activeModelId), [models, activeModelId]);
 
     // Collapsible Sections State
     const [openSections, setOpenSections] = useState<Set<string>>(new Set(['model', 'apparel', 'settings']));
@@ -613,23 +615,30 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
         setApparelMatrix(APPAREL_ANGLES.reduce((acc, angle) => ({ ...acc, [angle.id]: { ...angle, url: null, fileData: null, status: 'idle' } }), {}));
     };
 
-    const handleAmbassadorSelect = async (ambassadorId: string) => {
-        const ambassador = ambassadors.find(a => a.id === ambassadorId);
-        if (ambassador) {
-            setActiveAmbassador(ambassadorId);
-            try {
-                const fileData = await imageUrlToimageData(ambassador.imageUrl);
-                const imgObj = { url: ambassador.imageUrl, fileData };
-                
-                // 如果尚未上傳模特兒，則將代言人作為基礎模特兒
-                if (!baseImage) {
-                    await analyzeAndLockModel(imgObj);
-                } else {
-                    setFaceAnchor(imgObj);
-                }
-            } catch (err) {
-                setError('載入代言人資料失敗。');
+    /**
+     * 2026-08-14（階段 7 · A3）：原本是 `handleAmbassadorSelect(ambassadorId)`，
+     * 從一面代言人卡牆點一位並寫入 `activeAmbassadorId`。
+     *
+     * 代言人移除後改成「套用當前 IP」：身份由 Header 的 IP 選擇器決定，
+     * 這裡只負責把那張圖載進來 —— 沒有底圖時當基礎模特兒（走既有的
+     * `analyzeAndLockModel`），有底圖時只換臉部錨點。這一段行為刻意維持不變。
+     */
+    const handleApplyActiveIp = async () => {
+        if (!activeIp) {
+            setError('尚未選擇 IP，請先從頂端的 IP 選擇器挑一個。');
+            return;
+        }
+        try {
+            const fileData = await imageUrlToimageData(activeIp.imageUrl);
+            const imgObj = { url: activeIp.imageUrl, fileData };
+
+            if (!baseImage) {
+                await analyzeAndLockModel(imgObj);
+            } else {
+                setFaceAnchor(imgObj);
             }
+        } catch (err) {
+            setError('載入 IP 資料失敗。');
         }
     };
 
@@ -962,23 +971,34 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
                             ) : (
                                 <>
                                     <div className="mb-6">
-                                        <label className="block text-[11px] font-bold text-[var(--color-text-dim)] mb-3 uppercase tracking-widest">選擇品牌代言人 (選填)</label>
+                                        {/*
+                                          * 2026-08-14（階段 7 · A3）：這裡原本是「選擇品牌代言人 (選填)」的
+                                          * 卡牆（最多 5 張）。代言人移除後改成單一張「套用當前 IP」——
+                                          * 身份由 Header 的 IP 選擇器決定，這一格只負責套用那張圖。
+                                          * 行為維持原樣：沒有底圖時當基礎模特兒，有底圖時只換臉部錨點。
+                                          */}
+                                        <label className="block text-[11px] font-bold text-[var(--color-text-dim)] mb-3 uppercase tracking-widest">套用當前 IP (選填)</label>
                                         <div className="grid grid-cols-4 gap-2 mb-4">
-                                            {ambassadors.map(ambassador => (
-                                                <button 
-                                                    key={ambassador.id}
-                                                    onClick={() => handleAmbassadorSelect(ambassador.id)}
-                                                    className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all ${activeAmbassadorId === ambassador.id ? 'border-[var(--color-gold)] scale-105 shadow-[0_0_10px_rgba(212,175,55,0.4)]' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                                            {activeIp ? (
+                                                <button
+                                                    key={activeIp.id}
+                                                    onClick={handleApplyActiveIp}
+                                                    title={`套用 ${activeIp.name}`}
+                                                    className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all ${(baseImage?.url === activeIp.imageUrl || faceAnchor?.url === activeIp.imageUrl) ? 'border-[var(--color-gold)] scale-105 shadow-[0_0_10px_rgba(212,175,55,0.4)]' : 'border-transparent opacity-60 hover:opacity-100'}`}
                                                 >
-                                                    <AsyncImage src={ambassador.imageUrl} className="w-full h-full object-cover" />
-                                                    {activeAmbassadorId === ambassador.id && (
-                                                        <div className="absolute inset-0 bg-[var(--color-gold)]/10 flex items-center justify-center">
-                                                            <div className="bg-[var(--color-gold)] text-black text-[8px] font-bold px-1 rounded">ACTIVE</div>
+                                                    <AsyncImage src={activeIp.imageUrl} className="w-full h-full object-cover" />
+                                                    {(baseImage?.url === activeIp.imageUrl || faceAnchor?.url === activeIp.imageUrl) && (
+                                                        <div className="absolute inset-0 bg-[var(--color-gold)]/10 flex items-end justify-center pb-1">
+                                                            <div className="bg-[var(--color-gold)] text-black text-[8px] font-bold px-1 rounded">已套用</div>
                                                         </div>
                                                     )}
                                                 </button>
-                                            ))}
-                                            <button 
+                                            ) : (
+                                                <div className="aspect-square rounded-lg border-2 border-dashed border-[var(--color-border)] flex items-center justify-center text-center text-[8px] text-[var(--color-text-dim)] leading-tight p-1">
+                                                    尚未選擇 IP<br />請用頂端的<br />IP 選擇器
+                                                </div>
+                                            )}
+                                            <button
                                                 onClick={() => baseImageInputRef.current?.click()}
                                                 className="aspect-square rounded-lg border-2 border-dashed border-[var(--color-border)] flex flex-col items-center justify-center text-[var(--color-text-dim)] hover:border-[var(--color-gold)] hover:text-[var(--color-gold)] transition-all"
                                             >

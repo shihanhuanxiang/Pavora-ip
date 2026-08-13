@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import Button from '../../shared/components/common/Button';
-import Card from '../../shared/components/common/Card';
+// 2026-08-14（A3）：`useMemo` / `Card` / `AsyncImage` / `useModelStore` 的 import
+// 隨代言人卡牆一併移除 —— 那一籤是它們唯一的使用者。
 import ModelSetup from '../modelCreation/ModelSetup';
 import CharacterLab from '../characterLab/CharacterLab';
 import HairSalon from '../hairSalon/HairSalon';
@@ -14,10 +15,6 @@ import StyleAnchorIcon from '../../shared/assets/icons/StyleAnchorIcon';
 import ModelLoungeIcon from '../../shared/assets/icons/ModelLoungeIcon';
 import CompositeCardIcon from '../../shared/assets/icons/CompositeCardIcon';
 
-// 2026-08-05（企劃案 B-8 步驟 2）：代言人改由 useModelStore 提供。
-import { useModelStore } from '../../shared/stores/useModelStore';
-import AsyncImage from '../../shared/components/common/AsyncImage';
-
 interface BrandIdentityHubProps {
   onGoHome: () => void;
   onModelSelect: (model: any, destination: string) => void;
@@ -25,26 +22,22 @@ interface BrandIdentityHubProps {
   initialTab?: HubTab;
 }
 
-type HubTab = 'ambassadors' | 'creation' | 'lounge' | 'matrix' | 'salon' | 'presets' | 'comp_card';
+/**
+ * 2026-08-14（階段 7 · A3）：**`'ambassadors'` 頁籤已移除。**
+ *
+ * Hank 裁決：「把代言人移除，那是靈魂敘事這個功能還沒做之前的瑕疵版」。
+ * 本頁是 7 個頁籤的外殼，只有第 1 個是代言人管理，所以**頁面留著、只拆那一籤**。
+ * 落地頁改為 `'lounge'`（IP 休息室）—— 原本代言人籤的下半部本來就內嵌了
+ * `<ModelLounge isHubMode />`，所以使用者看到的東西幾乎沒變，只是少了上半部的代言人卡牆。
+ */
+type HubTab = 'creation' | 'lounge' | 'matrix' | 'salon' | 'presets' | 'comp_card';
 
-const BrandIdentityHub: React.FC<BrandIdentityHubProps> = ({ onGoHome, onModelSelect, initialImage, initialTab = 'ambassadors' }) => {
+const BrandIdentityHub: React.FC<BrandIdentityHubProps> = ({ onGoHome, onModelSelect, initialImage, initialTab = 'lounge' }) => {
   const [activeTab, setActiveTab] = useState<HubTab>(initialTab);
-  /**
-   * 2026-08-05（企劃案 B-8 步驟 2）：代言人改由 useModelStore 提供。
-   *
-   * ⚠️ **「移除代言人」的語意在此改變，這是刻意的。**
-   * 舊的 `removeAmbassadors` 會刪掉代言人紀錄**並刪掉它在 IndexedDB 的圖**。
-   * 合併之後那張圖就是 IP 本人的圖 —— 再照舊刪就會把 IP 的照片一起毀掉。
-   * 所以現在改為 `setAmbassador(id, false)`：**只取消標記，不刪除任何資料**。
-   * 使用者要真的刪除這個人，去 IP 休息室刪 IP，那裡才是刪除的正確位置。
-   */
-  const { models, activeAmbassadorId, setActiveAmbassador, setAmbassador } = useModelStore();
-  const ambassadors = useMemo(() => models.filter(m => m.isAmbassador === true), [models]);
 
   const tabs = [
-    { id: 'ambassadors', zh: '代言人管理', en: 'Ambassadors', icon: <ModelLoungeIcon /> },
-    { id: 'creation', zh: '模特兒生成', en: 'Genesis', icon: <ModelIcon /> },
     { id: 'lounge', zh: 'IP 休息室', en: 'Model Lounge', icon: <ModelLoungeIcon /> },
+    { id: 'creation', zh: '模特兒生成', en: 'Genesis', icon: <ModelIcon /> },
     { id: 'matrix', zh: '角色矩陣', en: 'Face Matrix', icon: <Face3DIcon /> },
     { id: 'salon', zh: '妝髮沙龍', en: 'Beauty Salon', icon: <HairSalonIcon /> },
     { id: 'presets', zh: '品牌預設', en: 'Style Presets', icon: <StyleAnchorIcon /> },
@@ -52,83 +45,15 @@ const BrandIdentityHub: React.FC<BrandIdentityHubProps> = ({ onGoHome, onModelSe
   ];
 
   const renderTabContent = () => {
-    const commonProps = { onGoHome, onGoBack: () => setActiveTab('ambassadors') };
-    
+    const commonProps = { onGoHome, onGoBack: () => setActiveTab('lounge') };
+
     switch (activeTab) {
-      case 'ambassadors':
-        return (
-          <div className="max-w-[110rem] mx-auto p-8">
-            <div className="flex justify-between items-end mb-12">
-              <div>
-                <h2 className="text-3xl font-bold mb-2">品牌代言人庫</h2>
-                <p className="text-[var(--color-text-dim)]">最多可儲存 5 位品牌代言人，用於所有行銷素材生成。</p>
-              </div>
-              <Button onClick={() => setActiveTab('creation')} variant="primary">新增代言人</Button>
-            </div>
-
-            {ambassadors.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                {ambassadors.map((amb) => (
-                  <Card 
-                    key={amb.id} 
-                    className={`p-2 group relative transition-all duration-500 ${activeAmbassadorId === amb.id ? 'border-[var(--color-gold)] ring-2 ring-[var(--color-gold)]/20' : ''}`}
-                  >
-                    <div className="aspect-[3/4] rounded-lg overflow-hidden mb-4">
-                      <AsyncImage src={amb.imageUrl} className="w-full h-full object-cover object-top" />
-                    </div>
-                    <div className="text-center">
-                      <h4 className="font-bold mb-1">{amb.name}</h4>
-                      {/* 2026-08-05（B-8 步驟 2）：原本顯示 `{amb.ethnicity} · {amb.gender}`。
-                          `ethnicity` 在 Model 上不存在（它在舊 Ambassador 上是硬寫死的 'Asian'，
-                          下游零消費），照抄過來只會渲染成空白加一個孤零零的分隔點。
-                          改為顯示真正有資料的性別與年齡。 */}
-                      <p className="text-[10px] text-[var(--color-text-dim)] uppercase tracking-widest mb-4">
-                        {[amb.gender, amb.age ? `${amb.age}` : null].filter(Boolean).join(' · ') || 'IP'}
-                      </p>
-                      
-                      <div className="flex flex-col gap-2">
-                        <Button 
-                          onClick={() => setActiveAmbassador(amb.id)} 
-                          variant={activeAmbassadorId === amb.id ? 'primary' : 'secondary'}
-                          className="w-full text-[10px] py-2"
-                        >
-                          {activeAmbassadorId === amb.id ? '當前使用中' : '設為當前代言人'}
-                        </Button>
-                        <button 
-                          onClick={() => setAmbassador(amb.id, false)}
-                          className="text-[10px] text-red-500/50 hover:text-red-500 transition-colors uppercase tracking-widest font-bold"
-                        >
-                          取消代言人
-                        </button>
-                      </div>
-                    </div>
-                    {activeAmbassadorId === amb.id && (
-                      <div className="absolute -top-2 -right-2 bg-[var(--color-gold)] text-[var(--color-bg-deep)] w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shadow-lg">
-                        ✓
-                      </div>
-                    )}
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              <div className="glass-panel rounded-3xl p-20 flex flex-col items-center justify-center text-center border-dashed border-2 border-[var(--color-border)]">
-                <p className="text-[var(--color-text-dim)] mb-8">尚未建立品牌代言人。您可以從模特兒生成中晉升，或從 IP 休息室中挑選。</p>
-                <div className="flex gap-4">
-                  <Button onClick={() => setActiveTab('creation')}>前往生成</Button>
-                  <Button onClick={() => setActiveTab('lounge')} variant="secondary">從休息室挑選</Button>
-                </div>
-              </div>
-            )}
-
-            <div className="mt-20">
-              <div className="flex items-center gap-4 mb-8">
-                <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-[var(--color-text-dim)]">IP 休息室 / Model Lounge</h3>
-                <div className="h-px flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent"></div>
-              </div>
-              <ModelLounge onGoHome={onGoHome} onModelSelect={onModelSelect} isHubMode />
-            </div>
-          </div>
-        );
+      /*
+       * 2026-08-14（A3）：這裡原本是 `case 'ambassadors'` —— 一面代言人卡牆
+       * （每張卡有「設為當前代言人」／「取消代言人」）＋ 下半部內嵌 IP 休息室。
+       * 代言人概念移除後整段刪掉，落地頁改為 `'lounge'`，
+       * 而 IP 休息室本來就在下半部，所以使用者看到的內容幾乎沒變。
+       */
       case 'creation':
         return <ModelSetup onModelSelect={onModelSelect} {...commonProps} />;
       case 'lounge':

@@ -15,7 +15,7 @@ import TrendingUpIcon from '../../shared/assets/icons/TrendingUpIcon';
 import Select from '../../shared/components/common/Select';
 import { useTaxonomy } from '../../shared/hooks/useTaxonomy';
 import ExpandIcon from '../../shared/assets/icons/ExpandIcon'; 
-// 2026-08-05（企劃案 B-8 步驟 2）：代言人改由 useModelStore 提供。
+// 2026-08-14（階段 7 · A3）：代言人已移除，身份來源改為 useModelStore 的 activeModelId。
 import { useModelStore } from '../../shared/stores/useModelStore';
 import AsyncImage from '../../shared/components/common/AsyncImage';
 import { imageUrlToimageData, downloadImage } from '../../shared/utils/imageUtils';
@@ -105,14 +105,19 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onSendApparelTo
    */
 
   const [quality, setQuality] = useState<QualityLevel>('standard');
-  const [lockToAmbassador, setLockToAmbassador] = useState(false);
+  /**
+   * 2026-08-14（階段 7 · A3）：`lockToAmbassador` → `lockActiveIpFace`。
+   * 臉部來源從「品牌代言人」換成 Header 選的當前 IP。預設仍是 false
+   * （這一頁本來就預設關，不需要改行為）。
+   */
+  const [lockActiveIpFace, setLockActiveIpFace] = useState(false);
 
-  // 2026-08-05（企劃案 B-8 步驟 2）：代言人改由 useModelStore 提供。
-    // 行為等價替換 —— 下游只讀 .id / .name / .imageUrl，Model 三者皆有；
-    // 圖片本來就同存一個 IndexedDB（idb:// URL），不需搬移。
-    const { models, activeAmbassadorId } = useModelStore();
-    const ambassadors = useMemo(() => models.filter(m => m.isAmbassador === true), [models]);
-  const activeAmbassador = useMemo(() => ambassadors.find(a => a.id === activeAmbassadorId), [ambassadors, activeAmbassadorId]);
+  /*
+   * ⚠️ 訂閱 `models` / `activeModelId` 而不是呼叫 `getActiveModel()` ——
+   * 後者走 zustand 的 `get()`，不會觸發重新渲染。
+   */
+  const { models, activeModelId } = useModelStore();
+  const activeIp = useMemo(() => models.find(m => m.id === activeModelId), [models, activeModelId]);
 
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -127,7 +132,7 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onSendApparelTo
   const refFileInputRef = useRef<HTMLInputElement>(null);
 
   const handleGenerate = useCallback(async () => {
-    console.log("handleGenerate triggered", { taxonomyEntry, referenceImage, lockToAmbassador, activeAmbassador });
+    console.log("handleGenerate triggered", { taxonomyEntry, referenceImage, lockActiveIpFace, activeIp });
     if (!taxonomyEntry && !referenceImage) {
       setError('請先選擇一個服裝類別或上傳參考圖。');
       return;
@@ -147,10 +152,10 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onSendApparelTo
       };
 
       let finalFaceRefs = undefined;
-      if (lockToAmbassador && activeAmbassador) {
-          console.log("Locking to ambassador face", activeAmbassador.name);
-          const ambassadorData = await imageUrlToimageData(activeAmbassador.imageUrl);
-          finalFaceRefs = [ambassadorData];
+      if (lockActiveIpFace && activeIp) {
+          console.log("Locking to active IP face", activeIp.name);
+          const ipFaceData = await imageUrlToimageData(activeIp.imageUrl);
+          finalFaceRefs = [ipFaceData];
       }
 
       const images = await generateApparelDesignSequence({
@@ -181,7 +186,7 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onSendApparelTo
     } finally {
       setIsLoading(false);
     }
-  }, [taxonomyEntry, brand, customBrandStyle, colors, pattern, referenceImage, refAnalysis, quality, lockToAmbassador, activeAmbassador]);
+  }, [taxonomyEntry, brand, customBrandStyle, colors, pattern, referenceImage, refAnalysis, quality, lockActiveIpFace, activeIp]);
 
   const handleGetTrends = async () => {
     setIsTrendsLoading(true);
@@ -639,26 +644,29 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onSendApparelTo
             {/* 4. 畫質設定 */}
             <CollapsibleCard title="4. 畫質設定" defaultOpen={false}>
                 <div className="space-y-6">
-                    {/* Ambassador Lock Toggle */}
-                    {activeAmbassador && (
+                    {/*
+                      * 2026-08-14（階段 7 · A3）：原本是「鎖定品牌代言人 / Lock Brand Ambassador」。
+                      * 代言人移除後改成鎖定 Header 選的當前 IP，行為與預設值（關）都不變。
+                      */}
+                    {activeIp && (
                         <div className="p-4 bg-[var(--color-gold)]/5 border border-[var(--color-gold)]/20 rounded-xl flex items-center justify-between group hover:bg-[var(--color-gold)]/10 transition-all">
                             <div className="flex items-center gap-4">
                                 <div className="w-12 h-12 rounded-lg overflow-hidden border border-[var(--color-gold)]/30">
-                                    <AsyncImage src={activeAmbassador.imageUrl} className="w-full h-full object-cover" />
+                                    <AsyncImage src={activeIp.imageUrl} className="w-full h-full object-cover" />
                                 </div>
                                 <div>
                                     <h4 className="text-sm font-bold text-[var(--color-text-title)] flex flex-col items-start leading-tight">
-                                        <span>鎖定品牌代言人</span>
-                                        <span className="text-[10px] opacity-50 font-normal normal-case tracking-normal">(Lock Brand Ambassador)</span>
+                                        <span>鎖定當前 IP 的臉部</span>
+                                        <span className="text-[10px] opacity-50 font-normal normal-case tracking-normal">(Lock Active IP Face)</span>
                                     </h4>
-                                    <p className="text-[10px] text-[var(--color-text-dim)] mt-1">啟用後，生成的所有模特兒將自動套用 {activeAmbassador.name} 的面部特徵。</p>
+                                    <p className="text-[10px] text-[var(--color-text-dim)] mt-1">啟用後，生成的所有模特兒將自動套用 {activeIp.name} 的面部特徵。</p>
                                 </div>
                             </div>
-                            <button 
-                                onClick={() => setLockToAmbassador(!lockToAmbassador)}
-                                className={`w-12 h-6 rounded-full relative transition-all ${lockToAmbassador ? 'bg-[var(--color-gold)]' : 'bg-gray-700'}`}
+                            <button
+                                onClick={() => setLockActiveIpFace(!lockActiveIpFace)}
+                                className={`w-12 h-6 rounded-full relative transition-all ${lockActiveIpFace ? 'bg-[var(--color-gold)]' : 'bg-gray-700'}`}
                             >
-                                <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${lockToAmbassador ? 'left-7' : 'left-1'}`}></div>
+                                <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${lockActiveIpFace ? 'left-7' : 'left-1'}`}></div>
                             </button>
                         </div>
                     )}

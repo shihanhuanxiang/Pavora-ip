@@ -79,16 +79,29 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
     const [activePlatform, setActivePlatform] = useState<'Instagram' | 'TikTok' | 'Facebook'>('Instagram');
     const [quality, setQuality] = useState<'FAST' | 'STANDARD' | 'MAX'>('STANDARD');
     const [imageCount, setImageCount] = useState<number>(1);
-    const [useAmbassador, setUseAmbassador] = useState(true);
+    /**
+     * 2026-08-14（階段 7 · A3）：**臉部來源從「品牌代言人」換成「當前 IP」。**
+     *
+     * 舊版讀 `activeAmbassadorId` + `models[].isAmbassador` 挑出代言人，
+     * 開關叫 `useAmbassador` 且**預設 true**。代言人概念移除後改成讀
+     * 全站唯一的當前 IP（Header 的 IP 選擇器寫入的 `activeModelId`）。
+     *
+     * ⚠️ **預設值從 true 改成 false**（Hank 2026-08-14 指定「明確開關、預設不鎖」）。
+     * 沿用階段 6-A 的教訓：強制層只設下限，不替使用者指定唯一解——
+     * 自動幫他套一張臉就是替他決定了。要改回預設鎖臉，只有這一行要動。
+     */
+    const [lockActiveIpFace, setLockActiveIpFace] = useState(false);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
-    
-    // 2026-08-05（企劃案 B-8 步驟 2）：代言人改由 useModelStore 提供。
-    // 行為等價替換 —— 下游只讀 .id / .name / .imageUrl，Model 三者皆有；
-    // 圖片本來就同存一個 IndexedDB（idb:// URL），不需搬移。
-    const { models, activeAmbassadorId } = useModelStore();
-    const ambassadors = useMemo(() => models.filter(m => m.isAmbassador === true), [models]);
-    const activeAmbassador = ambassadors.find(a => a.id === activeAmbassadorId);
-    
+
+    /*
+     * ⚠️ 這裡刻意訂閱 `models` / `activeModelId` 而不是呼叫 `getActiveModel()`。
+     * `getActiveModel()` 走的是 zustand 的 `get()`，**不會觸發重新渲染** ——
+     * 在 render 階段呼叫它，使用者從 Header 換 IP 之後畫面不會更新。
+     */
+    const { models, activeModelId } = useModelStore();
+    const activeIp = useMemo(() => models.find(m => m.id === activeModelId), [models, activeModelId]);
+
+
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const tabs = [
@@ -194,13 +207,13 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
         const readyItems = batchItems.filter(i => i.status === 'ready');
         if (readyItems.length === 0) return;
         
-        const ambassadorData = (activeAmbassador && useAmbassador) ? await imageUrlToimageData(activeAmbassador.imageUrl) : undefined;
+        const ipFaceData = (activeIp && lockActiveIpFace) ? await imageUrlToimageData(activeIp.imageUrl) : undefined;
         
         // Find best front view
         const userFrontIndex = readyItems.findIndex(i => i.view === 'front');
         const primaryItem = userFrontIndex !== -1 ? readyItems[userFrontIndex] : readyItems[0];
         const otherItemsData = readyItems.filter(i => i.id !== primaryItem.id).map(i => i.fileData);
-        const allRefs = ambassadorData ? [ambassadorData, ...otherItemsData] : otherItemsData;
+        const allRefs = ipFaceData ? [ipFaceData, ...otherItemsData] : otherItemsData;
 
         setLoadingMessage(`正在深度分析商品細節與多角度特徵...`);
         const analysis = await analyzeEGenProduct(readyItems.map(i => i.fileData));
@@ -234,12 +247,12 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
         const readyItems = batchItems.filter(i => i.status === 'ready');
         if (readyItems.length === 0) return;
 
-        const ambassadorData = (activeAmbassador && useAmbassador) ? await imageUrlToimageData(activeAmbassador.imageUrl) : undefined;
+        const ipFaceData = (activeIp && lockActiveIpFace) ? await imageUrlToimageData(activeIp.imageUrl) : undefined;
         
         const userFrontIndex = readyItems.findIndex(i => i.view === 'front');
         const primaryItem = userFrontIndex !== -1 ? readyItems[userFrontIndex] : readyItems[0];
         const otherItemsData = readyItems.filter(i => i.id !== primaryItem.id).map(i => i.fileData);
-        const allRefs = ambassadorData ? [ambassadorData, ...otherItemsData] : otherItemsData;
+        const allRefs = ipFaceData ? [ipFaceData, ...otherItemsData] : otherItemsData;
         
         setLoadingMessage(`正在為商品進行多維度奢華視覺建模...`);
         const analysis = await analyzeLuxuryProduct(readyItems.map(i => i.fileData), readyItems.map(i => i.view));
@@ -292,7 +305,7 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
         const readyItems = batchItems.filter(i => i.status === 'ready');
         if (readyItems.length === 0) return;
 
-        const ambassadorData = (activeAmbassador && useAmbassador) ? await imageUrlToimageData(activeAmbassador.imageUrl) : undefined;
+        const ipFaceData = (activeIp && lockActiveIpFace) ? await imageUrlToimageData(activeIp.imageUrl) : undefined;
         
         const userFrontIndex = readyItems.findIndex(i => i.view === 'front');
         const primaryItem = userFrontIndex !== -1 ? readyItems[userFrontIndex] : readyItems[0];
@@ -320,7 +333,7 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
                 props: selectedCard.props
             },
             (msg) => setLoadingMessage(msg),
-            ambassadorData
+            ipFaceData
         );
         
         setResults([{ id: `res_${Date.now()}_smart`, url: result.url, type: 'Smart Poster', mediaType: 'image' }]);
@@ -331,7 +344,7 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
         const readyItems = batchItems.filter(i => i.status === 'ready');
         if (readyItems.length === 0) return;
 
-        const ambassadorData = (activeAmbassador && useAmbassador) ? await imageUrlToimageData(activeAmbassador.imageUrl) : undefined;
+        const ipFaceData = (activeIp && lockActiveIpFace) ? await imageUrlToimageData(activeIp.imageUrl) : undefined;
         
         const userFrontIndex = readyItems.findIndex(i => i.view === 'front');
         const primaryItem = userFrontIndex !== -1 ? readyItems[userFrontIndex] : readyItems[0];
@@ -340,13 +353,13 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
         const analysis = await analyzeLuxuryProduct(primaryItem.fileData);
         
         setLoadingMessage("正在生成高階影片提示詞...");
-        const prompt = REELS_VIDEO_PROMPT(analysis, "Modern Luxury High-End", activeAmbassador?.name);
+        const prompt = REELS_VIDEO_PROMPT(analysis, "Modern Luxury High-End", activeIp?.name);
         
         setLoadingMessage("正在渲染 4K 品質短影音素材...");
         const videoResult = await generateVideo({
             prompt: prompt + ", cinematic 4k, high dynamic range, professional color grading. NO VOICEOVER. Background music should be high-end fashion runway style melody with only instrumental sound effects.",
             image: primaryItem.fileData,
-            faceReference: ambassadorData,
+            faceReference: ipFaceData,
             aspectRatio: '9:16',
             resolution: quality === 'MAX' ? '1080p' : '720p'
         }, (msg: string) => setLoadingMessage(msg));
@@ -368,7 +381,7 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
                 updateTask(taskId, { progress: p, status: 'processing' });
             };
 
-            const ambassadorData = (activeAmbassador && useAmbassador) ? await imageUrlToimageData(activeAmbassador.imageUrl) : undefined;
+            const ipFaceData = (activeIp && lockActiveIpFace) ? await imageUrlToimageData(activeIp.imageUrl) : undefined;
 
             setLoadingMessage("正在深度分析商品多角度特徵...");
             // Pass images and their labels to the analysis
@@ -385,7 +398,7 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
             
             const primaryItem = readyItems[frontIndex] || readyItems[0];
             const otherItemsData = readyItems.filter((_, idx) => idx !== frontIndex).map(i => i.fileData);
-            const allRefs = ambassadorData ? [ambassadorData, ...otherItemsData] : otherItemsData;
+            const allRefs = ipFaceData ? [ipFaceData, ...otherItemsData] : otherItemsData;
 
             updateProgress(30, "正在規劃 3 日行銷策略...");
             const strategy = await generateCampaignStrategy(analysisJson);
@@ -435,13 +448,13 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
                 posterAssets.push({ id: `camp_poster_${i}`, url: posterUrl, type: `Poster: ${style.name}`, mediaType: 'image' as const, copy: igCopy });
             }
 
-            updateProgress(90, "正在渲染 Reels 宣傳短片 (Ambassador Sync)...");
-            const reelsPrompt = REELS_VIDEO_PROMPT(analysis, "High-End Campaign", activeAmbassador?.name);
+            updateProgress(90, "正在渲染 Reels 宣傳短片（同步當前 IP 臉部）...");
+            const reelsPrompt = REELS_VIDEO_PROMPT(analysis, "High-End Campaign", activeIp?.name);
             const videoResult = await generateVideo({
-                prompt: reelsPrompt + `, ensure the model's face perfectly matches the provided ambassador face reference. Show the product from its best front angle. NO VOICEOVER. Background music should be high-end fashion runway style melody with only instrumental sound effects.`,
+                prompt: reelsPrompt + `, ensure the model's face perfectly matches the provided face reference. Show the product from its best front angle. NO VOICEOVER. Background music should be high-end fashion runway style melody with only instrumental sound effects.`,
                 image: primaryItem.fileData,
                 referenceImages: otherItemsData,
-                faceReference: ambassadorData,
+                faceReference: ipFaceData,
                 aspectRatio: '9:16',
                 resolution: quality === 'MAX' ? '1080p' : '720p'
             }, (msg: string) => setLoadingMessage(msg));
@@ -645,30 +658,41 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
                             </div>
                         </div>
 
-                        {activeAmbassador ? (
+                        {/*
+                          * 2026-08-14（A3）：這張卡原本顯示「當前品牌代言人」，勾選框叫「套用」且預設已勾。
+                          * 現在顯示的是 Header 選的當前 IP，勾選框改成明確的「鎖定臉部」且**預設未勾**。
+                          * 未選 IP 時的文案也照實改寫——原本寫「尚未設定品牌代言人」會讓人去找一個
+                          * 已經不存在的設定頁。
+                          */}
+                        {activeIp ? (
                             <div className="space-y-4">
                                 <div className="flex items-center gap-4 p-3 bg-white/40 rounded-xl border border-brass/30">
                                     <div className="w-12 h-12 rounded-lg overflow-hidden">
-                                        <AsyncImage src={activeAmbassador.imageUrl} className="w-full h-full object-cover" />
+                                        <AsyncImage src={activeIp.imageUrl} className="w-full h-full object-cover" />
                                     </div>
                                     <div className="flex-1">
-                                        <h4 className="text-xs font-bold text-[var(--home-ink)]">{activeAmbassador.name}</h4>
-                                        <p className="text-[9px] text-brass uppercase tracking-widest">當前品牌代言人</p>
+                                        <h4 className="text-xs font-bold text-[var(--home-ink)]">{activeIp.name}</h4>
+                                        <p className="text-[9px] text-brass uppercase tracking-widest">當前 IP</p>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <span className="text-[9px] text-[var(--home-muted)]">套用</span>
+                                        <span className="text-[9px] text-[var(--home-muted)]">鎖定臉部</span>
                                         <input
                                             type="checkbox"
-                                            checked={useAmbassador}
-                                            onChange={(e) => setUseAmbassador(e.target.checked)}
+                                            checked={lockActiveIpFace}
+                                            onChange={(e) => setLockActiveIpFace(e.target.checked)}
                                             className="w-4 h-4 rounded border-[var(--home-line)] bg-white/50 text-wine focus:ring-wine"
                                         />
                                     </div>
                                 </div>
+                                {!lockActiveIpFace && (
+                                    <p className="text-[9px] text-[var(--home-muted)] leading-relaxed">
+                                        未勾選時不會把 {activeIp.name} 的臉餵進生圖，模特兒的長相由 AI 自由決定。
+                                    </p>
+                                )}
                             </div>
                         ) : (
                             <div className="p-4 bg-danger/5 rounded-xl border border-danger/20 text-center">
-                                <p className="text-[10px] text-danger/80">尚未設定品牌代言人，系統將使用通用模特兒。</p>
+                                <p className="text-[10px] text-danger/80">尚未選擇 IP（可從頂端的 IP 選擇器挑一個），系統將使用通用模特兒。</p>
                             </div>
                         )}
 

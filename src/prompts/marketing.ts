@@ -3,11 +3,15 @@
  * Marketing Automation & Reels/TikTok Module Prompts
  */
 
-export const REELS_VIDEO_PROMPT = (productAnalysis: any, style: string, ambassadorName?: string) => `
+// 2026-08-14（階段 7 · A3）：第三個參數原本叫 `ambassadorName`，會輸出
+// "Featuring Brand Ambassador: <name>."。代言人概念移除後改為當前 IP 的名字。
+// ⚠️ 輸出字串也一併改掉 —— 留著 "Brand Ambassador" 會讓 LLM 以為要生成
+// 一位「品牌代言人」風格的人物（正式、代言感），那不是我們要的語意。
+export const REELS_VIDEO_PROMPT = (productAnalysis: any, style: string, ipName?: string) => `
 Create a high-energy, trend-focused short video (Reels/TikTok style) for this product: ${productAnalysis.category}.
 Product Details: ${productAnalysis.material}, ${productAnalysis.colors}.
 Brand Style: ${style}.
-${ambassadorName ? `Featuring Brand Ambassador: ${ambassadorName}.` : ""}
+${ipName ? `Featuring: ${ipName}.` : ""}
 
 [SCENE DESCRIPTION]:
 The camera should be dynamic, using fast cuts or smooth gimbal movements. 

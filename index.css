@@ -37,6 +37,14 @@
 
   --color-bg-deep: #020202;
 
+  /*
+   * 亮色系共用色板（2026-08-14 階段 7 · A1 整理）。
+   *
+   * 這五個是**唯一的定義處**。專案有兩個亮色 scope —— `.home-workbench`
+   * 與 `.narrative-workbench` —— 在此之前它們各自在自己的區塊裡重寫了一份
+   * 幾乎相同的值（例如 `#fffaf2` 被寫了三次）。改成兩個 scope 都指回這裡，
+   * 要調亮色系只有這一處要動。
+   */
   --color-narrative-ink: #161311;
   --color-narrative-ink-soft: #27221e;
   --color-narrative-bone: #f5efe6;
@@ -44,18 +52,18 @@
   --color-narrative-mist: #ede7dd;
 }
 
-.light {
-  --color-bg-main: #f8f9fa;
-  --color-bg-surface: #ffffff;
-  --color-bg-card: #ffffff;
-  --color-bg-input: #f1f3f5;
-  --color-bg-deep: #e9ecef;
-  --color-border: #dee2e6;
-  --color-border-light: #ced4da;
-  --color-text-main: #343a40;
-  --color-text-title: #212529;
-  --color-text-dim: #868e96;
-}
+/*
+ * 2026-08-14（階段 7 · A1）：**已移除死碼 `.light { ... }`。**
+ *
+ * 它覆寫 10 個底色／文字色變數，看起來像一個「全站淺色模式」的開關，
+ * 但**全 repo 沒有任何地方套用這個 class** —— 查證過 `document.documentElement`
+ * 只會被寫入 `pavora_theme` 的 dark 分支，元件上的 `variant="light"` 是
+ * `Button` 的樣式變體，跟這個 class 完全無關。
+ *
+ * 留著的害處不是體積，是誤導：下一個人看到它會以為「淺色模式已經做好了，
+ * 只要掛上 class」，而真正的亮色系是 `.home-workbench` 與 `.narrative-workbench`
+ * 兩個 scope（見本檔下方，以及 `盤點_C軌_2026-08-01/主題規範_2026-08-14.md`）。
+ */
 
 @layer base {
   body {
@@ -109,11 +117,13 @@
   /* ── Narrative Workbench ── */
 
   .narrative-workbench {
-    --narrative-ink: #161311;
-    --narrative-ink-soft: #27221e;
-    --narrative-bone: #f5efe6;
-    --narrative-paper: #fffaf2;
-    --narrative-mist: #ede7dd;
+    /* 2026-08-14（A1）：這五個原本是硬寫死的重複字面量，改成指回 @theme 的共用定義。
+       值完全相同（#161311 / #27221e / #f5efe6 / #fffaf2 / #ede7dd），零視覺變化。 */
+    --narrative-ink: var(--color-narrative-ink);
+    --narrative-ink-soft: var(--color-narrative-ink-soft);
+    --narrative-bone: var(--color-narrative-bone);
+    --narrative-paper: var(--color-narrative-paper);
+    --narrative-mist: var(--color-narrative-mist);
     --narrative-studio-gold: var(--color-brass);
     --narrative-rail-w: 68px;
     --narrative-topbar-h: 52px;
@@ -1679,8 +1689,12 @@
      ══════════════════════════════════════════════════════════════ */
 
   .home-workbench {
+    /* 2026-08-14（A1）：`--home-paper` 原本是硬寫死的 `#fffaf2`，跟
+       `--color-narrative-paper` 與 `.narrative-workbench` 的 `--narrative-paper`
+       是同一個值卻各寫一份（同一個色碼在本檔出現三次）。改成指回共用定義。
+       其餘 `--home-*` 是這個 scope 專屬的，不共用。 */
     --home-bg: #f3eee7;
-    --home-paper: #fffaf2;
+    --home-paper: var(--color-narrative-paper);
     --home-paper-2: #ebe0d3;
     --home-ink: #211f1d;
     --home-muted: #6f665f;

@@ -53,8 +53,8 @@ const DESTINATIONS = [
 
 const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHubMode, initialPortfolioModelId, focusPortfolioAssets }) => {
   const { models, removeModels, addModel, updateModel, syncWithCloud } = useModelStore();
-  // 2026-08-05（企劃案 B-8 步驟 2）：晉升代言人改為在 Model 上標記，不再另建一筆資料。
-  const { setAmbassador, getAmbassadorModels } = useModelStore();
+  // 2026-08-14（階段 7 · A3）：原本這裡另外取 `setAmbassador` / `getAmbassadorModels`，
+  // 隨代言人概念一併移除（`getAmbassadorModels` 其實在本檔早就沒有讀取端）。
   const { addNotification } = useNotification();
   const [selectedModels, setSelectedModels] = useState<Set<string>>(new Set());
   const [previewingImage, setPreviewingImage] = useState<{images: string[], startIndex: number} | null>(null);
@@ -190,29 +190,14 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
     }
   };
 
-  /**
-   * 晉升為品牌代言人（2026-08-05 改寫，企劃案 B-8 步驟 2）。
+  /*
+   * 2026-08-14（階段 7 · A3）：這裡原本有 `handlePromoteToAmbassador()`
+   * ——把一個 IP 標記成品牌代言人（`setAmbassador(model.id, true)`，上限 5 位）。
    *
-   * 改寫前是「用 Model 的資料**另外建一筆** BrandAmbassador」，於是同一個人
-   * 在系統裡有兩份資料，兩邊各自被編輯就會不同步。
-   * 現在只是在既有的 Model 上標記 `isAmbassador = true`，資料只有一份。
-   *
-   * 連帶消失的三個欄位（`ethnicity`／`bodyType`／`faceAnchorParams`）不是損失：
-   * 盤點證實前兩個是硬寫死的 'Asian'／'Standard'、第三個全 repo 零讀取，
-   * 而所有生圖身份錨點只讀 `name` 與 `imageUrl` —— Model 兩者都有。
-   * 原本那兩個 TODO（「待 Hank 裁決是否新增欄位」）的答案就是：不用新增。
-   *
-   * 上限檢查已搬進 `useModelStore.setAmbassador`（常數 `AMBASSADOR_LIMIT`），
-   * 超過會 throw，這裡接住轉成通知。
+   * 代言人概念整個移除後「晉升」沒有目的地了，函式與 `ModelActionMenu` 的
+   * `onPromote` prop 一併刪除。要指定「現在用哪個 IP 生圖」，
+   * 用 Header 常駐的 IP 選擇器（`activeModelId`）—— 那是全站唯一的入口。
    */
-  const handlePromoteToAmbassador = async (model: Model) => {
-    try {
-      await setAmbassador(model.id, true);
-      addNotification({ type: 'success', message: '已成功晉升為品牌代言人！' });
-    } catch (e: any) {
-      addNotification({ type: 'warning', message: e?.message || '晉升失敗，請稍後再試。' });
-    }
-  };
 
   const handlePortfolioImport = async (selectedItems: PortfolioItem[]) => {
     for (const item of selectedItems) {
@@ -1217,7 +1202,6 @@ const ModelLounge: React.FC<ModelLoungeProps> = ({ onGoHome, onModelSelect, isHu
                                         onModelSelect={(model, dest) => {
                                             onModelSelect(model, dest);
                                         }}
-                                        onPromote={handlePromoteToAmbassador}
                                     />
                                 </div>
                             ))}

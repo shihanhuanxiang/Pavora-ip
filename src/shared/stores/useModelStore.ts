@@ -17,13 +17,29 @@ import { embedMetadata } from '../utils/metadataUtils';
 export type CloudSyncStatus = 'idle' | 'syncing' | 'ok' | 'degraded';
 
 /**
- * 品牌代言人上限（2026-08-05，企劃案 B-8 步驟 1）。
+ * 2026-08-14（階段 7 · A3）：**「品牌代言人」整個概念已移除。**
  *
- * 原本是硬寫在 `ModelLounge.tsx:193` 的魔術數字 `5`，沒有常數也沒有說明。
- * 搬到這裡讓它只有一個定義處。B-8 步驟 2 把讀取端切過來後，
- * `ModelLounge` 那個字面量就會被這個常數取代。
+ * Hank 裁決原文：「把代言人移除，那是靈魂敘事這個功能還沒做之前的瑕疵版」。
+ *
+ * 它原本是一組平行於 IP 的身份指標——`models[].isAmbassador` 標記 ＋
+ * `activeAmbassadorId` 指向「生圖時要鎖哪張臉」，上限 5 位。
+ * 在 Header 常駐 IP 選擇器（階段 2）出現之前，這是唯一能表達
+ * 「現在以誰的身份生圖」的機制。之後就成了兩套指標並存：
+ * `activeModelId`（我在操作哪個 IP）與 `activeAmbassadorId`（要鎖哪張臉）。
+ *
+ * 現在收成一套：**臉部來源一律取 `getActiveModel()`**，
+ * 由各模組自己的「鎖定當前 IP 臉部」開關決定要不要餵進生圖。
+ * ⚠️ 預設**不**自動鎖臉（Hank 2026-08-14 指定）——沿用階段 6-A 的教訓：
+ *    強制層只設下限，不替使用者指定唯一解。
+ *
+ * 已移除：`AMBASSADOR_LIMIT`、`isAmbassador` 欄位、`activeAmbassadorId`、
+ * `getAmbassadorModels()`、`setAmbassador()`、`migrateAmbassadorsFromBrandStore()`、
+ * 整個 `useBrandStore.ts`（移除前已是零消費）、`BrandIdentityHub` 的「代言人管理」頁籤。
+ *
+ * ⚠️ 舊資料裡殘留的 `isAmbassador: true` 與 persist 過的 `activeAmbassadorId`
+ *    **不需要清**：型別上已不存在，沒有任何讀取端，留著是無害的死欄位。
+ *    刻意不寫遷移腳本去刪——動存量資料的風險大於留著一個沒人讀的布林值。
  */
-export const AMBASSADOR_LIMIT = 5;
 
 interface ModelState {
   models: Model[];
@@ -35,43 +51,6 @@ interface ModelState {
   removeModels: (ids: string[]) => Promise<void>;
   setActiveModel: (id: string | null) => void;
   getActiveModel: () => Model | undefined;
-  /**
-   * 品牌代言人 API（2026-08-05 新增，企劃案 B-8 步驟 1）。
-   *
-   * ⚠️ 這一步只是**把 API 建起來**，還沒有任何呼叫端 —— `useBrandStore` 照舊運作，
-   * 兩套並存、現有行為零改變。把 11 處讀取端切過來是步驟 2。
-   * 這樣拆是為了讓每一步都能獨立進版而不破壞功能。
-   */
-  getAmbassadorModels: () => Model[];
-  setAmbassador: (modelId: string, isAmbassador: boolean) => Promise<void>;
-  /**
-   * 目前鎖定身份用的代言人（2026-08-05，企劃案 B-8 步驟 2）。
-   *
-   * ⚠️ 這**不等於** `activeModelId`。兩者是不同概念：
-   *   `activeModelId`        = 使用者目前在操作哪個 IP（Header 的 IP 選擇器，階段 2 加的）
-   *   `activeAmbassadorId`   = 生圖時要鎖定哪張臉當身份錨點
-   * 例如：在場景轉移裡，使用者可以一邊以 IP-A 為當前角色，一邊選 IP-B 的臉來鎖定。
-   *
-   * 合併這兩個指標是 UX 決策，不屬於 B-8 的搬遷範圍——所以這裡刻意複製
-   * `useBrandStore` 的同名 API，讓 11 處讀取端**只改 import 來源、其餘一字不動**，
-   * 確保步驟 2 是行為等價的替換而不是功能重寫。
-   */
-  activeAmbassadorId: string | null;
-  setActiveAmbassador: (id: string | null) => void;
-  /**
-   * 把舊的 `pavora-brand-store` 代言人併進 `models[].isAmbassador`（B-8 步驟 2）。
-   *
-   * **非破壞性**：只讀舊 key、只寫新欄位，**不刪除任何舊資料**。
-   * 舊的 localStorage key 原封不動留著當備份，確認無誤後才由步驟 3 清除。
-   *
-   * 為什麼要現在做而不是等步驟 3：步驟 2 把讀取端切到 `isAmbassador` 之後，
-   * 現有使用者沒有任何 Model 帶這個標記，代言人會**從畫面上消失**直到遷移跑完。
-   * 那等於破壞現有功能，違反「每一步都不破壞功能」的原則。
-   *
-   * fail-safe：整批包在 try/catch 裡，任何一步出錯就整批放棄並保留舊資料，
-   * 不做部分成功——半套遷移比不遷移更難救。
-   */
-  migrateAmbassadorsFromBrandStore: () => Promise<{ matched: number; orphans: number; skipped: boolean }>;
   updateModel: (modelId: string, updates: Partial<Model>) => Promise<void>;
   updateModelGallery: (modelId: string, item: { 
     url: string; 
@@ -408,96 +387,15 @@ export const useModelStore = create<ModelState>()(
           return models.find(m => m.id === activeModelId);
       },
 
-      // ── 品牌代言人（企劃案 B-8 步驟 1，2026-08-05）─────────────────────────
-      // 目前零呼叫端。步驟 2 才會把 11 處讀取端從 useBrandStore 切過來。
-
-      activeAmbassadorId: null,
-
-      setActiveAmbassador: (id) => set({ activeAmbassadorId: id }),
-
-      migrateAmbassadorsFromBrandStore: async () => {
-        const DONE_KEY = 'pavora-b8-ambassador-migrated';
-        const NOOP = { matched: 0, orphans: 0, skipped: true };
-        try {
-          if (typeof localStorage === 'undefined') return NOOP;
-          if (localStorage.getItem(DONE_KEY) === '1') return NOOP;
-
-          const raw = localStorage.getItem('pavora-brand-store');
-          if (!raw) { localStorage.setItem(DONE_KEY, '1'); return NOOP; }
-
-          const parsed = JSON.parse(raw);
-          const oldAmbs: any[] = parsed?.state?.ambassadors ?? [];
-          const oldActiveId: string | null = parsed?.state?.activeAmbassadorId ?? null;
-          if (!Array.isArray(oldAmbs) || oldAmbs.length === 0) {
-            localStorage.setItem(DONE_KEY, '1');
-            return NOOP;
-          }
-
-          const models = get().models;
-          const nextModels = models.map(m => ({ ...m }));
-          const orphans: any[] = [];
-          let matched = 0;
-          let newActiveId: string | null = null;
-
-          for (const amb of oldAmbs) {
-            // 舊代言人唯一的建立途徑是「從 Model 晉升」，所以 imageUrl 必然相同。
-            // name 只是保險：使用者若換過圖，imageUrl 會變但名字通常還在。
-            const hit = nextModels.find(m => m.imageUrl && m.imageUrl === amb.imageUrl)
-                     ?? nextModels.find(m => m.name && m.name === amb.name);
-            if (hit) {
-              hit.isAmbassador = true;
-              matched++;
-              if (oldActiveId && amb.id === oldActiveId) newActiveId = hit.id;
-            } else {
-              orphans.push(amb);
-            }
-          }
-
-          // 孤兒 = 晉升成代言人之後，對應的 Model 被刪掉了。
-          // 反向補建成 Model 而不是丟掉 —— 使用者的資料不該因為我們重構而消失。
-          // 缺的欄位留空即可，生圖只需要 name 與 imageUrl。
-          for (const amb of orphans) {
-            const revived: Model = {
-              id: amb.id,
-              name: amb.name,
-              imageUrl: amb.imageUrl,
-              type: 'custom',
-              gender: amb.gender,
-              isAmbassador: true
-            } as Model;
-            nextModels.push(revived);
-            if (oldActiveId && amb.id === oldActiveId) newActiveId = revived.id;
-          }
-
-          set({
-            models: nextModels,
-            activeAmbassadorId: newActiveId ?? get().activeAmbassadorId
-          });
-          localStorage.setItem(DONE_KEY, '1');
-          // 刻意不刪 `pavora-brand-store` —— 留著當備份，由步驟 3 確認無誤後才清除。
-          return { matched, orphans: orphans.length, skipped: false };
-        } catch (e) {
-          // fail-safe：整批放棄，舊資料原封不動，下次啟動會再試一次。
-          console.error('[B-8] 代言人遷移失敗，已放棄本次並保留舊資料：', e);
-          return NOOP;
-        }
-      },
-
-      getAmbassadorModels: () => get().models.filter(m => m.isAmbassador === true),
-
-      setAmbassador: async (modelId, isAmbassador) => {
-        // 上限沿用既有規則（原本硬寫在 ModelLounge.tsx:193 的魔術數字 5）。
-        // 搬進 store 是為了讓「上限」只有一個定義處，未來要改不必翻 UI。
-        if (isAmbassador) {
-          const current = get().models.filter(m => m.isAmbassador === true && m.id !== modelId);
-          if (current.length >= AMBASSADOR_LIMIT) {
-            throw new Error(`品牌代言人上限為 ${AMBASSADOR_LIMIT} 位，請先移除現有代言人。`);
-          }
-        }
-        // 走既有的 updateModel，才能沿用它的雲端同步與 Drive 上傳邏輯，
-        // 不要在這裡自己 set()——那會繞過同步，變成本地與雲端不一致。
-        await get().updateModel(modelId, { isAmbassador });
-      }
+      // ── 已移除：品牌代言人（2026-08-14 階段 7 · A3）─────────────────────────
+      // 這裡原本有 activeAmbassadorId / setActiveAmbassador /
+      // migrateAmbassadorsFromBrandStore（B-8 從 pavora-brand-store 搬資料的
+      // 一次性遷移）/ getAmbassadorModels / setAmbassador（含 5 位上限檢查）。
+      // 移除理由與替代方案見本檔頂端註解。
+      //
+      // ⚠️ `pavora-b8-ambassador-migrated` 這個 localStorage 旗標與
+      //    `pavora-brand-store` 舊 key 都刻意不清 —— 現在沒有任何讀取端，
+      //    而動使用者存量資料的風險大於留著兩個沒人讀的 key。
     }),
     {
       name: 'pavora-models-store',
@@ -510,11 +408,11 @@ export const useModelStore = create<ModelState>()(
        * 而真正需要搬資料的改動（例如 B-8 步驟 3 要把 `useBrandStore.ambassadors`
        * 併進 `models[].isAmbassador`）根本無處可掛。
        *
-       * version 1 = 建立基準點。此版本不做任何轉換：
-       * `isAmbassador` 是 optional，舊資料讀進來是 undefined，
-       * `getAmbassadorModels()` 用 `=== true` 比對，undefined 自然被排除，行為正確。
+       * version 1 = 建立基準點，不做任何轉換。
        *
-       * B-8 步驟 3 會加 version 2 的分支去做實際遷移。
+       * ⚠️ 2026-08-14（A3）更新：B-8 步驟 3 原本要在這裡加 version 2 去搬代言人資料。
+       * **那一步不會發生了**——代言人整個概念已移除（見本檔頂端）。
+       * version 仍留在 1，因為沒有任何欄位需要轉換。
        */
       version: 1,
       migrate: (persistedState: any, fromVersion: number) => {
@@ -527,9 +425,8 @@ export const useModelStore = create<ModelState>()(
       },
       partialize: (state) => ({
         activeModelId: state.activeModelId,
-        // B-8 步驟 2：代言人指標也要持久化，否則重整後身份鎖定會消失
-        // （原本存在 useBrandStore 的 pavora-brand-store 裡）。
-        activeAmbassadorId: state.activeAmbassadorId,
+        // 2026-08-14（A3）：原本這裡還持久化 `activeAmbassadorId`。代言人移除後
+        // 已無讀取端；舊資料裡殘留的那一格是無害死欄位，不寫遷移去刪。
         models: state.models.map((model) => ({
           ...model,
           preferences: model.preferences ? {

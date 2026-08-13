@@ -12,7 +12,7 @@ interface ModelActionMenuProps {
     isOpen: boolean;
     onClose: () => void;
     onModelSelect: (model: Model, destination: string) => void;
-    onPromote?: (model: Model) => void;
+    // 2026-08-14（階段 7 · A3）：`onPromote?: (model: Model) => void` 隨「晉升品牌大使」移除。
     onSetAsCover?: (url: string) => void;
     isGalleryItem?: boolean;
 }
@@ -29,8 +29,7 @@ const ModelActionMenu: React.FC<ModelActionMenuProps> = ({
     imageUrl, 
     isOpen, 
     onClose, 
-    onModelSelect, 
-    onPromote,
+    onModelSelect,
     onSetAsCover,
     isGalleryItem 
 }) => {
@@ -117,14 +116,12 @@ const ModelActionMenu: React.FC<ModelActionMenuProps> = ({
                                 📥 下載此影像與身分內碼
                             </button>
                             
-                            {!isGalleryItem && onPromote && (
-                                <Button
-                                    onClick={() => { onPromote(model); onClose(); }}
-                                    className="w-full py-4 text-[11px] font-bold uppercase tracking-widest shadow-xl shadow-[var(--color-gold)]/10"
-                                >
-                                    晉升品牌大使 💎
-                                </Button>
-                            )}
+                            {/*
+                              * 2026-08-14（階段 7 · A3）：這裡原本有一顆「晉升品牌大使 💎」，
+                              * 呼叫 `onPromote(model)` 把 IP 標記成品牌代言人。
+                              * 代言人概念移除後這顆按鈕沒有目的地了，連同 `onPromote` prop 一併刪除。
+                              * 要指定「現在用哪個 IP 生圖」，用 Header 常駐的 IP 選擇器。
+                              */}
                         </div>
                     </div>
                 </motion.div>
