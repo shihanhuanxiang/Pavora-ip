@@ -189,7 +189,7 @@ const ManualCropModal: React.FC<ManualCropModalProps> = ({ imageUrl, initialBoxe
                 {/* Header */}
                 <div className="px-8 py-5 border-b border-white/5 flex justify-between items-center bg-white/5">
                     <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-full bg-[var(--color-gold)]/20 flex items-center justify-center border border-[var(--color-gold)]/30">
+                        <div className="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center border border-gold/30">
                             <svg className="w-5 h-5 text-[var(--color-gold)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                         </div>
                         <div>
@@ -202,7 +202,7 @@ const ManualCropModal: React.FC<ManualCropModalProps> = ({ imageUrl, initialBoxe
                             <button 
                                 onClick={handleAIReset}
                                 disabled={isAILoading}
-                                className={`text-[10px] font-bold uppercase tracking-widest px-4 py-2 border rounded-full transition-all flex items-center gap-2 ${isAILoading ? 'bg-white/5 border-white/10 text-gray-500 cursor-not-allowed' : 'text-[var(--color-gold)] border-[var(--color-gold)]/20 hover:bg-[var(--color-gold)]/10 hover:text-white'}`}
+                                className={`text-[10px] font-bold uppercase tracking-widest px-4 py-2 border rounded-full transition-all flex items-center gap-2 ${isAILoading ? 'bg-white/5 border-white/10 text-gray-500 cursor-not-allowed' : 'text-[var(--color-gold)] border-gold/20 hover:bg-gold/10 hover:text-white'}`}
                             >
                                 {isAILoading ? (
                                     <>
@@ -252,7 +252,7 @@ const ManualCropModal: React.FC<ManualCropModalProps> = ({ imageUrl, initialBoxe
                                     <div 
                                         key={box.id}
                                         onMouseDown={(e) => handleMouseDown(e, undefined, box.id)}
-                                        className={`absolute border-2 transition-shadow cursor-move ${isSelected ? 'border-[var(--color-gold)] bg-[var(--color-gold)]/10 z-20 shadow-[0_0_20px_rgba(212,175,55,0.3)]' : 'border-white/40 bg-white/5 z-10 hover:border-white/60'}`}
+                                        className={`absolute border-2 transition-shadow cursor-move ${isSelected ? 'border-[var(--color-gold)] bg-gold/10 z-20 shadow-[0_0_20px_rgba(212,175,55,0.3)]' : 'border-white/40 bg-white/5 z-10 hover:border-white/60'}`}
                                         style={{
                                             top: `${box.box_2d[0] / 10}%`,
                                             left: `${box.box_2d[1] / 10}%`,
@@ -291,7 +291,7 @@ const ManualCropModal: React.FC<ManualCropModalProps> = ({ imageUrl, initialBoxe
                             {/* Drawing Box */}
                             {isDrawing && startPos && currentPos && (
                                 <div 
-                                    className="absolute border-2 border-dashed border-[var(--color-gold)] bg-[var(--color-gold)]/5 z-30 pointer-events-none"
+                                    className="absolute border-2 border-dashed border-[var(--color-gold)] bg-gold/5 z-30 pointer-events-none"
                                     style={{
                                         top: `${Math.min(startPos.y, currentPos.y) / 10}%`,
                                         left: `${Math.min(startPos.x, currentPos.x) / 10}%`,
@@ -333,7 +333,7 @@ const ManualCropModal: React.FC<ManualCropModalProps> = ({ imageUrl, initialBoxe
                                     <div 
                                         key={box.id}
                                         onClick={() => setSelectedBoxId(box.id)}
-                                        className={`p-4 rounded-2xl border transition-all cursor-pointer group ${selectedBoxId === box.id ? 'bg-[var(--color-gold)]/10 border-[var(--color-gold)]/50 shadow-[0_0_20px_rgba(212,175,55,0.1)]' : 'bg-white/[0.03] border-white/10 hover:border-white/20'}`}
+                                        className={`p-4 rounded-2xl border transition-all cursor-pointer group ${selectedBoxId === box.id ? 'bg-gold/10 border-gold/50 shadow-[0_0_20px_rgba(212,175,55,0.1)]' : 'bg-white/[0.03] border-white/10 hover:border-white/20'}`}
                                     >
                                         <div className="flex justify-between items-center mb-3">
                                             <div className="flex items-center gap-2">

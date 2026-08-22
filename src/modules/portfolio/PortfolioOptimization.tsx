@@ -385,7 +385,7 @@ const PortfolioOptimization: React.FC<PortfolioOptimizationProps> = ({ onGoBack,
                         {/* Accordion Container */}
                         <div className="space-y-3">
                             {/* Section: AI Analysis */}
-                            <div className={`border rounded-xl overflow-hidden transition-all duration-300 ${activeSection === 'analysis' ? 'border-[var(--color-gold)]/50 bg-[var(--color-bg-surface)] shadow-2xl shadow-gold/5' : 'border-gray-800 bg-black/40 hover:border-gray-700'}`}>
+                            <div className={`border rounded-xl overflow-hidden transition-all duration-300 ${activeSection === 'analysis' ? 'border-gold/50 bg-[var(--color-bg-surface)] shadow-2xl shadow-gold/5' : 'border-gray-800 bg-black/40 hover:border-gray-700'}`}>
                                 <button 
                                     onClick={() => setActiveSection(activeSection === 'analysis' ? null : 'analysis')}
                                     className="w-full flex items-center justify-between p-4 text-left group"
@@ -414,7 +414,7 @@ const PortfolioOptimization: React.FC<PortfolioOptimizationProps> = ({ onGoBack,
                             </div>
 
                             {/* Section: Content Editing */}
-                            <div className={`border rounded-xl overflow-hidden transition-all duration-300 ${activeSection === 'content' ? 'border-[var(--color-gold)]/50 bg-[var(--color-bg-surface)] shadow-2xl shadow-gold/5' : 'border-gray-800 bg-black/40 hover:border-gray-700'}`}>
+                            <div className={`border rounded-xl overflow-hidden transition-all duration-300 ${activeSection === 'content' ? 'border-gold/50 bg-[var(--color-bg-surface)] shadow-2xl shadow-gold/5' : 'border-gray-800 bg-black/40 hover:border-gray-700'}`}>
                                 <button 
                                     onClick={() => setActiveSection(activeSection === 'content' ? null : 'content')}
                                     className="w-full flex items-center justify-between p-4 text-left group"
@@ -435,7 +435,7 @@ const PortfolioOptimization: React.FC<PortfolioOptimizationProps> = ({ onGoBack,
                             </div>
 
                             {/* Section: Output Settings */}
-                            <div className={`border rounded-xl overflow-hidden transition-all duration-300 ${activeSection === 'output' ? 'border-[var(--color-gold)]/50 bg-[var(--color-bg-surface)] shadow-2xl shadow-gold/5' : 'border-gray-800 bg-black/40 hover:border-gray-700'}`}>
+                            <div className={`border rounded-xl overflow-hidden transition-all duration-300 ${activeSection === 'output' ? 'border-gold/50 bg-[var(--color-bg-surface)] shadow-2xl shadow-gold/5' : 'border-gray-800 bg-black/40 hover:border-gray-700'}`}>
                                 <button 
                                     onClick={() => setActiveSection(activeSection === 'output' ? null : 'output')}
                                     className="w-full flex items-center justify-between p-4 text-left group"
@@ -470,7 +470,7 @@ const PortfolioOptimization: React.FC<PortfolioOptimizationProps> = ({ onGoBack,
                             </div>
 
                             {/* Section: Color Science */}
-                            <div className={`border rounded-xl overflow-hidden transition-all duration-300 ${activeSection === 'color' ? 'border-[var(--color-gold)]/50 bg-[var(--color-bg-surface)] shadow-2xl shadow-gold/5' : 'border-gray-800 bg-black/40 hover:border-gray-700'}`}>
+                            <div className={`border rounded-xl overflow-hidden transition-all duration-300 ${activeSection === 'color' ? 'border-gold/50 bg-[var(--color-bg-surface)] shadow-2xl shadow-gold/5' : 'border-gray-800 bg-black/40 hover:border-gray-700'}`}>
                                 <button 
                                     onClick={() => setActiveSection(activeSection === 'color' ? null : 'color')}
                                     className="w-full flex items-center justify-between p-4 text-left group"
@@ -496,7 +496,7 @@ const PortfolioOptimization: React.FC<PortfolioOptimizationProps> = ({ onGoBack,
                             </div>
 
                             {/* Section: Lighting */}
-                            <div className={`border rounded-xl overflow-hidden transition-all duration-300 ${activeSection === 'lighting' ? 'border-[var(--color-gold)]/50 bg-[var(--color-bg-surface)] shadow-2xl shadow-gold/5' : 'border-gray-800 bg-black/40 hover:border-gray-700'}`}>
+                            <div className={`border rounded-xl overflow-hidden transition-all duration-300 ${activeSection === 'lighting' ? 'border-gold/50 bg-[var(--color-bg-surface)] shadow-2xl shadow-gold/5' : 'border-gray-800 bg-black/40 hover:border-gray-700'}`}>
                                 <button 
                                     onClick={() => setActiveSection(activeSection === 'lighting' ? null : 'lighting')}
                                     className="w-full flex items-center justify-between p-4 text-left group"
@@ -520,7 +520,7 @@ const PortfolioOptimization: React.FC<PortfolioOptimizationProps> = ({ onGoBack,
                                         <div className="grid grid-cols-2 gap-3 pt-2">
                                             {QUALITY_OPTIONS.filter(q => ['rim-light', 'catchlight'].includes(q.id)).map(q => (
                                                 <div key={q.id} className="flex items-center group/check cursor-pointer" onClick={() => handleQualityChange(q.id)}>
-                                                    <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${quality.includes(q.id) ? 'bg-[var(--color-gold)] border-[var(--color-gold)]' : 'border-gray-700 group-hover/check:border-[var(--color-gold)]/50'}`}>
+                                                    <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${quality.includes(q.id) ? 'bg-[var(--color-gold)] border-[var(--color-gold)]' : 'border-gray-700 group-hover/check:border-gold/50'}`}>
                                                         {quality.includes(q.id) && <div className="w-2 h-2 bg-black rounded-full" />}
                                                     </div>
                                                     <span className="ml-2 text-[10px] font-bold uppercase tracking-widest text-gray-400 group-hover/check:text-gray-200">{q.label}</span>
@@ -532,7 +532,7 @@ const PortfolioOptimization: React.FC<PortfolioOptimizationProps> = ({ onGoBack,
                             </div>
 
                             {/* Section: Texture */}
-                            <div className={`border rounded-xl overflow-hidden transition-all duration-300 ${activeSection === 'texture' ? 'border-[var(--color-gold)]/50 bg-[var(--color-bg-surface)] shadow-2xl shadow-gold/5' : 'border-gray-800 bg-black/40 hover:border-gray-700'}`}>
+                            <div className={`border rounded-xl overflow-hidden transition-all duration-300 ${activeSection === 'texture' ? 'border-gold/50 bg-[var(--color-bg-surface)] shadow-2xl shadow-gold/5' : 'border-gray-800 bg-black/40 hover:border-gray-700'}`}>
                                 <button 
                                     onClick={() => setActiveSection(activeSection === 'texture' ? null : 'texture')}
                                     className="w-full flex items-center justify-between p-4 text-left group"
@@ -556,7 +556,7 @@ const PortfolioOptimization: React.FC<PortfolioOptimizationProps> = ({ onGoBack,
                                         <div className="grid grid-cols-2 gap-3 pt-2">
                                             {QUALITY_OPTIONS.filter(q => ['skin-texture', 'fabric-fidelity', '8k-reconstruct'].includes(q.id)).map(q => (
                                                 <div key={q.id} className="flex items-center group/check cursor-pointer" onClick={() => handleQualityChange(q.id)}>
-                                                    <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${quality.includes(q.id) ? 'bg-[var(--color-gold)] border-[var(--color-gold)]' : 'border-gray-700 group-hover/check:border-[var(--color-gold)]/50'}`}>
+                                                    <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${quality.includes(q.id) ? 'bg-[var(--color-gold)] border-[var(--color-gold)]' : 'border-gray-700 group-hover/check:border-gold/50'}`}>
                                                         {quality.includes(q.id) && <div className="w-2 h-2 bg-black rounded-full" />}
                                                     </div>
                                                     <span className="ml-2 text-[10px] font-bold uppercase tracking-widest text-gray-400 group-hover/check:text-gray-200">{q.label}</span>
@@ -568,7 +568,7 @@ const PortfolioOptimization: React.FC<PortfolioOptimizationProps> = ({ onGoBack,
                             </div>
 
                             {/* Section: Viewport */}
-                            <div className={`border rounded-xl overflow-hidden transition-all duration-300 ${activeSection === 'viewport' ? 'border-[var(--color-gold)]/50 bg-[var(--color-bg-surface)] shadow-2xl shadow-gold/5' : 'border-gray-800 bg-black/40 hover:border-gray-700'}`}>
+                            <div className={`border rounded-xl overflow-hidden transition-all duration-300 ${activeSection === 'viewport' ? 'border-gold/50 bg-[var(--color-bg-surface)] shadow-2xl shadow-gold/5' : 'border-gray-800 bg-black/40 hover:border-gray-700'}`}>
                                 <button 
                                     onClick={() => setActiveSection(activeSection === 'viewport' ? null : 'viewport')}
                                     className="w-full flex items-center justify-between p-4 text-left group"
@@ -594,7 +594,7 @@ const PortfolioOptimization: React.FC<PortfolioOptimizationProps> = ({ onGoBack,
                             </div>
 
                             {/* Section: Lock & Extend */}
-                            <div className={`border rounded-xl overflow-hidden transition-all duration-300 ${activeSection === 'lock' ? 'border-[var(--color-gold)]/50 bg-[var(--color-bg-surface)] shadow-2xl shadow-gold/5' : 'border-gray-800 bg-black/40 hover:border-gray-700'}`}>
+                            <div className={`border rounded-xl overflow-hidden transition-all duration-300 ${activeSection === 'lock' ? 'border-gold/50 bg-[var(--color-bg-surface)] shadow-2xl shadow-gold/5' : 'border-gray-800 bg-black/40 hover:border-gray-700'}`}>
                                 <button 
                                     onClick={() => setActiveSection(activeSection === 'lock' ? null : 'lock')}
                                     className="w-full flex items-center justify-between p-4 text-left group"
@@ -614,7 +614,7 @@ const PortfolioOptimization: React.FC<PortfolioOptimizationProps> = ({ onGoBack,
                                             {id:'allowOutpaint', label:'允許畫面擴展 (Outpaint)', value:allowOutpaint, setter:setAllowOutpaint}
                                         ].map(opt => (
                                             <div key={opt.id} className="flex items-center group/check cursor-pointer" onClick={() => opt.setter(!opt.value)}>
-                                                <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${opt.value ? 'bg-[var(--color-gold)] border-[var(--color-gold)]' : 'border-gray-700 group-hover/check:border-[var(--color-gold)]/50'}`}>
+                                                <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${opt.value ? 'bg-[var(--color-gold)] border-[var(--color-gold)]' : 'border-gray-700 group-hover/check:border-gold/50'}`}>
                                                     {opt.value && <div className="w-2 h-2 bg-black rounded-full" />}
                                                 </div>
                                                 <span className="ml-2 text-[10px] font-bold uppercase tracking-widest text-gray-400 group-hover/check:text-gray-200">{opt.label}</span>
@@ -688,7 +688,7 @@ const PortfolioOptimization: React.FC<PortfolioOptimizationProps> = ({ onGoBack,
                                     <div className="flex gap-2">
                                         <button 
                                             onClick={() => setIsSmartLinkEnabled(!isSmartLinkEnabled)}
-                                            className={`flex items-center gap-1 px-2 py-1 rounded border transition-all ${isSmartLinkEnabled ? 'bg-[var(--color-gold)]/10 border-[var(--color-gold)]/50 text-[var(--color-gold)]' : 'border-gray-800 text-gray-600'}`}
+                                            className={`flex items-center gap-1 px-2 py-1 rounded border transition-all ${isSmartLinkEnabled ? 'bg-gold/10 border-gold/50 text-[var(--color-gold)]' : 'border-gray-800 text-gray-600'}`}
                                             title="智慧參數聯動"
                                         >
                                             <RefreshCw className={`w-3 h-3 ${isSmartLinkEnabled ? 'animate-spin-slow' : ''}`} />
@@ -757,7 +757,7 @@ const PortfolioOptimization: React.FC<PortfolioOptimizationProps> = ({ onGoBack,
                                         }}
                                     >
                                         <div className="absolute inset-0 border-[12px] border-black/20 rounded-full"></div>
-                                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 border border-[var(--color-gold)]/30 rounded-full"></div>
+                                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 border border-gold/30 rounded-full"></div>
                                     </div>
                                 )}
 
@@ -814,7 +814,7 @@ const PortfolioOptimization: React.FC<PortfolioOptimizationProps> = ({ onGoBack,
                                                 <DownloadIcon className="w-4 h-4"/> 下載
                                             </Button>
                                             {onContinueEditing && (
-                                                <Button onClick={() => onContinueEditing(generatedImage, 'pcpe')} variant="secondary" className="px-6 border-[var(--color-gold)]/30 text-[var(--color-gold)]">
+                                                <Button onClick={() => onContinueEditing(generatedImage, 'pcpe')} variant="secondary" className="px-6 border-gold/30 text-[var(--color-gold)]">
                                                     製作海報 &rarr;
                                                 </Button>
                                             )}

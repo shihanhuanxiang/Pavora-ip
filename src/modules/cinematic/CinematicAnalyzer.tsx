@@ -238,10 +238,10 @@ const CinematicAnalyzer: React.FC<CinematicAnalyzerProps> = ({ onGoHome, onSendT
                                 )}
                             </div>
                         ) : (
-                            <div onClick={() => fileInputRef.current?.click()} className="w-full h-64 border-2 border-dashed border-[var(--color-border)] rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-[var(--color-gold)] mb-4 bg-[var(--color-bg-input)]/30">
+                            <div onClick={() => fileInputRef.current?.click()} className="w-full h-64 border-2 border-dashed border-[var(--color-border)] rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-[var(--color-gold)] mb-4 bg-bg-input/30">
                                 <PhotoIcon className="w-12 h-12 text-[var(--color-text-dim)] mb-2"/>
                                 <span className="text-[var(--color-text-dim)]">點擊上傳影像或影片</span>
-                                <span className="text-xs text-[var(--color-text-dim)]/60 mt-2">支援 JPG, PNG, MP4, MOV</span>
+                                <span className="text-xs text-text-dim/60 mt-2">支援 JPG, PNG, MP4, MOV</span>
                             </div>
                         )}
                         
@@ -329,7 +329,7 @@ const CinematicAnalyzer: React.FC<CinematicAnalyzerProps> = ({ onGoHome, onSendT
                                 {Array.isArray(analysis.storyboard) && analysis.storyboard.length > 0 ? (
                                     <div className="space-y-8">
                                         {analysis.storyboard.map((shot, idx) => (
-                                            <div key={idx} className="bg-[var(--color-bg-input)]/50 rounded-lg overflow-hidden border border-[var(--color-border)]">
+                                            <div key={idx} className="bg-bg-input/50 rounded-lg overflow-hidden border border-[var(--color-border)]">
                                                 <div className="bg-[var(--color-bg-input)] p-3 flex justify-between items-center border-b border-[var(--color-border)]">
                                                     <div className="flex items-center gap-4 flex-wrap">
                                                         <span className="text-[var(--color-gold)] font-mono font-bold text-lg">{shot.time_code}</span>
@@ -338,19 +338,19 @@ const CinematicAnalyzer: React.FC<CinematicAnalyzerProps> = ({ onGoHome, onSendT
                                                     <span className="text-xs text-[var(--color-text-dim)] font-mono">SHOT {idx + 1}</span>
                                                 </div>
                                                 
-                                                <div className="px-4 py-2 bg-[var(--color-bg-deep)]/30 border-b border-[var(--color-border)]/30 flex items-center gap-2">
+                                                <div className="px-4 py-2 bg-bg-deep/30 border-b border-border/30 flex items-center gap-2">
                                                     <span className="text-xs text-[var(--color-text-dim)] font-bold uppercase">Camera & Tech:</span>
                                                     <span className="text-[var(--color-text-main)] text-sm italic">{shot.camera_move}</span>
                                                 </div>
                                                 
-                                                <div className="p-4 border-b border-[var(--color-border)]/50">
+                                                <div className="p-4 border-b border-border/50">
                                                     <p className="text-sm text-[var(--color-text-main)] leading-relaxed whitespace-pre-wrap">{shot.visual_description}</p>
                                                 </div>
 
                                                 <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                                                     <div>
                                                         <p className="text-xs text-[var(--color-text-dim)] mb-1">Golden Prompt (English)</p>
-                                                        <div className="bg-[var(--color-bg-deep)]/50 p-3 rounded border border-[var(--color-gold)]/20 text-[var(--color-text-main)] font-mono text-xs leading-relaxed relative group">
+                                                        <div className="bg-bg-deep/50 p-3 rounded border border-gold/20 text-[var(--color-text-main)] font-mono text-xs leading-relaxed relative group">
                                                             {shot.golden_prompt_en}
                                                             <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                                                 <button 
@@ -372,7 +372,7 @@ const CinematicAnalyzer: React.FC<CinematicAnalyzerProps> = ({ onGoHome, onSendT
                                                     </div>
                                                     <div>
                                                         <p className="text-xs text-[var(--color-text-dim)] mb-1">提示詞解析 (Chinese)</p>
-                                                        <div className="bg-[var(--color-bg-input)]/30 p-3 rounded border border-[var(--color-border)]/30 text-[var(--color-text-dim)] text-xs leading-relaxed">
+                                                        <div className="bg-bg-input/30 p-3 rounded border border-border/30 text-[var(--color-text-dim)] text-xs leading-relaxed">
                                                             {shot.golden_prompt_zh}
                                                         </div>
                                                     </div>

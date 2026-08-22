@@ -128,8 +128,8 @@ const CardSlot: React.FC<{
         >
             {isSnapping && showGuides && (
                 <div className="absolute inset-0 z-20 pointer-events-none flex items-center justify-center">
-                    <div className="w-px h-full bg-[var(--color-gold)]/40 absolute"></div>
-                    <div className="h-px w-full bg-[var(--color-gold)]/40 absolute"></div>
+                    <div className="w-px h-full bg-gold/40 absolute"></div>
+                    <div className="h-px w-full bg-gold/40 absolute"></div>
                     <div className="px-2 py-1 bg-[var(--color-gold)] text-[8px] font-bold text-black rounded uppercase tracking-tighter animate-bounce">Snapped</div>
                 </div>
             )}
@@ -237,9 +237,9 @@ const PreviewCanvas: React.FC<PreviewCanvasProps> = ({
             `}} />
             {showGuides && (
                 <div className="absolute inset-0 z-10 pointer-events-none">
-                    <div className="absolute inset-4 border border-dashed border-[var(--color-gold)]/40"></div>
-                    <div className="absolute top-1/2 left-0 w-full h-px bg-[var(--color-gold)]/10"></div>
-                    <div className="absolute left-1/2 top-0 w-px h-full bg-[var(--color-gold)]/10"></div>
+                    <div className="absolute inset-4 border border-dashed border-gold/40"></div>
+                    <div className="absolute top-1/2 left-0 w-full h-px bg-gold/10"></div>
+                    <div className="absolute left-1/2 top-0 w-px h-full bg-gold/10"></div>
                 </div>
             )}
 

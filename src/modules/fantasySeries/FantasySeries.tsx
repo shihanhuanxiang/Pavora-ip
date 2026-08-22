@@ -519,7 +519,7 @@ const FantasySeries: React.FC<FantasySeriesProps> = ({ onGoHome, initialImage, o
                     <div className="flex flex-col">
                         <div className="flex items-center gap-3">
                             <h2 className="text-2xl font-display font-bold uppercase tracking-[0.3em] text-[var(--color-text-main)]">幻想系列</h2>
-                            <div className="hidden sm:flex items-center gap-2 px-2 py-0.5 rounded border border-[var(--color-success)]/30 bg-[var(--color-success)]/5">
+                            <div className="hidden sm:flex items-center gap-2 px-2 py-0.5 rounded border border-success/30 bg-success/5">
                                 <span className="relative flex h-2 w-2">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-success)] opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--color-success)]"></span>
@@ -581,7 +581,7 @@ const FantasySeries: React.FC<FantasySeriesProps> = ({ onGoHome, initialImage, o
                                             <div className="absolute bottom-0 left-0 right-0 bg-[var(--color-gold)] text-[9px] text-center text-black font-mono font-bold py-0.5 tracking-tighter uppercase">Identity Lock</div>
                                         </>
                                     ) : (
-                                        <div className="w-full h-full flex flex-col items-center justify-center cursor-pointer hover:bg-[var(--color-gold)]/10 transition-colors group/anchor" onClick={(e) => { e.stopPropagation(); faceAnchorInputRef.current?.click(); }}>
+                                        <div className="w-full h-full flex flex-col items-center justify-center cursor-pointer hover:bg-gold/10 transition-colors group/anchor" onClick={(e) => { e.stopPropagation(); faceAnchorInputRef.current?.click(); }}>
                                             <span className="text-2xl text-[var(--color-gold)] group-hover/anchor:scale-125 transition-transform">+</span>
                                             <span className="text-[9px] font-mono text-[var(--color-text-dim)] font-bold uppercase tracking-tighter">Lock Profile</span>
                                         </div>
@@ -592,7 +592,7 @@ const FantasySeries: React.FC<FantasySeriesProps> = ({ onGoHome, initialImage, o
                                 </div>
                             </div>
                         ) : (
-                            <div onClick={() => fileInputRef.current?.click()} className="w-full h-48 border-2 border-dashed border-[var(--color-border)] rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-[var(--color-gold)]/50 transition-all hover:bg-[var(--color-gold)]/5 group">
+                            <div onClick={() => fileInputRef.current?.click()} className="w-full h-48 border-2 border-dashed border-[var(--color-border)] rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-gold/50 transition-all hover:bg-gold/5 group">
                                 <PhotoIcon className="w-10 h-10 text-[var(--color-text-dim)] mb-2 group-hover:text-[var(--color-gold)] transition-colors" />
                                 <span className="text-[var(--color-text-dim)] text-xs font-mono uppercase tracking-widest group-hover:text-[var(--color-gold)]">Upload Subject Card</span>
                             </div>
@@ -607,7 +607,7 @@ const FantasySeries: React.FC<FantasySeriesProps> = ({ onGoHome, initialImage, o
                             </div>
                             <button 
                                 onClick={handleRandomize} 
-                                className="flex items-center gap-2 px-3 py-1.5 text-[9px] font-mono font-bold rounded border border-[var(--color-gold)]/40 text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-black transition-all shadow-[0_0_15px_rgba(212,175,55,0.1)] active:scale-95 uppercase tracking-widest"
+                                className="flex items-center gap-2 px-3 py-1.5 text-[9px] font-mono font-bold rounded border border-gold/40 text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-black transition-all shadow-[0_0_15px_rgba(212,175,55,0.1)] active:scale-95 uppercase tracking-widest"
                                 title="隨機生成靈感"
                             >
                                 <DiceIcon className="w-3.5 h-3.5" /> Randomize
@@ -763,7 +763,7 @@ const FantasySeries: React.FC<FantasySeriesProps> = ({ onGoHome, initialImage, o
                             className={`relative w-full py-5 rounded-lg flex flex-col items-center justify-center overflow-hidden transition-all duration-500 active:scale-[0.98] border-2
                                 ${isLoading 
                                     ? 'bg-neutral-900 border-white/10 cursor-wait' 
-                                    : 'bg-black border-[var(--color-gold)]/60 hover:bg-[var(--color-gold)] hover:border-[var(--color-gold)] shadow-[0_4px_25px_rgba(0,0,0,0.6)] group-hover:shadow-[0_0_50px_rgba(212,175,55,0.5)]'
+                                    : 'bg-black border-gold/60 hover:bg-[var(--color-gold)] hover:border-[var(--color-gold)] shadow-[0_4px_25px_rgba(0,0,0,0.6)] group-hover:shadow-[0_0_50px_rgba(212,175,55,0.5)]'
                                 } 
                                 disabled:opacity-20 disabled:grayscale disabled:cursor-not-allowed`}
                         >
@@ -798,14 +798,14 @@ const FantasySeries: React.FC<FantasySeriesProps> = ({ onGoHome, initialImage, o
                     <Card className="h-full min-h-[80vh] flex flex-col relative overflow-hidden bg-[var(--color-bg-deep)] border border-[var(--color-border)] shadow-2xl">
                         {/* Technical Decoration Frame */}
                         <div className="absolute inset-0 pointer-events-none border-[12px] border-transparent">
-                            <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-[var(--color-gold)]/40"></div>
-                            <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-[var(--color-gold)]/40"></div>
-                            <div className="absolute bottom-0 left-0 w-8 h-8 border-b border-l border-[var(--color-gold)]/40"></div>
-                            <div className="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-[var(--color-gold)]/40"></div>
+                            <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-gold/40"></div>
+                            <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-gold/40"></div>
+                            <div className="absolute bottom-0 left-0 w-8 h-8 border-b border-l border-gold/40"></div>
+                            <div className="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-gold/40"></div>
                         </div>
 
                         <div className="absolute top-6 left-6 z-10 flex flex-col gap-1">
-                            <span className="text-[10px] font-mono text-[var(--color-gold)] uppercase tracking-[0.3em] bg-black/60 px-3 py-1 rounded border border-[var(--color-gold)]/20 backdrop-blur-md">
+                            <span className="text-[10px] font-mono text-[var(--color-gold)] uppercase tracking-[0.3em] bg-black/60 px-3 py-1 rounded border border-gold/20 backdrop-blur-md">
                                 Pavora Morph Engine // V4.5 Enterprise
                             </span>
                             <div className="flex items-center gap-2 px-3 py-1 bg-black/40 backdrop-blur-sm rounded border border-white/5 w-fit">
@@ -828,7 +828,7 @@ const FantasySeries: React.FC<FantasySeriesProps> = ({ onGoHome, initialImage, o
                                     {isLoading && (
                                         <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-md">
                                             <div className="w-full h-[2px] bg-[var(--color-gold)] shadow-[0_0_15px_var(--color-gold)] animate-[scan_2s_linear_infinite] absolute top-0"></div>
-                                            <div className="absolute inset-0 bg-[var(--color-gold)]/5 animate-pulse"></div>
+                                            <div className="absolute inset-0 bg-gold/5 animate-pulse"></div>
                                         </div>
                                     )}
                                     {/* Corners */}
@@ -842,7 +842,7 @@ const FantasySeries: React.FC<FantasySeriesProps> = ({ onGoHome, initialImage, o
                                     <img src={baseImage.url} alt="Reference" className="max-h-full max-w-full object-contain rounded-md opacity-30 grayscale sepia" />
                                     <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[1px]">
                                         <div className="text-center">
-                                            <div className="w-16 h-16 border-2 border-[var(--color-gold)]/40 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                                            <div className="w-16 h-16 border-2 border-gold/40 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
                                             <p className="text-[10px] font-mono text-[var(--color-gold)] uppercase tracking-[0.4em]">Standby // Ready to Morph</p>
                                         </div>
                                     </div>
@@ -855,7 +855,7 @@ const FantasySeries: React.FC<FantasySeriesProps> = ({ onGoHome, initialImage, o
                              )}
                         </div>
                         {generatedImage && (
-                            <div className="mt-4 p-4 bg-[var(--color-bg-surface)]/80 backdrop-blur-md flex flex-wrap justify-center gap-4 border-t border-[var(--color-border)]">
+                            <div className="mt-4 p-4 bg-bg-surface/80 backdrop-blur-md flex flex-wrap justify-center gap-4 border-t border-[var(--color-border)]">
                                 {/* 2026-08-10（企劃案 C-03-02，就是這一行被點名的）：真的入庫。
                                     改版前只 downloadImage 然後跳「已儲存並下載至作品集！」，
                                     `savePortfolioItem` 有 import、零呼叫端 —— 作品庫裡什麼都沒有。 */}

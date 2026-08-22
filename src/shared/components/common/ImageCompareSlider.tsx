@@ -151,9 +151,9 @@ const ImageCompareSlider: React.FC<ImageCompareSliderProps> = ({
               <AsyncImage src={beforeImage} className="w-full h-full object-cover" />
               <div className="absolute top-2 left-2 px-2 py-1 bg-black/50 text-[8px] text-white rounded uppercase tracking-widest">Before</div>
             </div>
-            <div className="relative rounded-lg overflow-hidden border border-[var(--color-gold)]/30">
+            <div className="relative rounded-lg overflow-hidden border border-gold/30">
               <AsyncImage src={afterImage} className="w-full h-full object-cover" />
-              <div className="absolute top-2 left-2 px-2 py-1 bg-[var(--color-gold)]/80 text-[8px] text-black font-bold rounded uppercase tracking-widest">After</div>
+              <div className="absolute top-2 left-2 px-2 py-1 bg-gold/80 text-[8px] text-black font-bold rounded uppercase tracking-widest">After</div>
             </div>
           </motion.div>
         )}

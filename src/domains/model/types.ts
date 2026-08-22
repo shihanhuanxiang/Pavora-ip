@@ -116,6 +116,30 @@ export interface Model {
      * ⚠️ 存量資料裡殘留的 `isAmbassador: true` 不必清——沒有任何讀取端，
      *    留著是無害的死欄位；動使用者存量資料的風險大於留著它。
      */
+    /**
+     * 建立這個 IP 時實際送出的生成參數（2026-08-14，Hank 裁決「存」）。
+     *
+     * 為什麼要存：2026-08-14 查 Kai 為什麼出圖是白人臉時，發現
+     * **完全無法回溯他當初選了哪個臉部原型**——`Model` 只存結果不存輸入，
+     * 而 24 個原型裡有 20 個沒有東亞錨定，選到哪一個決定了臉會不會漂。
+     * 那次只能從 `locked_descriptor` 的措辭反推「高度疑似 mixed_aesthetic」，
+     * 這種追查方式不可靠也不該重複。
+     *
+     * ⚠️ 全部 optional：既有 IP 沒有這個欄位，讀取端必須容忍 undefined。
+     *    這是純診斷用途，**不要拿它當生圖輸入**——生圖的權威來源是
+     *    `persona.locked_descriptor` 與 `visualIdentityHint`。
+     */
+    creationParams?: {
+        archetype?: string;
+        skinTone?: string;
+        proportionMode?: string;
+        netRedLevel?: number;
+        hairStyle?: string;
+        hairLength?: string;
+        makeupStyle?: string;
+        /** 建立當下的時間戳，用來對齊 prompt 版本 */
+        createdAtMs?: number;
+    };
     persona?: IPPersona;
     visualIdentityHint?: VisualIdentityHint;
     visualConstants?: IPVisualConstants;

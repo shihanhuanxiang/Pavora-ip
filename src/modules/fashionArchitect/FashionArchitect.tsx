@@ -582,7 +582,7 @@ const FashionArchitect: React.FC<FashionArchitectProps> = ({ onGoHome }) => {
                             </div>
                             
                             {/* Interactive Preview Container - Scaled to fit UI */}
-                            <div className="w-full overflow-auto flex justify-center bg-[var(--color-bg-surface)]/50 border border-[var(--color-border)] rounded-lg p-4 shadow-inner transition-all">
+                            <div className="w-full overflow-auto flex justify-center bg-bg-surface/50 border border-[var(--color-border)] rounded-lg p-4 shadow-inner transition-all">
                                 <div 
                                     style={{ 
                                         width: `${COLLAGE_WIDTH * previewScale}px`, 
@@ -678,7 +678,7 @@ const FashionArchitect: React.FC<FashionArchitectProps> = ({ onGoHome }) => {
                                                                 }}
                                                             />
                                                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                                                                <div className="bg-[var(--color-bg-surface)]/90 text-[var(--color-text-deep)] p-3 rounded-full shadow-lg transform scale-75 group-hover:scale-100 transition-transform">
+                                                                <div className="bg-bg-surface/90 text-[var(--color-text-deep)] p-3 rounded-full shadow-lg transform scale-75 group-hover:scale-100 transition-transform">
                                                                     <ExpandIcon className="w-8 h-8" />
                                                                 </div>
                                                             </div>
@@ -830,7 +830,7 @@ const FashionArchitect: React.FC<FashionArchitectProps> = ({ onGoHome }) => {
                                                                 }}
                                                             />
                                                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                                                                <div className="bg-[var(--color-bg-surface)]/90 text-[var(--color-text-deep)] p-3 rounded-full shadow-lg transform scale-75 group-hover:scale-100 transition-transform">
+                                                                <div className="bg-bg-surface/90 text-[var(--color-text-deep)] p-3 rounded-full shadow-lg transform scale-75 group-hover:scale-100 transition-transform">
                                                                     <ExpandIcon className="w-8 h-8" />
                                                                 </div>
                                                             </div>
@@ -885,7 +885,7 @@ const FashionArchitect: React.FC<FashionArchitectProps> = ({ onGoHome }) => {
                                                                 onClick={() => setPreviewImage({ url: item.macroUrl!, name: `${item.name} Texture` })}
                                                             >
                                                                 <img src={item.macroUrl} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                                                                <div className="absolute bottom-0 left-0 bg-[var(--color-bg-surface)]/90 px-2 py-1 text-[10px] font-bold uppercase tracking-wider z-10 shadow-sm">
+                                                                <div className="absolute bottom-0 left-0 bg-bg-surface/90 px-2 py-1 text-[10px] font-bold uppercase tracking-wider z-10 shadow-sm">
                                                                     {item.name}
                                                                 </div>
                                                                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 z-20">

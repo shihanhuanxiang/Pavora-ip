@@ -31,7 +31,7 @@ const Slider: React.FC<SliderProps> = ({ label, tooltip, value, min, max, step =
             case 'safe': return 'text-green-400 bg-green-400/10 border-green-400/20';
             case 'warning': return 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20';
             case 'risky': return 'text-red-400 bg-red-400/10 border-red-400/20';
-            default: return 'text-[var(--color-gold)] bg-[var(--color-gold)]/10 border-[var(--color-gold)]/20';
+            default: return 'text-[var(--color-gold)] bg-gold/10 border-gold/20';
         }
     };
 

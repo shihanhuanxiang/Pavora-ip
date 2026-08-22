@@ -337,7 +337,7 @@ const ModelIdentityEditor: React.FC<ModelIdentityEditorProps> = ({ model, onClos
                                 <button
                                     onClick={handleRandomPersona}
                                     disabled={isRandomizing}
-                                    className="text-[9px] text-[var(--color-gold)] border border-[var(--color-gold)]/30 px-3 py-1 rounded-full hover:bg-[var(--color-gold)] hover:text-black transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                                    className="text-[9px] text-[var(--color-gold)] border border-gold/30 px-3 py-1 rounded-full hover:bg-[var(--color-gold)] hover:text-black transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                                     title="隨機產生一套人設（不會改動姓名與外觀）"
                                 >
                                     {isRandomizing ? '產生中…' : '🎲 隨機靈感'}
@@ -437,7 +437,7 @@ const ModelIdentityEditor: React.FC<ModelIdentityEditorProps> = ({ model, onClos
                                 <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">核心興趣 (Interests)</label>
                                 <div className="flex flex-wrap gap-2">
                                     {formData.lifeCircuit.interests?.map((interest, idx) => (
-                                        <div key={idx} className="flex items-center gap-2 bg-white/5 border border-white/10 px-3 py-1 rounded-full group transition-all hover:border-[var(--color-gold)]/50">
+                                        <div key={idx} className="flex items-center gap-2 bg-white/5 border border-white/10 px-3 py-1 rounded-full group transition-all hover:border-gold/50">
                                             <span className="text-[10px] text-gray-300">{interest}</span>
                                             <button 
                                                 onClick={() => {
@@ -452,7 +452,7 @@ const ModelIdentityEditor: React.FC<ModelIdentityEditorProps> = ({ model, onClos
                                     ))}
                                     <input 
                                         placeholder="+ 新增興趣 (Enter)"
-                                        className="bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/30 px-3 py-1 rounded-full outline-none text-[10px] text-[var(--color-gold)] placeholder-[var(--color-gold)]/50 w-32"
+                                        className="bg-gold/10 border border-gold/30 px-3 py-1 rounded-full outline-none text-[10px] text-[var(--color-gold)] placeholder-gold/50 w-32"
                                         onKeyDown={(e) => {
                                             if (e.key === 'Enter') {
                                                 const val = (e.target as HTMLInputElement).value.trim();
@@ -525,7 +525,7 @@ const ModelIdentityEditor: React.FC<ModelIdentityEditorProps> = ({ model, onClos
                                         <span className="text-base">👥</span>
                                         <h5 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">關係鏈 (Human Relations)</h5>
                                     </div>
-                                    <button onClick={addRelationship} className="text-[9px] text-[var(--color-gold)] border border-[var(--color-gold)]/30 px-3 py-1 rounded-full hover:bg-[var(--color-gold)] hover:text-black transition-all">+ 新增關係人</button>
+                                    <button onClick={addRelationship} className="text-[9px] text-[var(--color-gold)] border border-gold/30 px-3 py-1 rounded-full hover:bg-[var(--color-gold)] hover:text-black transition-all">+ 新增關係人</button>
                                 </div>
                                 <div className="grid grid-cols-1 gap-3">
                                     {formData.worldAnchors.relationships.map((rel, idx) => (
@@ -577,7 +577,7 @@ const ModelIdentityEditor: React.FC<ModelIdentityEditorProps> = ({ model, onClos
                                         <span className="text-base">💍</span>
                                         <h5 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">標誌性物品 (Iconic Items)</h5>
                                     </div>
-                                    <button onClick={addIconicItem} className="text-[9px] text-[var(--color-gold)] border border-[var(--color-gold)]/30 px-3 py-1 rounded-full hover:bg-[var(--color-gold)] hover:text-black transition-all">+ 新增物品</button>
+                                    <button onClick={addIconicItem} className="text-[9px] text-[var(--color-gold)] border border-gold/30 px-3 py-1 rounded-full hover:bg-[var(--color-gold)] hover:text-black transition-all">+ 新增物品</button>
                                 </div>
                                 <div className="grid grid-cols-1 gap-3">
                                     {formData.worldAnchors.iconicItems.map((item, idx) => (
@@ -639,7 +639,7 @@ const ModelIdentityEditor: React.FC<ModelIdentityEditorProps> = ({ model, onClos
                                         ))}
                                         <input 
                                             placeholder="+ 新增記憶碎片"
-                                            className="bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/30 px-3 py-1.5 rounded-full outline-none text-[10px] text-[var(--color-gold)] placeholder-[var(--color-gold)]/50 w-24"
+                                            className="bg-gold/10 border border-gold/30 px-3 py-1.5 rounded-full outline-none text-[10px] text-[var(--color-gold)] placeholder-gold/50 w-24"
                                             onKeyDown={(e) => {
                                                 if (e.key === 'Enter') {
                                                     const val = (e.target as HTMLInputElement).value.trim();

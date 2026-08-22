@@ -77,7 +77,7 @@ const BrandIdentityHub: React.FC<BrandIdentityHubProps> = ({ onGoHome, onModelSe
       <div className="glass-panel border-x-0 border-t-0 sticky top-[80px] z-30 px-4 lg:px-8 py-4">
         <div className="max-w-[110rem] mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-lg bg-[var(--color-gold)]/10 flex items-center justify-center text-[var(--color-gold)]">
+            <div className="w-10 h-10 rounded-lg bg-gold/10 flex items-center justify-center text-[var(--color-gold)]">
               <ModelIcon />
             </div>
             <div>
@@ -86,7 +86,7 @@ const BrandIdentityHub: React.FC<BrandIdentityHubProps> = ({ onGoHome, onModelSe
             </div>
           </div>
 
-          <div className="flex items-center gap-2 bg-[var(--color-bg-input)]/40 p-1 rounded-xl border border-[var(--color-border)]">
+          <div className="flex items-center gap-2 bg-bg-input/40 p-1 rounded-xl border border-[var(--color-border)]">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
@@ -94,7 +94,7 @@ const BrandIdentityHub: React.FC<BrandIdentityHubProps> = ({ onGoHome, onModelSe
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all duration-300 ${
                   activeTab === tab.id 
                     ? 'bg-[var(--color-gold)] text-[var(--color-bg-deep)] shadow-lg' 
-                    : 'text-[var(--color-text-dim)] hover:text-[var(--color-text-title)] hover:bg-[var(--color-bg-surface)]/50'
+                    : 'text-[var(--color-text-dim)] hover:text-[var(--color-text-title)] hover:bg-bg-surface/50'
                 }`}
               >
                 <span className="[&_svg]:w-4 [&_svg]:h-4">{tab.icon}</span>

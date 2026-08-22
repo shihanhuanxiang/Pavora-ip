@@ -155,7 +155,7 @@ const MacroCraftStudio: React.FC<MacroCraftStudioProps> = ({ onGoHome }) => {
                         <h3 className="text-xl font-bold text-[var(--color-text-title)] mb-4">1. 產品輸入</h3>
                         {image ? (
                             <div className="relative group w-full mb-2">
-                                <img src={image.url} alt="Product" className="w-full h-48 object-contain rounded-md bg-[var(--color-bg-deep)]/40" />
+                                <img src={image.url} alt="Product" className="w-full h-48 object-contain rounded-md bg-bg-deep/40" />
                                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                     <Button onClick={() => fileInputRef.current?.click()} variant="secondary">更換產品圖</Button>
                                 </div>
@@ -163,14 +163,14 @@ const MacroCraftStudio: React.FC<MacroCraftStudioProps> = ({ onGoHome }) => {
                         ) : (
                             <div 
                                 onClick={() => fileInputRef.current?.click()}
-                                className="w-full h-48 border-2 border-dashed border-[var(--color-border)] rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-[var(--color-gold)] transition-all bg-[var(--color-bg-surface)]/20"
+                                className="w-full h-48 border-2 border-dashed border-[var(--color-border)] rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-[var(--color-gold)] transition-all bg-bg-surface/20"
                             >
                                 <PhotoIcon className="w-10 h-10 text-[var(--color-text-dim)] mb-2" />
                                 <span className="text-[var(--color-text-dim)]">上傳產品（鞋履、包袋、服裝）</span>
                             </div>
                         )}
                         {analysis && (
-                            <div className="mt-4 p-3 bg-[var(--color-bg-deep)]/50 rounded border border-[var(--color-border)]">
+                            <div className="mt-4 p-3 bg-bg-deep/50 rounded border border-[var(--color-border)]">
                                 <h4 className="text-xs font-bold text-[var(--color-gold)] uppercase mb-2">已建立工藝節點 (Analysis Complete)</h4>
                                 <div className="flex flex-wrap gap-1">
                                     {analysis.structureNodes.map(node => (
@@ -248,7 +248,7 @@ const MacroCraftStudio: React.FC<MacroCraftStudioProps> = ({ onGoHome }) => {
                                         className="max-h-full max-w-full object-contain rounded-lg shadow-2xl" 
                                     />
                                 </div>
-                                <div className="w-full p-4 flex justify-center gap-4 bg-[var(--color-bg-surface)]/50 backdrop-blur-md">
+                                <div className="w-full p-4 flex justify-center gap-4 bg-bg-surface/50 backdrop-blur-md">
                                     <Button onClick={() => setPreviewImage(resultUrl)} variant="secondary" className="flex items-center gap-2">
                                         <ExpandIcon className="w-4 h-4" /> 全螢幕預覽
                                     </Button>

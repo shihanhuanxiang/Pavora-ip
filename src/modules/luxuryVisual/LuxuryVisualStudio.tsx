@@ -280,7 +280,7 @@ const LuxuryVisualStudio: React.FC<LuxuryVisualStudioProps> = ({ onGoHome, initi
                                 <>
                                     <div className="relative group aspect-video rounded-lg overflow-hidden border border-[var(--home-line)] bg-[var(--color-bg-deep)]">
                                         <img src={subjectImage.url} alt="Subject" className="w-full h-full object-contain" />
-                                        <div className="absolute inset-0 bg-[var(--color-bg-deep)]/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
+                                        <div className="absolute inset-0 bg-bg-deep/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
                                             <Button onClick={() => subjectInputRef.current?.click()} variant="secondary" className="text-xs py-1 px-3 home-btn-secondary">更換圖片</Button>
                                             <button onClick={() => { setSubjectImage(null); resetResults(); }} className="text-[10px] text-danger hover:underline">移除參考</button>
                                         </div>
@@ -402,7 +402,7 @@ const LuxuryVisualStudio: React.FC<LuxuryVisualStudioProps> = ({ onGoHome, initi
 
                 <div className="lg:col-span-8">
                     <Card className="h-full min-h-[85vh] flex flex-col items-center bg-[var(--color-bg-deep)] relative overflow-y-auto custom-scrollbar group border-2 border-[var(--color-border)] rounded-2xl shadow-inner">
-                        <div className="w-full px-8 py-6 border-b border-[var(--color-border)] bg-[var(--color-bg-surface)]/5 flex justify-between items-center">
+                        <div className="w-full px-8 py-6 border-b border-[var(--color-border)] bg-bg-surface/5 flex justify-between items-center">
                             <div className="flex flex-col">
                                 <h3 className="text-xl font-display font-bold tracking-[0.2em] text-[var(--color-text-title)]">視覺輸出預覽</h3>
                                 <span className="text-[11px] tracking-wide text-brass font-bold">廣告級渲染引擎</span>
@@ -414,7 +414,7 @@ const LuxuryVisualStudio: React.FC<LuxuryVisualStudioProps> = ({ onGoHome, initi
                                 <div className="flex-grow w-full flex items-center justify-center p-4">
                                     <img src={resultUrl} alt="Render Result" className="max-w-full h-auto object-contain rounded shadow-[0_40px_80px_rgba(0,0,0,0.8)] transition-all duration-700" />
                                 </div>
-                                <div className="mt-8 p-6 bg-[var(--color-bg-deep)]/80 backdrop-blur-2xl rounded-xl flex flex-wrap justify-center gap-6 border border-[var(--color-border)] sticky bottom-4 z-10 shadow-2xl">
+                                <div className="mt-8 p-6 bg-bg-deep/80 backdrop-blur-2xl rounded-xl flex flex-wrap justify-center gap-6 border border-[var(--color-border)] sticky bottom-4 z-10 shadow-2xl">
                                     <Button onClick={() => setIsPreviewOpen(true)} variant="secondary" className="px-10"><ExpandIcon className="w-5 h-5 mr-2" /> 放大</Button>
                                     <Button onClick={() => downloadImage(resultUrl, `pavora_${Date.now()}.jpg`, 'LuxuryVisual')} variant="light" className="px-10"><DownloadIcon className="w-5 h-5 mr-2" /> 下載</Button>
                                     {/* 2026-08-10（企劃案 C-03-02）：真的入庫。改版前只下載卻回報

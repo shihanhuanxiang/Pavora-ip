@@ -111,7 +111,7 @@
   }
   
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-white/5 rounded-full hover:bg-[var(--color-gold)]/30 transition-colors;
+    @apply bg-white/5 rounded-full hover:bg-gold/30 transition-colors;
   }
 
   /* ── Narrative Workbench ── */

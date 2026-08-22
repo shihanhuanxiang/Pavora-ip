@@ -571,7 +571,7 @@ const DirectorMode: React.FC<DirectorModeProps> = ({ onGoHome, initialImage, ini
                 <div className="lg:col-span-4 flex flex-col gap-6">
                     <Card><h3 className="text-xl font-bold mb-3 text-[var(--color-text-title)]">1. 初始模型</h3>
                     {baseImage ? (
-                        <div className="relative group w-full"><img src={baseImage.url} alt="Base" className="w-full object-cover rounded-md" /><div className="absolute inset-0 bg-[var(--color-bg-deep)]/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2"><Button onClick={() => baseFileInputRef.current?.click()} className="w-4/5 flex items-center justify-center"><ReplaceIcon className="w-5 h-5 mr-2" />本地更換</Button></div>
+                        <div className="relative group w-full"><img src={baseImage.url} alt="Base" className="w-full object-cover rounded-md" /><div className="absolute inset-0 bg-bg-deep/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2"><Button onClick={() => baseFileInputRef.current?.click()} className="w-4/5 flex items-center justify-center"><ReplaceIcon className="w-5 h-5 mr-2" />本地更換</Button></div>
                         </div>
                         ) : <div className="space-y-4"><Button onClick={() => baseFileInputRef.current?.click()} className="w-full"><PhotoIcon className="w-5 h-5 mr-2" />本地上傳</Button></div>}
                     </Card>
@@ -582,7 +582,7 @@ const DirectorMode: React.FC<DirectorModeProps> = ({ onGoHome, initialImage, ini
                         </div>
                         <div className="space-y-3 max-h-[70vh] overflow-y-auto pr-2">
                             {/* AI Visual Intuition System */}
-                            <div className="mb-4 p-4 bg-gradient-to-br from-[var(--color-bg-surface)] to-[var(--color-bg-deep)] rounded-lg border border-[var(--color-gold)]/40 shadow-inner">
+                            <div className="mb-4 p-4 bg-gradient-to-br from-[var(--color-bg-surface)] to-[var(--color-bg-deep)] rounded-lg border border-gold/40 shadow-inner">
                                 <div className="flex justify-between items-center mb-3">
                                     <label className="text-xs font-bold text-[var(--color-gold)] uppercase tracking-widest flex items-center">
                                         <SparklesIcon className="w-3 h-3 mr-1" /> AI 視覺直覺系統 (V5.0)
@@ -616,7 +616,7 @@ const DirectorMode: React.FC<DirectorModeProps> = ({ onGoHome, initialImage, ini
                             </div>
 
                             {/* Master Presets Selection - Dropdown */}
-                            <div className="mb-6 p-4 bg-[var(--color-bg-surface)] rounded-lg border border-[var(--color-gold)]/20">
+                            <div className="mb-6 p-4 bg-[var(--color-bg-surface)] rounded-lg border border-gold/20">
                                 <label className="block text-xs font-bold text-[var(--color-gold)] uppercase tracking-[0.2em] mb-2">大師典藏系列 (Master Presets)</label>
                                 <Select
                                     options={[
@@ -638,7 +638,7 @@ const DirectorMode: React.FC<DirectorModeProps> = ({ onGoHome, initialImage, ini
                                             });
                                         }
                                     }}
-                                    className="border-[var(--color-gold)]/50 text-sm py-2"
+                                    className="border-gold/50 text-sm py-2"
                                 />
                                 <p className="text-[10px] text-[var(--color-text-dim)] mt-2 italic">提示：套用預設將自動配置下方所有專業參數。</p>
                             </div>
@@ -764,10 +764,10 @@ const DirectorMode: React.FC<DirectorModeProps> = ({ onGoHome, initialImage, ini
                                 <DirectorOptionSelect label="主體動作 (Subject Action)" options={SUBJECT_ACTIONS} value={activeScene.subjectAction} customValue={activeScene.customSubjectAction} onValueChange={v => { updateScene(activeSceneIndex, { subjectAction: v }); setSelectedPresetId(''); }} onCustomValueChange={v => updateScene(activeSceneIndex, { customSubjectAction: v })} />
                                 
                                 <div className="grid grid-cols-2 gap-2">
-                                    <Button onClick={handleSmartMatch} disabled={(!baseImage && activeScene.generationMode !== 'multi-reference') || isLoading} variant="secondary" className="text-xs py-2 bg-[var(--color-bg-input)] border border-[var(--color-gold)]/30 text-[var(--color-gold)] hover:bg-[var(--color-gold)]/10">
+                                    <Button onClick={handleSmartMatch} disabled={(!baseImage && activeScene.generationMode !== 'multi-reference') || isLoading} variant="secondary" className="text-xs py-2 bg-[var(--color-bg-input)] border border-gold/30 text-[var(--color-gold)] hover:bg-gold/10">
                                         <SparklesIcon className="w-3 h-3 mr-1" /> AI 智慧配對
                                     </Button>
-                                    <Button onClick={handleGeneratePreview} disabled={(!baseImage && activeScene.generationMode !== 'multi-reference') || isLoading} variant="secondary" className="text-xs py-2 bg-[var(--color-bg-input)] border border-[var(--color-gold)]/30 text-[var(--color-gold)] hover:bg-[var(--color-gold)]/10">
+                                    <Button onClick={handleGeneratePreview} disabled={(!baseImage && activeScene.generationMode !== 'multi-reference') || isLoading} variant="secondary" className="text-xs py-2 bg-[var(--color-bg-input)] border border-gold/30 text-[var(--color-gold)] hover:bg-gold/10">
                                         <PhotoIcon className="w-3 h-3 mr-1" /> 生成靜態預覽
                                     </Button>
                                 </div>
@@ -817,7 +817,7 @@ const DirectorMode: React.FC<DirectorModeProps> = ({ onGoHome, initialImage, ini
                                          {scene.generatedVideoUrl ? (
                                              <BlobVideoPlayer src={scene.generatedVideoUrl} aspectRatio={scene.aspectRatio} className="w-full h-full pointer-events-none" />
                                          ) : scene.storyboardPreviewUrl ? (<img src={scene.storyboardPreviewUrl} className="w-full h-full object-cover opacity-80" />) : (<div className="w-full h-full flex items-center justify-center text-xs text-[var(--color-text-dim)]">{index === 0 ? '起始分鏡' : '待設定'}</div>)}
-                                         <div className="absolute top-1 left-1 bg-[var(--color-bg-deep)]/70 text-white text-[10px] px-1.5 rounded-full">#{index + 1}</div>
+                                         <div className="absolute top-1 left-1 bg-bg-deep/70 text-white text-[10px] px-1.5 rounded-full">#{index + 1}</div>
                                     </div>
                                     <div className="bg-[var(--color-bg-surface)] p-2 rounded-b-md">
                                         <p className="text-xs text-[var(--color-text-dim)] truncate">
@@ -832,20 +832,20 @@ const DirectorMode: React.FC<DirectorModeProps> = ({ onGoHome, initialImage, ini
                                 </div>
                             ))}
                             {storyboard.length < 5 && (
-                                <button onClick={addScene} className="flex-shrink-0 w-40 aspect-[4/3] bg-[var(--color-bg-input)]/50 border-2 border-dashed border-[var(--color-border)] rounded-md flex flex-col items-center justify-center hover:border-[var(--color-gold)] hover:bg-[var(--color-bg-input)] transition-colors text-[var(--color-text-dim)]">
+                                <button onClick={addScene} className="flex-shrink-0 w-40 aspect-[4/3] bg-bg-input/50 border-2 border-dashed border-[var(--color-border)] rounded-md flex flex-col items-center justify-center hover:border-[var(--color-gold)] hover:bg-[var(--color-bg-input)] transition-colors text-[var(--color-text-dim)]">
                                     <span className="text-2xl">+</span>
                                     <span className="text-xs mt-1">新增分鏡</span>
                                 </button>
                             )}
                         </div>
                         
-                        <div className="flex-grow bg-[var(--color-bg-deep)]/50 rounded-lg flex items-center justify-center relative overflow-hidden">
+                        <div className="flex-grow bg-bg-deep/50 rounded-lg flex items-center justify-center relative overflow-hidden">
                              {activeScene.generatedVideoUrl ? (
                                  <div className="relative w-full h-full flex items-center justify-center group p-4">
                                      <BlobVideoPlayer key={activeScene.generatedVideoUrl} src={activeScene.generatedVideoUrl} aspectRatio={activeScene.aspectRatio} className="shadow-lg h-full" />
                                      <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
                                          {activeScene.generatedVideoUrls && activeScene.generatedVideoUrls.length > 1 && (
-                                             <div className="flex gap-1 bg-[var(--color-bg-deep)]/60 p-1 rounded-md backdrop-blur-sm">
+                                             <div className="flex gap-1 bg-bg-deep/60 p-1 rounded-md backdrop-blur-sm">
                                                  {activeScene.generatedVideoUrls.map((url, idx) => (
                                                      <button 
                                                          key={idx}
@@ -865,7 +865,7 @@ const DirectorMode: React.FC<DirectorModeProps> = ({ onGoHome, initialImage, ini
                                     <img src={activeScene.storyboardPreviewUrl} className="max-h-full max-w-full object-contain rounded shadow-lg opacity-80" />
                                     <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
                                          {activeScene.storyboardPreviewUrls && activeScene.storyboardPreviewUrls.length > 1 && (
-                                             <div className="flex gap-1 bg-[var(--color-bg-deep)]/60 p-1 rounded-md backdrop-blur-sm">
+                                             <div className="flex gap-1 bg-bg-deep/60 p-1 rounded-md backdrop-blur-sm">
                                                  {activeScene.storyboardPreviewUrls.map((url, idx) => (
                                                      <button 
                                                          key={idx}
@@ -878,7 +878,7 @@ const DirectorMode: React.FC<DirectorModeProps> = ({ onGoHome, initialImage, ini
                                              </div>
                                          )}
                                      </div>
-                                    <div className="absolute bottom-4 bg-[var(--color-bg-deep)]/80 px-4 py-2 rounded-full text-sm text-white font-bold border border-white/20 shadow-xl backdrop-blur-md">
+                                    <div className="absolute bottom-4 bg-bg-deep/80 px-4 py-2 rounded-full text-sm text-white font-bold border border-white/20 shadow-xl backdrop-blur-md">
                                         靜態預覽 (Preview)
                                     </div>
                                 </div>

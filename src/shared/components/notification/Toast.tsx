@@ -29,7 +29,7 @@ const Toast: React.FC<ToastProps> = ({ notification }) => {
 
   const getBorderColor = () => {
     switch (type) {
-      case 'success': return 'border-[var(--color-gold)]/50';
+      case 'success': return 'border-gold/50';
       case 'error': return 'border-red-500/50';
       case 'warning': return 'border-orange-400/50';
       case 'info': return 'border-blue-400/50';
@@ -54,7 +54,7 @@ const Toast: React.FC<ToastProps> = ({ notification }) => {
       transition={{ type: 'spring', stiffness: 300, damping: 25 }}
       className={`
         relative w-80 mb-3 p-4 rounded-xl border ${getBorderColor()} ${getGlowEffect()}
-        bg-[var(--color-bg-deep)]/80 backdrop-blur-xl flex gap-4 group overflow-hidden
+        bg-bg-deep/80 backdrop-blur-xl flex gap-4 group overflow-hidden
       `}
     >
       {/* Shimmer effect background */}

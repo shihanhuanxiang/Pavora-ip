@@ -502,7 +502,7 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onSendApparelTo
                             <div className="relative group rounded-xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg-surface)]">
                                 <img src={referenceImage.url} alt="Reference" className="w-full h-48 object-contain" />
                                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                                    <button onClick={() => setPreviewingImage({images:[referenceImage.url], startIndex: 0})} className="p-2 bg-[var(--color-bg-surface)]/20 hover:bg-[var(--color-bg-surface)]/40 rounded-full transition-colors"><ExpandIcon className="w-5 h-5"/></button>
+                                    <button onClick={() => setPreviewingImage({images:[referenceImage.url], startIndex: 0})} className="p-2 bg-bg-surface/20 hover:bg-bg-surface/40 rounded-full transition-colors"><ExpandIcon className="w-5 h-5"/></button>
                                     <button onClick={handleClearReferenceImage} className="p-2 bg-red-500/20 hover:bg-red-500/40 text-red-500 rounded-full transition-colors">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.277H8.084a2.25 2.25 0 0 1-2.244-2.277L4.14 5.928m14.352 0a22.906 22.906 0 0 0-2.384-.126M12 18.75V16.5m0-2.25V12m0-2.25V9.75M15 6.75V4.5a2.25 2.25 0 0 0-2.25-2.25h-1.5a2.25 2.25 0 0 0-2.25 2.25v2.25" />
@@ -527,7 +527,7 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onSendApparelTo
                             <div className="mt-3 p-3 rounded-xl bg-[var(--color-bg-surface)] border border-[var(--color-border)] space-y-2">
                                 {isAnalyzingRef ? (
                                     <div className="flex items-center gap-2 text-[10px] text-[var(--color-text-dim)] uppercase tracking-widest">
-                                        <div className="w-3 h-3 border border-[var(--color-gold)]/30 border-t-[var(--color-gold)] rounded-full animate-spin"></div>
+                                        <div className="w-3 h-3 border border-gold/30 border-t-[var(--color-gold)] rounded-full animate-spin"></div>
                                         正在辨識這件服裝...
                                     </div>
                                 ) : (
@@ -543,7 +543,7 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onSendApparelTo
                                         )}
                                         {refAnalysis?.color && <p className="text-[11px] text-[var(--color-text-dim)]">顏色：{refAnalysis.color}</p>}
                                         {refAnalysis?.material && <p className="text-[11px] text-[var(--color-text-dim)]">材質：{refAnalysis.material}</p>}
-                                        <p className="text-[10px] text-[var(--color-text-dim)]/70 leading-relaxed pt-1 border-t border-[var(--color-border)]">
+                                        <p className="text-[10px] text-text-dim/70 leading-relaxed pt-1 border-t border-[var(--color-border)]">
                                             有參考圖時，生成會以這張圖為基底、保留版型，只改你在下方指定的顏色／花紋／品牌風格。都不填＝忠實重拍。
                                         </p>
                                     </>
@@ -649,9 +649,9 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onSendApparelTo
                       * 代言人移除後改成鎖定 Header 選的當前 IP，行為與預設值（關）都不變。
                       */}
                     {activeIp && (
-                        <div className="p-4 bg-[var(--color-gold)]/5 border border-[var(--color-gold)]/20 rounded-xl flex items-center justify-between group hover:bg-[var(--color-gold)]/10 transition-all">
+                        <div className="p-4 bg-gold/5 border border-gold/20 rounded-xl flex items-center justify-between group hover:bg-gold/10 transition-all">
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-lg overflow-hidden border border-[var(--color-gold)]/30">
+                                <div className="w-12 h-12 rounded-lg overflow-hidden border border-gold/30">
                                     <AsyncImage src={activeIp.imageUrl} className="w-full h-full object-cover" />
                                 </div>
                                 <div>
@@ -772,7 +772,7 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onSendApparelTo
                                 <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0">
                                     <button 
                                         onClick={() => handleDownloadImage(img, index)} 
-                                        className="p-2 bg-[var(--color-bg-deep)]/60 hover:bg-[var(--color-gold)] text-[var(--color-text-main)] hover:text-[var(--color-bg-deep)] rounded-full backdrop-blur-md transition-all"
+                                        className="p-2 bg-bg-deep/60 hover:bg-[var(--color-gold)] text-[var(--color-text-main)] hover:text-[var(--color-bg-deep)] rounded-full backdrop-blur-md transition-all"
                                         title="下載此圖"
                                     >
                                         <DownloadIcon className="w-4 h-4"/>
@@ -784,7 +784,7 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onSendApparelTo
                                     {onSendApparelToFittingRoom && index === 0 && (
                                         <button
                                             onClick={() => handleTryOnInFittingRoom(img)}
-                                            className="p-2 bg-[var(--color-bg-deep)]/60 hover:bg-[var(--color-gold)] text-[var(--color-text-main)] hover:text-[var(--color-bg-deep)] rounded-full backdrop-blur-md transition-all"
+                                            className="p-2 bg-bg-deep/60 hover:bg-[var(--color-gold)] text-[var(--color-text-main)] hover:text-[var(--color-bg-deep)] rounded-full backdrop-blur-md transition-all"
                                             title="拿去試穿（會先存進衣櫥）"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
@@ -792,7 +792,7 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onSendApparelTo
                                             </svg>
                                         </button>
                                     )}
-                                    <div className="p-2 bg-[var(--color-bg-deep)]/60 backdrop-blur-md rounded-full flex items-center justify-center">
+                                    <div className="p-2 bg-bg-deep/60 backdrop-blur-md rounded-full flex items-center justify-center">
                                         <input 
                                             type="checkbox" 
                                             checked={selectedForDownload.has(index)} 
@@ -807,7 +807,7 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onSendApparelTo
                                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-text-dim)] group-hover:text-[var(--color-gold)] transition-colors">
                                     {index === 0 ? '產品平拍圖 // Packshot' : (index === 1 ? '模特兒正面 // Front View' : '模特兒背面 // Back View')}
                                 </span>
-                                <div className="h-px w-8 bg-[var(--color-gold)]/20 mt-2 group-hover:w-16 transition-all duration-500"></div>
+                                <div className="h-px w-8 bg-gold/20 mt-2 group-hover:w-16 transition-all duration-500"></div>
                             </div>
                         </motion.div>
                     ))}
@@ -822,7 +822,7 @@ const ApparelDesign: React.FC<ApparelDesignProps> = ({ onGoHome, onSendApparelTo
                         </div>
                         <div className="space-y-2">
                             <p className="text-2xl font-display font-bold uppercase tracking-[0.2em] text-[var(--color-text-dim)]">等待創意降臨</p>
-                            <p className="text-xs text-[var(--color-text-dim)]/60 tracking-widest uppercase">Select parameters and start generation</p>
+                            <p className="text-xs text-text-dim/60 tracking-widest uppercase">Select parameters and start generation</p>
                         </div>
                     </div>
                 </div>
@@ -848,7 +848,7 @@ const CollapsibleCard: React.FC<{
         <div className="glass-panel rounded-2xl overflow-hidden border border-[var(--color-border)] transition-all duration-500">
             <button 
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full px-6 py-4 flex items-center justify-between hover:bg-[var(--color-bg-surface)]/50 transition-colors group"
+                className="w-full px-6 py-4 flex items-center justify-between hover:bg-bg-surface/50 transition-colors group"
             >
                 <div className="flex items-center gap-3">
                     {icon && <span className="text-[var(--color-gold)] opacity-70 group-hover:opacity-100 transition-all">{icon}</span>}

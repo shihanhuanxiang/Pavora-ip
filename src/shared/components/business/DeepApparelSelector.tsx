@@ -74,7 +74,7 @@ const DeepApparelSelector: React.FC<DeepApparelSelectorProps> = ({
                                                                 className={`text-xs px-4 py-2 rounded-lg border transition-all duration-300 ${
                                                                     isSelected 
                                                                     ? 'bg-[var(--color-gold)] text-black border-[var(--color-gold)] font-bold shadow-[0_0_15px_rgba(var(--color-gold-rgb),0.3)]' 
-                                                                    : 'bg-white/5 border-white/10 text-gray-400 hover:border-[var(--color-gold)]/50 hover:text-white'
+                                                                    : 'bg-white/5 border-white/10 text-gray-400 hover:border-gold/50 hover:text-white'
                                                                 }`}
                                                             >
                                                                 {item.name}

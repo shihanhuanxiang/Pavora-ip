@@ -12,7 +12,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(({ children, className,
   
   const variantClasses = {
     // Ultra-thin border, deep blur, less rounding for a sharper "architectural" look
-    glass: 'glass-panel rounded-lg border-[var(--color-border)] hover:border-[var(--color-gold)]/50 shadow-2xl hover:shadow-[var(--color-gold)]/5',
+    glass: 'glass-panel rounded-lg border-[var(--color-border)] hover:border-gold/50 shadow-2xl hover:shadow-gold/5',
     solid: 'bg-[var(--color-bg-deep)] border border-[var(--color-border)] rounded-lg',
     default: 'bg-[var(--color-bg-panel)] border border-[var(--color-border)] rounded-lg'
   };

@@ -87,7 +87,7 @@
         "silver bracelet"
       ],
       "props": [
-        "night market drink"
+        "iced drink in a plastic cup"
       ]
     },
     "fabric_difficulty": "medium",
@@ -99,7 +99,7 @@
       "shopping_random"
     ],
     "hand_occupation": {
-      "left_hand": "holding night market drink",
+      "left_hand": "holding an iced drink in a plastic cup",
       "right_hand": "touching hair or holding phone",
       "both_busy": false
     },
@@ -123,7 +123,7 @@
         "sunglasses"
       ],
       "props": [
-        "beach towel"
+        "cotton towel"
       ]
     },
     "fabric_difficulty": "medium",
@@ -133,7 +133,7 @@
       "beach_island"
     ],
     "hand_occupation": {
-      "left_hand": "holding beach towel",
+      "left_hand": "holding a cotton towel",
       "right_hand": "touching hair or holding phone",
       "both_busy": false
     },
@@ -192,7 +192,7 @@
         "canvas tote"
       ],
       "props": [
-        "old street snack"
+        "paper-wrapped snack"
       ]
     },
     "fabric_difficulty": "medium",
@@ -203,7 +203,7 @@
       "cafe_aesthetic"
     ],
     "hand_occupation": {
-      "left_hand": "holding old street snack",
+      "left_hand": "holding a paper-wrapped snack",
       "right_hand": "touching hair or holding phone",
       "both_busy": false
     },
@@ -507,7 +507,7 @@
         "silver bracelet"
       ],
       "props": [
-        "night market drink"
+        "iced drink in a plastic cup"
       ]
     },
     "fabric_difficulty": "medium",
@@ -519,7 +519,7 @@
       "shopping_random"
     ],
     "hand_occupation": {
-      "left_hand": "holding night market drink",
+      "left_hand": "holding an iced drink in a plastic cup",
       "right_hand": "touching hair or holding phone",
       "both_busy": false
     },
@@ -543,7 +543,7 @@
         "sunglasses"
       ],
       "props": [
-        "beach towel"
+        "cotton towel"
       ]
     },
     "fabric_difficulty": "medium",
@@ -553,7 +553,7 @@
       "beach_island"
     ],
     "hand_occupation": {
-      "left_hand": "holding beach towel",
+      "left_hand": "holding a cotton towel",
       "right_hand": "touching hair or holding phone",
       "both_busy": false
     },
@@ -612,7 +612,7 @@
         "canvas tote"
       ],
       "props": [
-        "old street snack"
+        "paper-wrapped snack"
       ]
     },
     "fabric_difficulty": "medium",
@@ -623,7 +623,7 @@
       "cafe_aesthetic"
     ],
     "hand_occupation": {
-      "left_hand": "holding old street snack",
+      "left_hand": "holding a paper-wrapped snack",
       "right_hand": "touching hair or holding phone",
       "both_busy": false
     },
@@ -950,7 +950,7 @@
     "fabric_difficulty": "safe",
     "wear_state": "barely_worn",
     "layering_count": 1,
-    "compatible_contexts": ["beach_island", "urban_street"],
+    "compatible_contexts": ["beach_island"],
     "hand_occupation": {"left_hand": "holding iced coffee", "right_hand": "natural relaxed", "both_busy": false},
     "prompt_skeleton": "pale grey slim resort tee, navy swim trunks, grey slides, simple watch, iced coffee, clean casual masculine pool morning look"
   },

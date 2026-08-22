@@ -612,7 +612,7 @@
         "silver chain"
       ],
       "props": [
-        "convenience store snack"
+        "small snack pack"
       ]
     },
     "fabric_difficulty": "medium",
@@ -624,7 +624,7 @@
       "urban_street"
     ],
     "hand_occupation": {
-      "left_hand": "holding convenience store snack",
+      "left_hand": "holding a small snack pack",
       "right_hand": "touching hair or holding phone",
       "both_busy": false
     },
@@ -1243,7 +1243,7 @@
         "silver chain"
       ],
       "props": [
-        "convenience store snack"
+        "small snack pack"
       ]
     },
     "fabric_difficulty": "medium",
@@ -1255,7 +1255,7 @@
       "urban_street"
     ],
     "hand_occupation": {
-      "left_hand": "holding convenience store snack",
+      "left_hand": "holding a small snack pack",
       "right_hand": "touching hair or holding phone",
       "both_busy": false
     },
@@ -1275,14 +1275,14 @@
       "bottom": "high-waist black swim shorts with side split",
       "shoes": "black flip flops",
       "accessories": ["gold hoop earrings", "waterproof sports watch"],
-      "props": ["pool towel draped over shoulder"]
+      "props": ["cotton towel draped over shoulder"]
     },
     "fabric_difficulty": "safe",
     "wear_state": "barely_worn",
     "layering_count": 1,
     "compatible_contexts": ["beach_island"],
-    "hand_occupation": {"left_hand": "holding pool towel", "right_hand": "touching hair or holding phone", "both_busy": false},
-    "prompt_skeleton": "black sports swim bralette, high-waist black swim shorts, gold hoops, pool towel over shoulder, athletic resort pool look"
+    "hand_occupation": {"left_hand": "holding a cotton towel", "right_hand": "touching hair or holding phone", "both_busy": false},
+    "prompt_skeleton": "black sports swim bralette, high-waist black swim shorts, gold hoops, cotton towel over shoulder, athletic resort pool look"
   },
   {
     "outfit_id": "F-TW-POOL-002",
@@ -1326,7 +1326,7 @@
     "fabric_difficulty": "safe",
     "wear_state": "barely_worn",
     "layering_count": 2,
-    "compatible_contexts": ["beach_island", "urban_street"],
+    "compatible_contexts": ["beach_island"],
     "hand_occupation": {"left_hand": "holding phone", "right_hand": "touching sunglasses", "both_busy": false},
     "prompt_skeleton": "white sports bra, open oversized white shirt, black swim shorts, silver chains, black sunglasses, cool poolside street-edgy look"
   },
@@ -1441,7 +1441,7 @@
     "fabric_difficulty": "safe",
     "wear_state": "barely_worn",
     "layering_count": 1,
-    "compatible_contexts": ["beach_island", "urban_street"],
+    "compatible_contexts": ["beach_island"],
     "hand_occupation": {"left_hand": "holding snack bag", "right_hand": "adjusting bucket hat", "both_busy": false},
     "prompt_skeleton": "oversized white tee knotted at waist, sporty stripe swim shorts, bucket hat, rubber flip flops, casual tomboy poolside look"
   },
@@ -1459,14 +1459,14 @@
       "bottom": "yellow floral matching swim shorts wrap style",
       "shoes": "tan flat leather sandals",
       "accessories": ["woven sun hat with bow", "thin gold anklet"],
-      "props": ["tropical fruit drink with straw"]
+      "props": ["iced fruit drink with a straw"]
     },
     "fabric_difficulty": "medium",
     "wear_state": "barely_worn",
     "layering_count": 1,
     "compatible_contexts": ["beach_island"],
-    "hand_occupation": {"left_hand": "holding tropical fruit drink", "right_hand": "touching sun hat", "both_busy": false},
-    "prompt_skeleton": "yellow floral swim top and matching wrap shorts, woven sun hat with bow, gold anklet, tropical fruit drink, sweet summery pool vibe"
+    "hand_occupation": {"left_hand": "holding an iced fruit drink", "right_hand": "touching sun hat", "both_busy": false},
+    "prompt_skeleton": "yellow floral swim top and matching wrap shorts, woven sun hat with bow, gold anklet, iced fruit drink, sweet summery pool vibe"
   },
   {
     "outfit_id": "F-TW-POOL-010",

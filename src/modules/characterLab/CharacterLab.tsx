@@ -566,11 +566,11 @@ const CharacterLab: React.FC<CharacterLabProps> = ({ onGoHome, initialImage }) =
             )}
 
             {editingCellIndex !== null && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[var(--color-bg-deep)]/80 backdrop-blur-md animate-fade-in">
-                    <Card className="w-full max-w-lg border-[var(--color-gold)]/30 shadow-2xl animate-scale-in">
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-bg-deep/80 backdrop-blur-md animate-fade-in">
+                    <Card className="w-full max-w-lg border-gold/30 shadow-2xl animate-scale-in">
                         <div className="flex items-center justify-between mb-6">
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-xl bg-[var(--color-gold)]/10 flex items-center justify-center">
+                                <div className="w-10 h-10 rounded-xl bg-gold/10 flex items-center justify-center">
                                     <TuneIcon className="w-6 h-6 text-[var(--color-gold)]" />
                                 </div>
                                 <div>
@@ -686,10 +686,10 @@ const CharacterLab: React.FC<CharacterLabProps> = ({ onGoHome, initialImage }) =
                             {baseImage ? (
                                 <div className="relative group w-full aspect-[3/4] rounded-xl overflow-hidden border border-[var(--color-border)] shadow-2xl">
                                     <img src={baseImage.url} alt="Base model" className="w-full h-full object-cover object-top" />
-                                    <div className="absolute inset-0 bg-[var(--color-bg-deep)]/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3 backdrop-blur-sm">
+                                    <div className="absolute inset-0 bg-bg-deep/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3 backdrop-blur-sm">
                                         <Button onClick={() => fileInputRef.current?.click()} variant="secondary" className="w-3/4">更換參考圖</Button>
                                     </div>
-                                    <div className="absolute top-3 right-3 w-24 h-24 bg-[var(--color-bg-deep)]/80 backdrop-blur-md border border-[var(--color-gold)]/30 rounded-xl overflow-hidden shadow-2xl group/face">
+                                    <div className="absolute top-3 right-3 w-24 h-24 bg-bg-deep/80 backdrop-blur-md border border-gold/30 rounded-xl overflow-hidden shadow-2xl group/face">
                                         {faceAnchors.length > 0 ? (
                                             <>
                                                 <img src={faceAnchors[0].url} alt="Face Anchor" className="w-full h-full object-cover" />
@@ -700,7 +700,7 @@ const CharacterLab: React.FC<CharacterLabProps> = ({ onGoHome, initialImage }) =
                                             </>
                                         ) : (
                                             <div 
-                                                className="w-full h-full flex flex-col items-center justify-center cursor-pointer hover:bg-[var(--color-gold)]/10 transition-colors" 
+                                                className="w-full h-full flex flex-col items-center justify-center cursor-pointer hover:bg-gold/10 transition-colors" 
                                                 onClick={(e) => { e.stopPropagation(); faceAnchorInputRef.current?.click(); }}
                                             >
                                                 <Face3DIcon className="w-8 h-8 text-[var(--color-gold)] mb-1 opacity-50" />
@@ -712,7 +712,7 @@ const CharacterLab: React.FC<CharacterLabProps> = ({ onGoHome, initialImage }) =
                             ) : (
                                 <div 
                                     onClick={() => fileInputRef.current?.click()}
-                                    className="w-full aspect-[3/4] border-2 border-dashed border-[var(--color-border)] rounded-xl flex flex-col items-center justify-center gap-4 hover:border-[var(--color-gold)] transition-all cursor-pointer bg-[var(--color-bg-surface)]/30"
+                                    className="w-full aspect-[3/4] border-2 border-dashed border-[var(--color-border)] rounded-xl flex flex-col items-center justify-center gap-4 hover:border-[var(--color-gold)] transition-all cursor-pointer bg-bg-surface/30"
                                 >
                                     <div className="w-16 h-16 rounded-full bg-[var(--color-bg-surface)] flex items-center justify-center shadow-inner">
                                         <PhotoIcon className="w-8 h-8 text-[var(--color-text-dim)]" />
@@ -752,7 +752,7 @@ const CharacterLab: React.FC<CharacterLabProps> = ({ onGoHome, initialImage }) =
                             )}
 
                             {characterDna && (
-                                <div className="mt-6 p-4 bg-[var(--color-bg-deep)]/50 rounded-xl border border-[var(--color-gold)]/20 animate-fade-in">
+                                <div className="mt-6 p-4 bg-bg-deep/50 rounded-xl border border-gold/20 animate-fade-in">
                                     <div className="flex items-center gap-2 mb-2">
                                         <SparklesIcon className="w-4 h-4 text-[var(--color-gold)]" />
                                         <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-gold)]">Character DNA Locked</span>
@@ -768,7 +768,7 @@ const CharacterLab: React.FC<CharacterLabProps> = ({ onGoHome, initialImage }) =
                                     </button>
                                 </div>
                             )}
-                            <div className="mt-6 p-4 bg-[var(--color-gold)]/5 rounded-xl border border-[var(--color-gold)]/10">
+                            <div className="mt-6 p-4 bg-gold/5 rounded-xl border border-gold/10">
                                 <p className="text-[10px] text-[var(--color-gold)] font-black uppercase tracking-widest mb-2">Pro Tip</p>
                                 <p className="text-xs text-[var(--color-text-dim)] leading-relaxed">
                                     上傳清晰的正面肖像可獲得最佳的一致性。使用「臉部鎖定」功能可強制 AI 在不同角度下維持五官特徵。
@@ -856,7 +856,7 @@ const CharacterLab: React.FC<CharacterLabProps> = ({ onGoHome, initialImage }) =
                                          </div>
                                          <div className="grid grid-cols-1 gap-3 max-h-72 overflow-y-auto custom-scrollbar pr-2">
                                              {MAGAZINE_SLOT_LABELS.map((slotLabel, index) => (
-                                                 <div key={index} className="p-3 bg-[var(--color-bg-deep)]/40 rounded-xl border border-[var(--color-border)] hover:border-[var(--color-gold)]/50 transition-all">
+                                                 <div key={index} className="p-3 bg-bg-deep/40 rounded-xl border border-[var(--color-border)] hover:border-gold/50 transition-all">
                                                      <div className="flex justify-between items-center mb-2">
                                                          <span className="text-[10px] font-black text-[var(--color-gold)] tracking-widest">{slotLabel.split(' ')[0]}</span>
                                                          <span className="text-[9px] text-[var(--color-text-dim)] font-bold uppercase">{slotLabel.split(' ').slice(1).join(' ')}</span>
@@ -904,7 +904,7 @@ const CharacterLab: React.FC<CharacterLabProps> = ({ onGoHome, initialImage }) =
                                     onClick={generateMatrix} 
                                     isLoading={isLoading} 
                                     disabled={!baseImage} 
-                                    className="w-full text-xl py-5 shadow-2xl shadow-[var(--color-gold)]/20"
+                                    className="w-full text-xl py-5 shadow-2xl shadow-gold/20"
                                  >
                                      <SparklesIcon className="w-6 h-6 mr-2" />
                                      {displayAsSingleImage ? '生成拼貼海報' : '生成矩陣圖譜'}
@@ -924,18 +924,18 @@ const CharacterLab: React.FC<CharacterLabProps> = ({ onGoHome, initialImage }) =
                                 {singleResultImage ? (
                                     <div className="relative aspect-[3/4] w-full group cursor-pointer overflow-hidden rounded-xl" onClick={() => setPreviewingSingle(true)}>
                                         <img src={singleResultImage} alt="Editorial Poster" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                                        <div className="absolute inset-0 bg-[var(--color-bg-deep)]/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
-                                            <div className="bg-[var(--color-bg-surface)]/90 p-4 rounded-full shadow-2xl scale-75 group-hover:scale-100 transition-transform duration-300">
+                                        <div className="absolute inset-0 bg-bg-deep/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                                            <div className="bg-bg-surface/90 p-4 rounded-full shadow-2xl scale-75 group-hover:scale-100 transition-transform duration-300">
                                                 <ExpandIcon className="w-8 h-8 text-[var(--color-text-main)]" />
                                             </div>
                                         </div>
                                         <div className="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                                            <Button onClick={(e) => { e.stopPropagation(); generateMatrix(); }} variant="secondary" className="!py-2 !px-4 text-[10px] font-black bg-[var(--color-bg-surface)]/90 backdrop-blur-md">RETRY</Button>
+                                            <Button onClick={(e) => { e.stopPropagation(); generateMatrix(); }} variant="secondary" className="!py-2 !px-4 text-[10px] font-black bg-bg-surface/90 backdrop-blur-md">RETRY</Button>
                                             <Button onClick={(e) => { e.stopPropagation(); handleDownloadSingle(singleResultImage, 'poster'); }} className="!py-2 !px-4 text-[10px] font-black">DOWNLOAD</Button>
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="aspect-[3/4] w-full border-2 border-dashed border-[var(--color-border)] rounded-xl flex flex-col items-center justify-center text-[var(--color-text-dim)] bg-[var(--color-bg-deep)]/20">
+                                    <div className="aspect-[3/4] w-full border-2 border-dashed border-[var(--color-border)] rounded-xl flex flex-col items-center justify-center text-[var(--color-text-dim)] bg-bg-deep/20">
                                         {isLoading ? (
                                             <>
                                                 <div className="relative mb-6">
@@ -957,7 +957,7 @@ const CharacterLab: React.FC<CharacterLabProps> = ({ onGoHome, initialImage }) =
                         ) : (
                             <div ref={gridRef} className="grid grid-cols-3 gap-3 p-6 bg-[var(--color-bg-surface)] rounded-2xl shadow-2xl w-full max-w-4xl border border-[var(--color-border)] animate-fade-in">
                                 {gridImages.map((imgUrl, index) => (
-                                    <div key={index} className="relative aspect-square bg-[var(--color-bg-deep)] rounded-xl overflow-hidden group border border-[var(--color-border)] hover:border-[var(--color-gold)]/50 transition-all shadow-lg">
+                                    <div key={index} className="relative aspect-square bg-[var(--color-bg-deep)] rounded-xl overflow-hidden group border border-[var(--color-border)] hover:border-gold/50 transition-all shadow-lg">
                                         {imgUrl ? (
                                             <>
                                                 <div 
@@ -968,19 +968,19 @@ const CharacterLab: React.FC<CharacterLabProps> = ({ onGoHome, initialImage }) =
                                                     }} 
                                                     onClick={() => setPreviewingIndex(index)} 
                                                 />
-                                                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-t from-[var(--color-bg-deep)]/60 via-transparent to-transparent pointer-events-none">
+                                                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-t from-bg-deep/60 via-transparent to-transparent pointer-events-none">
                                                     <div className="absolute top-3 left-3 pointer-events-auto">
                                                         <input 
                                                             type="checkbox" 
                                                             checked={selectedCells.has(index)} 
                                                             onChange={() => toggleCellSelection(index)} 
-                                                            className="w-5 h-5 rounded-md bg-[var(--color-bg-surface)]/80 border-[var(--color-border)] text-[var(--color-gold)] focus:ring-[var(--color-gold)] cursor-pointer" 
+                                                            className="w-5 h-5 rounded-md bg-bg-surface/80 border-[var(--color-border)] text-[var(--color-gold)] focus:ring-[var(--color-gold)] cursor-pointer" 
                                                         />
                                                     </div>
                                                     <div className="absolute top-3 right-3 flex gap-1.5 pointer-events-auto">
-                                                        <button onClick={(e) => { e.stopPropagation(); setEditingCellIndex(index); }} className="p-2 bg-[var(--color-bg-surface)]/90 hover:bg-[var(--color-gold)] hover:text-[var(--color-bg-deep)] text-[var(--color-text-main)] rounded-lg shadow-xl transition-all" title="編輯此格提示詞"><TuneIcon className="w-4 h-4" /></button>
-                                                        <button onClick={(e) => { e.stopPropagation(); regenerateCell(index); }} className="p-2 bg-[var(--color-bg-surface)]/90 hover:bg-[var(--color-gold)] hover:text-[var(--color-bg-deep)] text-[var(--color-text-main)] rounded-lg shadow-xl transition-all" title="重新生成此格"><ReplaceIcon className="w-4 h-4" /></button>
-                                                        <button onClick={(e) => { e.stopPropagation(); const label = MATRIX_MODES[matrixMode].prompts[index].label.replace(/\s|\/|\\/g, '_'); handleDownloadSingle(imgUrl, label); }} className="p-2 bg-[var(--color-bg-surface)]/90 hover:bg-[var(--color-gold)] hover:text-[var(--color-bg-deep)] text-[var(--color-text-main)] rounded-lg shadow-xl transition-all" title="下載此圖"><DownloadIcon className="w-4 h-4" /></button>
+                                                        <button onClick={(e) => { e.stopPropagation(); setEditingCellIndex(index); }} className="p-2 bg-bg-surface/90 hover:bg-[var(--color-gold)] hover:text-[var(--color-bg-deep)] text-[var(--color-text-main)] rounded-lg shadow-xl transition-all" title="編輯此格提示詞"><TuneIcon className="w-4 h-4" /></button>
+                                                        <button onClick={(e) => { e.stopPropagation(); regenerateCell(index); }} className="p-2 bg-bg-surface/90 hover:bg-[var(--color-gold)] hover:text-[var(--color-bg-deep)] text-[var(--color-text-main)] rounded-lg shadow-xl transition-all" title="重新生成此格"><ReplaceIcon className="w-4 h-4" /></button>
+                                                        <button onClick={(e) => { e.stopPropagation(); const label = MATRIX_MODES[matrixMode].prompts[index].label.replace(/\s|\/|\\/g, '_'); handleDownloadSingle(imgUrl, label); }} className="p-2 bg-bg-surface/90 hover:bg-[var(--color-gold)] hover:text-[var(--color-bg-deep)] text-[var(--color-text-main)] rounded-lg shadow-xl transition-all" title="下載此圖"><DownloadIcon className="w-4 h-4" /></button>
                                                     </div>
                                                     <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
                                                         <div className="text-[9px] font-black text-white uppercase tracking-widest truncate drop-shadow-lg">
@@ -990,7 +990,7 @@ const CharacterLab: React.FC<CharacterLabProps> = ({ onGoHome, initialImage }) =
                                                             <div className="w-2 h-2 rounded-full bg-[var(--color-gold)] shadow-[0_0_8px_var(--color-gold)]" title="已套用自定義指令" />
                                                         )}
                                                         {characterDna && (
-                                                            <div className="flex items-center gap-1 ml-2 px-1.5 py-0.5 rounded-full bg-[var(--color-gold)]/20 border border-[var(--color-gold)]/30" title="DNA 鎖定中">
+                                                            <div className="flex items-center gap-1 ml-2 px-1.5 py-0.5 rounded-full bg-gold/20 border border-gold/30" title="DNA 鎖定中">
                                                                 <SparklesIcon className="w-2 h-2 text-[var(--color-gold)]" />
                                                                 <span className="text-[7px] font-black text-[var(--color-gold)]">DNA</span>
                                                             </div>
@@ -998,7 +998,7 @@ const CharacterLab: React.FC<CharacterLabProps> = ({ onGoHome, initialImage }) =
                                                     </div>
                                                 </div>
                                                 {matrixMode === 'storyboard' && storyboardScript && (
-                                                    <div className="absolute bottom-0 left-0 right-0 bg-[var(--color-bg-deep)]/80 backdrop-blur-md p-2 text-[9px] text-[var(--color-text-title)] leading-tight border-t border-[var(--color-gold)]/20">
+                                                    <div className="absolute bottom-0 left-0 right-0 bg-bg-deep/80 backdrop-blur-md p-2 text-[9px] text-[var(--color-text-title)] leading-tight border-t border-gold/20">
                                                         {storyboardScript.frames.find(f => f.id === MATRIX_MODES.storyboard.prompts[index].id)?.translation}
                                                     </div>
                                                 )}

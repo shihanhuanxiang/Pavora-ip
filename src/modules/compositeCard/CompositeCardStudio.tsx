@@ -255,7 +255,7 @@ const CompositeCardStudio: React.FC<{ onGoHome: () => void; initialImage?: any }
                         <h2 className="text-2xl font-display font-bold uppercase tracking-[0.4em] text-white">模特兒合輯卡製作</h2>
                         <div className="flex items-center gap-2">
                             <span className="text-[9px] uppercase tracking-[0.5em] text-[var(--color-gold)] font-light">Comp Card Studio</span>
-                            <span className="px-1.5 py-0.5 bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/20 rounded text-[7px] text-[var(--color-gold)] font-bold uppercase tracking-widest">Pro Studio v4.0</span>
+                            <span className="px-1.5 py-0.5 bg-gold/10 border border-gold/20 rounded text-[7px] text-[var(--color-gold)] font-bold uppercase tracking-widest">Pro Studio v4.0</span>
                         </div>
                     </div>
                     <div className="flex items-center gap-4">

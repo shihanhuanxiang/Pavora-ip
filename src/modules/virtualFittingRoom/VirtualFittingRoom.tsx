@@ -969,7 +969,7 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
                                             </div>
                                         ))}
                                     </div>
-                                    <div className="p-4 bg-[var(--color-gold)]/5 border border-[var(--color-gold)]/20 rounded-lg space-y-3">
+                                    <div className="p-4 bg-gold/5 border border-gold/20 rounded-lg space-y-3">
                                         <p className="text-[10px] text-[var(--color-gold)] font-medium leading-relaxed">
                                             💡 提示：您可以上傳一張包含多角度的長圖至「正面」槽位，系統將自動嘗試裁切，或手動為每個角度上傳獨立圖檔。
                                         </p>
@@ -1016,7 +1016,7 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
                                                 >
                                                     <AsyncImage src={activeIp.imageUrl} className="w-full h-full object-cover" />
                                                     {(baseImage?.url === activeIp.imageUrl || faceAnchor?.url === activeIp.imageUrl) && (
-                                                        <div className="absolute inset-0 bg-[var(--color-gold)]/10 flex items-end justify-center pb-1">
+                                                        <div className="absolute inset-0 bg-gold/10 flex items-end justify-center pb-1">
                                                             <div className="bg-[var(--color-gold)] text-black text-[8px] font-bold px-1 rounded">已套用</div>
                                                         </div>
                                                     )}
@@ -1224,7 +1224,7 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
                                             重點在最後一句「服裝已在衣櫥」——舊做法塞圖失敗就沒了，
                                             使用者無從得知衣服去哪了。 */}
                                         {incomingApparelNote && (
-                                            <div className="mt-4 p-3 rounded-lg bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/30 flex items-start justify-between gap-3">
+                                            <div className="mt-4 p-3 rounded-lg bg-gold/10 border border-gold/30 flex items-start justify-between gap-3">
                                                 <p className="text-[11px] text-[var(--color-text-main)] leading-relaxed">{incomingApparelNote}</p>
                                                 <button
                                                     onClick={() => setIncomingApparelNote(null)}
@@ -1557,7 +1557,7 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
                                                 <Button 
                                                     onClick={handleFaceRestoreMatrix} 
                                                     variant="secondary" 
-                                                    className="w-full border-[var(--color-gold)]/30 text-[var(--color-gold)]"
+                                                    className="w-full border-gold/30 text-[var(--color-gold)]"
                                                     disabled={isLoading || !faceAnchor}
                                                 >
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-2"><path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" /></svg>
@@ -1631,7 +1631,7 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
                                                                 <button
                                                                     key={dest}
                                                                     onClick={() => { setContinueMenuOpen(false); onAdvancedEdit(generatedLook, dest); }}
-                                                                    className="w-full text-left px-4 py-2.5 text-[11px] font-bold text-gray-300 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] transition-colors border-b border-white/5 last:border-b-0"
+                                                                    className="w-full text-left px-4 py-2.5 text-[11px] font-bold text-gray-300 hover:bg-gold/10 hover:text-[var(--color-gold)] transition-colors border-b border-white/5 last:border-b-0"
                                                                 >
                                                                     {navName(dest)}
                                                                 </button>

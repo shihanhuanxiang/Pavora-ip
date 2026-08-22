@@ -91,7 +91,7 @@ const ModelActionMenu: React.FC<ModelActionMenuProps> = ({
                             {isGalleryItem && (
                                 <button
                                     onClick={handleSetCover}
-                                    className="w-full py-3.5 text-[10px] font-bold uppercase tracking-widest text-[var(--color-gold)] border border-[var(--color-gold)]/30 bg-[var(--color-gold)]/5 hover:bg-[var(--color-gold)]/10 transition-all rounded-xl mb-2"
+                                    className="w-full py-3.5 text-[10px] font-bold uppercase tracking-widest text-[var(--color-gold)] border border-gold/30 bg-gold/5 hover:bg-gold/10 transition-all rounded-xl mb-2"
                                 >
                                     🖼️ 設為模特兒封面 (Set as Cover)
                                 </button>
@@ -101,7 +101,7 @@ const ModelActionMenu: React.FC<ModelActionMenuProps> = ({
                                 <button
                                     key={dest.key}
                                     onClick={() => handleAction(dest.key)}
-                                    className="w-full py-3.5 text-[10px] font-bold uppercase tracking-widest text-white border border-white/5 hover:border-[var(--color-gold)] hover:text-[var(--color-gold)] hover:bg-[var(--color-gold)]/5 transition-all rounded-xl"
+                                    className="w-full py-3.5 text-[10px] font-bold uppercase tracking-widest text-white border border-white/5 hover:border-[var(--color-gold)] hover:text-[var(--color-gold)] hover:bg-gold/5 transition-all rounded-xl"
                                 >
                                     {isGalleryItem ? `以此圖啟動 ${dest.label}` : dest.label}
                                 </button>

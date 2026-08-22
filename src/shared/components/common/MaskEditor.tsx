@@ -250,26 +250,26 @@ const MaskEditor = forwardRef<MaskEditorRef, MaskEditorProps>(({ imageSrc, onCon
             {/* 操作引導浮窗 */}
             {showGuide && (
                 <div className="absolute inset-0 z-[110] bg-black/60 backdrop-blur-sm flex items-center justify-center p-6 animate-fade-in">
-                    <div className="max-w-md bg-gray-900 border border-[var(--color-gold)]/30 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+                    <div className="max-w-md bg-gray-900 border border-gold/30 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[var(--color-gold)] to-transparent"></div>
                         <h4 className="text-xl font-display font-bold text-[var(--color-gold)] mb-6 tracking-widest uppercase text-center">精密修復指南</h4>
                         <div className="space-y-6">
                             <div className="flex gap-4">
-                                <div className="w-8 h-8 rounded-full bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/30 flex items-center justify-center shrink-0 text-[var(--color-gold)] font-bold text-xs">1</div>
+                                <div className="w-8 h-8 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center shrink-0 text-[var(--color-gold)] font-bold text-xs">1</div>
                                 <div>
                                     <p className="text-sm font-bold text-white mb-1">塗抹區域</p>
                                     <p className="text-xs text-gray-400 leading-relaxed">使用畫筆在圖片上塗抹您想要修改的區域（例如：衣服、背景物件、配飾）。</p>
                                 </div>
                             </div>
                             <div className="flex gap-4">
-                                <div className="w-8 h-8 rounded-full bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/30 flex items-center justify-center shrink-0 text-[var(--color-gold)] font-bold text-xs">2</div>
+                                <div className="w-8 h-8 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center shrink-0 text-[var(--color-gold)] font-bold text-xs">2</div>
                                 <div>
                                     <p className="text-sm font-bold text-white mb-1">輸入指令</p>
                                     <p className="text-xs text-gray-400 leading-relaxed">在右側輸入具體的修改描述，AI 將根據您的文字進行精準重繪。</p>
                                 </div>
                             </div>
                             <div className="flex gap-4">
-                                <div className="w-8 h-8 rounded-full bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/30 flex items-center justify-center shrink-0 text-[var(--color-gold)] font-bold text-xs">3</div>
+                                <div className="w-8 h-8 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center shrink-0 text-[var(--color-gold)] font-bold text-xs">3</div>
                                 <div>
                                     <p className="text-sm font-bold text-white mb-1">參考圖 (選填)</p>
                                     <p className="text-xs text-gray-400 leading-relaxed">上傳參考圖可以幫助 AI 學習特定的材質、花紋或設計風格。</p>
@@ -304,7 +304,7 @@ const MaskEditor = forwardRef<MaskEditorRef, MaskEditorProps>(({ imageSrc, onCon
                         />
                     </div>
                 )}
-                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/40 backdrop-blur-md text-[var(--color-gold)] text-[10px] font-bold tracking-[0.2em] px-4 py-2 rounded-full border border-[var(--color-gold)]/20 uppercase pointer-events-none">
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/40 backdrop-blur-md text-[var(--color-gold)] text-[10px] font-bold tracking-[0.2em] px-4 py-2 rounded-full border border-gold/20 uppercase pointer-events-none">
                     請塗抹下方需要修正的區域
                 </div>
             </div>
@@ -336,7 +336,7 @@ const MaskEditor = forwardRef<MaskEditorRef, MaskEditorProps>(({ imageSrc, onCon
                     ) : (
                         <div 
                             onClick={() => refFileInputRef.current?.click()}
-                            className="w-full aspect-video border-2 border-dashed border-white/10 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-[var(--color-gold)]/50 bg-white/5 transition-all group"
+                            className="w-full aspect-video border-2 border-dashed border-white/10 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-gold/50 bg-white/5 transition-all group"
                         >
                             <PhotoIcon className="w-8 h-8 text-gray-600 group-hover:text-[var(--color-gold)] mb-2" />
                             <span className="text-[10px] text-gray-500 group-hover:text-gray-300 font-bold uppercase tracking-widest">上傳細節參考圖</span>
@@ -346,7 +346,7 @@ const MaskEditor = forwardRef<MaskEditorRef, MaskEditorProps>(({ imageSrc, onCon
                     <input type="file" ref={refFileInputRef} className="hidden" accept="image/*" onChange={handleRefImageChange} />
                 </div>
 
-                <div className="mt-auto p-4 bg-[var(--color-gold)]/5 border border-[var(--color-gold)]/20 rounded-lg">
+                <div className="mt-auto p-4 bg-gold/5 border border-gold/20 rounded-lg">
                     <p className="text-[10px] text-[var(--color-gold)] leading-relaxed italic">
                         * Pavora 局部細節修正功能使用高階視覺模型，能精準對齊織物、硬體、LOGO 紋理，實現專業級重繪。
                     </p>

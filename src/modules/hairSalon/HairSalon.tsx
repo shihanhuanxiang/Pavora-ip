@@ -637,7 +637,7 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                         <span className="text-[9px] uppercase tracking-[0.5em] text-[var(--color-gold)] font-light">Beauty & Hair Salon Studio</span>
                     </div>
                     <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-2 px-3 py-1.5 bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/30 rounded-full animate-pulse">
+                        <div className="flex items-center gap-2 px-3 py-1.5 bg-gold/10 border border-gold/30 rounded-full animate-pulse">
                             <span className="w-1.5 h-1.5 bg-[var(--color-gold)] rounded-full"></span>
                             <span className="text-[9px] font-bold text-[var(--color-gold)] uppercase tracking-tighter">Realism Engine v1.0 Active</span>
                         </div>
@@ -667,8 +667,8 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                                                 text-[9px] font-black uppercase tracking-widest cursor-pointer 
                                                 border transition-all w-full justify-center
                                                 ${isSalonDetecting 
-                                                    ? 'border-[var(--color-gold)]/40 bg-[var(--color-gold)]/10 text-[var(--color-gold)] animate-pulse cursor-not-allowed' 
-                                                    : 'border-white/10 bg-white/[0.02] text-gray-400 hover:border-[var(--color-gold)]/50 hover:text-[var(--color-gold)]'
+                                                    ? 'border-gold/40 bg-gold/10 text-[var(--color-gold)] animate-pulse cursor-not-allowed' 
+                                                    : 'border-white/10 bg-white/[0.02] text-gray-400 hover:border-gold/50 hover:text-[var(--color-gold)]'
                                                 }`}>
                                                 {isSalonDetecting ? '⚡ AI 偵測中...' : '📷 上傳合照並自動裁切到四個視角'}
                                                 <input
@@ -763,7 +763,7 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                                 ) : baseImage ? (
                                     <div className="relative group rounded-2xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg-surface)]">
                                         <img src={baseImage.url} alt="Base model" className="w-full h-96 object-cover object-top" />
-                                        <div className="absolute inset-0 bg-[var(--color-bg-deep)]/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3">
+                                        <div className="absolute inset-0 bg-bg-deep/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3">
                                             <Button onClick={() => fileInputRef.current?.click()} className="w-3/4">更換本地圖片</Button>
                                         </div>
                                         
@@ -778,7 +778,7 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                                                     >
                                                         &times;
                                                     </button>
-                                                    <div className="absolute bottom-0 left-0 right-0 bg-[var(--color-bg-deep)]/70 text-[8px] uppercase tracking-widest py-1 text-center text-[var(--color-text-title)]">臉部錨定</div>
+                                                    <div className="absolute bottom-0 left-0 right-0 bg-bg-deep/70 text-[8px] uppercase tracking-widest py-1 text-center text-[var(--color-text-title)]">臉部錨定</div>
                                                 </div>
                                             ) : (
                                                 <div 
@@ -815,7 +815,7 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                                         <p className="text-[10px] text-[var(--color-text-dim)] text-center py-4 italic">尚無儲存的方案</p>
                                     ) : (
                                         savedPresets.map(preset => (
-                                            <div key={preset.id} className="p-3 bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-xl flex justify-between items-center group/preset hover:border-[var(--color-gold)]/50 transition-all">
+                                            <div key={preset.id} className="p-3 bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-xl flex justify-between items-center group/preset hover:border-gold/50 transition-all">
                                                 <div className="flex flex-col cursor-pointer flex-1" onClick={() => handleLoadPreset(preset)}>
                                                     <span className="text-xs font-bold text-[var(--color-text-main)] group-hover/preset:text-[var(--color-gold)] transition-colors">{preset.name}</span>
                                                     <span className="text-[9px] text-[var(--color-text-dim)]">{new Date(preset.createdAt).toLocaleDateString()}</span>
@@ -894,7 +894,7 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                                     <motion.div 
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        className="p-4 bg-[var(--color-gold)]/5 border border-[var(--color-gold)]/20 rounded-xl space-y-2 relative overflow-hidden group"
+                                        className="p-4 bg-gold/5 border border-gold/20 rounded-xl space-y-2 relative overflow-hidden group"
                                     >
                                         <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
                                             <Sparkles className="w-12 h-12 text-[var(--color-gold)]" />
@@ -907,10 +907,10 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                                             "{aiAnalysis.summary}"
                                         </p>
                                         <div className="pt-2 flex gap-2">
-                                            <span className="px-2 py-0.5 bg-[var(--color-gold)]/10 text-[9px] font-bold text-[var(--color-gold)] rounded border border-[var(--color-gold)]/20 uppercase">
+                                            <span className="px-2 py-0.5 bg-gold/10 text-[9px] font-bold text-[var(--color-gold)] rounded border border-gold/20 uppercase">
                                                 適合您的臉型
                                             </span>
-                                            <span className="px-2 py-0.5 bg-[var(--color-gold)]/10 text-[9px] font-bold text-[var(--color-gold)] rounded border border-[var(--color-gold)]/20 uppercase">
+                                            <span className="px-2 py-0.5 bg-gold/10 text-[9px] font-bold text-[var(--color-gold)] rounded border border-gold/20 uppercase">
                                                 專業推薦
                                             </span>
                                         </div>
@@ -1391,7 +1391,7 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                             {stylistFeedback && (
                                 <div className="px-6 py-4 border-t border-white/5 bg-black/20 backdrop-blur-sm">
                                     <div className="flex items-center gap-3 mb-4">
-                                        <div className="w-10 h-10 rounded-full bg-[var(--color-gold)]/10 flex items-center justify-center border border-[var(--color-gold)]/20">
+                                        <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center border border-gold/20">
                                             <Sparkles className="w-5 h-5 text-[var(--color-gold)]" />
                                         </div>
                                         <div>
@@ -1470,7 +1470,7 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                                             <Button 
                                                 onClick={() => setIsPrecisionMode(true)} 
                                                 variant="secondary" 
-                                                className="h-12 px-10 text-[var(--color-gold)] border-[var(--color-gold)]/30 font-bold flex items-center gap-3 bg-[var(--color-gold)]/5 hover:bg-[var(--color-gold)]/10 shadow-[0_0_30px_rgba(212,175,55,0.15)] rounded-full transition-all duration-500 group whitespace-nowrap"
+                                                className="h-12 px-10 text-[var(--color-gold)] border-gold/30 font-bold flex items-center gap-3 bg-gold/5 hover:bg-gold/10 shadow-[0_0_30px_rgba(212,175,55,0.15)] rounded-full transition-all duration-500 group whitespace-nowrap"
                                             >
                                                 <TuneIcon className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" /> 
                                                 <span className="tracking-[0.25em] uppercase text-xs">局部細節修正</span>
@@ -1517,7 +1517,7 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                                         <Button 
                                             onClick={() => setIsPrecisionMode(true)} 
                                             variant="secondary" 
-                                            className="w-full h-11 text-[var(--color-gold)] border-[var(--color-gold)]/30 font-bold flex items-center justify-center gap-3 bg-[var(--color-gold)]/5"
+                                            className="w-full h-11 text-[var(--color-gold)] border-gold/30 font-bold flex items-center justify-center gap-3 bg-gold/5"
                                         >
                                             <TuneIcon className="w-4 h-4" /> 局部細節修正
                                         </Button>
@@ -1570,9 +1570,9 @@ const HairAndMakeupStudio: React.FC<HairAndMakeupStudioProps> = ({ onGoHome, ini
                                         <Button 
                                             onClick={() => onContinueEditing(generatedImage, 'scene')} 
                                             variant="secondary" 
-                                            className="h-12 px-12 border-[var(--color-gold)]/20 hover:border-[var(--color-gold)]/50 text-[var(--color-gold)]/80 hover:text-[var(--color-gold)] transition-all group relative overflow-hidden rounded-full"
+                                            className="h-12 px-12 border-gold/20 hover:border-gold/50 text-gold/80 hover:text-[var(--color-gold)] transition-all group relative overflow-hidden rounded-full"
                                         >
-                                            <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-gold)]/0 via-[var(--color-gold)]/10 to-[var(--color-gold)]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                                            <div className="absolute inset-0 bg-gradient-to-r from-gold/0 via-gold/10 to-gold/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                                             <ReplaceIcon className="w-4 h-4 mr-3 group-hover:rotate-12 transition-transform relative z-10" /> 
                                             <span className="text-xs font-bold tracking-[0.25em] uppercase relative z-10">繼續編輯場景 (Continue to Scene)</span>
                                         </Button>

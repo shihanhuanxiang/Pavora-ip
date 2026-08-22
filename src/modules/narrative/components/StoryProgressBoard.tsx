@@ -92,7 +92,7 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                     className="relative bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-4 space-y-3 overflow-hidden"
                 >
                     {/* Background glow accent */}
-                    <div className="absolute -top-10 -right-10 w-32 h-32 bg-[var(--color-brass)]/5 rounded-full blur-[60px] group-hover:bg-[var(--color-brass)]/10 transition-all duration-700"></div>
+                    <div className="absolute -top-10 -right-10 w-32 h-32 bg-brass/5 rounded-full blur-[60px] group-hover:bg-brass/10 transition-all duration-700"></div>
 
                     <div className="flex justify-between items-center relative z-10">
                         <div className="flex items-center gap-3">
@@ -136,7 +136,7 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                     </div>
                     
                     <div className="relative pt-2">
-                        <div className="absolute left-0 top-2 bottom-0 w-1 bg-gradient-to-b from-[var(--color-brass)]/40 to-transparent rounded-full"></div>
+                        <div className="absolute left-0 top-2 bottom-0 w-1 bg-gradient-to-b from-brass/40 to-transparent rounded-full"></div>
                         <p className="text-[11px] text-gray-400 leading-relaxed italic ml-5 font-medium tracking-wide">
                             「{activeArc.rationale}」
                         </p>
@@ -175,13 +175,13 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                                         </div>
                                         <h6 className="text-lg font-black text-[var(--color-text-title)] tracking-tight uppercase leading-none">{thread.name_zh}</h6>
                                     </div>
-                                    <div className="px-3 py-1 bg-[var(--color-sage)]/10 border border-[var(--color-sage)]/20 rounded-full">
+                                    <div className="px-3 py-1 bg-sage/10 border border-sage/20 rounded-full">
                                         <span className="text-[9px] text-[var(--color-sage)] font-black tracking-widest">LV.{threadState.current_milestone_index + 1}</span>
                                     </div>
                                 </div>
 
                                 <div className="space-y-3 relative z-10">
-                                    <p className="text-[10px] text-gray-400 font-medium tracking-wide line-clamp-1 border-l-2 border-[var(--color-sage)]/20 pl-3 italic">
+                                    <p className="text-[10px] text-gray-400 font-medium tracking-wide line-clamp-1 border-l-2 border-sage/20 pl-3 italic">
                                         {thread.milestones[threadState.current_milestone_index]}
                                     </p>
                                     
@@ -190,7 +190,7 @@ export const StoryProgressBoard: React.FC<StoryProgressBoardProps> = ({ model, o
                                             initial={{ width: 0 }}
                                             animate={{ width: `${progress}%` }}
                                             transition={{ duration: 1, ease: "easeOut" }}
-                                            className="absolute inset-y-0 left-0 bg-gradient-to-r from-[var(--color-sage)] to-[var(--color-sage)]/60 rounded-full"
+                                            className="absolute inset-y-0 left-0 bg-gradient-to-r from-[var(--color-sage)] to-sage/60 rounded-full"
                                         />
                                     </div>
                                 </div>

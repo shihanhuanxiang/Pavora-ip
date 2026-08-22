@@ -76,7 +76,7 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
 
   return (
     <>
-      <header className="sticky top-0 z-50 py-3 px-6 lg:px-12 border-b border-[var(--color-border)] bg-[var(--color-bg-deep)]/80 backdrop-blur-md transition-all duration-500">
+      <header className="sticky top-0 z-50 py-3 px-6 lg:px-12 border-b border-[var(--color-border)] bg-bg-deep/80 backdrop-blur-md transition-all duration-500">
         <div className="container mx-auto flex items-center justify-between">
           {/* Left: Branding spacer */}
           <div className="w-1/4 flex items-center gap-4">
@@ -94,7 +94,7 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
               
               <button 
                   onClick={onToggleTheme}
-                  className="p-2 rounded-full hover:bg-[var(--color-gold)]/10 transition-all duration-300 group ml-2"
+                  className="p-2 rounded-full hover:bg-gold/10 transition-all duration-300 group ml-2"
                   title={isDarkMode ? "切換至白天模式" : "切換至夜晚模式"}
               >
                   {isDarkMode ? (
@@ -131,10 +131,10 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
                 <button
                   onClick={() => setIpSwitcherOpen(true)}
                   disabled={!!ipSwitchLockReason}
-                  className={`hidden lg:flex items-center gap-2.5 bg-[var(--color-bg-deep)]/60 rounded-full border border-[var(--color-border)] pl-1 pr-4 py-1 backdrop-blur-md shadow-2xl transition-colors group/ip ${
+                  className={`hidden lg:flex items-center gap-2.5 bg-bg-deep/60 rounded-full border border-[var(--color-border)] pl-1 pr-4 py-1 backdrop-blur-md shadow-2xl transition-colors group/ip ${
                     ipSwitchLockReason
                       ? 'opacity-50 cursor-not-allowed'
-                      : 'hover:border-[var(--color-gold)]/50'
+                      : 'hover:border-gold/50'
                   }`}
                   title={ipSwitchLockReason || '切換目前操作的 IP'}
                 >
@@ -155,7 +155,7 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
               ) : (
                 <button
                   onClick={() => handleNavigate('model_setup')}
-                  className="hidden lg:flex items-center gap-2 bg-[var(--color-bg-deep)]/60 rounded-full border border-[var(--color-border)] px-4 py-1.5 backdrop-blur-md shadow-2xl hover:border-[var(--color-gold)]/50 transition-colors group/ip"
+                  className="hidden lg:flex items-center gap-2 bg-bg-deep/60 rounded-full border border-[var(--color-border)] px-4 py-1.5 backdrop-blur-md shadow-2xl hover:border-gold/50 transition-colors group/ip"
                   title="還沒有 IP，先建立一個"
                 >
                   <span className="text-[9px] font-bold uppercase tracking-widest text-[var(--color-text-dim)] group-hover/ip:text-[var(--color-gold)] transition-colors">
@@ -207,7 +207,7 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
               {/* Notification Bell */}
               <button
                 onClick={() => setIsActivityLogOpen(true)}
-                className="relative p-2 rounded-full hover:bg-[var(--color-gold)]/10 transition-all duration-300 group"
+                className="relative p-2 rounded-full hover:bg-gold/10 transition-all duration-300 group"
               >
                 <BellIcon className={`w-5 h-5 text-[var(--color-text-dim)] group-hover:text-[var(--color-gold)] transition-colors ${activeCount > 0 ? 'animate-bounce' : ''}`} />
                 {activeCount > 0 && (
@@ -229,7 +229,7 @@ const Header: React.FC<HeaderProps> = ({ onTitleClick, onNavigate, imagenUsage, 
 
       {/* Full Screen Mega Menu */}
       <div 
-        className={`fixed inset-0 z-[40] bg-[var(--color-bg-deep)]/95 backdrop-blur-3xl transition-all duration-700 ease-out ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+        className={`fixed inset-0 z-[40] bg-bg-deep/95 backdrop-blur-3xl transition-all duration-700 ease-out ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
       >
         {/* 增加 pt-32 (約 128px) 確保避開 Header */}
         <div className="container mx-auto h-full flex flex-col justify-start pt-32 lg:pt-40 px-12 lg:px-24 overflow-y-auto">

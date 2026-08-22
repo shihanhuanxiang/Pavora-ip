@@ -411,12 +411,78 @@ const getFabricSafeguard = (outfit: OutfitV2): string => {
 /**
  * Builds a robust subject token for visual prompts.
  */
+/**
+ * 東亞（台灣）顱面骨架錨定 ＋ 排除清單（2026-08-14，Hank 裁決「補」）。
+ *
+ * ⛳ 為什麼要有這一段：`locked_descriptor` 的產生規格
+ * （`personaService.generateFacialDescriptor`）是髮／眼／臉型／鼻／唇／膚／確認特徵
+ * **七項，沒有人種**。而 `buildSubjectToken` 只要有 locked 就直接 return，
+ * 底下帶 `facialLineageHint`（值是 "East Asian facial features"）的分支永遠走不到。
+ * 結果：**東亞錨定只存在於「建立定妝照」那一次，之後每一張圖都沒有。**
+ * 2026-08-14 的 G05 出圖就是這樣變成歐美白人臉的。
+ *
+ * ⚠️ 與 B1 的關係：B1 清掉 Remi 的 `Asian woman` 是對的（違反鐵則二），
+ * 但那三個字同時扛著她唯一的人種錨定 —— B1 只做了「移除錯的」，沒做「補回對的」。
+ * 這一段就是補回來的部分，而且**不綁性別**（性別由 descriptor 自己的
+ * "male/female virtual IP model" 負責），所以不會重蹈 `Asian woman` 的錯。
+ *
+ * 📌 措辭原則（規格書 `規格書_台灣臉部外觀_v2_2026-08-14.md`，數字來自 Hank 提供的樣本反推）：
+ * 1. **只寫模型畫得出來的幾何**——比例關係、止點、角度。不寫「精緻」「和諧」這類評價詞，
+ *    那些模型解不開，只會回退到訓練分布重心（西方修圖審美）。
+ * 2. ⛔ **一個字都不准出現「平均／典型／一般」**（average / typical / ordinary）。
+ *    那是 2026-07-20「average Asian face」踩過的坑，會把生成往統計重心拉。
+ * 3. 排除項用**特徵描述**，不用族群名稱——模型對幾何的解析度遠高於族群標籤，
+ *    而且族群評價措辭不該進 production。
+ */
+const TW_CRANIOFACIAL_ANCHOR =
+    'East Asian (Taiwanese) craniofacial structure: face height-to-width ratio in the 1.35 to 1.45 range, mid-face length moderate with the brow-to-nose-base segment occupying slightly under one-third of face height, cheekbones present but low-profile with minimal forward projection and a soft rounded upper-cheek fat pad, jawline smooth and continuous with a soft gonial angle, nasal root starting at eye level with low-to-moderate height, dorsum straight and narrow, alar base narrow, nasal tip small and slightly rounded, orbital rims shallow with the eye close to the surface plane and no upper-socket shadow';
+
+/**
+ * 排除清單改成**逐條獨立**的陣列（2026-08-14 實機驗證後修正）。
+ *
+ * 為什麼不能是一整條字串：`enforceSubjectSection` 的 guards 判定是
+ * `!promptText.includes(guard.slice(0, 18))` —— 只比對前 18 個字元。
+ * 當它是一整條時，LLM 只要抄了開頭那句 "NOT a deep-set orbital..."，
+ * 判定就認為「整條已存在」而跳過注入，**後面八條全部不補**。
+ * 2026-08-14 實測就是這樣：`NOT a deep-set orbital` 有，
+ * 而防東南亞臉最關鍵的 `NOT a low flat nasal root with a wide alar base` 沒有。
+ *
+ * 📌 這是 guards 機制的通用弱點：**部分存在會被當成完全存在。**
+ *    任何要靠它保證的規則，都必須拆成「每條都能獨立判定」的粒度。
+ */
+const TW_FACE_EXCLUSION_LIST: string[] = [
+    'NOT a deep-set orbital structure with upper-socket shadow',
+    'NOT a high or wide nasal bridge',
+    'NOT a low flat nasal root with a wide alar base',
+    'NOT a broad forward-projecting zygomatic shelf',
+    'NOT a square gonial angle',
+    'NOT everted lips',
+    'NOT an olive or dusky complexion',
+    'NOT a statistically averaged AI face',
+    'NOT filter-smoothed skin',
+];
+
+const TW_FACE_EXCLUSIONS = TW_FACE_EXCLUSION_LIST.join(', ');
+
 const buildSubjectToken = (model: Model): string => {
     const locked = model.persona?.locked_descriptor?.trim();
     if (locked) {
         // 清洗既有已污染的舊 model 資料:locked_descriptor 可能存有 LLM 早期寫入的
         // 硬編碼主體詞(如 "Asian woman"),讀出後一律中性化再組進 final prompt。
-        return sanitizeHardcodedSubjectTerms(locked, model.gender);
+        const clean = sanitizeHardcodedSubjectTerms(locked, model.gender);
+        /**
+         * 錨定插在**名字之後、五官描述之前**——位置就是權重（2026-07-20 的教訓：
+         * 第一輪只在 prompt 深處錨定，實測仍漂歐美臉，第二輪搬到開頭才成立）。
+         * descriptor 的格式固定是 `"<name>, <gender label>, <age> years old, <五官...>"`，
+         * 所以切在第三個逗號後面；格式不符時退化成前置，不會壞掉。
+         */
+        const parts = clean.split(', ');
+        if (parts.length > 3) {
+            const head = parts.slice(0, 3).join(', ');
+            const rest = parts.slice(3).join(', ');
+            return `${head}, ${TW_CRANIOFACIAL_ANCHOR}, ${rest}, ${TW_FACE_EXCLUSIONS}`;
+        }
+        return `${clean}, ${TW_CRANIOFACIAL_ANCHOR}, ${TW_FACE_EXCLUSIONS}`;
     }
 
     const hint = model.visualIdentityHint;
@@ -1865,6 +1931,16 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
             const guards: string[] = [
                 'face fully visible and unobstructed',
                 'hands away from the face',
+                /**
+                 * 2026-08-14：**人種排除清單改成確定性注入。**
+                 *
+                 * 它原本只放在 `buildSubjectToken` 的 descriptor 尾端 —— 而那份 descriptor
+                 * 只是給 LLM 的建議值。2026-08-14 實機驗證（Remi）：正向的骨架錨定 LLM 留下了，
+                 * **尾端的排除清單整段被丟掉**（`hasExclusions: false`）。
+                 * 這與 W-7 的無痣規則是同一個結構問題：靠 LLM 自覺保留的規則等於沒有規則。
+                 * 所以搬到這道回檢，跟臉部守衛一起確定性補上。
+                 */
+                ...TW_FACE_EXCLUSION_LIST,
                 'no added facial marks of any kind: no small pigmented dots, no scattered pigment specks across the cheeks or nose, no isolated dark points near the eyes or mouth, no congenital pigmentation patches, nothing on the face beyond what the reference image already shows',
             ];
             if (expressionStyleEn) guards.push(`expression must be ${expressionStyleEn}`);

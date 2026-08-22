@@ -61,7 +61,7 @@ const TaskMonitor: React.FC = () => {
         fixed right-6 top-24 z-[60] 
         ${isExpanded ? 'w-72 rounded-2xl h-auto max-h-[400px]' : 'w-12 h-12 rounded-full'}
         border border-[var(--color-border)]
-        bg-[var(--color-bg-deep)]/90 backdrop-blur-2xl shadow-2xl overflow-hidden
+        bg-bg-deep/90 backdrop-blur-2xl shadow-2xl overflow-hidden
         transition-all duration-500 flex flex-col
       `}
     >

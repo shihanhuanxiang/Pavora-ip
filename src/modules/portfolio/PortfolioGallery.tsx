@@ -296,7 +296,7 @@ const PortfolioGallery: React.FC<PortfolioGalleryProps> = ({ onGoHome, onAdvance
                             onClick={handleSyncAll} 
                             disabled={isSyncing || (isDriveConnected && items.length === 0)}
                             variant="secondary" 
-                            className="text-[10px] font-bold tracking-widest border-[var(--color-gold)]/30 text-[var(--color-gold)]"
+                            className="text-[10px] font-bold tracking-widest border-gold/30 text-[var(--color-gold)]"
                         >
                             {isSyncing ? '同步中...' : (isDriveConnected ? '立即同步雲端' : '連接 Google Drive')}
                         </Button>

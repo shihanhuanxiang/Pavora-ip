@@ -282,7 +282,7 @@ const EGenStudio: React.FC<EGenStudioProps> = ({ onGoHome }) => {
                                                 <button
                                                     type="button"
                                                     onClick={(e) => { e.stopPropagation(); removeImage(index); }}
-                                                    className="absolute top-1 right-1 bg-[var(--color-bg-deep)]/60 text-[var(--color-text-title)] p-1 rounded-full hover:text-danger transition-colors"
+                                                    className="absolute top-1 right-1 bg-bg-deep/60 text-[var(--color-text-title)] p-1 rounded-full hover:text-danger transition-colors"
                                                 >
                                                     <CloseIcon className="w-3 h-3" />
                                                 </button>
@@ -416,7 +416,7 @@ const EGenStudio: React.FC<EGenStudioProps> = ({ onGoHome }) => {
                             {singleGridResult ? (
                                 <div className="w-full max-w-2xl group relative home-card p-4 animate-fade-in">
                                     <img src={singleGridResult} alt="E-Gen Lookbook Grid" className="w-full h-auto object-contain rounded" />
-                                    <div className="absolute inset-0 bg-[var(--color-bg-deep)]/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+                                    <div className="absolute inset-0 bg-bg-deep/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
                                         <button type="button" onClick={() => setPreviewImage(singleGridResult)} className="bg-[var(--color-bg-surface)] p-3 rounded-full text-[var(--color-text-main)] hover:scale-110 transition-all"><ExpandIcon className="w-6 h-6"/></button>
                                         <button type="button" onClick={() => downloadImage(singleGridResult, 'lookbook.jpg', 'EGen')} className="bg-[var(--color-bg-surface)] p-3 rounded-full text-[var(--color-text-main)] hover:scale-110 transition-all"><DownloadIcon className="w-6 h-6"/></button>
                                     </div>
@@ -440,7 +440,7 @@ const EGenStudio: React.FC<EGenStudioProps> = ({ onGoHome }) => {
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                             {batchPosters.length > 0 ? batchPosters.map(poster => (
                                 <Card key={poster.id} className="p-0 flex flex-col home-card overflow-hidden hover:border-brass/50 transition-all group">
-                                    <div className="aspect-[9/16] bg-[var(--color-bg-deep)]/40 relative flex items-center justify-center">
+                                    <div className="aspect-[9/16] bg-bg-deep/40 relative flex items-center justify-center">
                                         {poster.status === 'loading' && (
                                             <div className="flex flex-col items-center gap-4">
                                                 <div className="w-12 h-12 border-4 border-brass border-t-transparent rounded-full animate-spin"/>
@@ -450,11 +450,11 @@ const EGenStudio: React.FC<EGenStudioProps> = ({ onGoHome }) => {
                                         {poster.status === 'success' && poster.imageUrl && (
                                             <>
                                                 <img src={poster.imageUrl} alt={poster.title_zh} className="w-full h-full object-cover" />
-                                                <div className="absolute inset-0 bg-[var(--color-bg-deep)]/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+                                                <div className="absolute inset-0 bg-bg-deep/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
                                                     <button type="button" onClick={() => setPreviewImage(poster.imageUrl!)} className="bg-[var(--color-bg-surface)] p-3 rounded-full text-[var(--color-text-main)] hover:scale-110 transition-all shadow-2xl"><ExpandIcon className="w-6 h-6"/></button>
                                                     <button type="button" onClick={() => downloadImage(poster.imageUrl!, `${poster.title_zh}.jpg`, 'EGen')} className="bg-[var(--color-bg-surface)] p-3 rounded-full text-[var(--color-text-main)] hover:scale-110 transition-all shadow-2xl"><DownloadIcon className="w-6 h-6"/></button>
                                                 </div>
-                                                <div className="absolute top-4 left-4 bg-[var(--color-bg-deep)]/70 text-brass text-[10px] px-3 py-1.5 rounded-lg border border-brass/30 backdrop-blur-md font-black shadow-lg">
+                                                <div className="absolute top-4 left-4 bg-bg-deep/70 text-brass text-[10px] px-3 py-1.5 rounded-lg border border-brass/30 backdrop-blur-md font-black shadow-lg">
                                                     {poster.title_zh}
                                                 </div>
                                             </>
@@ -465,7 +465,7 @@ const EGenStudio: React.FC<EGenStudioProps> = ({ onGoHome }) => {
                                                 <button
                                                     type="button"
                                                     onClick={() => handleRetryPoster(poster.id)}
-                                                    className="flex items-center gap-2 px-4 py-2 bg-[var(--color-bg-surface)] hover:bg-[var(--color-bg-surface)]/80 text-[var(--color-text-title)] rounded-full border border-[var(--color-border)] transition-all"
+                                                    className="flex items-center gap-2 px-4 py-2 bg-[var(--color-bg-surface)] hover:bg-bg-surface/80 text-[var(--color-text-title)] rounded-full border border-[var(--color-border)] transition-all"
                                                 >
                                                     <ReplaceIcon className="w-4 h-4" /> 重新生成
                                                 </button>

@@ -206,7 +206,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                         })}
                         className={`p-4 rounded-2xl border text-left transition-all ${
                             !model.preferences?.visual_preset_id
-                                ? 'border-[var(--color-wine)] bg-[var(--color-wine)]/10'
+                                ? 'border-[var(--color-wine)] bg-wine/10'
                                 : 'border-white/10 bg-white/[0.02] hover:border-white/20'
                         }`}
                     >
@@ -223,7 +223,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                 onClick={() => applyVisualPreset(model, preset.preset_id, onUpdate)}
                                 className={`p-4 rounded-2xl border text-left transition-all ${
                                     isActive
-                                        ? 'border-[var(--color-wine)] bg-[var(--color-wine)]/10'
+                                        ? 'border-[var(--color-wine)] bg-wine/10'
                                         : 'border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/5'
                                 }`}
                             >
@@ -244,7 +244,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                 {/* Preset Summary */}
                 {currentPreset && (
                     <div
-                        className="p-4 rounded-2xl bg-[var(--color-brass)]/5 border border-[var(--color-brass)]/20 text-[12px] text-narrative-ink space-y-1 overflow-hidden"
+                        className="p-4 rounded-2xl bg-brass/5 border border-brass/20 text-[12px] text-narrative-ink space-y-1 overflow-hidden"
                     >
                         <div><span className="text-[var(--color-brass)] font-black">色調</span>：{currentPreset.visualConstants.colorTone}</div>
                         <div><span className="text-[var(--color-brass)] font-black">表情</span>：{currentPreset.visualConstants.expressionStyle}</div>
@@ -280,7 +280,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                     ))}
                 </div>
 
-                <div className="p-4 rounded-2xl bg-[var(--color-brass)]/5 border border-[var(--color-brass)]/20 text-[12px] text-narrative-ink leading-relaxed">
+                <div className="p-4 rounded-2xl bg-brass/5 border border-brass/20 text-[12px] text-narrative-ink leading-relaxed">
                     目前目標比例：生活感 {styleTargets.lifestyle ?? 50}% / 曲線感 {styleTargets.curve ?? 30}% / 戲劇張力 {styleTargets.drama ?? 20}%
                 </div>
             </motion.div>
@@ -308,7 +308,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                 value={(extensions as any)[item.key] || ''}
                                 onChange={e => setExtensions({...extensions, [item.key]: e.target.value})}
                                 placeholder={item.placeholder}
-                                className="w-full bg-black/5 dark:bg-white/[0.03] border border-black/5 dark:border-white/5 rounded-2xl px-5 py-3 text-xs text-gray-800 dark:text-white focus:border-[var(--color-brass)]/50 focus:bg-black/10 dark:focus:bg-white/[0.05] transition-all outline-none shadow-inner"
+                                className="w-full bg-black/5 dark:bg-white/[0.03] border border-black/5 dark:border-white/5 rounded-2xl px-5 py-3 text-xs text-gray-800 dark:text-white focus:border-brass/50 focus:bg-black/10 dark:focus:bg-white/[0.05] transition-all outline-none shadow-inner"
                             />
                         </div>
                     ))}
@@ -401,7 +401,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
             {/* Story Arcs */}
             <div className="space-y-6 text-left">
                 <div className="flex justify-between items-center bg-white/[0.02] p-6 rounded-[2rem] border border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.3)] backdrop-blur-xl relative overflow-hidden group">
-                    <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-steel)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-steel/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <div className="flex items-center gap-8 relative z-10">
                         <div className="space-y-1.5">
                             <div className="flex items-center gap-3">
@@ -433,14 +433,14 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                             whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(70,90,112,0.3)' }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => setIsAddingArc(!isAddingArc)}
-                            className="group relative px-6 py-2.5 overflow-hidden rounded-sm bg-white/5 border border-white/10 transition-all hover:border-[var(--color-steel)]/50"
+                            className="group relative px-6 py-2.5 overflow-hidden rounded-sm bg-white/5 border border-white/10 transition-all hover:border-steel/50"
                         >
                             <span className="relative z-10 text-[12px] font-black text-[var(--color-steel)] uppercase tracking-widest">
                                 {isAddingArc ? '關閉' : '+ 新增弧線'}
                             </span>
                             {/* Matrix logic decoration */}
-                            <div className="absolute top-0 left-0 w-1 h-1 border-t border-l border-[var(--color-steel)]/50 group-hover:border-[var(--color-steel)]"></div>
-                            <div className="absolute bottom-0 right-0 w-1 h-1 border-b border-r border-[var(--color-steel)]/50 group-hover:border-[var(--color-steel)]"></div>
+                            <div className="absolute top-0 left-0 w-1 h-1 border-t border-l border-steel/50 group-hover:border-[var(--color-steel)]"></div>
+                            <div className="absolute bottom-0 right-0 w-1 h-1 border-b border-r border-steel/50 group-hover:border-[var(--color-steel)]"></div>
                         </motion.button>
                     )}
                 </div>
@@ -458,7 +458,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                             placeholder="例如：銀河邊際的誓言" 
                                             value={newArc.name_zh}
                                             onChange={e => setNewArc({...newArc, name_zh: e.target.value})}
-                                            className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white focus:border-[var(--color-steel)]/50 outline-none"
+                                            className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white focus:border-steel/50 outline-none"
                                         />
                                     </div>
                                     <div className="space-y-2">
@@ -467,7 +467,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                             placeholder="Galaxy Edge Oath" 
                                             value={newArc.name_en}
                                             onChange={e => setNewArc({...newArc, name_en: e.target.value})}
-                                            className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white focus:border-[var(--color-steel)]/50 outline-none"
+                                            className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white focus:border-steel/50 outline-none"
                                         />
                                     </div>
                                 </div>
@@ -477,7 +477,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                         placeholder="描述此故事弧的發展計畫與角色動機..."
                                         value={newArc.rationale}
                                         onChange={e => setNewArc({...newArc, rationale: e.target.value})}
-                                        className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white h-24 outline-none focus:border-[var(--color-steel)]/50 resize-none"
+                                        className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white h-24 outline-none focus:border-steel/50 resize-none"
                                     />
                                 </div>
                                 <button
@@ -502,7 +502,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                         whileHover={{ y: -5, borderColor: 'rgba(70, 90, 112, 0.4)' }}
                                         className={`group cursor-pointer p-8 rounded-[2.5rem] border transition-all relative overflow-hidden flex flex-col h-full ${
                                             isActive
-                                            ? 'bg-[var(--color-steel)]/[0.08] border-[var(--color-steel)]/40 shadow-[0_25px_60px_rgba(0,0,0,0.4)] ring-1 ring-[var(--color-steel)]/20'
+                                            ? 'bg-[var(--color-steel)]/[0.08] border-steel/40 shadow-[0_25px_60px_rgba(0,0,0,0.4)] ring-1 ring-steel/20'
                                             : 'bg-white/40 border-white/5 opacity-60 hover:opacity-100'
                                         }`}
                                         onClick={() => handleToggleArc(arc.arc_id)}
@@ -582,14 +582,14 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                             whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(85,106,91,0.3)' }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => setIsAddingThread(!isAddingThread)}
-                            className="group relative px-6 py-2.5 overflow-hidden rounded-sm bg-white/5 border border-white/10 transition-all hover:border-[var(--color-sage)]/50"
+                            className="group relative px-6 py-2.5 overflow-hidden rounded-sm bg-white/5 border border-white/10 transition-all hover:border-sage/50"
                         >
                             <span className="relative z-10 text-[12px] font-black text-[var(--color-sage)] uppercase tracking-widest">
                                 {isAddingThread ? '關閉' : '+ 開發線'}
                             </span>
                             {/* Matrix logic decoration */}
-                            <div className="absolute top-0 left-0 w-1 h-1 border-t border-l border-[var(--color-sage)]/50 group-hover:border-[var(--color-sage)]"></div>
-                            <div className="absolute bottom-0 right-0 w-1 h-1 border-b border-r border-[var(--color-sage)]/50 group-hover:border-[var(--color-sage)]"></div>
+                            <div className="absolute top-0 left-0 w-1 h-1 border-t border-l border-sage/50 group-hover:border-[var(--color-sage)]"></div>
+                            <div className="absolute bottom-0 right-0 w-1 h-1 border-b border-r border-sage/50 group-hover:border-[var(--color-sage)]"></div>
                         </motion.button>
                     )}
                 </div>
@@ -607,7 +607,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                             placeholder="例如：冷酷殺手、溫柔咖啡師" 
                                             value={newThread.name_zh}
                                             onChange={e => setNewThread({...newThread, name_zh: e.target.value})}
-                                            className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white focus:border-[var(--color-sage)]/50 outline-none"
+                                            className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white focus:border-sage/50 outline-none"
                                         />
                                     </div>
                                     <div className="space-y-2">
@@ -616,7 +616,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                             placeholder="Coldest Killer / Gentle Barista" 
                                             value={newThread.name_en}
                                             onChange={e => setNewThread({...newThread, name_en: e.target.value})}
-                                            className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white focus:border-[var(--color-sage)]/50 outline-none"
+                                            className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white focus:border-sage/50 outline-none"
                                         />
                                     </div>
                                 </div>
@@ -626,7 +626,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                         placeholder="描述此身份線如何影響角色的長期行為與核心設定..."
                                         value={newThread.rationale}
                                         onChange={e => setNewThread({...newThread, rationale: e.target.value})}
-                                        className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white h-24 outline-none focus:border-[var(--color-sage)]/50 resize-none"
+                                        className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 text-xs text-white h-24 outline-none focus:border-sage/50 resize-none"
                                     />
                                 </div>
                                 <button
@@ -651,7 +651,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
                                         whileHover={{ y: -5, borderColor: 'rgba(85, 106, 91, 0.4)' }}
                                         className={`group cursor-pointer p-8 rounded-[2.5rem] border transition-all relative overflow-hidden flex flex-col h-full ${
                                             isActive
-                                            ? 'bg-[var(--color-sage)]/[0.08] border-[var(--color-sage)]/40 shadow-[0_25px_60px_rgba(0,0,0,0.4)] ring-1 ring-[var(--color-sage)]/20'
+                                            ? 'bg-[var(--color-sage)]/[0.08] border-sage/40 shadow-[0_25px_60px_rgba(0,0,0,0.4)] ring-1 ring-sage/20'
                                             : 'bg-white/40 border-white/5 opacity-60 hover:opacity-100'
                                         }`}
                                         onClick={() => handleToggleThread(thread.thread_id)}
@@ -674,7 +674,7 @@ export const NarrativeSettings: React.FC<NarrativeSettingsProps> = ({ model, onU
 
                                         <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
                                             <div className="flex items-center gap-2">
-                                                <div className={`px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-widest ${isActive ? 'bg-[var(--color-sage)]/20 text-[var(--color-sage)]' : 'bg-white/5 text-narrative-ink-soft'}`}>
+                                                <div className={`px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-widest ${isActive ? 'bg-sage/20 text-[var(--color-sage)]' : 'bg-white/5 text-narrative-ink-soft'}`}>
                                                     {thread.duration_weeks} 週
                                                 </div>
                                             </div>

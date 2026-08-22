@@ -65,7 +65,7 @@ function TabBar<K extends string = string>({
             active: 'bg-[var(--color-gold)] text-black shadow-[0_4px_20px_rgba(212,175,55,0.3)]',
             idle: 'text-[var(--color-text-dim)] hover:bg-white/5',
             glare: 'absolute inset-0 bg-white/10 pointer-events-none',
-            stickyWrap: 'sticky top-4 z-30 bg-[var(--color-bg-deep)]/95 backdrop-blur-sm py-1',
+            stickyWrap: 'sticky top-4 z-30 bg-bg-deep/95 backdrop-blur-sm py-1',
         }
         : {
             wrap: 'flex gap-2 bg-[rgba(255,255,255,.5)] p-1.5 rounded-2xl border border-[var(--home-line)]',

@@ -512,7 +512,30 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
   }, [formState, faceReferences, generationQuality, isExpertMode]);
 
   const handleSaveToLounge = async (model: Model) => {
-      await addModel(model);
+      /**
+       * 2026-08-14（Hank 裁決「存」）：入庫時一併記下這次的生成參數。
+       *
+       * 起因：查 Kai 為什麼出圖是白人臉時，發現**無法回溯他當初選了哪個臉部原型**
+       * ——而 24 個原型裡有 20 個沒有東亞錨定，選到哪一個直接決定臉會不會漂。
+       * 只能從 locked_descriptor 的措辭反推，那不可靠。
+       *
+       * 純診斷用途，不參與生圖。已存在的欄位不覆寫（`model.creationParams ??`），
+       * 這樣從休息室重新入庫舊 IP 時不會把原始紀錄蓋掉。
+       */
+      const withParams: Model = {
+          ...model,
+          creationParams: model.creationParams ?? {
+              archetype: formState.archetype,
+              skinTone: (formState as any).skinTone,
+              proportionMode: formState.proportionMode,
+              netRedLevel: (formState as any).netRedLevel,
+              hairStyle: (formState as any).hairStyle,
+              hairLength: (formState as any).hairLength,
+              makeupStyle: (formState as any).makeupStyle,
+              createdAtMs: Date.now(),
+          },
+      };
+      await addModel(withParams);
       setSavedModelIds(prev => {
           const next = new Set(prev);
           next.add(model.id);
@@ -593,7 +616,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                             <span className="text-[9px] text-[var(--color-brass)] font-bold group-hover:underline">隨機換名</span>
                         </button>
                     </label>
-                    <input type="text" className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-2.5 text-sm focus:border-brass focus:ring-1 focus:ring-[var(--color-brass)]/20 focus:outline-none transition-all placeholder:text-[var(--home-muted)]" placeholder="輸入 IP 角色姓名" value={formState.name} onChange={e => handleFormChange('name', e.target.value)} />
+                    <input type="text" className="w-full bg-[rgba(255,255,255,.5)] border border-[var(--home-line)] rounded-xl p-2.5 text-sm focus:border-brass focus:ring-1 focus:ring-brass/20 focus:outline-none transition-all placeholder:text-[var(--home-muted)]" placeholder="輸入 IP 角色姓名" value={formState.name} onChange={e => handleFormChange('name', e.target.value)} />
                 </div>
                 <Select label="生理性別 (GENDER)" options={GENDER_PRESETS} value={formState.gender} onChange={e => handleGenderChange(e.target.value)} />
                 <div className={getFieldClass('age')}>
@@ -614,7 +637,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
               <button
                 type="button"
                 onClick={() => setIsPresetBannerOpen(prev => !prev)}
-                className="w-full p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent flex justify-between items-center group"
+                className="w-full p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-brass/5 to-transparent flex justify-between items-center group"
               >
                 <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
                   <div className="w-1 h-4 bg-brass"></div>
@@ -661,7 +684,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
               <>
                 {/* 0. 臉部來源 (Face Source) */}
                 <Card className="p-0 overflow-hidden border-none home-card">
-                  <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent flex justify-between items-center group">
+                  <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-brass/5 to-transparent flex justify-between items-center group">
                     <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
                       <div className="w-1 h-4 bg-brass"></div>
                       <span className="group-hover:text-[var(--color-brass)] transition-colors">臉部來源</span>
@@ -754,7 +777,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
 
                 {/* 膚色與髮色 (原生理特徵卡搬移至臉部 tab) */}
                 <Card className="p-0 overflow-hidden border-none home-card">
-                  <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent flex justify-between items-center group">
+                  <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-brass/5 to-transparent flex justify-between items-center group">
                     <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
                       <div className="w-1 h-4 bg-brass"></div>
                       <span className="group-hover:text-[var(--color-brass)] transition-colors">膚色與髮色</span>
@@ -840,7 +863,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
             {/* ===== TAB: 身形 ===== */}
             {activeTab === 'body' && (
               <Card className="p-0 overflow-hidden border-none home-card">
-                <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent flex justify-between items-center group">
+                <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-brass/5 to-transparent flex justify-between items-center group">
                   <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
                     <div className="w-1 h-4 bg-brass"></div>
                     <span className="group-hover:text-[var(--color-brass)] transition-colors">體態與比例</span>
@@ -985,7 +1008,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                                               onClick={() => handleFormChange('netRedLevel', level)}
                                               className={`flex-1 py-2.5 rounded-xl border text-center transition-all ${
                                                   formState.netRedLevel === level
-                                                      ? 'bg-brass text-black border-brass shadow-xl shadow-[var(--color-brass)]/20'
+                                                      ? 'bg-brass text-black border-brass shadow-xl shadow-brass/20'
                                                       : 'bg-[rgba(255,255,255,.4)] text-[var(--home-muted)] border-[var(--home-line)] hover:border-[var(--home-line-strong)]'
                                               }`}
                                           >
@@ -1040,7 +1063,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
             {/* ===== TAB: 基礎穿著（打底裝，刻意極簡貼身） ===== */}
             {activeTab === 'apparel' && (
               <Card className="p-0 overflow-hidden border-none home-card">
-                <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-[var(--color-brass)]/5 to-transparent">
+                <div className="p-5 border-b border-[var(--home-line)] bg-gradient-to-r from-brass/5 to-transparent">
                   <h3 className="text-sm font-bold text-[var(--home-ink)] tracking-[0.2em] flex items-center gap-3">
                     <div className="w-1 h-4 bg-brass"></div>
                     <span className="group-hover:text-[var(--color-brass)] transition-colors">基礎穿著</span>
@@ -1124,7 +1147,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                                           }
                                           handleFormChange('outfitItems', newItems);
                                       }}
-                                      className={`p-4 rounded-2xl border text-left transition-all duration-300 relative overflow-hidden group/item flex flex-col justify-between h-[82px] ${isSelected ? 'bg-brass/15 border-brass/60 text-[var(--color-brass)] ring-1 ring-[var(--color-brass)]/30' : 'bg-[rgba(255,255,255,.4)] border-[var(--home-line)] text-[var(--home-muted)] hover:border-[var(--home-line-strong)] hover:bg-[rgba(255,255,255,.55)]'}`}
+                                      className={`p-4 rounded-2xl border text-left transition-all duration-300 relative overflow-hidden group/item flex flex-col justify-between h-[82px] ${isSelected ? 'bg-brass/15 border-brass/60 text-[var(--color-brass)] ring-1 ring-brass/30' : 'bg-[rgba(255,255,255,.4)] border-[var(--home-line)] text-[var(--home-muted)] hover:border-[var(--home-line-strong)] hover:bg-[rgba(255,255,255,.55)]'}`}
                                   >
                                       <div className="flex flex-col gap-0.5 relative z-10">
                                           <span className={`text-[11px] font-bold tracking-tight leading-tight ${isSelected ? 'text-[var(--home-ink)]' : ''}`}>{item.label.split(' (')[0]}</span>
@@ -1145,7 +1168,7 @@ const ModelSetup: React.FC<ModelSetupProps> = ({
                                       {isSelected && (
                                           <motion.div
                                               layoutId={`bg-active-${item.id}`}
-                                              className="absolute inset-0 bg-gradient-to-t from-[var(--color-brass)]/10 to-transparent pointer-events-none"
+                                              className="absolute inset-0 bg-gradient-to-t from-brass/10 to-transparent pointer-events-none"
                                           />
                                       )}
                                   </motion.button>

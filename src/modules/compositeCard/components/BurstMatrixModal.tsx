@@ -50,7 +50,7 @@ const BurstMatrixModal: React.FC<BurstMatrixModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-[var(--color-bg-deep)]/95 flex items-center justify-center z-[60] p-4 animate-fade-in">
+    <div className="fixed inset-0 bg-bg-deep/95 flex items-center justify-center z-[60] p-4 animate-fade-in">
       <Card className="w-full max-w-7xl h-[92vh] flex flex-col bg-[var(--color-bg-surface)] border border-[var(--color-border)] shadow-3xl">
         {/* Header */}
         <div className="flex justify-between items-center p-6 border-b border-white/5">
@@ -79,7 +79,7 @@ const BurstMatrixModal: React.FC<BurstMatrixModalProps> = ({
               <div 
                 className={`relative aspect-[3/4] rounded-xl overflow-hidden transition-all duration-500 border-2 shadow-2xl ${
                   img.selected 
-                    ? 'border-[var(--color-gold)] scale-[0.99] ring-4 ring-[var(--color-gold)]/20' 
+                    ? 'border-[var(--color-gold)] scale-[0.99] ring-4 ring-gold/20' 
                     : 'border-gray-800 hover:border-gray-600'
                 } ${!img.selected && img.url ? 'opacity-80 grayscale-[0.1]' : 'opacity-100 grayscale-0'}`}
               >
@@ -123,7 +123,7 @@ const BurstMatrixModal: React.FC<BurstMatrixModalProps> = ({
               </div>
 
               {/* Local Control Bar - 局部微調控制列 */}
-              <div className="flex flex-col gap-2 p-3 bg-[var(--color-bg-input)] rounded-lg border border-[var(--color-border)] group-hover:border-[var(--color-gold)]/30 transition-colors">
+              <div className="flex flex-col gap-2 p-3 bg-[var(--color-bg-input)] rounded-lg border border-[var(--color-border)] group-hover:border-gold/30 transition-colors">
                 <div className="grid grid-cols-2 gap-2">
                    <select 
                      value={burstPairs[img.index].pose} 
@@ -149,7 +149,7 @@ const BurstMatrixModal: React.FC<BurstMatrixModalProps> = ({
                 <button 
                   onClick={() => onRegenerateCell(img.index)}
                   disabled={img.status === 'loading'}
-                  className="w-full btn-precision-fix bg-[var(--color-gold)]/10 text-[var(--color-gold)] text-[10px] font-bold py-2 rounded-md hover:bg-[var(--color-gold)] hover:text-black transition-all flex items-center justify-center gap-2 uppercase tracking-widest"
+                  className="w-full btn-precision-fix bg-gold/10 text-[var(--color-gold)] text-[10px] font-bold py-2 rounded-md hover:bg-[var(--color-gold)] hover:text-black transition-all flex items-center justify-center gap-2 uppercase tracking-widest"
                 >
                   <ReplaceIcon className="w-3.5 h-3.5" />
                   {img.status === 'loading' ? '正在重製中...' : '重新生成此格'}

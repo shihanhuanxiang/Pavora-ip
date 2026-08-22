@@ -37,7 +37,7 @@ const BurstMatrixPanel: React.FC<BurstMatrixPanelProps> = ({
   lightingPreset, onLightingChange, consistencyLock, onConsistencyChange
 }) => {
   return (
-    <Card className="border-t-2 border-[var(--color-gold)]/20 relative">
+    <Card className="border-t-2 border-gold/20 relative">
       {isProcessing && <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-lg cursor-not-allowed"></div>}
       
       <div className="flex justify-between items-center mb-4">

@@ -68,10 +68,10 @@ const MotionHub: React.FC<MotionHubProps> = ({ onGoHome }) => {
                 onClick={() => setView('DIRECTOR')}
                 className="group relative text-left"
             >
-                <Card className="h-full p-10 border-2 border-transparent group-hover:border-[var(--color-gold)]/50 transition-all duration-500 bg-[var(--color-bg-surface)]/40 overflow-hidden">
-                    <div className="absolute -right-10 -top-10 w-40 h-40 bg-[var(--color-gold)]/5 rounded-full blur-3xl group-hover:bg-[var(--color-gold)]/10 transition-all" />
+                <Card className="h-full p-10 border-2 border-transparent group-hover:border-gold/50 transition-all duration-500 bg-bg-surface/40 overflow-hidden">
+                    <div className="absolute -right-10 -top-10 w-40 h-40 bg-gold/5 rounded-full blur-3xl group-hover:bg-gold/10 transition-all" />
                     
-                    <div className="w-16 h-16 rounded-2xl bg-[var(--color-gold)]/10 flex items-center justify-center text-[var(--color-gold)] mb-8 group-hover:scale-110 transition-transform duration-500">
+                    <div className="w-16 h-16 rounded-2xl bg-gold/10 flex items-center justify-center text-[var(--color-gold)] mb-8 group-hover:scale-110 transition-transform duration-500">
                         <DirectorModeIcon className="w-8 h-8" />
                     </div>
                     
@@ -91,7 +91,7 @@ const MotionHub: React.FC<MotionHubProps> = ({ onGoHome }) => {
                 onClick={() => setView('ANALYZER')}
                 className="group relative text-left"
             >
-                <Card className="h-full p-10 border-2 border-transparent group-hover:border-[var(--color-gold)]/50 transition-all duration-500 bg-[var(--color-bg-surface)]/40 overflow-hidden">
+                <Card className="h-full p-10 border-2 border-transparent group-hover:border-gold/50 transition-all duration-500 bg-bg-surface/40 overflow-hidden">
                     <div className="absolute -right-10 -top-10 w-40 h-40 bg-blue-500/5 rounded-full blur-3xl group-hover:bg-blue-500/10 transition-all" />
                     
                     <div className="w-16 h-16 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-400 mb-8 group-hover:scale-110 transition-transform duration-500">
@@ -112,7 +112,7 @@ const MotionHub: React.FC<MotionHubProps> = ({ onGoHome }) => {
 
         {/* Future Roadmap Placeholder */}
         <div className="mt-20 text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--color-bg-surface)]/40 rounded-full border border-[var(--color-border)] text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-dim)] mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-bg-surface/40 rounded-full border border-[var(--color-border)] text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-dim)] mb-6">
                 <SparklesIcon className="w-3 h-3 text-[var(--color-gold)]" /> Next Phase: Reels Automation
             </div>
             <p className="text-xs text-[var(--color-text-dim)] italic">

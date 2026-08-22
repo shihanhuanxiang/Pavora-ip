@@ -357,7 +357,7 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
                   <h2 className="text-2xl font-display font-bold uppercase tracking-[0.3em] text-[var(--color-text-main)]">靈魂敘事</h2>
                   <span className="text-[9px] uppercase tracking-[0.5em] text-[var(--color-gold)] font-light">Narrative Workflow</span>
                 </div>
-                <button onClick={handleGoHome} className="px-4 py-2 rounded-xl border border-white/10 text-[10px] font-bold text-gray-400 hover:text-white hover:border-[var(--color-gold)]/50 transition-all">
+                <button onClick={handleGoHome} className="px-4 py-2 rounded-xl border border-white/10 text-[10px] font-bold text-gray-400 hover:text-white hover:border-gold/50 transition-all">
                   返回首頁
                 </button>
               </div>

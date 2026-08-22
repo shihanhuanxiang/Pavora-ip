@@ -407,7 +407,7 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                 onClick={() => setViewMode(mode.id as any)}
                                 className={`px-4 py-1.5 text-[12px] font-black uppercase tracking-widest rounded-lg transition-all ${
                                     viewMode === mode.id
-                                    ? 'bg-[var(--color-wine)] text-white shadow-lg shadow-[var(--color-wine)]/20'
+                                    ? 'bg-[var(--color-wine)] text-white shadow-lg shadow-wine/20'
                                     : 'text-narrative-ink-soft hover:text-narrative-ink'
                                 }`}
                             >
@@ -427,9 +427,9 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
 
             {/* 使用提示橫幅 // USAGE TIPS BANNER */}
             <motion.div
-                className="ml-5 px-6 py-4 bg-[var(--color-brass)]/10 border border-[var(--color-brass)]/20 rounded-2xl flex items-center gap-4 text-narrative-ink"
+                className="ml-5 px-6 py-4 bg-brass/10 border border-brass/20 rounded-2xl flex items-center gap-4 text-narrative-ink"
             >
-                <div className="flex-shrink-0 w-6 h-6 rounded-full border border-[var(--color-brass)]/40 flex items-center justify-center text-[11px] font-bold text-[var(--color-brass)]">
+                <div className="flex-shrink-0 w-6 h-6 rounded-full border border-brass/40 flex items-center justify-center text-[11px] font-bold text-[var(--color-brass)]">
                     i
                 </div>
                 <div className="flex flex-col gap-0.5">
@@ -454,14 +454,14 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                 <div 
                                     className={`group relative bg-[var(--color-bg-card)] border rounded-[2.5rem] p-8 transition-all shadow-2xl overflow-hidden h-full flex flex-col active:scale-[0.98] cursor-pointer select-none ${
                                         isActive
-                                        ? 'border-[var(--color-wine)] bg-[var(--color-bg-card)] shadow-[0_20px_50px_rgba(111,39,53,0.15)] ring-1 ring-[var(--color-wine)]/30 scale-[1.02]'
-                                        : 'border-[var(--color-border)] hover:border-[var(--color-brass)]/30'
+                                        ? 'border-[var(--color-wine)] bg-[var(--color-bg-card)] shadow-[0_20px_50px_rgba(111,39,53,0.15)] ring-1 ring-wine/30 scale-[1.02]'
+                                        : 'border-[var(--color-border)] hover:border-brass/30'
                                     }`}
                                     onClick={() => handleSelectOutfit(outfit.outfit_id)}
                                 >
                                     {/* Selection Glow */}
                                     {isActive && (
-                                        <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-wine)]/5 to-transparent pointer-events-none"></div>
+                                        <div className="absolute inset-0 bg-gradient-to-br from-wine/5 to-transparent pointer-events-none"></div>
                                     )}
 
                                     {/* Hover Hint: Click to Lock */}
@@ -490,7 +490,7 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                             </div>
                                             <div className="flex gap-2">
                                                 <span className={`px-3 py-1 bg-[var(--color-bg-input)] border border-[var(--color-border)] text-[11px] font-black rounded-full uppercase tracking-tighter ${isActive ? 'text-[var(--color-wine)]' : 'text-gray-500'}`}>美學階層 {outfit.aesthetic_tier}</span>
-                                                {isSeed && <span className="px-2 py-1 bg-[var(--color-steel)]/10 border border-[var(--color-steel)]/20 text-[var(--color-steel)] text-[11px] font-bold rounded-md uppercase tracking-tighter">系統核心</span>}
+                                                {isSeed && <span className="px-2 py-1 bg-steel/10 border border-steel/20 text-[var(--color-steel)] text-[11px] font-bold rounded-md uppercase tracking-tighter">系統核心</span>}
                                             </div>
                                         </div>
 
@@ -561,12 +561,12 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
             </div>
 
             {showForm && (
-                <div className="fixed inset-0 bg-[var(--color-bg-deep)]/95 backdrop-blur-md z-[100] flex items-center justify-center p-4 sm:p-8">
+                <div className="fixed inset-0 bg-bg-deep/95 backdrop-blur-md z-[100] flex items-center justify-center p-4 sm:p-8">
                     <div
                         className="w-full max-w-4xl bg-[var(--color-bg-surface)] border border-[var(--color-border)] rounded-[3rem] p-10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] relative overflow-hidden"
                     >
                         {/* Background Accents */}
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--color-brass)]/5 blur-[100px] -mr-32 -mt-32"></div>
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-brass/5 blur-[100px] -mr-32 -mt-32"></div>
                         
                         <div className="flex justify-between items-start mb-10 relative z-10">
                             <div className="space-y-1">
@@ -591,7 +591,7 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                             <label className="text-[11px] text-gray-500 font-bold uppercase tracking-widest group-focus-within:text-[var(--color-brass)] transition-colors">穿搭編碼</label>
                                             <input
                                                 type="text"
-                                                className="w-full bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-2xl px-5 py-3 text-xs text-[var(--color-text-main)] focus:border-[var(--color-brass)]/50 transition-all outline-none"
+                                                className="w-full bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-2xl px-5 py-3 text-xs text-[var(--color-text-main)] focus:border-brass/50 transition-all outline-none"
                                                 placeholder="UID_STREET_001"
                                                 value={newOutfit.outfit_id || ''}
                                                 onChange={e => setNewOutfit({ ...newOutfit, outfit_id: e.target.value })}
@@ -600,7 +600,7 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                         <div className="group space-y-2">
                                             <label className="text-[11px] text-gray-500 font-bold uppercase tracking-widest">風格原型</label>
                                             <select 
-                                                className="w-full bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-2xl px-5 py-3 text-xs text-[var(--color-text-main)] focus:border-[var(--color-brass)]/50 outline-none appearance-none cursor-pointer"
+                                                className="w-full bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-2xl px-5 py-3 text-xs text-[var(--color-text-main)] focus:border-brass/50 outline-none appearance-none cursor-pointer"
                                                 value={newOutfit.style_archetype}
                                                 onChange={e => setNewOutfit({ ...newOutfit, style_archetype: e.target.value })}
                                             >
@@ -635,7 +635,7 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                                 <label className="text-[11px] text-gray-500 font-bold uppercase tracking-widest">{pillar.label}</label>
                                                 <input 
                                                     type="text" 
-                                                    className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-5 py-3 text-xs text-white focus:border-[var(--color-brass)]/50 transition-all outline-none"
+                                                    className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-5 py-3 text-xs text-white focus:border-brass/50 transition-all outline-none"
                                                     placeholder={pillar.placeholder}
                                                     value={(newOutfit.pillars as any)[pillar.key] || ''}
                                                     onChange={e => setNewOutfit({ ...newOutfit, pillars: { ...newOutfit.pillars!, [pillar.key]: e.target.value } })}
@@ -668,7 +668,7 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                                 onClick={() => setNewOutfit({ ...newOutfit, wear_state: state.id })}
                                                 className={`p-5 rounded-[2rem] text-left transition-all border flex flex-col gap-2 ${
                                                     newOutfit.wear_state === state.id
-                                                    ? 'bg-[var(--color-wine)]/[0.08] border-[var(--color-wine)]/40 shadow-[0_10px_25px_rgba(111,39,53,0.1)]'
+                                                    ? 'bg-[var(--color-wine)]/[0.08] border-wine/40 shadow-[0_10px_25px_rgba(111,39,53,0.1)]'
                                                     : 'bg-white/[0.02] border-white/5 hover:bg-white/[0.04]'
                                                 }`}
                                             >
@@ -713,7 +713,7 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                                 </div>
 
                                 {/* Summary / Tips */}
-                                <div className="p-6 bg-[var(--color-brass)]/[0.03] border border-[var(--color-brass)]/10 rounded-[2rem] space-y-4">
+                                <div className="p-6 bg-[var(--color-brass)]/[0.03] border border-brass/10 rounded-[2rem] space-y-4">
                                     <div className="flex items-center gap-2">
                                         <svg className="w-4 h-4 text-[var(--color-brass)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                         <span className="text-[11px] text-[var(--color-brass)] font-black uppercase tracking-widest">矩陣建議</span>
@@ -736,7 +736,7 @@ export const WardrobeManager: React.FC<WardrobeManagerProps> = ({ model, onUpdat
                             </button>
                             <button
                                 onClick={handleSave}
-                                className="flex-[2] py-4 bg-[var(--color-wine)] hover:bg-[var(--color-wine)]/90 text-white transition-all rounded-2xl font-black text-[13px] tracking-[0.3em] shadow-[0_20px_50px_rgba(111,39,53,0.3)] active:scale-[0.98]"
+                                className="flex-[2] py-4 bg-[var(--color-wine)] hover:bg-wine/90 text-white transition-all rounded-2xl font-black text-[13px] tracking-[0.3em] shadow-[0_20px_50px_rgba(111,39,53,0.3)] active:scale-[0.98]"
                             >
                                 儲存衣櫃資產
                             </button>

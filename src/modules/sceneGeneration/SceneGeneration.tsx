@@ -833,10 +833,10 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                 <div className="fixed inset-0 z-[200] bg-black/80 backdrop-blur-md flex flex-col items-center justify-center animate-fade-in">
                     <div className="relative w-64 h-64 mb-8">
                         {/* Tech Scanning Animation */}
-                        <div className="absolute inset-0 border-2 border-[var(--color-gold)]/20 rounded-full animate-spin" style={{ animationDuration: '10s' }}></div>
-                        <div className="absolute inset-4 border border-[var(--color-gold)]/40 rounded-full animate-spin" style={{ animationDuration: '15s', animationDirection: 'reverse' }}></div>
+                        <div className="absolute inset-0 border-2 border-gold/20 rounded-full animate-spin" style={{ animationDuration: '10s' }}></div>
+                        <div className="absolute inset-4 border border-gold/40 rounded-full animate-spin" style={{ animationDuration: '15s', animationDirection: 'reverse' }}></div>
                         <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-32 h-32 bg-[var(--color-gold)]/10 rounded-full flex items-center justify-center">
+                            <div className="w-32 h-32 bg-gold/10 rounded-full flex items-center justify-center">
                                 <div className="w-16 h-16 border-4 border-[var(--color-gold)] border-t-transparent rounded-full animate-spin"></div>
                             </div>
                         </div>
@@ -852,7 +852,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                         </p>
                         <div className="flex gap-1 justify-center mt-4">
                             {[1, 2, 3, 4, 5].map(i => (
-                                <div key={i} className="w-1 h-4 bg-[var(--color-gold)]/20 rounded-full overflow-hidden">
+                                <div key={i} className="w-1 h-4 bg-gold/20 rounded-full overflow-hidden">
                                     <div className="w-full h-full bg-[var(--color-gold)] animate-[loading_1.5s_ease-in-out_infinite]" style={{ animationDelay: `${i * 0.1}s` }}></div>
                                 </div>
                             ))}
@@ -954,8 +954,8 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
 
                     {/* ① 模特兒與身份 */}
                     {activeTab === 'subject' && (
-                    <Card className="p-0 overflow-hidden border-gray-800/50 hover:border-[var(--color-gold)]/30 transition-all duration-500">
-                        <div className="w-full flex justify-between items-center p-5 bg-[var(--color-gold)]/5">
+                    <Card className="p-0 overflow-hidden border-gray-800/50 hover:border-gold/30 transition-all duration-500">
+                        <div className="w-full flex justify-between items-center p-5 bg-gold/5">
                             <div className="flex items-center gap-4">
                                 <div className="w-10 h-10 rounded-lg flex items-center justify-center border bg-[var(--color-gold)] border-[var(--color-gold)] text-black">
                                     <PhotoIcon className="w-5 h-5" />
@@ -991,8 +991,8 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                             text-[9px] font-black uppercase tracking-widest cursor-pointer 
                                             border transition-all w-full justify-center
                                             ${isSceneDetecting 
-                                                ? 'border-[var(--color-gold)]/40 bg-[var(--color-gold)]/10 text-[var(--color-gold)] animate-pulse cursor-not-allowed' 
-                                                : 'border-white/10 bg-white/[0.02] text-gray-400 hover:border-[var(--color-gold)]/50 hover:text-[var(--color-gold)]'
+                                                ? 'border-gold/40 bg-gold/10 text-[var(--color-gold)] animate-pulse cursor-not-allowed' 
+                                                : 'border-white/10 bg-white/[0.02] text-gray-400 hover:border-gold/50 hover:text-[var(--color-gold)]'
                                             }`}>
                                             {isSceneDetecting ? '⚡ AI 偵測中...' : '📷 上傳合照並自動裁切到四個視角'}
                                             <input
@@ -1077,7 +1077,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                             </div>
                                         ))}
                                     </div>
-                                    <div className="p-3 bg-[var(--color-gold)]/5 border border-[var(--color-gold)]/20 rounded-lg">
+                                    <div className="p-3 bg-gold/5 border border-gold/20 rounded-lg">
                                         <p className="text-[9px] text-[var(--color-gold)] font-medium leading-relaxed">
                                             💡 提示：上傳多個角度可幫助 AI 在融合背景時更精準地還原模特兒的 3D 結構與服飾細節。
                                         </p>
@@ -1114,7 +1114,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                             >
                                                 <AsyncImage src={activeIp.imageUrl} className="w-full h-full object-cover" />
                                                 {faceAnchor?.url === activeIp.imageUrl && (
-                                                    <div className="absolute inset-0 bg-[var(--color-gold)]/10 flex items-end justify-center pb-1">
+                                                    <div className="absolute inset-0 bg-gold/10 flex items-end justify-center pb-1">
                                                         <div className="bg-[var(--color-gold)] text-black text-[8px] font-bold px-1.5 py-0.5 rounded uppercase tracking-widest">已套用</div>
                                                     </div>
                                                 )}
@@ -1142,7 +1142,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                       * 自動設成 true，使用者無法自己關掉也看不到它的狀態。
                                       * Hank 2026-08-14 指定「明確開關、預設不鎖」，所以獨立成一個可見的勾選框。
                                       */}
-                                    <label className={`flex items-start gap-3 p-3 rounded-xl border transition-colors ${activeIp ? 'border-gray-800 bg-black/20 cursor-pointer hover:border-[var(--color-gold)]/40' : 'border-gray-900 bg-black/10 opacity-50 cursor-not-allowed'}`}>
+                                    <label className={`flex items-start gap-3 p-3 rounded-xl border transition-colors ${activeIp ? 'border-gray-800 bg-black/20 cursor-pointer hover:border-gold/40' : 'border-gray-900 bg-black/10 opacity-50 cursor-not-allowed'}`}>
                                         <input
                                             type="checkbox"
                                             disabled={!activeIp}
@@ -1173,7 +1173,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                             <AsyncImage src={originalBaseImage.url} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Model"/>
                                         ) : (
                                             <div onClick={() => fileInputRef.current?.click()} className="w-full h-full flex flex-col items-center justify-center cursor-pointer text-center p-8 group">
-                                                <div className="w-16 h-16 rounded-full bg-gray-900 border border-gray-800 flex items-center justify-center mb-4 group-hover:border-[var(--color-gold)] group-hover:bg-[var(--color-gold)]/5 transition-all duration-500">
+                                                <div className="w-16 h-16 rounded-full bg-gray-900 border border-gray-800 flex items-center justify-center mb-4 group-hover:border-[var(--color-gold)] group-hover:bg-gold/5 transition-all duration-500">
                                                     <PhotoIcon className="w-8 h-8 text-gray-600 group-hover:text-[var(--color-gold)] transition-colors" />
                                                 </div>
                                                 <span className="text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em] group-hover:text-gray-300 transition-colors">② 上傳人物照片（作為主角底圖）</span>
@@ -1181,7 +1181,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                         )}
                                         {/* ③（進階）只換臉部錨點：底圖維持上面那張，但生圖時用這張臉。 */}
                                         <div
-                                            className="absolute top-3 right-3 w-20 h-20 bg-black border border-[var(--color-gold)]/50 rounded-xl shadow-2xl overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300"
+                                            className="absolute top-3 right-3 w-20 h-20 bg-black border border-gold/50 rounded-xl shadow-2xl overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300"
                                             title="③ 進階：只替換臉部錨點。底圖維持左側那張，生圖時用這張臉。"
                                             onClick={() => faceAnchorInputRef.current?.click()}
                                         >
@@ -1207,7 +1207,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                             <select 
                                                 value={physics.lightHardness} 
                                                 onChange={e => setPhysics(prev => ({ ...prev, lightHardness: e.target.value as any }))} 
-                                                className="w-full bg-black/40 border border-gray-800 text-xs rounded-lg py-3 px-3 focus:border-[var(--color-gold)] focus:ring-1 focus:ring-[var(--color-gold)]/20 outline-none transition-all text-gray-300"
+                                                className="w-full bg-black/40 border border-gray-800 text-xs rounded-lg py-3 px-3 focus:border-[var(--color-gold)] focus:ring-1 focus:ring-gold/20 outline-none transition-all text-gray-300"
                                             >
                                                 <option value="balanced">標準平衡 (Balanced)</option>
                                                 <option value="soft">柔和擴散 (Soft/Diffused)</option>
@@ -1225,7 +1225,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                             <select 
                                                 value={physics.colorTemperature} 
                                                 onChange={e => setPhysics(prev => ({ ...prev, colorTemperature: e.target.value as any }))} 
-                                                className="w-full bg-black/40 border border-gray-800 text-xs rounded-lg py-3 px-3 focus:border-[var(--color-gold)] focus:ring-1 focus:ring-[var(--color-gold)]/20 outline-none transition-all text-gray-300"
+                                                className="w-full bg-black/40 border border-gray-800 text-xs rounded-lg py-3 px-3 focus:border-[var(--color-gold)] focus:ring-1 focus:ring-gold/20 outline-none transition-all text-gray-300"
                                             >
                                                 <option value="neutral">中性自然 (Neutral)</option>
                                                 <option value="warm">溫暖金黃 (Warm/Amber)</option>
@@ -1246,7 +1246,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                             <select 
                                                 value={physics.lensFocalLength} 
                                                 onChange={e => setPhysics(prev => ({ ...prev, lensFocalLength: e.target.value as any }))} 
-                                                className="w-full bg-black/40 border border-gray-800 text-xs rounded-lg py-3 px-3 focus:border-[var(--color-gold)] focus:ring-1 focus:ring-[var(--color-gold)]/20 outline-none transition-all text-gray-300"
+                                                className="w-full bg-black/40 border border-gray-800 text-xs rounded-lg py-3 px-3 focus:border-[var(--color-gold)] focus:ring-1 focus:ring-gold/20 outline-none transition-all text-gray-300"
                                             >
                                                 <option value="14mm">14mm 超廣角 (Ultra Wide)</option>
                                                 <option value="24mm">24mm 廣角 (Wide Angle)</option>
@@ -1284,9 +1284,9 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                                 <button
                                                     key={p.id}
                                                     onClick={() => applyPreset(p)}
-                                                    className="flex items-center gap-3 p-4 bg-black/40 border border-gray-800 rounded-xl hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)]/5 transition-all group relative overflow-hidden"
+                                                    className="flex items-center gap-3 p-4 bg-black/40 border border-gray-800 rounded-xl hover:border-[var(--color-gold)] hover:bg-gold/5 transition-all group relative overflow-hidden"
                                                 >
-                                                    <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-gold)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                                    <div className="absolute inset-0 bg-gradient-to-br from-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                                     <span className="text-2xl group-hover:scale-110 transition-transform relative z-10">{p.icon}</span>
                                                     <div className="text-left relative z-10">
                                                         <p className="text-[13px] font-bold text-gray-300 group-hover:text-[var(--color-gold)] transition-colors">{p.name}</p>
@@ -1304,8 +1304,8 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
 
                     {/* ② 場景、姿勢與表情 */}
                     {activeTab === 'background' && (
-                    <Card className="p-0 overflow-hidden border-gray-800/50 hover:border-[var(--color-gold)]/30 transition-all duration-500">
-                        <div className="w-full flex justify-between items-center p-5 bg-[var(--color-gold)]/5">
+                    <Card className="p-0 overflow-hidden border-gray-800/50 hover:border-gold/30 transition-all duration-500">
+                        <div className="w-full flex justify-between items-center p-5 bg-gold/5">
                             <div className="flex items-center gap-4">
                                 <div className="w-10 h-10 rounded-lg flex items-center justify-center border bg-[var(--color-gold)] border-[var(--color-gold)] text-black">
                                     <SceneTransferIcon className="w-5 h-5" />
@@ -1329,7 +1329,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                   */}
                                 <button
                                     onClick={handleRandomize}
-                                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-bg-input)] border border-[var(--color-gold)]/40 text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-black transition-all duration-300 group"
+                                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-bg-input)] border border-gold/40 text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-black transition-all duration-300 group"
                                     title="隨機生成場景配置"
                                 >
                                     <DiceIcon className="w-4 h-4 group-hover:rotate-12 transition-transform" />
@@ -1420,7 +1420,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                             </div>
                                             <span className="block text-[8px] opacity-70 font-normal tracking-normal">Framing</span>
                                         </label>
-                                        <select value={framing} onChange={e => setFraming(e.target.value)} className="w-full bg-black/40 border border-gray-800 text-xs rounded-lg py-3 px-3 focus:border-[var(--color-gold)] focus:ring-1 focus:ring-[var(--color-gold)]/20 outline-none transition-all text-gray-300">
+                                        <select value={framing} onChange={e => setFraming(e.target.value)} className="w-full bg-black/40 border border-gray-800 text-xs rounded-lg py-3 px-3 focus:border-[var(--color-gold)] focus:ring-1 focus:ring-gold/20 outline-none transition-all text-gray-300">
                                             <option value="">-- 預設 (依場景建議) --</option>
                                             {FRAMING_PRESETS.map(cat => (
                                                 <optgroup label={cat.category} key={cat.category}>
@@ -1432,7 +1432,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                 </div>
 
                                 {framing.toLowerCase().includes('selfie') && (
-                                    <div className="p-4 bg-[var(--color-gold)]/5 rounded-xl border border-[var(--color-gold)]/10 animate-fade-in space-y-4">
+                                    <div className="p-4 bg-gold/5 rounded-xl border border-gold/10 animate-fade-in space-y-4">
                                         <div className="grid grid-cols-2 gap-4">
                                             <div className="space-y-2">
                                                 <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">
@@ -1449,7 +1449,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                                             onClick={() => setPhysics(p => ({...p, selfieCameraType: type.id as 'front' | 'rear'}))}
                                                             className={`flex-1 py-2 rounded-lg border transition-all duration-300 flex flex-col items-center justify-center gap-0.5 ${
                                                                 (physics.selfieCameraType || 'front') === type.id 
-                                                                ? 'bg-[var(--color-gold)]/20 border-[var(--color-gold)] text-[var(--color-gold)]' 
+                                                                ? 'bg-gold/20 border-[var(--color-gold)] text-[var(--color-gold)]' 
                                                                 : 'bg-black/20 border-gray-800 text-gray-500 hover:border-gray-700'
                                                             }`}
                                                         >
@@ -1475,7 +1475,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                                             onClick={() => setPhysics(p => ({...p, selfieAngle: angle.id as 'high' | 'eye' | 'low'}))}
                                                             className={`flex-1 py-2 rounded-lg border transition-all duration-300 flex flex-col items-center justify-center gap-0.5 ${
                                                                 (physics.selfieAngle || 'eye') === angle.id 
-                                                                ? 'bg-[var(--color-gold)]/20 border-[var(--color-gold)] text-[var(--color-gold)]' 
+                                                                ? 'bg-gold/20 border-[var(--color-gold)] text-[var(--color-gold)]' 
                                                                 : 'bg-black/20 border-gray-800 text-gray-500 hover:border-gray-700'
                                                             }`}
                                                         >
@@ -1515,7 +1515,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                                 <span className="block text-[8px] opacity-70 font-normal tracking-normal">Pose</span>
                                             </label>
                                         </div>
-                                        <select value={pose} onChange={e => { setPose(e.target.value); setSupermodelPose(null); }} className="w-full bg-black/40 border border-gray-800 text-xs rounded-lg py-3 px-3 focus:border-[var(--color-gold)] focus:ring-1 focus:ring-[var(--color-gold)]/20 outline-none transition-all text-gray-300">
+                                        <select value={pose} onChange={e => { setPose(e.target.value); setSupermodelPose(null); }} className="w-full bg-black/40 border border-gray-800 text-xs rounded-lg py-3 px-3 focus:border-[var(--color-gold)] focus:ring-1 focus:ring-gold/20 outline-none transition-all text-gray-300">
                                             <option value="">-- 請選擇姿勢 --</option>
                                             {Object.entries(filteredGroupedPoses).map(([category, items]) => (
                                                 <optgroup label={category} key={category}>
@@ -1524,7 +1524,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                             ))}
                                         </select>
                                         {supermodelPose && (
-                                            <div className="mt-2 p-2 bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/30 rounded-lg flex justify-between items-center">
+                                            <div className="mt-2 p-2 bg-gold/10 border border-gold/30 rounded-lg flex justify-between items-center">
                                                 <span className="text-[9px] text-[var(--color-gold)] font-bold tracking-widest">已套用：超模姿態</span>
                                                 <button onClick={() => setSupermodelPose(null)} className="text-[9px] text-red-400 font-bold">取消</button>
                                             </div>
@@ -1535,7 +1535,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                             <span>表情</span>
                                             <span className="block text-[8px] opacity-70 font-normal tracking-normal">Expression</span>
                                         </label>
-                                        <select value={expression} onChange={e => setExpression(e.target.value)} className="w-full bg-black/40 border border-gray-800 text-xs rounded-lg py-3 px-3 focus:border-[var(--color-gold)] focus:ring-1 focus:ring-[var(--color-gold)]/20 outline-none transition-all text-gray-300">
+                                        <select value={expression} onChange={e => setExpression(e.target.value)} className="w-full bg-black/40 border border-gray-800 text-xs rounded-lg py-3 px-3 focus:border-[var(--color-gold)] focus:ring-1 focus:ring-gold/20 outline-none transition-all text-gray-300">
                                             <option value="">-- 請選擇表情 --</option>
                                             {Object.entries(filteredGroupedExpressions).map(([category, items]) => (
                                                 <optgroup label={category} key={category}>
@@ -1547,7 +1547,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                 </div>
 
                                 {supermodelPose && (
-                                    <div className="p-4 bg-[var(--color-gold)]/5 rounded-xl border border-[var(--color-gold)]/10 animate-fade-in">
+                                    <div className="p-4 bg-gold/5 rounded-xl border border-gold/10 animate-fade-in">
                                         <Slider 
                                             label="姿態強度 (Pose Intensity)" 
                                             min={0} 
@@ -1570,8 +1570,8 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
 
                     {/* ③ 渲染品質與比例 */}
                     {activeTab === 'settings' && (
-                    <Card className="p-0 overflow-hidden border-gray-800/50 hover:border-[var(--color-gold)]/30 transition-all duration-500">
-                        <div className="w-full flex justify-between items-center p-5 bg-[var(--color-gold)]/5">
+                    <Card className="p-0 overflow-hidden border-gray-800/50 hover:border-gold/30 transition-all duration-500">
+                        <div className="w-full flex justify-between items-center p-5 bg-gold/5">
                             <div className="flex items-center gap-4">
                                 <div className="w-10 h-10 rounded-lg flex items-center justify-center border bg-[var(--color-gold)] border-[var(--color-gold)] text-black">
                                     <TuneIcon className="w-5 h-5" />
@@ -1641,7 +1641,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                     {/* ⚠️ sticky 底欄**必須有不透明底**。第一版只寫 `sticky bottom-4` 沒有背景，
                         Chrome 實測（2026-08-12）下方內容會從按鈕後面透出來，看起來像壞掉。
                         補 `bg + backdrop-blur + border-t`，讓它讀起來是一條浮動操作列。 */}
-                    <div className="sticky bottom-0 z-30 mt-auto -mx-1 px-1 pt-3 pb-3 bg-[var(--color-bg-deep)]/95 backdrop-blur-md border-t border-[var(--color-border)]">
+                    <div className="sticky bottom-0 z-30 mt-auto -mx-1 px-1 pt-3 pb-3 bg-bg-deep/95 backdrop-blur-md border-t border-[var(--color-border)]">
                         <Button onClick={() => handleGenerate()} isLoading={isLoading} disabled={!originalBaseImage} className="w-full text-xl py-5 shadow-2xl tracking-widest uppercase btn-primary">
                             <SparklesIcon className="w-6 h-6 mr-2" /> 執行場景融合
                         </Button>
@@ -1657,7 +1657,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                 <div className="lg:col-span-8">
                     <Card className="h-full min-h-[85vh] flex flex-col p-0 overflow-hidden">
                         <div className="p-4 border-b border-[var(--color-border)] bg-[var(--color-bg-surface)] flex justify-between items-center">
-                            <span className="text-[10px] font-mono text-[var(--color-text-dim)] bg-[var(--color-bg-deep)]/40 px-3 py-1 rounded-full border border-[var(--color-border)] uppercase tracking-widest">Pavora Engine // Identity Lock</span>
+                            <span className="text-[10px] font-mono text-[var(--color-text-dim)] bg-bg-deep/40 px-3 py-1 rounded-full border border-[var(--color-border)] uppercase tracking-widest">Pavora Engine // Identity Lock</span>
                             <h3 className="text-xl font-bold tracking-[0.2em] uppercase text-[var(--color-text-title)]">Preview // 預覽結果</h3>
                         </div>
                         <div className="flex-grow bg-black flex items-center justify-center relative overflow-hidden">
@@ -1678,7 +1678,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                             return (
                                                 <div 
                                                     key={angle.id} 
-                                                    className={`relative aspect-[9/16] bg-white/5 rounded-xl border transition-all duration-300 overflow-hidden group cursor-pointer ${isSelected ? 'border-[var(--color-gold)] ring-2 ring-[var(--color-gold)]/30' : 'border-white/10'}`}
+                                                    className={`relative aspect-[9/16] bg-white/5 rounded-xl border transition-all duration-300 overflow-hidden group cursor-pointer ${isSelected ? 'border-[var(--color-gold)] ring-2 ring-gold/30' : 'border-white/10'}`}
                                                     onClick={() => result && toggleResultSelection(angle.id)}
                                                 >
                                                     {result ? (
@@ -1776,7 +1776,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                         <Button 
                                             onClick={() => setIsPrecisionMode(true)} 
                                             variant="secondary" 
-                                            className="h-10 px-6 text-[var(--color-gold)] border-[var(--color-gold)]/30 font-bold flex items-center gap-2.5 bg-[var(--color-gold)]/5 hover:bg-[var(--color-gold)]/15 shadow-[0_0_20px_rgba(212,175,55,0.08)] transition-all group whitespace-nowrap"
+                                            className="h-10 px-6 text-[var(--color-gold)] border-gold/30 font-bold flex items-center gap-2.5 bg-gold/5 hover:bg-gold/15 shadow-[0_0_20px_rgba(212,175,55,0.08)] transition-all group whitespace-nowrap"
                                         >
                                             <TuneIcon className="w-4 h-4 group-hover:rotate-180 transition-transform duration-700" /> 
                                             <span className="tracking-[0.15em] uppercase text-[11px]">局部細節修正</span>
@@ -1787,7 +1787,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                             <Button
                                                 onClick={() => setContinueMenuOpen(v => !v)}
                                                 variant="secondary"
-                                                className="h-10 px-6 border-white/10 hover:border-[var(--color-gold)]/40 text-gray-400 hover:text-white transition-all group whitespace-nowrap"
+                                                className="h-10 px-6 border-white/10 hover:border-gold/40 text-gray-400 hover:text-white transition-all group whitespace-nowrap"
                                             >
                                                 <ReplaceIcon className="w-4 h-4 mr-2.5 group-hover:rotate-12 transition-transform" />
                                                 <span className="text-[11px] font-bold tracking-[0.15em] uppercase">帶這張圖繼續 ▾</span>
@@ -1799,7 +1799,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                                         <button
                                                             key={dest}
                                                             onClick={() => { setContinueMenuOpen(false); onContinueEditing(currentImage, dest); }}
-                                                            className="w-full text-left px-4 py-2.5 text-[11px] font-bold text-gray-300 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] transition-colors border-b border-white/5 last:border-b-0"
+                                                            className="w-full text-left px-4 py-2.5 text-[11px] font-bold text-gray-300 hover:bg-gold/10 hover:text-[var(--color-gold)] transition-colors border-b border-white/5 last:border-b-0"
                                                         >
                                                             {navName(dest)}
                                                         </button>

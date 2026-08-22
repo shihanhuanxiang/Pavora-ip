@@ -201,7 +201,7 @@ const StyleAnchorStudio: React.FC<StyleAnchorStudioProps> = ({ onGoHome }) => {
                                         onClick={() => applyPreset(preset)}
                                         className={`group relative p-4 text-left border rounded-lg transition-all duration-300 ${
                                             isActive 
-                                            ? 'bg-[var(--color-gold)]/10 border-[var(--color-gold)] shadow-[0_0_15px_rgba(212,175,55,0.15)]' 
+                                            ? 'bg-gold/10 border-[var(--color-gold)] shadow-[0_0_15px_rgba(212,175,55,0.15)]' 
                                             : 'bg-gray-800/40 border-gray-700 hover:border-gray-500 hover:bg-gray-800/60'
                                         }`}
                                     >

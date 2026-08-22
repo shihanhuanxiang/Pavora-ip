@@ -68,7 +68,7 @@ const VisualStylePanel: React.FC<VisualStylePanelProps> = ({
               <button 
                 key={s.id} 
                 onClick={() => { onSchemeChange(s.id); setIsCustomColor(false); }} 
-                className={`p-2 rounded border-2 transition-all flex items-center gap-2 ${schemeId === s.id && !isCustomColor ? 'border-[var(--color-gold)] bg-[var(--color-bg-input)]' : 'border-[var(--color-border)] bg-[var(--color-bg-surface)]/50'}`}
+                className={`p-2 rounded border-2 transition-all flex items-center gap-2 ${schemeId === s.id && !isCustomColor ? 'border-[var(--color-gold)] bg-[var(--color-bg-input)]' : 'border-[var(--color-border)] bg-bg-surface/50'}`}
               >
                 <div className="w-3 h-3 rounded-full" style={{backgroundColor: s.bg}}></div>
                 <span className="text-[10px] text-[var(--color-text-main)]">{s.name}</span>
@@ -76,7 +76,7 @@ const VisualStylePanel: React.FC<VisualStylePanelProps> = ({
             ))}
             <button 
               onClick={() => setIsCustomColor(true)} 
-              className={`p-2 rounded border-2 col-span-2 flex items-center gap-2 ${isCustomColor ? 'border-[var(--color-gold)] bg-[var(--color-bg-input)]' : 'border-[var(--color-border)] bg-[var(--color-bg-surface)]/50'}`}
+              className={`p-2 rounded border-2 col-span-2 flex items-center gap-2 ${isCustomColor ? 'border-[var(--color-gold)] bg-[var(--color-bg-input)]' : 'border-[var(--color-border)] bg-bg-surface/50'}`}
             >
               <div className="w-3 h-3 rounded-full bg-gradient-to-tr from-red-500 to-blue-500"></div>
               <span className="text-[10px] text-[var(--color-text-main)]">自訂底色</span>

@@ -51,7 +51,7 @@ const Select: React.FC<SelectProps> = ({ label, tooltip, options, className, isL
       <div className="relative">
         <select
           id={props.id || (typeof label === 'string' ? label : undefined)}
-          className={`appearance-none bg-[var(--color-bg-input)] border border-[var(--color-border)] text-[var(--color-text-main)] text-sm rounded-md w-full py-2.5 px-4 focus:border-[var(--color-gold)] focus:outline-none transition-all duration-300 hover:border-[var(--color-gold)]/50 font-sans active:scale-[0.98] cursor-pointer ${className || ''}`}
+          className={`appearance-none bg-[var(--color-bg-input)] border border-[var(--color-border)] text-[var(--color-text-main)] text-sm rounded-md w-full py-2.5 px-4 focus:border-[var(--color-gold)] focus:outline-none transition-all duration-300 hover:border-gold/50 font-sans active:scale-[0.98] cursor-pointer ${className || ''}`}
           {...props}
         >
           {options.map((option, idx) => {

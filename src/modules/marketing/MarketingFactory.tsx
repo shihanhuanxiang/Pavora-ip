@@ -496,7 +496,7 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
         <div className="home-workbench min-h-screen pb-20 flex flex-col">
             {/* Image Zoom Modal（圖片展示深底合理，比照結果矩陣慣例保留） */}
             {selectedImage && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[var(--color-bg-deep)]/95 text-white p-4 animate-fade-in" onClick={() => setSelectedImage(null)}>
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-bg-deep/95 text-white p-4 animate-fade-in" onClick={() => setSelectedImage(null)}>
                     <button className="absolute top-8 right-8 p-3 bg-white/10 rounded-full hover:bg-white/20 transition-all text-white">
                         <CloseIcon className="w-6 h-6" />
                     </button>
@@ -589,7 +589,7 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
                                             )}
                                             <button
                                                 onClick={() => removeItem(item.id)}
-                                                className="absolute top-1 left-1 bg-[var(--color-bg-deep)]/60 text-[var(--color-text-title)] w-4 h-4 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                                className="absolute top-1 left-1 bg-bg-deep/60 text-[var(--color-text-title)] w-4 h-4 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                                             >
                                                 <CloseIcon className="w-2 h-2" />
                                             </button>
@@ -777,7 +777,7 @@ const MarketingFactory: React.FC<MarketingFactoryProps> = ({ onGoHome, initialVi
                             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-fade-in">
                                 {results.map((res) => (
                                     <div key={res.id} className="home-card p-0 overflow-hidden group relative hover:border-brass/50 transition-all">
-                                        <div className="aspect-[3/4] bg-[var(--color-bg-deep)]/20 cursor-zoom-in" onClick={() => res.mediaType === 'image' && setSelectedImage(res.url)}>
+                                        <div className="aspect-[3/4] bg-bg-deep/20 cursor-zoom-in" onClick={() => res.mediaType === 'image' && setSelectedImage(res.url)}>
                                             {res.mediaType === 'video' ? (
                                                 <VideoPlayer src={res.url} className="w-full h-full object-cover" controls />
                                             ) : (
