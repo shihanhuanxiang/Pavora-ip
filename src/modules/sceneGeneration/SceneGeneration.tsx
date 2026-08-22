@@ -55,6 +55,8 @@ import AsyncImage from '../../shared/components/common/AsyncImage';
 // ⛔ 不要在本檔另寫一份頁籤——A-4 抽元件的全部意義就是避免「改一個顏色要改四個地方」。
 import TabBar from '../../shared/components/common/TabBar';
 import { useNotification } from '../../shared/context/NotificationContext';
+import { savePortfolioItem } from '../../shared/services/storageService';
+import { navName } from '../../shell/navRegistry';
 
 interface SceneGenerationProps {
   onGoHome: () => void;
@@ -69,6 +71,17 @@ type QualityLevel = 'standard' | 'high' | 'ultra';
 type AspectRatio = '9:16' | '3:4' | '1:1' | '4:3' | '16:9';
 
 const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImage, onContinueEditing, selectedModel }) => {
+    /**
+     * 2026-08-14（UX 表 03-06）：「繼續」的目的地選單。
+     *
+     * ⚠️ 順手修掉一個**壞按鈕**：這顆原本寫 `onContinueEditing(currentImage, 'fitting')`，
+     * 但 `App.handleNavigate` 只有 `case 'fitting_room'`，**沒有 `'fitting'`**，
+     * 於是走到 `default: WorkflowStep.HOMEPAGE`——按「繼續試衣流程」會被丟回首頁。
+     * `navRegistry` 的檔頭早就警告過這件事（id 對不上 switch case ＝ 死按鈕），
+     * 全 repo 也只有這一處用 `'fitting'`。
+     * 這也推翻了 UX 表 03-13「場景轉移→試衣間有單向串接」的判定：那條單向本來是壞的。
+     */
+    const [continueMenuOpen, setContinueMenuOpen] = useState(false);
     const [originalBaseImage, setOriginalBaseImage] = useState<{ url: string; fileData: { data: string; mimeType: string; } } | null>(initialImage || null);
     const [faceAnchor, setFaceAnchor] = useState<{ url: string; fileData: { data: string; mimeType: string; } } | null>(initialImage ? initialImage : null);
 
@@ -686,26 +699,59 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
         }
     };
 
+    /**
+     * 2026-08-14（UX 表 03-01）：場景轉移原本**只能下載，不能入庫**。
+     *
+     * `savePortfolioItem` 早就存在，另外四個模組（FantasySeries／LuxuryVisual／
+     * MacroCraft／StyleAnchor）都在用，只有場景轉移沒接——產出只能落到下載資料夾，
+     * 作品庫裡看不到，等於這個模組的成果沒有被系統記住。
+     *
+     * ⚠️ 入庫失敗不得吃掉：照既有四個模組的慣例，下載照做、另外提示入庫失敗，
+     * 不要讓使用者以為已經存好了（那正是階段 5 修掉的 03-02「文案騙人」那類問題）。
+     */
+    const saveToPortfolio = async (urls: string[]) => {
+        if (urls.length === 0) return;
+        try {
+            for (const url of urls) {
+                await savePortfolioItem({ imageUrl: url, sourceModule: 'SceneGeneration' });
+            }
+            addNotification({
+                type: 'success',
+                message: urls.length > 1 ? `已下載並存入作品庫（${urls.length} 張）` : '已下載並存入作品庫',
+            });
+        } catch (e) {
+            console.error('[SceneGeneration] 入庫失敗', e);
+            addNotification({ type: 'error', message: '已下載，但存入作品庫失敗，請稍後再試。' });
+        }
+    };
+
     const handleDownloadAll = () => {
+        const saved: string[] = [];
         if (isMultiAngleGen && Object.keys(multiAngleResults).length > 0) {
             Object.entries(multiAngleResults).forEach(([id, url]) => {
                 if (url && typeof url === 'string') {
                     downloadImage(url, `pavora_scene_${id}_all_${Date.now()}.jpg`, 'SceneGeneration');
+                    saved.push(url);
                 }
             });
         } else if (currentImage) {
             downloadImage(currentImage, `pavora_scene_result_${Date.now()}.jpg`, 'SceneGeneration');
+            saved.push(currentImage);
         }
+        void saveToPortfolio(saved);
     };
 
     const handleDownloadSelected = () => {
         if (isMultiAngleGen && selectedResults.size > 0) {
+            const saved: string[] = [];
             Array.from(selectedResults).forEach(id => {
                 const url = multiAngleResults[id];
                 if (url && typeof url === 'string') {
                     downloadImage(url, `pavora_scene_${id}_selected_${Date.now()}.jpg`, 'SceneGeneration');
+                    saved.push(url);
                 }
             });
+            void saveToPortfolio(saved);
         } else {
             handleDownloadAll();
         }
@@ -1275,7 +1321,20 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
 
                         <div className="p-6">
                             <div className="flex justify-end mb-4">
-                                <button onClick={handleRandomize} className="p-1.5 rounded-full bg-[var(--color-bg-input)] border border-[var(--color-gold)]/40 text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-black transition-all duration-300" title="隨機生成場景配置"><DiceIcon className="w-4 h-4" /></button>
+                                {/*
+                                  * 2026-08-14（UX 表 03-10）：原本是 `p-1.5` ＋ `w-4 h-4` 的純圖示鈕，
+                                  * 沒有文字，操作者反映看不出那是什麼、也不容易點到。
+                                  * 改成帶文字的膠囊鈕（點擊區從 28px 放大到約 36px 高），
+                                  * 樣式仍沿用暗色系的 gold 描邊，不新增設計語言。
+                                  */}
+                                <button
+                                    onClick={handleRandomize}
+                                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-bg-input)] border border-[var(--color-gold)]/40 text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-black transition-all duration-300 group"
+                                    title="隨機生成場景配置"
+                                >
+                                    <DiceIcon className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+                                    <span className="text-[10px] font-bold uppercase tracking-widest">隨機配置</span>
+                                </button>
                             </div>
                             <div className="space-y-5">
                                     <div>
@@ -1724,14 +1783,30 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                         </Button>
                                     )}
                                     {currentImage && (
-                                        <Button 
-                                            onClick={() => onContinueEditing(currentImage, 'fitting')} 
-                                            variant="secondary" 
-                                            className="h-10 px-6 border-white/10 hover:border-[var(--color-gold)]/40 text-gray-400 hover:text-white transition-all group whitespace-nowrap"
-                                        >
-                                            <ReplaceIcon className="w-4 h-4 mr-2.5 group-hover:rotate-12 transition-transform" /> 
-                                            <span className="text-[11px] font-bold tracking-[0.15em] uppercase">繼續試衣流程</span>
-                                        </Button>
+                                        <div className="relative">
+                                            <Button
+                                                onClick={() => setContinueMenuOpen(v => !v)}
+                                                variant="secondary"
+                                                className="h-10 px-6 border-white/10 hover:border-[var(--color-gold)]/40 text-gray-400 hover:text-white transition-all group whitespace-nowrap"
+                                            >
+                                                <ReplaceIcon className="w-4 h-4 mr-2.5 group-hover:rotate-12 transition-transform" />
+                                                <span className="text-[11px] font-bold tracking-[0.15em] uppercase">帶這張圖繼續 ▾</span>
+                                            </Button>
+                                            {continueMenuOpen && (
+                                                <div className="absolute bottom-full mb-2 left-0 z-50 min-w-[190px] bg-[var(--color-bg-card)] border border-white/15 rounded-xl shadow-2xl overflow-hidden backdrop-blur-xl">
+                                                    {/* 名稱一律取自 navRegistry（00-17 的精神：不在畫面寫死功能名） */}
+                                                    {['fitting_room', 'salon', 'portfolio_optimization', 'apparel'].map(dest => (
+                                                        <button
+                                                            key={dest}
+                                                            onClick={() => { setContinueMenuOpen(false); onContinueEditing(currentImage, dest); }}
+                                                            className="w-full text-left px-4 py-2.5 text-[11px] font-bold text-gray-300 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] transition-colors border-b border-white/5 last:border-b-0"
+                                                        >
+                                                            {navName(dest)}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
                                     )}
                                 </div>
                             </div>
@@ -1755,7 +1830,7 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                                     variant="secondary"
                                                     className="h-full px-6 text-[11px] font-bold tracking-[0.2em] border-none hover:bg-white/10 rounded-none transition-colors border-r border-white/10 whitespace-nowrap uppercase"
                                                 >
-                                                    下載全部 (ALL)
+                                                    下載並入庫 · 全部
                                                 </Button>
                                             )}
                                             <Button 
@@ -1764,8 +1839,8 @@ const SceneGeneration: React.FC<SceneGenerationProps> = ({ onGoHome, initialImag
                                                 className="h-full px-8 text-[11px] font-bold tracking-[0.2em] rounded-none shadow-gold hover:brightness-110 transition-all whitespace-nowrap uppercase"
                                             >
                                                 {isMultiAngleGen && selectedResults.size > 0 
-                                                    ? `匯出選中 (${selectedResults.size})` 
-                                                    : isMultiAngleGen ? '下載當前圖片' : '下載結果 (EXPORT)'}
+                                                    ? `下載並入庫 · 選中 ${selectedResults.size} 張` 
+                                                    : isMultiAngleGen ? '下載並入庫 · 當前圖' : '下載並入庫'}
                                             </Button>
                                         </div>
                                     </div>

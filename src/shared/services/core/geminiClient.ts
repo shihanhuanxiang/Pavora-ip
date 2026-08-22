@@ -55,7 +55,27 @@ export const isServerQuotaError = (err: unknown): boolean => {
     return msg.includes('QUOTA_EXCEEDED');
 };
 
+/**
+ * 2026-08-14（UX 表 04-10）：付費確認可以「本次瀏覽期間不再詢問」。
+ *
+ * 改版前每一次都彈一次窗、每一次都要重選——而合輯卡、角色矩陣這些地方
+ * 一輪操作會連續呼叫好幾次（`CompositeCardStudio` 就有兩個呼叫點），
+ * 使用者得一直按「確認繼續」。
+ *
+ * ⚠️ **刻意用 `sessionStorage` 而不是 `localStorage`。**
+ * 這是**金錢同意**：永久記住的話，使用者幾週後早就忘記自己同意過什麼，
+ * 卻還在無聲產生費用。sessionStorage 的語意剛好對——關掉分頁就重新問一次。
+ */
+export const PAID_CONFIRM_SESSION_KEY = 'pavora_paid_confirmed_session';
+
 export const confirmPaidFeature = async (): Promise<boolean> => {
+    try {
+        if (typeof window !== 'undefined' && window.sessionStorage?.getItem(PAID_CONFIRM_SESSION_KEY) === '1') {
+            return true;
+        }
+    } catch {
+        // sessionStorage 不可用（隱私模式等）就照原本流程問一次，不要因此擋住功能
+    }
     return new Promise((resolve) => {
         const event = new CustomEvent('PAVORA_CONFIRM_PAID', {
             detail: { resolve }

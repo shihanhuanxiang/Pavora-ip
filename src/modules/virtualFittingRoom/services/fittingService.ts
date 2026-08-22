@@ -322,6 +322,16 @@ Update the existing ${vtoCategoryToEnglish(category)} in Asset 3 with the new de
 
         if (isSafetyError) {
             console.warn("VTO: First attempt blocked by safety filters. Retrying with simplified prompt...");
+            /**
+             * 2026-08-14（UX 表 04-15 的鄰居 04-05）：**重試要讓使用者看得到。**
+             *
+             * 這道自動重試存在很久了，但只寫 `console.warn`——畫面上完全沒有動靜。
+             * 使用者看到的是「進度條卡在同一句話、時間變成兩倍」，
+             * 完全不知道發生了什麼，也不知道是不是該重按一次。
+             * 安全過濾誤擋在這個專案是**常態不是邊緣案例**，所以這個提示是必要的。
+             * `onProgress` 本來就在 scope 裡（第 162 行的參數），直接用。
+             */
+            onProgress('這組素材被安全過濾擋下，正在用簡化提示自動重試一次...');
             
             const retryPrompt = `Fashion catalog production: Transfer garment from Asset 2 to model in Asset 3. Maintain model characteristics from Asset 1. High-end studio photography.`;
             // Stage 1b batch 2: pure-English literal retry template — safe to enforce.

@@ -7,6 +7,7 @@ import type { TaxonomyData } from '../shared/services/taxonomyService';
 import Header from './Header';
 import Loader from '../shared/components/common/Loader';
 import { getImagenUsage, imageUrlToimageData } from '../shared/services/geminiService';
+import { PAID_CONFIRM_SESSION_KEY } from '../shared/services/core/geminiClient';
 import HomePage from './HomePage';
 import QuotaErrorModal from '../shared/components/common/QuotaErrorModal';
 import PaidFeatureModal from '../shared/components/common/PaidFeatureModal';
@@ -197,7 +198,17 @@ const App: React.FC<AppProps> = ({ taxonomyData }) => {
   }, [pendingApparelId]);
 
   const toggleTheme = useCallback(() => setIsDarkMode(prev => !prev), []);
-  const handlePaidConfirm = () => { if (paidModalConfig?.resolve) paidModalConfig.resolve(true); setPaidModalConfig(null); };
+  /**
+   * 2026-08-14（UX 04-10）：勾了「本次瀏覽期間不再詢問」就寫進 sessionStorage，
+   * `confirmPaidFeature()` 下次會直接放行。**刻意不用 localStorage**——見該函式註解。
+   */
+  const handlePaidConfirm = (remember: boolean) => {
+    if (remember) {
+      try { sessionStorage.setItem(PAID_CONFIRM_SESSION_KEY, '1'); } catch { /* 隱私模式：記不住就每次問，不影響功能 */ }
+    }
+    if (paidModalConfig?.resolve) paidModalConfig.resolve(true);
+    setPaidModalConfig(null);
+  };
   const handlePaidCancel = () => { if (paidModalConfig?.resolve) paidModalConfig.resolve(false); setPaidModalConfig(null); };
   const setWorkflowStepWithPath = useCallback((step: WorkflowStep) => {
     setWorkflowStep(step);

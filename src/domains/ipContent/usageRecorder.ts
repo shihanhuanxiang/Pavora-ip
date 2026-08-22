@@ -22,6 +22,14 @@ export interface UsageLogEntry {
   kind: UsageKind;
   model_id?: string;
   scene_id?: string;
+  /**
+   * 2026-08-14（UX 表 04-15）：這次生成用到的服裝／素材 id。
+   *
+   * 原本只記 model_id 與 scene_id，於是「這張圖穿的是哪一件」完全沒被記下來——
+   * 試衣間是最需要它的地方（同一個模特兒試 20 件，事後分不出哪張對應哪件）。
+   * optional，既有紀錄不受影響。
+   */
+  asset_id?: string;
   ok: boolean;
   ts: number;
 }
@@ -57,6 +65,8 @@ export const recordGeneration = (entry: {
   kind: UsageKind;
   model_id?: string;
   scene_id?: string;
+  /** 2026-08-14（UX 表 04-15）：本次生成用到的服裝／素材 id。 */
+  asset_id?: string;
   ok: boolean;
   ts?: number;
 }): void => {
@@ -68,6 +78,7 @@ export const recordGeneration = (entry: {
       kind: entry.kind,
       model_id: entry.model_id,
       scene_id: entry.scene_id,
+      asset_id: entry.asset_id,
       ok: entry.ok,
       ts: entry.ts ?? Date.now(),
     };

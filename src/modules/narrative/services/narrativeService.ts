@@ -234,7 +234,15 @@ const pickOutfit = (model: Model, contextInput: string | string[], targetTier: n
 export const getOutfitOptionsForScene = (
     model: Model,
     sceneId: string
-): { topPick: OutfitV2; alternatives: OutfitV2[] } => {
+): { topPick: OutfitV2; alternatives: OutfitV2[]; allCandidates: OutfitV2[] } => {
+    /**
+     * 2026-08-14（UX 表 02-08）：多回一個 `allCandidates`。
+     *
+     * 這支原本只回 topPick ＋ **隨機取 3 套** alternatives，於是使用者在第二步
+     * 永遠只看得到 4 個選項，而該場景實際可穿的可能有幾十套——想換只能一直重進。
+     * `allCandidates` 是**依分數排序的完整候選池**（不是只有高分的 pool60），
+     * 因為「看全部」就該是全部；分數低的排後面，由使用者自己決定要不要用。
+     */
     // 1. 取得場景的 outfit_filter contexts
     const scene = ALL_EXTENDED_SCENES.find(s => s.scene_id === sceneId);
     const contextIds: string[] = (scene as any)?.outfit_filter?.length
@@ -270,7 +278,7 @@ export const getOutfitOptionsForScene = (
     }
     if (candidatePool.length === 0) {
         const fallback = OUTFIT_SEEDS_V2[0];
-        return { topPick: fallback, alternatives: [] };
+        return { topPick: fallback, alternatives: [], allCandidates: [fallback] };
     }
 
     // 3. 評分（與 pickOutfit 完全一致）
@@ -324,7 +332,10 @@ export const getOutfitOptionsForScene = (
     }
     const alternatives = alternativePool.slice(0, 3);
 
-    return { topPick, alternatives };
+    // 完整候選池：依分數高到低，topPick 排第一（它就是最高分那套）。
+    const allCandidates = [...scored].sort((a, b) => b.score - a.score).map(x => x.outfit);
+
+    return { topPick, alternatives, allCandidates };
 };
 
 /**
@@ -772,9 +783,37 @@ const buildFinalVisualPromptV11 = (
         // 如果 IP 有設定招牌姿勢，90% 機率優先使用
         const signaturePoses = model.visualConstants?.signaturePoses || [];
         if (signaturePoses.length > 0 && Math.random() < 0.9) {
+            // 招牌姿勢是使用者對這個 IP 刻意設定的，維持原本的絕對優先，不加事件優先序。
             layer8_5 = signaturePoses[Math.floor(Math.random() * signaturePoses.length)];
         } else {
-            layer8_5 = compositionPool[Math.floor(Math.random() * compositionPool.length)];
+            /**
+             * 2026-08-14（G05 實機抓到，Hank 交辦的「發現 3」）：
+             * **`compositionPool` 從「指定唯一解」降級為「只設下限」。**
+             *
+             * 問題現場：事件文字寫「共享辦公室午後，坐在桌邊整理筆電和咖啡杯」，
+             * 但 pool 抽到 `subject leaning against wall...`，出圖就是**站著靠在植物架旁、
+             * 手上拿飲料、畫面裡沒有筆電**。事件文字進了日記卻完全沒進圖。
+             *
+             * 根因：pool 裡這 32 條**每一條都同時鎖了鏡頭 ＋ 姿勢 ＋ 表情**
+             * （`head tilted back mid-laugh`、`both hands on cheeks`、`mid-jump`…），
+             * 語氣還是 `COMPOSITION MUST BE`，於是事件文字描述的動作被整個蓋掉。
+             *
+             * 這正是 6-A 自己寫下的教訓的反面：**強制層只該設下限，不該指定唯一解**
+             * （6-A 初版把每個變數鎖死，出來四張圖姿勢表情一模一樣）。
+             * pool 的價值是「鏡頭與構圖多樣性」——它防的是證件照式構圖；
+             * 姿勢與表情不該由它決定。
+             *
+             * 修法：保留 pool（多樣性照舊），但明寫優先序——
+             * 事件文字有交代動作時，鏡頭與框取照 pool、**姿勢照事件**；
+             * 事件沒交代動作時行為與改版前完全相同（退化路徑就是現況，不會更糟）。
+             *
+             * ⚠️ 未解的另一半（需 Hank 裁決，見交接檔）：服裝自帶的 `hand_occupation`／`props`
+             * 也會蓋掉事件的道具（G05 那張在咖啡廳拿「夜市飲料杯」就是這條），
+             * 那個要靠場景 `safe_matrix.prop_pool` 過濾，但目前只有 46 個攝影場景有 safe_matrix，
+             * 一般場景沒有，所以不能用同一招解決。
+             */
+            const composition = compositionPool[Math.floor(Math.random() * compositionPool.length)];
+            layer8_5 = `${composition} — PRECEDENCE RULE: if the event text for this post describes a specific action, posture, seated position or held object, that action always wins; from this line keep only the lens choice and framing ratio, and discard its posture, gesture and expression suggestion`;
         }
     }
     
@@ -905,7 +944,21 @@ export const generateDynamicEvent = async (model: Model, lastEntry?: { content?:
 /**
  * Generates a dynamic event with a scene ID for consistency (AI Generated version).
  */
-export const generateDynamicEventWithScene = async (model: Model, lastEntry?: { content?: string, mood?: string }): Promise<{ text: string, sceneId?: string }> => {
+export const generateDynamicEventWithScene = async (
+    model: Model,
+    lastEntry?: { content?: string, mood?: string },
+    /**
+     * 2026-08-14（UX 表 02-07）：Step 1 畫面上的地區／類別篩選。
+     *
+     * 改版前 AI 感應卡完全不看使用者選的 chip——選了「咖啡日常 · 北部」，
+     * 它照樣從全池抽，抽到宜蘭泳池也不奇怪。
+     * ⚠️ 這裡的篩選語意必須與 `NarrativeWorkflow.refreshRandomCards` **逐字一致**
+     * （含「先排除 urban_street 再比對」那段），否則同一組 chip 在
+     * 「固定場景卡」與「AI 感應卡」兩個入口會給出不同結果——
+     * 那正是 2026-08-14 在 `runChangeScene` / `handleSwapScene` 上發現的同型問題。
+     */
+    filter?: { region?: string | null; contexts?: string[] }
+): Promise<{ text: string, sceneId?: string }> => {
     const client = await getGeminiClient(true) as any;
     
     // 1. Identify Target Location
@@ -930,7 +983,33 @@ export const generateDynamicEventWithScene = async (model: Model, lastEntry?: { 
     if (safeCandidates.length === 0) {
         console.warn('[PAVORA][sceneSafe] 安全過濾後場景池為空，退回未過濾池', { targetCity, targetDistrict, poolSize: candidates.length });
     }
-    const scene = effectiveCandidates[Math.floor(Math.random() * effectiveCandidates.length)] || LOCALIZED_SCENES[0];
+    /**
+     * 2026-08-14（UX 表 02-07）：套用畫面上的篩選。
+     * 「寧漏擋不誤殺」——篩完為空就退回未篩池並 warn，不要讓使用者按了沒反應。
+     */
+    let filteredCandidates = effectiveCandidates;
+    if (filter?.region) {
+        const byRegion = filteredCandidates.filter(s => {
+            const r = (s as any).region;
+            return r === filter.region || r === 'all';
+        });
+        if (byRegion.length > 0) filteredCandidates = byRegion;
+        else console.warn('[PAVORA][02-07] 地區篩選後場景池為空，退回未篩池', { region: filter.region });
+    }
+    if (filter?.contexts?.length) {
+        const wanted = filter.contexts;
+        const byContext = filteredCandidates.filter(s => {
+            const of = (s as any).outfit_filter as string[] | undefined;
+            if (!of?.length) return false;
+            const nonUrban = of.filter((ctx: string) => ctx !== 'urban_street');
+            const effective = nonUrban.length > 0 ? nonUrban : of;
+            return effective.some((ctx: string) => wanted.includes(ctx));
+        });
+        if (byContext.length > 0) filteredCandidates = byContext;
+        else console.warn('[PAVORA][02-07] 類別篩選後場景池為空，退回未篩池', { contexts: wanted });
+    }
+
+    const scene = filteredCandidates[Math.floor(Math.random() * filteredCandidates.length)] || LOCALIZED_SCENES[0];
     const sceneId = (scene as any).scene_id || (scene as any).id;
 
     const identityHeader = `
@@ -1760,11 +1839,33 @@ export const generateIPDiary = async (model: Model, event: string, options?: { i
              *
              * 靠 LLM 自己想到就等於沒有規則。這裡跟臉部守衛同一道回檢一起確定性補上。
              * ⚠️ 措辭必須是**否定句**：這些詞本身是禁用詞，正面寫出來就是污染源。
+             *
+             * ⛔⛔ **2026-08-14 修正（Hank 裁決 B）：這一句刻意不用 `mole` / `freckle` /
+             * `beauty mark` / `birthmark` / `skin mark` 這幾個字，不是忘記，是必須避開。**
+             *
+             * 原本寫的是 `no moles, no freckles, no beauty marks, no birthmarks, ...`，
+             * 但 `promptSanitizer.ts` 的 `sanitizePromptText` 會把
+             * `FORBIDDEN_FACIAL_MARK_TERMS` 裡的詞**無條件刪除，完全不看前面有沒有 `no`**。
+             * 於是真正送進生圖模型的變成：
+             *   `no added facial marks of any kind: no, no, no, no, no dark spots or patches...`
+             * —— 四個最關鍵的詞全部消失，W-7 這條修正的效果只剩最後半句。
+             * 2026-08-14 實機出圖（G05／Kai）抓到的現場證據，debug snapshot 的
+             * `removedTerms: ["freckles","moles"]` 也印著。
+             *
+             * 更糟的是**當時的驗收對它是盲的**：條件寫「未被否定的痣斑詞 0」，
+             * 而詞被整個刪掉之後這個檢查當然是 0。
+             * 教訓：驗「規則有沒有生效」要檢查**規則本身還在不在**，
+             * 不能只檢查「壞東西有沒有出現」。
+             *
+             * 所以改成 sanitizer 詞表**不會命中**的等價英文（色素點／色素斑點／深色小點／先天色素）。
+             * ⛔ 未來要改這一句：先確認新措辭不在 `FORBIDDEN_FACIAL_MARK_TERMS` 裡，
+             * 否則會靜默退回 `no, no, no,`。⛔ 也不要為此在 sanitizer 開否定語境例外
+             * —— 它是最後一道硬防線，開例外等於給繞過留門。
              */
             const guards: string[] = [
                 'face fully visible and unobstructed',
                 'hands away from the face',
-                'no added facial marks of any kind: no moles, no freckles, no beauty marks, no birthmarks, no dark spots or patches on the face beyond what the reference image already shows',
+                'no added facial marks of any kind: no small pigmented dots, no scattered pigment specks across the cheeks or nose, no isolated dark points near the eyes or mouth, no congenital pigmentation patches, nothing on the face beyond what the reference image already shows',
             ];
             if (expressionStyleEn) guards.push(`expression must be ${expressionStyleEn}`);
             else guards.push('a natural understated expression with subtle variation, no exaggerated laughing, no wide-open mouth, no theatrical surprise');

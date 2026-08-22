@@ -5,11 +5,17 @@ import WarningIcon from '../../assets/icons/WarningIcon';
 
 interface PaidFeatureModalProps {
   isOpen: boolean;
-  onConfirm: () => void;
+  /** 2026-08-14（UX 04-10）：`remember` ＝ 使用者勾了「本次瀏覽期間不再詢問」。 */
+  onConfirm: (remember: boolean) => void;
   onCancel: () => void;
 }
 
 const PaidFeatureModal: React.FC<PaidFeatureModalProps> = ({ isOpen, onConfirm, onCancel }) => {
+  const [remember, setRemember] = React.useState(false);
+
+  // 每次重新開啟都回到「未勾選」——不要讓上一次的勾選狀態影響下一次的判斷。
+  React.useEffect(() => { if (isOpen) setRemember(false); }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
@@ -25,9 +31,18 @@ const PaidFeatureModal: React.FC<PaidFeatureModalProps> = ({ isOpen, onConfirm, 
             <br/><br/>
             這屬於付費 API 功能，可能會產生額外費用。請確認您已了解並同意繼續。
           </p>
+          <label className="flex items-center gap-2 mb-4 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={remember}
+              onChange={e => setRemember(e.target.checked)}
+              className="w-4 h-4 accent-yellow-600 cursor-pointer"
+            />
+            <span className="text-[12px] text-gray-400">本次瀏覽期間不再詢問（關閉分頁後會重新確認）</span>
+          </label>
           <div className="flex gap-3 w-full">
             <Button variant="secondary" onClick={onCancel} className="flex-1">取消</Button>
-            <Button onClick={onConfirm} className="flex-1 bg-yellow-600 hover:bg-yellow-500 text-white border-none">確認繼續</Button>
+            <Button onClick={() => onConfirm(remember)} className="flex-1 bg-yellow-600 hover:bg-yellow-500 text-white border-none">確認繼續</Button>
           </div>
         </div>
       </Card>

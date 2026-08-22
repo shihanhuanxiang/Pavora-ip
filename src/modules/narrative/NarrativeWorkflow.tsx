@@ -19,7 +19,6 @@ import { runPromptPipeline } from '../../promptPipeline';
 import { isSceneCombinationSafe } from '../../domains/scene/sceneSafeMatrix';
 
 import { WardrobeManager } from './components/WardrobeManager';
-import { StoryProgressBoard } from './components/StoryProgressBoard';
 import { NarrativeSettings } from './components/NarrativeSettings';
 import type { WeeklyPlanBrief } from '../../shared/types/types';
 import pavoraLogoIcon from '../../shared/assets/brand/pavora_logo_icon_codex.svg';
@@ -112,6 +111,23 @@ const translateClothing = (text: any): string => {
     return result.slice(0, 18);
 };
 
+/**
+ * 畫質三檔的顯示名稱（2026-08-14，企劃案 B-2 收尾）。
+ *
+ * 內部值 `HD` / `Cinematic` / `Pro` 是既有 API 分支的 key（決定 imageSize 與模型），
+ * **不可改動**；這裡只統一「畫面上顯示什麼」。
+ * B-2 定案：命名講用途，不用 `HD` 暗示解析度。場景轉移 2026-08-09 已改成
+ * 草稿／標準／商業級，本頁是當時漏掉的另一半（原本顯示「高解析度 1K／電影級 2K／臉部鎖定 4K」，
+ * 第 5 步的成果摘要甚至直接印內部值 `HD`）。
+ */
+const QUALITY_LABELS: Record<string, string> = {
+    HD: '草稿 1K',
+    Cinematic: '標準 2K',
+    Pro: '商業級 4K',
+};
+
+const qualityLabel = (value: string): string => QUALITY_LABELS[value] || value;
+
 const NARRATIVE_STAGE_META = [
     { step: 1, label: '場景定錨', caption: 'Scene' },
     { step: 2, label: '造型選角', caption: 'Wardrobe' },
@@ -197,13 +213,25 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
     const [pickerRegion, setPickerRegion] = useState<string | null>(null);
     const [pickerCategory, setPickerCategory] = useState<string | null>(null);
     const [pickerSceneCards, setPickerSceneCards] = useState<Array<{scene: any; eventText: string}>>([]);
+    /**
+     * 2026-08-14（UX 表 02-06／02-08）：Step 1 的「看全部」與搜尋。
+     *
+     * 改版前 Step 1 只有 3 張隨機卡＋「換一批」，**沒有任何辦法指定場景**。
+     * 實測代價：為了抽到「共享辦公室訪客等待」按了 60 批共 180 張都沒抽到
+     * （洗牌用 `sort(() => Math.random() - 0.5)`，本身還有偏），
+     * 而場景池有 252 個——等於使用者永遠只看得到隨機的一小角。
+     */
+    const [showAllScenes, setShowAllScenes] = useState(false);
+    const [sceneSearch, setSceneSearch] = useState('');
     const [pickerAICardScene, setPickerAICardScene] = useState<any | null>(null);
     const [pickerAICardText, setPickerAICardText] = useState<string>('');
     const [isAICardLoading, setIsAICardLoading] = useState(false);
     // Step 1→2：確認的場景
     const [confirmedScene, setConfirmedScene] = useState<any | null>(null);
     // Step 2：服裝選項（getOutfitOptionsForScene 結果）
-    const [pickerOutfitOptions, setPickerOutfitOptions] = useState<{topPick: any; alternatives: any[]} | null>(null);
+    const [pickerOutfitOptions, setPickerOutfitOptions] = useState<{topPick: any; alternatives: any[]; allCandidates?: any[]} | null>(null);
+    /** 2026-08-14（UX 表 02-08）：第二步「看全部服裝」——場景那半（02-06）同一個模式。 */
+    const [showAllOutfits, setShowAllOutfits] = useState(false);
     // Step 2→3：確認的服裝 ID（避免 updateModel async stale state）
     const [confirmedOutfitId, setConfirmedOutfitId] = useState<string | null>(null);
     // Step 5：平台發文
@@ -522,7 +550,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                     {diary && <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-sage)] animate-pulse"></span>}
                 </div>
                 <div className="flex items-center gap-2">
-                    {!isExpanded && diary && <span className="text-[8px] text-gray-500 font-mono">{aspectRatio} · {quality} · {isPOV ? '第一人稱' : '第三人稱'}</span>}
+                    {!isExpanded && diary && <span className="text-[8px] text-gray-500 font-mono">{aspectRatio} · {qualityLabel(quality)} · {isPOV ? '第一人稱' : '第三人稱'}</span>}
                     <svg className={`w-3.5 h-3.5 text-gray-500 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg>
                 </div>
             </button>
@@ -552,7 +580,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                             <div className="flex items-center gap-1.5">
                                 <span className="text-[10px] text-white font-mono">{aspectRatio}</span>
                                 <span className="text-[10px] text-white/30">/</span>
-                                <span className="text-[10px] text-white font-mono">{quality}</span>
+                                <span className="text-[10px] text-white font-mono">{qualityLabel(quality)}</span>
                             </div>
                         </div>
                         <div className="space-y-1 col-span-2">
@@ -762,15 +790,29 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         return runGenerateDiary(forcedId, forcedEventText, forcedOutfitId);
     };
 
-    const handleSyncPrompt = async () => {
+    /**
+     * 2026-08-14（UX 表 02-12）：改成**明確指定方向**。
+     *
+     * 舊版簽名是 `handleSyncPrompt()`，內部用 `activePromptLang` 決定來源，
+     * 按鈕寫「⇄ 雙向同步」——但它實際做的是**單向覆蓋**：
+     * 以當前顯示的語言為來源，把另一邊整個蓋掉。
+     * 使用者以為兩邊都會保留，結果自己改過的那一邊消失了，
+     * 而且**看不出是哪一邊被蓋**（取決於當下停在哪個語言頁籤）。
+     *
+     * 現在拆成「中文 → 英文」「英文 → 中文」兩顆，覆蓋方向寫在按鈕上。
+     */
+    const handleSyncPrompt = async (from: 'ZH' | 'EN') => {
         if (!editablePromptZH && !editablePrompt) return;
         setIsSyncing(true);
         try {
-            const textToSync = activePromptLang === 'ZH' ? editablePromptZH : editablePrompt;
-            const result = await syncPrompts(textToSync, activePromptLang);
+            const textToSync = from === 'ZH' ? editablePromptZH : editablePrompt;
+            const result = await syncPrompts(textToSync, from);
             setEditablePrompt(result.EN);
             setEditablePromptZH(result.ZH);
-            addNotification({ type: 'success', message: '提示詞雙語同步完成' });
+            addNotification({
+                type: 'success',
+                message: from === 'ZH' ? '已用中文覆蓋英文 prompt' : '已用英文覆蓋中文 prompt',
+            });
         } catch (e) {
             addNotification({ type: 'error', message: '同步失敗' });
         } finally {
@@ -1019,9 +1061,69 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         })));
     }, [pickerRegion, pickerCategory]);
 
-    // 篩選變更時自動更新隨機卡
+    /**
+     * 「看全部」用的完整清單：沿用同一套篩選語意，再套搜尋字串。
+     * 搜尋比對場景名稱、事件、城市、類別四個欄位。
+     */
+    const allScenesFiltered = React.useMemo(() => {
+        const q = sceneSearch.trim().toLowerCase();
+        return ALL_EXTENDED_SCENES.filter(s => {
+            const sceneRegion = (s as any).region as string;
+            if (pickerRegion && sceneRegion !== pickerRegion && sceneRegion !== 'all') return false;
+            if (pickerCategory) {
+                const of = (s as any).outfit_filter as string[] | undefined;
+                if (!of?.length) return false;
+                const contexts = STEP1_CATEGORY_CONTEXTS[pickerCategory] || [];
+                if (contexts.length > 0) {
+                    const nonUrban = of.filter((ctx: string) => ctx !== 'urban_street');
+                    const effective = nonUrban.length > 0 ? nonUrban : of;
+                    if (!effective.some((ctx: string) => contexts.includes(ctx))) return false;
+                }
+            }
+            if (!q) return true;
+            return [s.name_zh, (s as any).event, (s as any).city, (s as any).category]
+                .filter(Boolean)
+                .some((v: any) => String(v).toLowerCase().includes(q));
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pickerRegion, pickerCategory, sceneSearch]);
+
+    /**
+     * 2026-08-14（UX 表 02-15）：第一步顯示「上一集」。
+     *
+     * 改版前每次進來都是空白起點，使用者要自己記得上一篇寫到哪——
+     * 而這是**連續劇式**的內容產出，接不上就會出現前後矛盾的日記。
+     * 資料本來就在（`model.gallery` 的 `narrativeContent` ＋ `timestamp`），只是沒被讀出來。
+     * 純讀取，不動任何流程狀態。
+     */
+    const lastEpisode = React.useMemo(() => {
+        const g = model.gallery;
+        if (!g?.length) return null;
+        const latest = [...g].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))[0];
+        if (!latest?.narrativeContent) return null;
+        const days = latest.timestamp ? Math.floor((Date.now() - latest.timestamp) / 86400000) : null;
+        const whenText = days === null ? '' : days <= 0 ? '今天' : days === 1 ? '昨天' : `${days} 天前`;
+        return {
+            when: whenText,
+            summary: latest.narrativeContent.replace(/s+/g, ' ').trim().slice(0, 90),
+            truncated: latest.narrativeContent.trim().length > 90,
+            total: g.length,
+        };
+    }, [model.gallery]);
+
+    /**
+     * 篩選變更時自動更新隨機卡。
+     *
+     * 2026-08-14（UX 表 02-07 的另一半，實機驗證時抓到）：
+     * **同時要清掉已載入的 AI 感應卡。** 否則換了篩選之後，AI 卡還顯示上一次的結果，
+     * 點下去採用的是**不符合新篩選的舊場景**——實測時就這樣採用到「頂樓泳池」，
+     * 而當下的篩選已經改成「文化廟町」，第二步的服裝池整批變成泳裝與網眼。
+     * 固定卡會跟著篩選重抽，AI 卡卻不會，兩者狀態不同步就是這個 bug。
+     */
     React.useEffect(() => {
         refreshRandomCards();
+        setPickerAICardScene(null);
+        setPickerAICardText('');
     }, [refreshRandomCards]);
 
     // Step 1：AI 卡懶載入（點擊才呼叫 API）
@@ -1030,7 +1132,16 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
         setPickerAICardScene(null);
         setPickerAICardText('');
         try {
-            const result = await generateDynamicEventWithScene(model);
+            /**
+             * 2026-08-14（UX 表 02-07）：把畫面上的地區／類別篩選傳進去。
+             * 改版前這裡是 `generateDynamicEventWithScene(model)`——AI 感應卡
+             * 完全不看使用者剛剛選的 chip，選了「咖啡日常 · 北部」照樣從全池抽。
+             * ⚠️ 第二個參數是 `lastEntry`（上一篇日記）不是篩選，別搞混，所以這裡傳 undefined。
+             */
+            const result = await generateDynamicEventWithScene(model, undefined, {
+                region: pickerRegion,
+                contexts: pickerCategory ? STEP1_CATEGORY_CONTEXTS[pickerCategory] : undefined,
+            });
             if (result?.sceneId) {
                 const aiScene = ALL_EXTENDED_SCENES.find(s => s.scene_id === result.sceneId);
                 if (aiScene) {
@@ -1502,7 +1613,15 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                         </div>
                         <div className="flex items-center gap-3 shrink-0">
                             <span className="narrative-status-pill">{narrativeStep}/5</span>
-                            <span className="narrative-status-pill">引擎運作中</span>
+                            {/*
+                              * 2026-08-14（UX 表 02-18）：這裡原本寫死「引擎運作中」——
+                              * 不管在做什麼、有沒有在跑，永遠顯示同一句話，是假狀態。
+                              * 改成讀既有的 `isAnyTaskRunning`（已涵蓋生成敘事／生圖／同步／
+                              * 提取記憶／週計畫五種任務）與產出狀態，不新增任何 state。
+                              */}
+                            <span className="narrative-status-pill">
+                                {isAnyTaskRunning ? '生成中…' : generatedImageUrl ? '已產出' : '待生成'}
+                            </span>
                             <button
                                 onClick={() => requestLeave(onGoHome)}
                                 disabled={isAnyTaskRunning}
@@ -1629,9 +1748,30 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                             : 
                                 <motion.div
                                     key="main-workflow"
-                                    initial={{ opacity: 0, filter: 'blur(10px)' }}
+                                    /**
+                                     * ⚠️ 2026-08-14：這兩個 prop 是修一個實機抓到的 bug，改回去會壞。
+                                     *
+                                     * **症狀**：進入敘事流程後（`narrativeStep >= 1`），左側 rail 的三顆面板按鈕
+                                     * （週計畫／劇組衣櫃／系統設定）**全部打不開**——`showWardrobe` 等 state 確實會變 true
+                                     * （rail 按鈕會亮 `is-active`），但畫面停在原步驟，等多久都沒用。
+                                     *
+                                     * **根因**：外層 `AnimatePresence mode="wait"`（見上方）會等舊 child 的 exit 完成
+                                     * 才讓新 child 進場，而這個 motion.div 原本帶 `exit={{ opacity: 0, filter: 'blur(10px)' }}`，
+                                     * 它的 exit 完成回呼在這個子樹裡不會觸發（子樹內有巢狀 `AnimatePresence` 與大量 motion 元素），
+                                     * 於是新面板永遠等不到進場。
+                                     *
+                                     * **為什麼 `initial` 也要改**：只移除 `exit` 之後面板會出現，但**從面板返回流程時
+                                     * 這個 div 會停在 `initial` 的 `opacity: 0` / `blur(10px)`**（`animate` 不再觸發），
+                                     * 畫面變全白。改成 `initial={false}` ＝不做進場動畫、直接就是可見狀態。
+                                     *
+                                     * **代價**：main-workflow 少了淡入模糊的進場效果。用它換三個面板能用，值得。
+                                     * 其他分支（wardrobe／settings／plan）的動畫完全沒動。
+                                     *
+                                     * 實測（2026-08-14 Chrome）：進流程 opacity 1 → 開衣櫥（舊的正確卸載）→
+                                     * 回流程 opacity 1 / blur(0px)，三顆面板都能開能回、流程步驟保留。
+                                     */
+                                    initial={false}
                                     animate={{ opacity: 1, filter: 'blur(0px)' }}
-                                    exit={{ opacity: 0, filter: 'blur(10px)' }}
                                     className="narrative-inner space-y-10 min-h-full overflow-y-auto custom-scrollbar"
                                 >
                                     {/* ── Step 1：選場景 ─────────────────────────────── */}
@@ -1655,6 +1795,18 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                     採用第 1 張場景 →
                                                 </button>
                                             </div>
+                                            {/* 上一集（2026-08-14 / UX 02-15）：只在有前作時出現，沒有就完全不佔空間 */}
+                                            {lastEpisode && (
+                                                <div className="px-8 py-3 border-b border-white/5 shrink-0 flex items-start gap-3 bg-white/[0.02]">
+                                                    <span className="text-[9px] font-black text-[var(--color-brass)]/70 uppercase tracking-widest shrink-0 mt-0.5">
+                                                        上一集{lastEpisode.when ? ` · ${lastEpisode.when}` : ''}
+                                                    </span>
+                                                    <p className="text-[11px] text-gray-400 leading-relaxed flex-1 min-w-0">
+                                                        {lastEpisode.summary}{lastEpisode.truncated ? '…' : ''}
+                                                    </p>
+                                                    <span className="text-[9px] text-gray-600 shrink-0 mt-0.5">共 {lastEpisode.total} 篇</span>
+                                                </div>
+                                            )}
                                             {/* Filters */}
                                             <div className="px-8 py-4 border-b border-white/5 space-y-3 shrink-0">
                                                 <div className="flex items-center gap-2 flex-wrap">
@@ -1698,11 +1850,60 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             </div>
                                             {/* Cards */}
                                             <div className="flex-1 overflow-y-auto px-8 py-6">
-                                                <div className="narrative-card-grid grid grid-cols-2 lg:grid-cols-4 gap-4">
+                                                {/* 2026-08-14（UX 02-06）：看全部＝可搜尋的完整場景清單，取代 3 張隨機卡 */}
+                                                {showAllScenes && (
+                                                    <div className="mb-5">
+                                                        <div className="flex items-center gap-3 mb-4">
+                                                            <input
+                                                                type="text"
+                                                                value={sceneSearch}
+                                                                onChange={e => setSceneSearch(e.target.value)}
+                                                                placeholder="搜尋場景名稱、事件、城市或類別..."
+                                                                className="flex-1 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-[12px] text-white placeholder:text-gray-600 outline-none focus:border-[var(--color-brass)]/50 transition-colors"
+                                                            />
+                                                            <span className="text-[10px] text-gray-500 font-black uppercase tracking-widest whitespace-nowrap">
+                                                                {allScenesFiltered.length} 個場景
+                                                            </span>
+                                                        </div>
+                                                        {allScenesFiltered.length === 0 ? (
+                                                            <p className="text-[12px] text-gray-500 italic py-8 text-center">
+                                                                目前的篩選與搜尋沒有符合的場景——把搜尋清空，或把類別切回「全部」。
+                                                            </p>
+                                                        ) : (
+                                                            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                                                                {allScenesFiltered.map((sc: any) => (
+                                                                    <button
+                                                                        key={sc.scene_id}
+                                                                        onClick={() => confirmScene(sc)}
+                                                                        title={sc.event || sc.name_zh}
+                                                                        className="text-left bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-3 hover:border-[var(--color-brass)]/50 hover:bg-white/5 transition-all active:scale-[0.98]"
+                                                                    >
+                                                                        <p className="text-[13px] font-black text-white leading-tight mb-1.5 line-clamp-2">{sc.name_zh}</p>
+                                                                        <p className="text-[10px] text-gray-500 truncate">{sc.category || '一般'}{sc.city && sc.city !== 'any' ? ` · ${sc.city}` : ''}</p>
+                                                                    </button>
+                                                                ))}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                )}
+                                                <div className={`narrative-card-grid grid grid-cols-2 lg:grid-cols-4 gap-4 ${showAllScenes ? 'hidden' : ''}`}>
                                                     {pickerSceneCards.map((card) => {
                                                         const of = (card.scene as any).outfit_filter as string[] || [];
                                                         const nonUrban = of.filter((x: string) => x !== 'urban_street');
-                                                        const primaryCtx = nonUrban[0] || of[0] || '';
+                                                        /**
+                                                         * 2026-08-14：有選類別時，badge 顯示「命中該類別的那個 context」。
+                                                         *
+                                                         * 改版前一律取第一個非 urban 值，於是選「咖啡日常」時，
+                                                         * 一張只在 `travel_journey` 命中的卡（例如旗津渡輪）badge 會寫「海岸泳池」——
+                                                         * **篩選邏輯其實是對的**（場景有多個 `outfit_filter`，桶內命中即通過），
+                                                         * 但畫面上看起來像篩選壞掉。2026-08-14 實機抓到。
+                                                         * 這裡只改「顯示哪一個 context」，不動 `refreshRandomCards` 的篩選。
+                                                         */
+                                                        const catContexts = pickerCategory ? (STEP1_CATEGORY_CONTEXTS[pickerCategory] || []) : [];
+                                                        const matchedCtx = catContexts.length > 0
+                                                            ? of.find((x: string) => catContexts.includes(x))
+                                                            : undefined;
+                                                        const primaryCtx = matchedCtx || nonUrban[0] || of[0] || '';
                                                         const ctxLabel: Record<string,string> = {
                                                             beach_island:'海岸泳池', mountain_outdoor:'山林田野', rural_field:'田野',
                                                             cafe_aesthetic:'咖啡日常', temple_old_town:'文化廟町', festival_event:'節慶',
@@ -1763,12 +1964,21 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         )}
                                                     </div>
                                                 </div>
-                                                {/* Refresh random cards */}
-                                                <div className="flex justify-end mt-4">
-                                                    <button onClick={refreshRandomCards}
-                                                        className="text-[9px] text-gray-500 hover:text-white font-black uppercase tracking-widest flex items-center gap-1.5 transition-colors">
-                                                        <span>↺</span> 換一批
+                                                {/* Refresh random cards ＋ 看全部（2026-08-14 / UX 02-06） */}
+                                                <div className="flex justify-between items-center mt-4">
+                                                    <button
+                                                        onClick={() => { setShowAllScenes(v => !v); setSceneSearch(''); }}
+                                                        className="text-[9px] text-[var(--color-brass)] hover:text-white font-black uppercase tracking-widest flex items-center gap-1.5 transition-colors"
+                                                    >
+                                                        <span>{showAllScenes ? '↩' : '☰'}</span>
+                                                        {showAllScenes ? '回隨機三張' : `看全部（${allScenesFiltered.length}）`}
                                                     </button>
+                                                    {!showAllScenes && (
+                                                        <button onClick={refreshRandomCards}
+                                                            className="text-[9px] text-gray-500 hover:text-white font-black uppercase tracking-widest flex items-center gap-1.5 transition-colors">
+                                                            <span>↺</span> 換一批
+                                                        </button>
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
@@ -1783,11 +1993,39 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                     <p className="text-[10px] font-black text-[var(--color-brass)] uppercase tracking-[0.5em]">第二步 · 服裝選角</p>
                                                     <h2>服裝不是裝飾，<br />是角色今天的語氣</h2>
                                                     <p className="text-[9px] text-gray-400 mt-0.5">{confirmedScene?.name_zh} · 場景適配穿搭、AI top pick、替代方案與自動搭配。</p>
+                                                    {/*
+                                                      * 2026-08-14（UX 表 02-09）：把「鎖定狀態」講明白。
+                                                      *
+                                                      * 改版前這一步完全看不出「衣櫥有沒有手動鎖定造型」——
+                                                      * 而鎖定會讓下方所有選擇失效（略過時會沿用那一套），
+                                                      * 使用者卻要等出圖才發現穿的不是他選的。
+                                                      * 只在真的有衣櫥鎖定（`active_outfit_pinned === true`）時出現，
+                                                      * 流程順手記下的那種（pinned false）不顯示——它按「略過」就會被清掉。
+                                                      */}
+                                                    {model.preferences?.active_outfit_id && model.preferences?.active_outfit_pinned === true && (
+                                                        <p className="text-[9px] text-[var(--color-brass)] mt-1.5 flex items-center gap-1.5">
+                                                            <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-brass)] inline-block" />
+                                                            衣櫥已鎖定造型 · 按「略過」會沿用它，選下面任一套則會覆蓋
+                                                        </p>
+                                                    )}
                                                 </div>
                                                 <div className="narrative-screen-actions">
                                                     <button onClick={() => setNarrativeStep(1)}
                                                         className="narrative-screen-link">
                                                         ← 返回場景
+                                                    </button>
+                                                    {/*
+                                                      * 2026-08-14（UX 表 02-09）：第二步直接開衣櫥，不用跳出流程去左側 rail 找。
+                                                      * ⚠️ 這顆按鈕能用的前提是同一天修掉的那個 bug
+                                                      * （rail 面板在流程中打不開，見 main-workflow 的 `initial`/`exit` 註解）——
+                                                      * 那個修法改回去，這顆按鈕會跟著失效。
+                                                      */}
+                                                    <button
+                                                        onClick={() => { setShowWardrobe(true); setShowSettings(false); setShowPlan(false); }}
+                                                        className="narrative-screen-link"
+                                                        title="開啟劇組衣櫃挑一套並鎖定；點左側「敘事首頁」會回到這一步"
+                                                    >
+                                                        開衣櫥
                                                     </button>
                                                     <button
                                                         type="button"
@@ -1800,7 +2038,31 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                             </div>
                                             {/* Outfit Cards */}
                                             <div className="flex-1 overflow-y-auto px-8 py-6">
-                                                <div className="narrative-card-grid grid grid-cols-2 lg:grid-cols-4 gap-4">
+                                                {/* 2026-08-14（UX 02-08）：看全部＝該場景的完整候選池，取代「4 個選項」 */}
+                                                {showAllOutfits && (
+                                                    <div className="mb-5">
+                                                        <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-3">
+                                                            這個場景可穿的全部 {pickerOutfitOptions.allCandidates?.length ?? 0} 套（依適配分數排序）
+                                                        </p>
+                                                        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                                                            {(pickerOutfitOptions.allCandidates ?? []).map((outfit: any) => (
+                                                                <button
+                                                                    key={outfit.outfit_id}
+                                                                    onClick={() => confirmSceneOutfit(confirmedScene, outfit.outfit_id)}
+                                                                    className="text-left bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-3 hover:border-[var(--color-brass)]/50 hover:bg-white/5 transition-all active:scale-[0.98]"
+                                                                >
+                                                                    <p className="text-[13px] font-black text-white leading-tight mb-1.5">
+                                                                        {STYLE_ARCHETYPE_MAP[outfit.style_archetype] || outfit.style_archetype}
+                                                                    </p>
+                                                                    <p className="text-[10px] text-gray-500 leading-relaxed line-clamp-2">
+                                                                        {[outfit.pillars?.top, outfit.pillars?.bottom].filter(Boolean).map((v: string) => translateClothing(v)).join(' ／ ')}
+                                                                    </p>
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                <div className={`narrative-card-grid grid grid-cols-2 lg:grid-cols-4 gap-4 ${showAllOutfits ? 'hidden' : ''}`}>
                                                     {pickerOutfitOptions.alternatives.map((outfit: any) => (
                                                         <div key={outfit.outfit_id}
                                                             onClick={() => confirmSceneOutfit(confirmedScene, outfit.outfit_id)}
@@ -1860,6 +2122,16 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         </p>
                                                     </div>
                                                 </div>
+                                                {/* 看全部服裝（2026-08-14 / UX 02-08） */}
+                                                <div className="flex justify-end mt-4">
+                                                    <button
+                                                        onClick={() => setShowAllOutfits(v => !v)}
+                                                        className="text-[9px] text-[var(--color-brass)] hover:text-white font-black uppercase tracking-widest flex items-center gap-1.5 transition-colors"
+                                                    >
+                                                        <span>{showAllOutfits ? '↩' : '☰'}</span>
+                                                        {showAllOutfits ? '回四個推薦' : `看全部（${pickerOutfitOptions.allCandidates?.length ?? 0}）`}
+                                                    </button>
+                                                </div>
                                                 {/* Skip */}
                                                 <div className="flex justify-center mt-6">
                                                     <button onClick={() => confirmSceneOutfit(confirmedScene, null)}
@@ -1887,7 +2159,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                 <div>
                                                     <p className="text-[10px] font-black text-[var(--color-brass)] uppercase tracking-[0.5em]">第四步 · 提示詞審閱</p>
                                                     <h2>雙語提示詞審片台</h2>
-                                                    <p className="text-[12px] text-gray-500 uppercase tracking-widest mt-0.5">中文提示詞、英文 final prompt、分段模組、雙向同步與生成影像 CTA。</p>
+                                                    <p className="text-[12px] text-gray-500 uppercase tracking-widest mt-0.5">中文提示詞、英文 final prompt、分段模組、單向對齊（可選方向）與生成影像 CTA。</p>
                                                 </div>
                                                 <div className="narrative-screen-actions">
                                                     <button onClick={() => setNarrativeStep(3)}
@@ -1902,15 +2174,29 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                 <div className="narrative-review-toolbar">
                                                     <div>
                                                         <p className="narrative-deliver-section-label">同步提示詞</p>
-                                                        <strong>將下方的比例、畫質、POV、服裝與場景設定同步到中英文 prompt</strong>
+                                                        <strong>選一個方向對齊中英文 prompt —— 被指向的那一邊會整個覆寫</strong>
                                                     </div>
+                                                    {/*
+                                                      * 2026-08-14（UX 02-12）：一顆「⇄ 雙向同步」拆成兩個方向。
+                                                      * 它從來就不是雙向合併，而是單向覆蓋；方向由當下停在哪個語言頁籤決定，
+                                                      * 使用者無法預期哪一邊會被蓋掉。
+                                                      */}
                                                     <div className="narrative-review-actions">
                                                         <button
                                                             type="button"
-                                                            onClick={() => handleSyncPrompt()}
-                                                            disabled={isSyncing || isGeneratingImage}
+                                                            onClick={() => handleSyncPrompt('ZH')}
+                                                            disabled={isSyncing || isGeneratingImage || !editablePromptZH}
+                                                            title="以中文為準，重新產生英文 prompt（英文那邊會被覆寫）"
                                                         >
-                                                            {isSyncing ? '同步中...' : '⇄ 雙向同步'}
+                                                            {isSyncing ? '同步中...' : '中文 → 英文'}
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleSyncPrompt('EN')}
+                                                            disabled={isSyncing || isGeneratingImage || !editablePrompt}
+                                                            title="以英文為準，重新產生中文 prompt（中文那邊會被覆寫）"
+                                                        >
+                                                            {isSyncing ? '同步中...' : '英文 → 中文'}
                                                         </button>
                                                     </div>
                                                 </div>
@@ -1960,7 +2246,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                                             value={section.value}
                                                                             onChange={(e) => updateReviewPromptSection('EN', section, e.target.value)}
                                                                             disabled={isGeneratingImage}
-                                                                            placeholder={section.value === '' ? '尚無內容，點擊上方「⇄ 雙向同步」自動生成' : ''}
+                                                                            placeholder={section.value === '' ? '尚無內容，點擊上方「中文 → 英文」或「英文 → 中文」自動生成' : ''}
                                                                         />
                                                                     </div>
                                                                 ))}
@@ -2006,9 +2292,9 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                             onChange={(e) => setQuality(e.target.value)}
                                                             className="w-full text-center text-[11px] font-bold bg-[var(--color-bg-input)] border border-[var(--color-border)] rounded-lg py-1.5 outline-none focus:border-[var(--color-brass)]/50 cursor-pointer"
                                                         >
-                                                            <option value="HD">高解析度 1K</option>
-                                                            <option value="Cinematic">電影級 2K</option>
-                                                            <option value="Pro">臉部鎖定 4K</option>
+                                                            <option value="HD">{QUALITY_LABELS.HD}</option>
+                                                            <option value="Cinematic">{QUALITY_LABELS.Cinematic}</option>
+                                                            <option value="Pro">{QUALITY_LABELS.Pro}</option>
                                                         </select>
                                                     </div>
                                                     <div className="narrative-shoot-summary-cell flex flex-col items-center gap-1.5">
@@ -2101,7 +2387,7 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                             { label: '場景', value: confirmedScene?.name_zh || '未指定' },
                                                             { label: '服裝', value: confirmedOutfitId ? '已選造型' : '自動搭配' },
                                                             { label: '比例', value: aspectRatio },
-                                                            { label: '畫質', value: quality },
+                                                            { label: '畫質', value: qualityLabel(quality) },
                                                         ].map(c => (
                                                             <div key={c.label} className="narrative-deliver-micro">
                                                                 <span>{c.label}</span>
@@ -2145,9 +2431,24 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                     <div className="narrative-deliver-section">
                                                         <p className="narrative-deliver-section-label">回到步驟</p>
                                                         <div className="narrative-deliver-option-grid">
+                                                        {/*
+                                                          * 三顆「回到步驟」的清空範圍（2026-08-14，UX 表 02-03）。
+                                                          *
+                                                          * 改版前三顆各清各的，而且錯的方向都一樣——清得比該清的少：
+                                                          * ①「重選場景」清 diary＋圖＋文案＋輪播（這顆本來就對）
+                                                          * ②「重選服裝」**什麼都不清** → 換了衣服，畫面上還留著舊衣服那張圖，
+                                                          *    使用者會以為新衣服長那樣
+                                                          * ③「重選敘事」清了 diary／預覽／文案／輪播，**漏掉 `generatedImageUrl`**
+                                                          *    → 敘事已經沒了，圖還在
+                                                          *
+                                                          * 規則統一成一句：**重選 X 就清掉所有依賴 X 的下游產物。**
+                                                          * - 圖依賴場景／服裝／敘事三者 → 三顆都要清圖
+                                                          * - 平台文案與輪播依賴圖 → 跟著圖一起清
+                                                          * - diary 依賴場景與敘事，**不依賴服裝** → 只有 ① ③ 清 diary，② 保留
+                                                          */}
                                                         <button onClick={() => { setNarrativeStep(1); setDiary(null); setGeneratedImageUrl(null); setSelectedPreviewImageUrl(null); setIgCaption(''); setFbCaption(''); setThreadsCaption(''); setCarouselImages([]); setCarouselMode(false); }}>重選場景</button>
-                                                            <button onClick={() => setNarrativeStep(2)}>重選服裝</button>
-                                                        <button onClick={() => { setNarrativeStep(3); setDiary(null); setSelectedPreviewImageUrl(null); setIgCaption(''); setFbCaption(''); setThreadsCaption(''); setCarouselImages([]); setCarouselMode(false); }}>重選敘事</button>
+                                                        <button onClick={() => { setNarrativeStep(2); setGeneratedImageUrl(null); setSelectedPreviewImageUrl(null); setIgCaption(''); setFbCaption(''); setThreadsCaption(''); setCarouselImages([]); setCarouselMode(false); }}>重選服裝</button>
+                                                        <button onClick={() => { setNarrativeStep(3); setDiary(null); setGeneratedImageUrl(null); setSelectedPreviewImageUrl(null); setIgCaption(''); setFbCaption(''); setThreadsCaption(''); setCarouselImages([]); setCarouselMode(false); }}>重選敘事</button>
                                                         </div>
                                                     </div>
 
@@ -2250,7 +2551,20 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                         >
                                             <div className="space-y-1.5 border-r border-[var(--color-border)] pr-6">
                                                 <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black">人格內核</p>
-                                                <p className="text-base text-[var(--color-brass)] font-black italic">{model.persona?.mbti || 'N/A'}</p>
+                                                {/*
+                                                  * 2026-08-14（UX 表 02-11）：沒設定時原本只顯示 `N/A`——
+                                                  * 對非技術使用者是意義不明的英文縮寫，而且沒有任何線索該去哪裡補。
+                                                  * `mbti` 只能在「IP 休息室 → 編輯身份」（`ModelIdentityEditor`）改，
+                                                  * 所以這裡改成講白話的「未設定」＋ tooltip 指路。
+                                                  * ⛔ 刻意不做「點擊直接跳過去」——敘事流程正在進行中，
+                                                  * 跳走會丟掉已選的場景與造型（離開攔截也只保護已生成的圖）。
+                                                  */}
+                                                <p
+                                                    className={`text-base font-black italic ${model.persona?.mbti ? 'text-[var(--color-brass)]' : 'text-gray-500 cursor-help underline decoration-dotted decoration-gray-600 underline-offset-4'}`}
+                                                    title={model.persona?.mbti ? undefined : '人格內核尚未設定。到「IP 休息室 → 編輯身份」補上 MBTI，之後這裡會自動帶入。'}
+                                                >
+                                                    {model.persona?.mbti || '未設定'}
+                                                </p>
                                             </div>
                                             <div className="space-y-1.5 border-r border-[var(--color-border)] px-6">
                                                 <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black">核心氛圍</p>
@@ -2283,7 +2597,8 @@ const NarrativeWorkflow: React.FC<NarrativeWorkflowProps> = ({ model: propModel,
                                                         {[
                                                             { label: '場景', value: confirmedScene?.name_zh || '未指定' },
                                                             { label: '造型', value: confirmedOutfitId ? (STYLE_ARCHETYPE_MAP[([...(pickerOutfitOptions?.alternatives || []), pickerOutfitOptions?.topPick].find((o: any) => o?.outfit_id === confirmedOutfitId) as any)?.style_archetype || ''] || '已選服裝') : '自動搭配' },
-                                                            { label: '人格', value: model.persona?.mbti || 'N/A' },
+                                                            // 2026-08-14（UX 表 02-11）：同上，`N/A` 改講白話。
+                                                            { label: '人格', value: model.persona?.mbti || '未設定' },
                                                             { label: '狀態', value: eventInput.trim() ? '可生成' : '待輸入' },
                                                         ].map(metric => (
                                                             <div key={metric.label} className="narrative-stage3-metric">

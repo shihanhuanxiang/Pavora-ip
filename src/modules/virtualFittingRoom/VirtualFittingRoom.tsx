@@ -33,6 +33,10 @@ import { autoFaceCrop } from '../../shared/utils/vision/faceCrop';
 import SparklesIcon from '../../shared/assets/icons/SparklesIcon';
 // 2026-08-14（階段 7 · A3）：代言人已移除，身份來源改為 useModelStore 的 activeModelId。
 import AsyncImage from '../../shared/components/common/AsyncImage';
+// 2026-08-14（UX 表 04-15）：試穿完沒有任何用量紀錄——連生成次數都沒進 usage log，
+// 更不知道「這張圖穿的是哪一件」。靈魂敘事早就接了這支，試衣間漏掉。
+import { recordGeneration } from '../../domains/ipContent/usageRecorder';
+import { navName } from '../../shell/navRegistry';
 
 interface VirtualFittingRoomProps {
   onGoBack?: () => void;
@@ -199,6 +203,15 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
      * ⚠️ 訂閱 `models` / `activeModelId` 而不是 `getActiveModel()` —— 後者走
      * zustand 的 `get()`，不會觸發重新渲染。
      */
+    /**
+     * 2026-08-14（UX 表 04-14／03-13 的另一半）：試衣間**沒有任何往外的出口**。
+     *
+     * 場景轉移那邊有「帶這張圖繼續」（08-14 修好並擴充成多選單），
+     * 但試衣間產出之後只能下載——想把穿好衣服的圖換個場景，得自己存檔再上傳。
+     * `onAdvancedEdit` 這個 prop 早就在了（`App.tsx` 傳的是 `handleAdvancedEdit`），
+     * 只有衣櫥卡片的「送去服裝設計」在用（:1246），產出區沒接。
+     */
+    const [continueMenuOpen, setContinueMenuOpen] = useState(false);
     const { models, activeModelId } = useModelStore();
     const activeIp = useMemo(() => models.find(m => m.id === activeModelId), [models, activeModelId]);
 
@@ -648,7 +661,7 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
      * 只有服裝設計產出的平拍圖會帶 true —— 它在生成時就被要求 #FFFFFF 底，
      * 再去背一次等於讓模型把乾淨的圖重繪一遍，白白耗損品質。
      */
-    const handleApplyApparel = useCallback(async (apparelImage: { data: string; mimeType: string }, category: string, safeMode: boolean = false, skipBgRemoval: boolean = false) => {
+    const handleApplyApparel = useCallback(async (apparelImage: { data: string; mimeType: string }, category: string, safeMode: boolean = false, skipBgRemoval: boolean = false, assetId?: string) => {
         setError(null); 
         const currentLookUrl = generatedLook || baseImage?.url;
         if (!currentLookUrl) {
@@ -709,9 +722,24 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
             setLastApparelImage(apparelImage);
             setAffectedCategories(prev => new Set(prev).add(category));
             setActiveLayers(prev => [...prev, { id: `layer-${Date.now()}`, category, url: imageUrl }]);
+            // 用 getState() 讀當下的 activeModelId，與本檔既有做法一致（不動 useCallback 依賴陣列）。
+            recordGeneration({
+                module: 'fitting_room',
+                kind: 'image',
+                model_id: useModelStore.getState().activeModelId || undefined,
+                asset_id: assetId,
+                ok: true,
+            });
         } catch (err) {
             console.error("VTO Error:", err);
             setError(getFriendlyErrorMessage(err));
+            recordGeneration({
+                module: 'fitting_room',
+                kind: 'image',
+                model_id: useModelStore.getState().activeModelId || undefined,
+                asset_id: assetId,
+                ok: false,
+            });
         } finally {
             setIsLoading(false);
         }
@@ -736,7 +764,7 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
         }
         try {
             const fileData = await imageUrlToimageData(item.imageUrl);
-            await handleApplyApparel(fileData, category, true, item.isWhiteBackground === true);
+            await handleApplyApparel(fileData, category, true, item.isWhiteBackground === true, item.id);
         } catch (e) {
             console.error('讀取衣櫥素材失敗', e);
             setError('讀取衣櫥素材失敗，該圖可能已被刪除。');
@@ -1554,15 +1582,63 @@ const VirtualFittingRoom: React.FC<VirtualFittingRoomProps> = ({
                                     )}
                                     {generatedLook && (
                                         <div className="flex flex-wrap justify-center gap-2 w-full">
-                                            {faceAnchor && (
-                                                <Button onClick={handleRestoreIdentity} variant="primary" className="flex-1 min-w-[140px] shadow-lg">
-                                                    <SparklesIcon className="w-4 h-4 mr-2" /> 身份修復
-                                                </Button>
-                                            )}
-                                            {lastApparelImage && (
-                                                <Button onClick={handleRefineDetails} variant="secondary" className="flex-1 min-w-[140px] border-[var(--color-gold)] text-[var(--color-gold)]">
-                                                    <SparklesIcon className="w-4 h-4 mr-2" /> 細節增強
-                                                </Button>
+                                            {/*
+                                              * 2026-08-14（UX 表 04-09）：條件不符時**不要讓按鈕消失**。
+                                              *
+                                              * 改版前是 `{faceAnchor && (...)}` / `{lastApparelImage && (...)}`——
+                                              * 條件不符整顆按鈕從畫面上不見，使用者既不知道有這個功能，
+                                              * 也不知道為什麼看不到、要做什麼才能用它。
+                                              * 改成常駐 ＋ `disabled` ＋ `title` 說明缺什麼。
+                                              * （`Button` 繼承 `ButtonHTMLAttributes`，`title` 會透傳到 DOM。）
+                                              */}
+                                            <Button
+                                                onClick={handleRestoreIdentity}
+                                                disabled={!faceAnchor}
+                                                variant="primary"
+                                                className="flex-1 min-w-[140px] shadow-lg"
+                                                title={faceAnchor
+                                                    ? '用已鎖定的臉部來源修復五官'
+                                                    : '尚未鎖定臉部來源——請先在上方「套用當前 IP」或上傳一張臉部參考圖'}
+                                            >
+                                                <SparklesIcon className="w-4 h-4 mr-2" /> 身份修復
+                                            </Button>
+                                            <Button
+                                                onClick={handleRefineDetails}
+                                                disabled={!lastApparelImage}
+                                                variant="secondary"
+                                                className="flex-1 min-w-[140px] border-[var(--color-gold)] text-[var(--color-gold)]"
+                                                title={lastApparelImage
+                                                    ? '強化服裝的織紋與細節'
+                                                    : '尚未套用任何服裝——請先從下方衣櫥選一件試穿'}
+                                            >
+                                                <SparklesIcon className="w-4 h-4 mr-2" /> 細節增強
+                                            </Button>
+                                            {onAdvancedEdit && (
+                                                <div className="relative flex-1 min-w-[150px]">
+                                                    <Button
+                                                        onClick={() => setContinueMenuOpen(v => !v)}
+                                                        variant="secondary"
+                                                        className="w-full"
+                                                        title="把這張穿好衣服的圖直接帶到下一個功能，不用另存再上傳"
+                                                    >
+                                                        帶這張圖繼續 ▾
+                                                    </Button>
+                                                    {continueMenuOpen && (
+                                                        <div className="absolute bottom-full mb-2 left-0 z-50 min-w-[180px] bg-[var(--color-bg-card)] border border-white/15 rounded-xl shadow-2xl overflow-hidden backdrop-blur-xl">
+                                                            {/* 名稱一律取自 navRegistry；id 必須是 App.handleNavigate 有的 case，
+                                                                否則會 fallback 回首頁（2026-08-14 在場景轉移抓到過那種死按鈕）。 */}
+                                                            {['scene', 'salon', 'portfolio_optimization'].map(dest => (
+                                                                <button
+                                                                    key={dest}
+                                                                    onClick={() => { setContinueMenuOpen(false); onAdvancedEdit(generatedLook, dest); }}
+                                                                    className="w-full text-left px-4 py-2.5 text-[11px] font-bold text-gray-300 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] transition-colors border-b border-white/5 last:border-b-0"
+                                                                >
+                                                                    {navName(dest)}
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </div>
                                             )}
                                             <Button onClick={() => setPreviewingImage(generatedLook)} variant="secondary" className="flex-1 min-w-[100px]">放大</Button>
                                             <Button onClick={handleDownload} variant="light" className="flex-1 min-w-[100px]">下載結果</Button>
